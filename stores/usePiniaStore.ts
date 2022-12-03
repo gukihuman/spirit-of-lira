@@ -6,5 +6,6 @@ export const usePiniaStore = defineStore("pinia", {
       top: 0,
       left: 0,
     },
+    gameFrame: 0,
   }),
 });
