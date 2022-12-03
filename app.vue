@@ -22,19 +22,21 @@ let gameFrame = computed(() => {
   return usePiniaStore().gameFrame;
 });
 
-let gamepadAPI = reactive(useGamepadSetup());
-function updateGameFrame() {
+function gameLoop() {
   setInterval(() => {
     usePiniaStore().gameFrame++;
-    gamepadAPI.update();
-  }, 1000 / 60);
+    gamepadUpdate();
+  }, 1000 / useSettingsStore().frameRate);
 }
+let gamepadAPI = computed(() => {
+  return useGamepadStore();
+});
 onMounted(() => {
-  animSetup();
-  addEventListener("gamepadconnected", gamepadAPI.connect);
-  addEventListener("gamepaddisconnected", gamepadAPI.disconnect);
   updateMainWindowStyle();
-  updateGameFrame();
+  animSetup(); // adds info to AnimStore from raw JSON
+  gameLoop();
+  addEventListener("gamepadconnected", gamepadConnect);
+  addEventListener("gamepaddisconnected", gamepadDisconnect);
 });
 </script>
 <style>
