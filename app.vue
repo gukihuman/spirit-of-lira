@@ -1,42 +1,35 @@
 <template lang="pug">
 //- background
-div(class="bg-slate-800 h-screen w-screen")
+div(ref='background' class="bg-slate-800 h-screen w-screen flex items-center \
+justify-center")
   //- mainWindow
-  div(:style='mainWindowStyle' class='bg-slate-700 m-auto absolute')
+  div(:style='mainWindowStyle' class='bg-gray-500 \
+  relative')
+    Pause(v-if="componentStates.pause")
+    Dev(v-if="componentStates.dev")
+    Canvas
+    ButtonFullscreen
 
-    div(class='absolute right-0 rounded-lg bg-lime-900 w-fit h-9 text-2xl \
-    text-end px-2 m-2 font-mono text-lime-500') {{gameFrame}}
-    div(class='text-center pt-3 mx-auto text-white text-3xl max-w-md') {{gamepadAPI}}
 </template>
 <script setup>
 let mainWindowStyle = computed(() => {
-  let style = usePiniaStore().mainWindowStyle;
+  let mainWindow = useCommonStore().mainWindow;
   return {
-    width: style.width + "px",
-    height: style.height + "px",
-    top: style.top + "px",
-    left: style.left + "px",
+    width: mainWindow.width + "px",
+    height: mainWindow.height + "px",
   };
 });
-let gameFrame = computed(() => {
-  return usePiniaStore().gameFrame;
+let componentStates = computed(() => {
+  return useCommonStore().componentStates;
 });
+const background = ref(null);
 
-function gameLoop() {
-  setInterval(() => {
-    usePiniaStore().gameFrame++;
-    gamepadUpdate();
-  }, 1000 / useSettingsStore().frameRate);
-}
-let gamepadAPI = computed(() => {
-  return useGamepadStore();
-});
 onMounted(() => {
-  updateMainWindowStyle();
+  storeRef("background", background);
+  mainWindowUpdate();
+  listeners();
   animSetup(); // adds info to AnimStore from raw JSON
   gameLoop();
-  addEventListener("gamepadconnected", gamepadConnect);
-  addEventListener("gamepaddisconnected", gamepadDisconnect);
 });
 </script>
 <style>

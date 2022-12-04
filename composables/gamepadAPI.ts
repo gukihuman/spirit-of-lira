@@ -1,9 +1,10 @@
-import { useGamepadStore } from "./../stores/useGamepadStore";
-export function gamepadConnect(event) {
-  useGamepadStore().connected = true;
-}
-export function gamepadDisconnect() {
-  useGamepadStore().connected = false;
+export function gamepadListeners() {
+  addEventListener("gamepadconnected", () => {
+    useGamepadStore().connected = true;
+  });
+  addEventListener("gamepaddisconnected", () => {
+    useGamepadStore().connected = false;
+  });
 }
 export function gamepadUpdate() {
   if (useGamepadStore().connected) {

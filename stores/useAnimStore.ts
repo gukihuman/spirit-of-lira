@@ -7,7 +7,7 @@ export const useAnimStore = defineStore("anim", {
     //   animSet: {
     //     walk: [[1, 1], [1, 303]]
     //     idle: [[303, 1], [303, 303]]
-    // },
+    //   },
     // }
   }),
 });
