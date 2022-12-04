@@ -4,7 +4,10 @@ CanvasWrapper
     v-for='(entity, index) in entities'
     :key='index'
     :updateEach='gameFrame'
+
     :breed='entity.breed'
+    :state='entity.state'
+    :stateStartFrame='entity.stateStartFrame'
     :x='entity.x',
     :y='entity.y',
     :mirrored='entity.mirrored',

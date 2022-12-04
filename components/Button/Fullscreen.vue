@@ -1,6 +1,7 @@
 <template lang="pug">
 div(class='absolute right-2')
-  button(@click='toggle()' class='text-white text-xl') Fullscreen
+  button(@click='toggle()' :style='style'
+  class='text-slate-900') Fullscreen
     
 </template>
 
@@ -8,4 +9,9 @@ div(class='absolute right-2')
 function toggle() {
   toggleFullscreen();
 }
+const style = computed(() => {
+  return {
+    "font-size": 36 * scale() + "px",
+  };
+});
 </script>

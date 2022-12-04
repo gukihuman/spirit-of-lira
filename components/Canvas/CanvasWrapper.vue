@@ -1,18 +1,10 @@
 <template lang="pug">
-canvas(ref="canvas" class='absolute' :style='style')
+canvas(ref="canvas" class='absolute w-full h-full')
   slot
 
 </template>
 <script>
 export default {
-  computed: {
-    style() {
-      return {
-        width: useCommonStore().mainWindow.width + "px",
-        height: useCommonStore().mainWindow.height + "px",
-      };
-    },
-  },
   mounted() {
     useCanvasStore().context = this.$refs.canvas.getContext("2d");
     this.$refs.canvas.width = useCanvasStore().width;

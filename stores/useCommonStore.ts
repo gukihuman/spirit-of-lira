@@ -4,6 +4,7 @@ export const useCommonStore = defineStore("common", {
     mainWindow: {
       width: 800,
       height: 450,
+      scale: 1,
     },
     // controlled by @/app
     gameFrame: 0,

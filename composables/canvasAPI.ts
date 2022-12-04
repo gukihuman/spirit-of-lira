@@ -1,9 +1,11 @@
 export function canvasGenerate() {
   useCanvasStore().entities.push({
     breed: "hero",
-    x: 100,
-    y: 100,
-    mirrored: false,
+    state: "idle",
+    stateStartFrame: 0,
+    x: 960,
+    y: 540,
+    mirrored: true,
   });
 }
 export function canvasClear() {
