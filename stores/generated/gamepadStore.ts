@@ -3,7 +3,7 @@ export const gamepadStore = defineStore("gamepad", {
     // controlled by @/composables/gamepadAPI
     connected: false,
     buttonsStatus: [],
-    axesStatus: [],
+    axesStatus: [0, 0, 0, 0],
     buttons: [
       "A",
       "B",

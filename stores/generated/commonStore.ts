@@ -15,5 +15,8 @@ export const commonStore = defineStore("common", {
       pause: false,
       ranges: true,
     },
+
+    // controlled by @/composables/mapAPI
+    mapOffset: [0, 0],
   }),
 });

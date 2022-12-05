@@ -6,6 +6,7 @@ export function gamepadListeners() {
     gamepadStore().connected = false;
   });
 }
+
 export function gamepadUpdate() {
   if (gamepadStore().connected) {
     const gamepadRaw = navigator.getGamepads()[0] || {};
@@ -17,7 +18,7 @@ export function gamepadUpdate() {
     });
     const axes = [];
     gamepadRaw.axes.forEach((axis) => {
-      axes.push(axis.toFixed(2));
+      axes.push(Number(axis.toFixed(2)));
     });
     gamepadStore().axesStatus = axes;
     gamepadStore().buttonsStatus = pressed;

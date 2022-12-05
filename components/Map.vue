@@ -7,7 +7,8 @@ import map from "@/assets/map.webp";
 const style = computed(() => {
   let size = 6000 * scale() + "px";
   return {
-    top: 133 + "px",
+    top: -1 * commonStore().mapOffset[1] + "px",
+    left: -1 * commonStore().mapOffset[0] + "px",
     width: size,
     height: size,
   };
