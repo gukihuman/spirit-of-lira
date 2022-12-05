@@ -1,3 +1,4 @@
-import hero from "@/assets/anim/hero.json";
+import heroArcher from "@/assets/anim/heroArcher.json";
+import goblin from "@/assets/anim/goblin.json";
 
-export const breeds = [hero];
+export const breeds = [heroArcher, goblin];

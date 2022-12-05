@@ -3,24 +3,25 @@
 div(ref='background' class="bg-slate-800 h-screen w-screen flex items-center \
 justify-center")
   //- mainWindow
-  div(:style='mainWindowStyle' class='bg-gray-500 \
-  relative')
-    Pause(v-if="componentStates.pause")
-    Dev(v-if="componentStates.dev")
+  div(:style='mainWindowStyle' class='bg-gray-500 relative overflow-hidden')
+    Map
+    Pause(v-if="uiStates.pause")
+    Dev(v-if="uiStates.dev")
     Canvas
+    Minimap
     ButtonFullscreen
 
 </template>
 <script setup>
 let mainWindowStyle = computed(() => {
-  let mainWindow = useCommonStore().mainWindow;
+  let mainWindow = commonStore().mainWindow;
   return {
     width: mainWindow.width + "px",
     height: mainWindow.height + "px",
   };
 });
-let componentStates = computed(() => {
-  return useCommonStore().componentStates;
+let uiStates = computed(() => {
+  return commonStore().uiStates;
 });
 const background = ref(null);
 
@@ -30,6 +31,9 @@ onMounted(() => {
   listeners();
   animSetup(); // adds info to AnimStore from raw JSON
   gameLoop();
+
+  generateEntity("heroArcher", 960, 540);
+  generateEntity("goblin", 1550, 450);
 });
 </script>
 <style>

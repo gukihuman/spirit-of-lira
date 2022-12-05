@@ -1,5 +1,7 @@
-import hero from "@/assets/anim/hero.webp";
+import heroArcher from "@/assets/anim/heroArcher.webp";
+import goblin from "@/assets/anim/goblin.webp";
 
 export const sources = {
-  hero: hero,
+  heroArcher: heroArcher,
+  goblin: goblin,
 };

@@ -1,10 +1,10 @@
 export function gameLoop() {
   setInterval(() => {
-    if (!useCommonStore().componentStates.pause) {
-      useCommonStore().gameFrame++;
+    if (!commonStore().uiStates.pause) {
+      commonStore().gameFrame++;
       gamepadUpdate();
       canvasClear();
       canvasGenerate();
     }
-  }, 1000 / useSettingsStore().frameRate);
+  }, 1000 / settingsStore().frameRate);
 }

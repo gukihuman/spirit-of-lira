@@ -1,4 +1,4 @@
-export const useGamepadStore = defineStore("gamepad", {
+export const gamepadStore = defineStore("gamepad", {
   state: () => ({
     // controlled by @/composables/gamepadAPI
     connected: false,

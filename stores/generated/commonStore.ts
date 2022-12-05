@@ -1,18 +1,19 @@
-export const useCommonStore = defineStore("common", {
+export const commonStore = defineStore("common", {
   state: () => ({
     // controlled by @/composables/mainWindowUpdate
     mainWindow: {
-      width: 800,
-      height: 450,
+      width: 1920,
+      height: 1080,
       scale: 1,
     },
-    // controlled by @/app
+    // controlled by @/composables/gameLoop
     gameFrame: 0,
 
     // controlled by @/composables/keyboardAPI
-    componentStates: {
-      dev: false,
+    uiStates: {
+      dev: true,
       pause: false,
+      ranges: true,
     },
   }),
 });

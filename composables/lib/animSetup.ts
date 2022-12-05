@@ -7,13 +7,13 @@ export function animSetup() {
     const name = json.meta.image.replace(/.webp/, "");
 
     // create object in store with that name
-    useAnimStore().breeds[name] = {
+    animStore().breeds[name] = {
       width: json.frames[0].sourceSize.w,
       height: json.frames[0].sourceSize.w,
       animSet: {},
     };
 
-    const breed = useAnimStore().breeds[name];
+    const breed = animStore().breeds[name];
 
     // fill animSet
     const animSet = new Set();

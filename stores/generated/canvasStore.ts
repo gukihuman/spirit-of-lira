@@ -1,8 +1,8 @@
-export const useCanvasStore = defineStore("canvas", {
+export const canvasStore = defineStore("canvas", {
   state: () => ({
     // controlled by @/components/CanvasWrapper.ts
-    width: 1920,
-    height: 1080,
+    width: 0,
+    height: 0,
     context: null,
     // controlled by @/composables/canvasAPI.ts
     entities: [

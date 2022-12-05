@@ -6,9 +6,13 @@ canvas(ref="canvas" class='absolute w-full h-full')
 <script>
 export default {
   mounted() {
-    useCanvasStore().context = this.$refs.canvas.getContext("2d");
-    this.$refs.canvas.width = useCanvasStore().width;
-    this.$refs.canvas.height = useCanvasStore().height;
+    let width = 1920;
+    let height = 1080;
+    canvasStore().context = this.$refs.canvas.getContext("2d");
+    this.$refs.canvas.width = width;
+    this.$refs.canvas.height = height;
+    canvasStore().width = width;
+    canvasStore().height = height;
   },
 };
 </script>

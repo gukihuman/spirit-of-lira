@@ -1,8 +1,9 @@
-export const useKeyboardStore = defineStore("keyboard", {
+export const keyboardStore = defineStore("keyboard", {
   state: () => ({
-    componentStates: {
+    uiStates: {
       dev: "u",
       pause: "p",
+      ranges: "o",
     },
     fullscreen: ",",
   }),

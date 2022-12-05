@@ -1,19 +1,14 @@
 export function canvasGenerate() {
-  useCanvasStore().entities.push({
-    breed: "hero",
-    state: "idle",
-    stateStartFrame: 0,
-    x: 960,
-    y: 540,
-    mirrored: true,
+  entityStore().entities.forEach((entity) => {
+    canvasStore().entities.push(entity);
   });
 }
 export function canvasClear() {
-  useCanvasStore().entities = [];
-  useCanvasStore().context.clearRect(
+  canvasStore().entities = [];
+  canvasStore().context.clearRect(
     0,
     0,
-    useCommonStore().mainWindow.width,
-    useCommonStore().mainWindow.height
+    canvasStore().width,
+    canvasStore().height
   );
 }

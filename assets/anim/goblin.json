@@ -1,0 +1,28 @@
+{"frames": [
+
+{
+	"filename": "idle00.png",
+	"frame": {"x":1,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "idle01.png",
+	"frame": {"x":303,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "goblin.webp",
+	"format": "RGBA8888",
+	"size": {"w":604,"h":302},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:80f01cd2a120ec3083bc2f5270141351:9a0785be623afef1afa4f71d00c3ec31:67a3c36b97b68ec8cbd52604824b292d$"
+}
+}

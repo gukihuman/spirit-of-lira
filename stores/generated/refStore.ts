@@ -1,4 +1,4 @@
-export const useRefStore = defineStore("ref", {
+export const refStore = defineStore("ref", {
   state: () => ({
     // controlled by @/app
     background: null,
