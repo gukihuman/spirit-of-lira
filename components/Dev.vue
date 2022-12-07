@@ -10,7 +10,8 @@ flex items-start flex-col px-2 m-2 font-mono text-gray-300 z-30')
     p axesStatus: {{ gamepadAPI.axesStatus }}
     p(class='text-start mx-auto text-white text-xl \
   max-w-md leading-5' v-for='(value, key, index) in heroArcher' key=index)
-      p {{key}}: {{value}}
+      p(v-if="key == 'X' || key == 'Y'") {{key}}: {{value.toFixed()}}
+      p(v-else) {{key}}: {{value}}
 
 </template>
 <script setup>

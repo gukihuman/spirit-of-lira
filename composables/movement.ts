@@ -16,12 +16,11 @@ export function movement() {
     hero.animState = "walk";
     moved = true;
     if (axes[0] <= 0) {
-      console.log("+");
       hero.mirrored = true;
     } else {
-      console.log("-");
       hero.mirrored = false;
     }
+    animStore().idleAnim = false;
     // if (axes[0] <= -0.5 || axes[0] >= 0.5) {
     //   hero.state = "run";
     //   hero.animState = "run";
@@ -35,6 +34,7 @@ export function movement() {
     hero.state = "walk";
     hero.animState = "walk";
     moved = true;
+    animStore().idleAnim = false;
     // if (axes[1] <= -0.5 || axes[1] >= 0.5) {
     //   hero.state = "run";
     //   hero.animState = "run";
@@ -42,8 +42,8 @@ export function movement() {
   }
 
   if (!moved) {
-    hero.animState = "idle";
     hero.state = "idle";
+    animStore().idleAnim = true;
   }
 
   mapOffset[0] = (hero.X - 960) * scale();

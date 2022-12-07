@@ -11,5 +11,12 @@ export const animStore = defineStore("anim", {
       //   },
       // }
     },
+
+    // controlled by @/composables/idleAnim
+    idleAnim: true,
+    switchFrames: {
+      idleIdleB: null,
+      idleBIdle: null,
+    },
   }),
 });

@@ -6,6 +6,7 @@ export function gameLoop() {
       commonStore().gameFrame++;
       gamepadUpdate();
       movement();
+      animStore().idleAnim ? idleAnim() : {};
       canvasClear();
       canvasGenerate();
     }
