@@ -1,24 +1,24 @@
-export function generateEntity(breed, x, y) {
-  // copy defaufd breed keys
+export function generateEntity(breed, X, Y) {
+  // copy default breed
   const entity = JSON.parse(JSON.stringify(breedStore()[breed]));
   entity.breed = breed;
 
-  // generates unique id
-  if (entityStore().entitiesIds.length == 0) {
-    entity.id = 0;
-  } else {
-    entity.id = Math.max(...entityStore().entitiesIds) + 1;
-  }
-  entityStore().entitiesIds.push(entity.id);
+  generateEntityId(entity);
 
-  entity.x = x;
-  entity.y = y;
+  let mapOffset = commonStore().mapOffset;
+  const animBreed = animStore().breeds[breed];
+  const offset = settingsStore().canvasPhysicOffset;
+  entity.X = X;
+  entity.Y = Y + animBreed.height * offset;
+  entity.x = entity.X + mapOffset[0];
+  entity.y = entity.Y + mapOffset[1];
+
   entity.state = "idle";
-  entity.animState = "idle";
   entity.stateStartFrame = commonStore().gameFrame;
+  entity.animState = "idle";
+  entity.animStateStartFrame = commonStore().gameFrame;
   entity.mirrored = false;
   entity.health = entity.maxHealth;
   entity.mana = entity.maxMana;
-  console.log(entity);
   entityStore().entities.push(entity);
 }

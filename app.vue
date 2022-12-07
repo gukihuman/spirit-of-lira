@@ -5,8 +5,8 @@ justify-center")
   //- mainWindow
   div(:style='mainWindowStyle' class='bg-gray-500 relative overflow-hidden')
     Map
-    Pause(v-if="uiStates.pause")
-    Dev(v-if="uiStates.dev")
+    Pause(v-if="states.pause")
+    Dev(v-if="states.dev")
     Canvas
     Minimap
     ButtonFullscreen
@@ -20,8 +20,8 @@ let mainWindowStyle = computed(() => {
     height: mainWindow.height + "px",
   };
 });
-let uiStates = computed(() => {
-  return commonStore().uiStates;
+let states = computed(() => {
+  return commonStore().states;
 });
 const background = ref(null);
 

@@ -9,11 +9,12 @@ export const commonStore = defineStore("common", {
     // controlled by @/composables/gameLoop
     gameFrame: 0,
 
-    // controlled by @/composables/keyboardAPI
-    uiStates: {
+    // controlled by @/composables/keyboardAPI and others
+    states: {
       dev: true,
       pause: false,
       ranges: true,
+      mouse: false,
     },
 
     // controlled by @/composables/mapAPI

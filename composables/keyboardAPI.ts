@@ -1,12 +1,12 @@
 export function keyboardListeners() {
   addEventListener("keypress", (event) => {
-    // uiStates
-    const keys = Object.values(keyboardStore().uiStates);
-    const states = Object.keys(keyboardStore().uiStates);
+    // states
+    const keys = Object.values(keyboardStore().states);
+    const states = Object.keys(keyboardStore().states);
     keys.forEach((key, index) => {
       if (event.key == key) {
         const state = states[index];
-        commonStore().uiStates[state] = !commonStore().uiStates[state];
+        commonStore().states[state] = !commonStore().states[state];
       }
     });
 

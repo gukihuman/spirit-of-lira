@@ -2,7 +2,7 @@ import { movement } from "./movement";
 
 export function gameLoop() {
   setInterval(() => {
-    if (!commonStore().uiStates.pause) {
+    if (!commonStore().states.pause) {
       commonStore().gameFrame++;
       gamepadUpdate();
       movement();

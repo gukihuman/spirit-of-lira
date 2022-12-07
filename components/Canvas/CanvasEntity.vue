@@ -5,7 +5,7 @@ export default {
   props: [
     "breed",
     "animState",
-    "stateStartFrame",
+    "animStateStartFrame",
     "x",
     "y",
     "mirrored",
@@ -17,41 +17,9 @@ export default {
     image.src = sources[this.breed];
     const breed = animStore().breeds[this.breed];
     const framerate = breed.animSet[this.animState].length;
-    const i = getAnimFrameIndex(this.stateStartFrame, gameFrame, framerate);
+    const offset = settingsStore().canvasPhysicOffset;
+    const i = getAnimFrameIndex(this.animStateStartFrame, gameFrame, framerate);
     const c = canvasStore().context;
-
-    // draw range circles
-    if (commonStore().uiStates.ranges) {
-      const offset = settingsStore().canvasPhysicOffset;
-      c.save();
-      c.globalAlpha = 0.2;
-
-      c.beginPath();
-      c.arc(
-        this.x,
-        this.y + breed.height * offset,
-        this.range[0],
-        0,
-        2 * Math.PI
-      );
-      c.closePath();
-      c.fillStyle = "#ffc8dd";
-      c.fill();
-
-      c.beginPath();
-      c.arc(
-        this.x,
-        this.y + breed.height * offset,
-        this.range[1],
-        0,
-        2 * Math.PI
-      );
-      c.closePath();
-      c.fillStyle = "#ccd5ae";
-      c.fill();
-
-      c.restore();
-    }
 
     const drawArgs = [
       image,
@@ -60,7 +28,7 @@ export default {
       breed.width,
       breed.height,
       this.x - breed.width / 2,
-      this.y - breed.height / 2,
+      this.y - breed.height / 2 - breed.height * offset,
       breed.width,
       breed.height,
     ];

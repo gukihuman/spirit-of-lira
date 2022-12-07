@@ -1,9 +1,10 @@
 export const keyboardStore = defineStore("keyboard", {
   state: () => ({
-    uiStates: {
+    states: {
       dev: "u",
       pause: "p",
       ranges: "o",
+      mouse: "m",
     },
     fullscreen: ",",
   }),
