@@ -11,8 +11,8 @@ datasource db {
   relationMode = "prisma"
 }
 
-model DevSave {
+model Dev {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  dataName String @unique
+  name String @unique
   data String
 }
