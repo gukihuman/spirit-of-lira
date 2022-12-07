@@ -1,4 +1,4 @@
-import { prisma } from ".";
+import { prisma } from "./index";
 
 export const devPost = async (reqData) => {
   const res = await prisma.dev.upsert({
