@@ -1,8 +1,8 @@
 export function canvasGenerate() {
   entityStore().entities.forEach((entity) => {
     let mapOffset = commonStore().mapOffset;
-    entity.x = Math.floor(entity.X - (1 * mapOffset[0]) / scale()).toFixed();
-    entity.y = Math.floor(entity.Y - (1 * mapOffset[1]) / scale()).toFixed();
+    entity.x = entity.X - 1 * mapOffset[0];
+    entity.y = entity.Y - 1 * mapOffset[1];
     canvasStore().entities.push(entity);
   });
   canvasStore().entities.sort((a, b) => a.y - b.y);

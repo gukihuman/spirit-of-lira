@@ -1,13 +1,15 @@
 export function mainWindowUpdate() {
   let mainWindow = commonStore().mainWindow;
-  let [baseWidth, baseHeight] = [innerWidth / 16, innerHeight / 9];
+  const userWidth = innerWidth * devicePixelRatio;
+  const userHeight = innerHeight * devicePixelRatio;
+  let [baseWidth, baseHeight] = [userWidth / 16, userHeight / 9];
   if (baseWidth > baseHeight) {
-    mainWindow.height = innerHeight;
-    mainWindow.width = (baseHeight * 16).toFixed(0);
-    mainWindow.scale = innerHeight / canvasStore().height;
+    mainWindow.height = userHeight;
+    mainWindow.width = baseHeight * 16;
+    mainWindow.scale = userHeight / canvasStore().height / devicePixelRatio;
   } else {
-    mainWindow.height = (baseWidth * 9).toFixed(0);
-    mainWindow.width = innerWidth;
-    mainWindow.scale = innerWidth / canvasStore().width;
+    mainWindow.height = baseWidth * 9;
+    mainWindow.width = userWidth;
+    mainWindow.scale = userWidth / canvasStore().width / devicePixelRatio;
   }
 }

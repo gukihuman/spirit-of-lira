@@ -9,7 +9,7 @@ export function generateEntity(breed, X, Y) {
   const animBreed = animStore().breeds[breed];
   const offset = settingsStore().canvasPhysicOffset;
   entity.X = X;
-  entity.Y = Y + animBreed.height * offset;
+  entity.Y = Y;
   entity.x = entity.X + mapOffset[0];
   entity.y = entity.Y + mapOffset[1];
 

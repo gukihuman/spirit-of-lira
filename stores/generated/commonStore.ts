@@ -2,8 +2,8 @@ export const commonStore = defineStore("common", {
   state: () => ({
     // controlled by @/composables/mainWindowUpdate
     mainWindow: {
-      width: 1920,
-      height: 1080,
+      width: 0,
+      height: 0,
       scale: 1,
     },
     // controlled by @/composables/gameLoop
@@ -14,7 +14,7 @@ export const commonStore = defineStore("common", {
       dev: true,
       pause: false,
       ranges: true,
-      mouse: false,
+      cursor: true,
     },
 
     // controlled by @/composables/mapAPI

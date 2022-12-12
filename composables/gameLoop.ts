@@ -1,3 +1,4 @@
+import { isMousePositionChanged } from "./mouseAPI";
 import { movement } from "./movement";
 
 export function gameLoop() {

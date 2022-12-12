@@ -1,9 +1,9 @@
 <template lang="pug">
 //- background
 div(ref='background' class="bg-slate-800 h-screen w-screen flex items-center \
-justify-center")
+justify-center relative")
   //- mainWindow
-  div(:style='mainWindowStyle' class='bg-gray-500 relative overflow-hidden')
+  div(ref="mainWindow" :style='mainWindowStyle' class='bg-gray-500 absolute overflow-hidden')
     Map
     Pause(v-if="states.pause")
     Dev(v-if="states.dev")
@@ -14,10 +14,11 @@ justify-center")
 </template>
 <script setup>
 let mainWindowStyle = computed(() => {
-  let mainWindow = commonStore().mainWindow;
   return {
-    width: mainWindow.width + "px",
-    height: mainWindow.height + "px",
+    width: canvasStore().width + "px",
+    height: canvasStore().height + "px",
+    scale: commonStore().mainWindow.scale,
+    cursor: commonStore().states.cursor ? "auto" : "none",
   };
 });
 let states = computed(() => {
@@ -30,7 +31,9 @@ onMounted(() => {
   mainWindowUpdate();
   listeners();
   animSetup(); // adds info to AnimStore from raw JSON
+  mapSetup();
   gameLoop();
+  mouseLoop();
 
   generateEntity("heroArcher", 960, 540);
   generateEntity("goblin", 1550, 450);

@@ -1,7 +1,7 @@
 export function movement() {
   let deadZone = settingsStore().gamepadDeadZone;
   let axes = gamepadStore().axesStatus;
-  let speed = entityStore().entities[0].speed;
+  let speed = entityStore().entities[0].speed * 10;
   let mapOffset = commonStore().mapOffset;
   let framerate = settingsStore().framerate;
   let hero = entityStore().entities.find((i) => i.id == 0);
@@ -10,8 +10,8 @@ export function movement() {
 
   // LS x
   if (axes[0] <= -1 * deadZone || axes[0] >= deadZone) {
-    let changeX = (speed / framerate) * axes[0] * scale();
-    hero.X += Number((changeX / scale()).toFixed(2));
+    let changeX = (speed / framerate) * axes[0];
+    hero.X += Number(changeX.toFixed(2));
     hero.state = "walk";
     hero.animState = "walk";
     moved = true;
@@ -29,8 +29,8 @@ export function movement() {
 
   // LS y
   if (axes[1] <= -1 * deadZone || axes[1] >= deadZone) {
-    let changeY = (speed / framerate) * axes[1] * scale();
-    hero.Y += Number((changeY / scale()).toFixed(2));
+    let changeY = (speed / framerate) * axes[1];
+    hero.Y += Number(changeY.toFixed(2));
     hero.state = "walk";
     hero.animState = "walk";
     moved = true;
@@ -46,6 +46,6 @@ export function movement() {
     animStore().idleAnim = true;
   }
 
-  mapOffset[0] = (hero.X - 960) * scale();
-  mapOffset[1] = (hero.Y - 540) * scale();
+  mapOffset[0] = hero.X - 960;
+  mapOffset[1] = hero.Y - 540;
 }
