@@ -5,7 +5,7 @@ export function generateEntity(breed, X, Y) {
 
   generateEntityId(entity);
 
-  let mapOffset = commonStore().mapOffset;
+  let mapOffset = mapStore().mapOffset;
   const animBreed = animStore().breeds[breed];
   const offset = settingsStore().canvasPhysicOffset;
   entity.X = X;

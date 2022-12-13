@@ -1,5 +1,5 @@
 import { gamepadStore } from "./../stores/generated/gamepadStore";
-import { commonStore } from "./../stores/generated/commonStore";
+import { commonStore } from "../stores/commonStore";
 export function mouseListener() {
   addEventListener("mousemove", (event) => {
     commonStore().states.cursor = true;

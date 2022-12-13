@@ -2,7 +2,7 @@ export function movement() {
   let deadZone = settingsStore().gamepadDeadZone;
   let axes = gamepadStore().axesStatus;
   let speed = entityStore().entities[0].speed * 10;
-  let mapOffset = commonStore().mapOffset;
+  let mapOffset = mapStore().mapOffset;
   let framerate = settingsStore().framerate;
   let hero = entityStore().entities.find((i) => i.id == 0);
 

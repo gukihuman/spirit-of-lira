@@ -1,3 +1,4 @@
+import { mapUpdate } from "./mapAPI";
 import { isMousePositionChanged } from "./mouseAPI";
 import { movement } from "./movement";
 
@@ -10,6 +11,7 @@ export function gameLoop() {
       animStore().idleAnim ? idleAnim() : {};
       canvasClear();
       canvasGenerate();
+      commonStore().states.mapEdit ? mapEditUpdate() : {};
     }
   }, 1000 / settingsStore().framerate);
 }

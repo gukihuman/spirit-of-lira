@@ -19,7 +19,7 @@ export function idleAnim() {
   }
   if (
     gameFrame % framerate == 0 &&
-    Math.random() < 0.25 &&
+    Math.random() < 0.15 &&
     hero.state == "idle" &&
     hero.animState === "idle" &&
     gameFrame >= hero.animStateStartFrame + framerate * 2
@@ -35,7 +35,7 @@ export function idleAnim() {
   }
   if (
     gameFrame % framerate == 0 &&
-    Math.random() < 0.15 &&
+    Math.random() < 0.1 &&
     hero.state == "idle" &&
     hero.animState === "idleB" &&
     gameFrame >= hero.animStateStartFrame + framerate * 2
