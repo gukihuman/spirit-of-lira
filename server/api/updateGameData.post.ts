@@ -1,4 +1,4 @@
-import { updateGameData } from "../db/updateGameData"
+import { _updateGameData } from "../db/_updateGameData"
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -6,6 +6,6 @@ export default defineEventHandler(async (event) => {
     name: body.name,
     gameData: body.gameData,
   }
-  const res = await updateGameData(reqData)
+  const res = await _updateGameData(reqData)
   return res
 })

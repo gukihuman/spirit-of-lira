@@ -3,13 +3,21 @@
 div(ref='background' class="bg-slate-800 h-screen w-screen flex items-center \
 justify-center relative")
   //- mainWindow
-  div(ref="mainWindow" :style='mainWindowStyle' class='bg-gray-500 absolute overflow-hidden')
-    Map
+  div(
+    ref="mainWindow"
+    v-if="States().mainWindow"
+    class='bg-gray-500 absolute overflow-hidden'
+    :style='mainWindowStyle')
+    
     Pause(v-if="States().pause")
-    Dev(v-if="States().dev")
+
+    Map
     Canvas
+
+    Dev(v-if="States().dev")
     Minimap
     ButtonFullscreen
+
 
 </template>
 <script setup>
@@ -26,8 +34,16 @@ const background = ref(null)
 onMounted(() => {
   // for fullscreen
   Ref().background = background
+
+  getGameData()
+
   mainWindowSetSize()
-  listeners()
+
+  gamepadListeners()
+  keyboardListeners()
+  mouseListener()
+  resizeListener()
+
   animSetup() // adds info to AnimStore from raw JSON
   mapSetup()
   gameLoop()

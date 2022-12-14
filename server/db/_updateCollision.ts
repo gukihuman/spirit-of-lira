@@ -1,6 +1,6 @@
 import { prisma } from "."
 
-export const updateCollision = async (reqData) => {
+export const _updateCollision = async (reqData) => {
   if (process.env.ACCESS_KEY === reqData.accessKey) {
     const res = await prisma.map.upsert({
       where: {

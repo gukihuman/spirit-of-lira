@@ -1,4 +1,4 @@
-export const Animation = defineStore("anim", {
+export const Animation = defineStore("animation", {
   state: () => ({
     // controlled by @/composables/animSetup
     breeds: {

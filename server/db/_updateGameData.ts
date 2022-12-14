@@ -1,6 +1,6 @@
 import { prisma } from "."
 
-export const updateGameData = async (reqData) => {
+export const _updateGameData = async (reqData) => {
   const res = await prisma.user.update({
     where: {
       name: reqData.name,
