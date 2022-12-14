@@ -9,6 +9,7 @@ div(
     class='bg-gray-500 absolute overflow-hidden'
     :style='mainWindowStyle'
   )
+    AntiFlicker
     Pause(v-if="States().pause")
 
     Map
