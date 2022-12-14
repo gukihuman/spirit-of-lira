@@ -34,6 +34,7 @@ const background = ref(null)
 onMounted(() => {
   Ref().background = background // for fullscreen
 
+  getCollision("start")
   useCookie("name").value ? getGameData() : createUser()
   checkBobcat()
 

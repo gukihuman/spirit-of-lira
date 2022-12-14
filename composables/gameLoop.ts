@@ -1,7 +1,3 @@
-import { mapUpdate } from "./mapAPI"
-import { isMousePositionChanged } from "./mouseAPI"
-import { movement } from "./movement"
-
 export function gameLoop() {
   setInterval(() => {
     if (!States().pause) {
@@ -12,6 +8,7 @@ export function gameLoop() {
       canvasClear()
       canvasGenerate()
       States().mapEdit ? mapEditUpdate() : {}
+      Frame().current % 60 == 0 ? updateGameData() : {}
     }
   }, 1000 / 60)
 }

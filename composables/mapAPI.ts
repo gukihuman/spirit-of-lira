@@ -1,3 +1,5 @@
+import updateCollisionPost from "~~/server/api/updateCollision.post"
+
 export function mapSetup() {
   // empty array is needed for MapCollision to load before fetch
   for (let y = 0; y < 100; y++) {
@@ -25,5 +27,6 @@ export function mapEditUpdate() {
   }
 
   if (Frame().current % 60 === 0) {
+    updateCollision("start", Map().collision)
   }
 }
