@@ -7,7 +7,6 @@ export function generateEntity(breed, X, Y) {
 
   let mapOffset = Map().mapOffset
   const animBreed = Animation().breeds[breed]
-  const offset = Settings().canvasPhysicOffset
   entity.X = X
   entity.Y = Y
   entity.x = entity.X + mapOffset[0]

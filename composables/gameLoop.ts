@@ -13,5 +13,5 @@ export function gameLoop() {
       canvasGenerate()
       States().mapEdit ? mapEditUpdate() : {}
     }
-  }, 1000 / Settings().framerate)
+  }, 1000 / 60)
 }

@@ -3,7 +3,7 @@ export function movement() {
   let axes = Gamepad().axesStatus
   let speed = Entity().entities[0].speed * 10
   let mapOffset = Map().mapOffset
-  let framerate = Settings().framerate
+  let framerate = 60
   let hero = Entity().entities.find((i) => i.id == 0)
 
   let moved = false

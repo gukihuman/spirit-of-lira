@@ -15,12 +15,11 @@ export default {
     const image = new Image()
     image.src = sources[this.breed]
     const breed = Animation().breeds[this.breed]
-    const framerate = breed.animSet[this.animState].length
-    const offset = Settings().canvasPhysicOffset
+    const visualOffsetY = 0.2
     const i = getAnimFrameIndex(
       this.animStateStartFrame,
       Frame().current,
-      framerate
+      breed.animSet[this.animState].length
     )
     const c = Canvas().context
 
@@ -31,7 +30,7 @@ export default {
       breed.width,
       breed.height,
       this.x - breed.width / 2,
-      this.y - breed.height / 2 - breed.height * offset,
+      this.y - breed.height / 2 - breed.height * visualOffsetY,
       breed.width,
       breed.height,
     ]
