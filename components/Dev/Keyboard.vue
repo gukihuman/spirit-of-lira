@@ -11,9 +11,9 @@ div( class='absolute left-[360px] w-fit text-3xl leading-8 max-w-[380px] \
 </template>
 <script setup>
 let fullscreen = computed(() => {
-  return keyboardStore().fullscreen;
-});
+  return Keyboard().fullscreen
+})
 let keyStates = computed(() => {
-  return keyboardStore().states;
-});
+  return Keyboard().states
+})
 </script>

@@ -1,8 +1,8 @@
 export function generateEntityId(entity) {
-  if (entityStore().entitiesIds.length == 0) {
-    entity.id = 0;
+  if (Entity().entitiesIds.length == 0) {
+    entity.id = 0
   } else {
-    entity.id = Math.max(...entityStore().entitiesIds) + 1;
+    entity.id = Math.max(...Entity().entitiesIds) + 1
   }
-  entityStore().entitiesIds.push(entity.id);
+  Entity().entitiesIds.push(entity.id)
 }

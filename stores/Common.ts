@@ -1,4 +1,4 @@
-export const commonStore = defineStore("common", {
+export const Common = defineStore("common", {
   state: () => ({
     // controlled by @/composables/mainWindowUpdate
     mainWindow: {
@@ -6,8 +6,6 @@ export const commonStore = defineStore("common", {
       height: 0,
       scale: 1,
     },
-    // controlled by @/composables/gameLoop
-    gameFrame: 0,
 
     // controlled by @/composables/keyboardAPI and others
     states: {
@@ -17,5 +15,10 @@ export const commonStore = defineStore("common", {
       cursor: true,
       mapEdit: false,
     },
+
+    refs: {
+      // controlled by @/app
+      background: null,
+    },
   }),
-});
+})

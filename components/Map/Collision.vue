@@ -10,6 +10,6 @@ div(v-for='({}, y) in 40' :key='y' class='h-[120px]')
 </template>
 <script setup>
 const collision = computed(() => {
-  return mapStore().collision;
-});
+  return Map().collision
+})
 </script>

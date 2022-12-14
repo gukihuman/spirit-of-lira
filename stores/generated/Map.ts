@@ -1,4 +1,4 @@
-export const mapStore = defineStore("map", {
+export const Map = defineStore("map", {
   state: () => ({
     // controlled by @/components/collision
     collision: [],
@@ -9,4 +9,4 @@ export const mapStore = defineStore("map", {
     // controlled by @/composables/mapAPI
     mapOffsetDelay: [0, 0],
   }),
-});
+})

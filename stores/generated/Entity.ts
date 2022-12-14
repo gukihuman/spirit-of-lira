@@ -1,7 +1,7 @@
-export const entityStore = defineStore("entity", {
+export const Entity = defineStore("entity", {
   state: () => ({
     // controlled by @/composables/generateEntity
     entities: [],
     entitiesIds: [],
   }),
-});
+})

@@ -1,26 +1,26 @@
 export function gamepadListeners() {
   addEventListener("gamepadconnected", () => {
-    gamepadStore().connected = true;
-  });
+    Gamepad().connected = true
+  })
   addEventListener("gamepaddisconnected", () => {
-    gamepadStore().connected = false;
-  });
+    Gamepad().connected = false
+  })
 }
 
 export function gamepadUpdate() {
-  if (gamepadStore().connected) {
-    const gamepadRaw = navigator.getGamepads()[0] || {};
-    const pressed = [];
+  if (Gamepad().connected) {
+    const gamepadRaw = navigator.getGamepads()[0] || {}
+    const pressed = []
     gamepadRaw.buttons.forEach((button, index) => {
       if (button.pressed) {
-        pressed.push(gamepadStore().buttons[index]);
+        pressed.push(Gamepad().buttons[index])
       }
-    });
-    const axes = [];
+    })
+    const axes = []
     gamepadRaw.axes.forEach((axis) => {
-      axes.push(Number(axis.toFixed(2)));
-    });
-    gamepadStore().axesStatus = axes;
-    gamepadStore().buttonsStatus = pressed;
+      axes.push(Number(axis.toFixed(2)))
+    })
+    Gamepad().axesStatus = axes
+    Gamepad().buttonsStatus = pressed
   }
 }

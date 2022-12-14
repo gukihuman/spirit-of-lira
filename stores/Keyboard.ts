@@ -1,4 +1,4 @@
-export const keyboardStore = defineStore("keyboard", {
+export const Keyboard = defineStore("keyboard", {
   state: () => ({
     states: {
       dev: "o",
@@ -8,4 +8,4 @@ export const keyboardStore = defineStore("keyboard", {
     },
     fullscreen: "f",
   }),
-});
+})

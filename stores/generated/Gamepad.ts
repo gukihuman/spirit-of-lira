@@ -1,4 +1,4 @@
-export const gamepadStore = defineStore("gamepad", {
+export const Gamepad = defineStore("gamepad", {
   state: () => ({
     // controlled by @/composables/gamepadAPI
     connected: false,
@@ -23,4 +23,4 @@ export const gamepadStore = defineStore("gamepad", {
       "Right",
     ],
   }),
-});
+})

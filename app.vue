@@ -5,8 +5,8 @@ justify-center relative")
   //- mainWindow
   div(ref="mainWindow" :style='mainWindowStyle' class='bg-gray-500 absolute overflow-hidden')
     Map
-    Pause(v-if="states.pause")
-    Dev(v-if="states.dev")
+    Pause(v-if="Common().states.pause")
+    Dev(v-if="Common().states.dev")
     Canvas
     Minimap
     ButtonFullscreen
@@ -15,29 +15,27 @@ justify-center relative")
 <script setup>
 let mainWindowStyle = computed(() => {
   return {
-    width: canvasStore().width + "px",
-    height: canvasStore().height + "px",
-    scale: commonStore().mainWindow.scale,
-    cursor: commonStore().states.cursor ? "auto" : "none",
-  };
-});
-let states = computed(() => {
-  return commonStore().states;
-});
-const background = ref(null);
+    width: Canvas().width + "px",
+    height: Canvas().height + "px",
+    scale: Common().mainWindow.scale,
+    cursor: Common().states.cursor ? "auto" : "none",
+  }
+})
+const background = ref(null)
 
 onMounted(() => {
-  storeRef("background", background);
-  mainWindowUpdate();
-  listeners();
-  animSetup(); // adds info to AnimStore from raw JSON
-  mapSetup();
-  gameLoop();
-  mouseLoop();
+  // for fullscreen
+  Common().refs.background = background
+  mainWindowUpdate()
+  listeners()
+  animSetup() // adds info to AnimStore from raw JSON
+  mapSetup()
+  gameLoop()
+  mouseLoop()
 
-  generateEntity("heroArcher", 960, 540);
-  generateEntity("goblin", 1550, 450);
-});
+  generateEntity("heroArcher", 960, 540)
+  generateEntity("goblin", 1550, 450)
+})
 </script>
 <style>
 ::-webkit-scrollbar {

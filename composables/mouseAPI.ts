@@ -1,32 +1,29 @@
-import { gamepadStore } from "./../stores/generated/gamepadStore";
-import { commonStore } from "../stores/commonStore";
+import { Gamepad } from "../stores/generated/Gamepad"
+import { Common } from "../stores/Common"
 export function mouseListener() {
   addEventListener("mousemove", (event) => {
-    commonStore().states.cursor = true;
-    mouseStore().x = event.clientX;
-    mouseStore().y = event.clientY;
-  });
+    Common().states.cursor = true
+    Mouse().x = event.clientX
+    Mouse().y = event.clientY
+  })
 }
 
 export function isMousePositionChanged() {
-  if (
-    mouseStore().x == mouseStore().prevX &&
-    mouseStore().y == mouseStore().prevY
-  ) {
-    mouseStore().prevX = mouseStore().x;
-    mouseStore().prevY = mouseStore().y;
-    return false;
+  if (Mouse().x == Mouse().prevX && Mouse().y == Mouse().prevY) {
+    Mouse().prevX = Mouse().x
+    Mouse().prevY = Mouse().y
+    return false
   } else {
-    mouseStore().prevX = mouseStore().x;
-    mouseStore().prevY = mouseStore().y;
-    return true;
+    Mouse().prevX = Mouse().x
+    Mouse().prevY = Mouse().y
+    return true
   }
 }
 
 export function mouseLoop() {
   setInterval(() => {
-    if (!isMousePositionChanged() && gamepadStore().connected) {
-      commonStore().states.cursor = false;
+    if (!isMousePositionChanged() && Gamepad().connected) {
+      Common().states.cursor = false
     }
-  }, 4000);
+  }, 4000)
 }

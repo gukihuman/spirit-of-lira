@@ -1,4 +1,4 @@
-export const breedStore = defineStore("breed", {
+export const Breed = defineStore("breed", {
   state: () => ({
     heroArcher: {
       size: 1,
@@ -25,4 +25,4 @@ export const breedStore = defineStore("breed", {
       damageType: "physical",
     },
   }),
-});
+})

@@ -13,10 +13,10 @@ max-w-md' v-for='(value, key, index) in heroArcher' key=index)
 </template>
 <script setup>
 let heroArcher = computed(() => {
-  return entityStore().entities.find((entity) => entity.breed == "heroArcher");
-});
+  return Entity().entities.find((entity) => entity.breed == "heroArcher")
+})
 
 let gamepadAPI = computed(() => {
-  return gamepadStore();
-});
+  return Gamepad()
+})
 </script>

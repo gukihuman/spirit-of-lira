@@ -1,9 +1,9 @@
 <template lang="pug">
 CanvasWrapper
   CanvasRanges(
-    v-for='(entity, index) in entities'
+    v-for='(entity, index) in Canvas().entities'
     :key='index'
-    :updateEach='gameFrame'
+    :updateEach='Frame().current'
 
     :breed='entity.breed'
     :animState='entity.animState'
@@ -15,9 +15,9 @@ CanvasWrapper
     :range='entity.range'
   )
   CanvasEntity(
-    v-for='(entity, index) in entities'
+    v-for='(entity, index) in Canvas().entities'
     :key='index'
-    :updateEach='gameFrame'
+    :updateEach='Frame().current'
 
     :breed='entity.breed'
     :animState='entity.animState'
@@ -29,11 +29,3 @@ CanvasWrapper
     :range='entity.range'
   )
 </template>
-<script setup>
-const entities = computed(() => {
-  return canvasStore().entities;
-});
-const gameFrame = computed(() => {
-  return commonStore().gameFrame;
-});
-</script>

@@ -1,3 +1,3 @@
 export function scale() {
-  return commonStore().mainWindow.scale;
+  return Common().mainWindow.scale
 }

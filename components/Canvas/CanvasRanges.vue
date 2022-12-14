@@ -1,5 +1,5 @@
 <script>
-import { sources } from "@/composables/imports/webp";
+import { sources } from "@/composables/imports/webp"
 
 export default {
   props: [
@@ -12,29 +12,29 @@ export default {
     "range",
   ],
   render() {
-    const image = new Image();
-    image.src = sources[this.breed];
-    const c = canvasStore().context;
+    const image = new Image()
+    image.src = sources[this.breed]
+    const c = Canvas().context
 
     // draw range circles
-    if (commonStore().states.ranges) {
-      c.save();
-      c.globalAlpha = 0.2;
+    if (Common().states.ranges) {
+      c.save()
+      c.globalAlpha = 0.2
 
-      c.beginPath();
-      c.arc(this.x, Number(this.y), this.range[0], 0, 2 * Math.PI);
-      c.closePath();
-      c.fillStyle = "#ffc8dd";
-      c.fill();
+      c.beginPath()
+      c.arc(this.x, Number(this.y), this.range[0], 0, 2 * Math.PI)
+      c.closePath()
+      c.fillStyle = "#ffc8dd"
+      c.fill()
 
-      c.beginPath();
-      c.arc(this.x, Number(this.y), this.range[1], 0, 2 * Math.PI);
-      c.closePath();
-      c.fillStyle = "#ccd5ae";
-      c.fill();
+      c.beginPath()
+      c.arc(this.x, Number(this.y), this.range[1], 0, 2 * Math.PI)
+      c.closePath()
+      c.fillStyle = "#ccd5ae"
+      c.fill()
 
-      c.restore();
+      c.restore()
     }
   },
-};
+}
 </script>

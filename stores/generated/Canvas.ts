@@ -1,4 +1,4 @@
-export const canvasStore = defineStore("canvas", {
+export const Canvas = defineStore("canvas", {
   state: () => ({
     // controlled by @/components/CanvasWrapper.ts
     width: 0,
@@ -14,4 +14,4 @@ export const canvasStore = defineStore("canvas", {
       // }
     ],
   }),
-});
+})

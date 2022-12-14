@@ -1,4 +1,4 @@
-export const animStore = defineStore("anim", {
+export const Animation = defineStore("anim", {
   state: () => ({
     // controlled by @/composables/animSetup
     breeds: {
@@ -19,4 +19,4 @@ export const animStore = defineStore("anim", {
       idleBIdle: null,
     },
   }),
-});
+})
