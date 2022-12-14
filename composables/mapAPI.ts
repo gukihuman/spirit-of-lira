@@ -25,19 +25,5 @@ export function mapEditUpdate() {
   }
 
   if (Frame().current % 60 === 0) {
-    // useFetch("http://192.168.1.64:3000/api/devPost", {
-    //   method: "POST",
-    //   body: {
-    //     name: "mapCollision",
-    //     data: JSON.stringify(Map().collision),
-    //   },
-    // });
-    // useFetch("http://192.168.1.64:3000/api/devGet", {
-    //   method: "POST",
-    //   body: {
-    //     name: "mapCollision",
-    //   },
-    // }).then((res) => {});
-    // console.log("data is sended to a server");
   }
 }

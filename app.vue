@@ -1,14 +1,14 @@
 <template lang="pug">
-//- background
-div(ref='background' class="bg-slate-800 h-screen w-screen flex items-center \
-justify-center relative")
-  //- mainWindow
+div(
+  ref='background'
+  class="bg-slate-800 h-screen w-screen flex items-center \
+  justify-center relative"
+)
   div(
-    ref="mainWindow"
     v-if="States().mainWindow"
     class='bg-gray-500 absolute overflow-hidden'
-    :style='mainWindowStyle')
-    
+    :style='mainWindowStyle'
+  )
     Pause(v-if="States().pause")
 
     Map
@@ -32,10 +32,10 @@ let mainWindowStyle = computed(() => {
 const background = ref(null)
 
 onMounted(() => {
-  // for fullscreen
-  Ref().background = background
+  Ref().background = background // for fullscreen
 
-  getGameData()
+  useCookie("name").value ? getGameData() : createUser()
+  checkBobcat()
 
   mainWindowSetSize()
 
@@ -44,7 +44,7 @@ onMounted(() => {
   mouseListener()
   resizeListener()
 
-  animSetup() // adds info to AnimStore from raw JSON
+  animSetup() // adds info to store from raw JSON files
   mapSetup()
   gameLoop()
   mouseLoop()

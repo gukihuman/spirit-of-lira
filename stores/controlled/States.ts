@@ -6,6 +6,7 @@ export const States = defineStore("states", {
     ranges: true,
     cursor: true,
     mapEdit: false,
-    mainWindow: false,
+    mainWindow: true,
+    bobcat: false,
   }),
 })
