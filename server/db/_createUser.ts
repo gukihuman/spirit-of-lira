@@ -8,7 +8,7 @@ export const _createUser = async () => {
       name: uniqueNamesGenerator({
         dictionaries: [colors, adjectives, animals],
       }),
-      gameData: "",
+      gameData: "{}",
     },
   })
   return res

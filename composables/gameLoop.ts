@@ -7,7 +7,7 @@ export function gameLoop() {
       Animation().idleAnim ? idleAnim() : {}
       canvasClear()
       canvasGenerate()
-      States().mapEdit ? mapEditUpdate() : {}
+      States().mapEdit && States().bobcat ? mapEditUpdate() : {}
       Frame().current % 60 == 0 ? updateGameData() : {}
     }
   }, 1000 / 60)

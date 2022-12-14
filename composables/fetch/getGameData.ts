@@ -7,7 +7,7 @@ export async function getGameData() {
   })
   if (res.data.value.gameData) {
     States().isDataFetched = true
-    Object.assign(GameData(), JSON.parse(res.data.value.gameData))
+    Game().data = JSON.parse(res.data.value.gameData)
     console.log("user data is fetched from a server")
   }
 }
