@@ -17,7 +17,7 @@ export default {
     const c = Canvas().context
 
     // draw range circles
-    if (Common().states.ranges) {
+    if (States().ranges) {
       c.save()
       c.globalAlpha = 0.2
 

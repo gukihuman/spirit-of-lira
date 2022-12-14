@@ -5,8 +5,8 @@ justify-center relative")
   //- mainWindow
   div(ref="mainWindow" :style='mainWindowStyle' class='bg-gray-500 absolute overflow-hidden')
     Map
-    Pause(v-if="Common().states.pause")
-    Dev(v-if="Common().states.dev")
+    Pause(v-if="States().pause")
+    Dev(v-if="States().dev")
     Canvas
     Minimap
     ButtonFullscreen
@@ -17,16 +17,16 @@ let mainWindowStyle = computed(() => {
   return {
     width: Canvas().width + "px",
     height: Canvas().height + "px",
-    scale: Common().mainWindow.scale,
-    cursor: Common().states.cursor ? "auto" : "none",
+    scale: MainWindow().scale,
+    cursor: States().cursor ? "auto" : "none",
   }
 })
 const background = ref(null)
 
 onMounted(() => {
   // for fullscreen
-  Common().refs.background = background
-  mainWindowUpdate()
+  Ref().background = background
+  mainWindowSetSize()
   listeners()
   animSetup() // adds info to AnimStore from raw JSON
   mapSetup()

@@ -1,8 +1,6 @@
 export const Breed = defineStore("breed", {
   state: () => ({
     heroArcher: {
-      size: 1,
-      level: 1,
       maxHealth: 100,
       maxMana: 0,
       speed: 14,
@@ -13,8 +11,6 @@ export const Breed = defineStore("breed", {
       damageType: "physical",
     },
     goblin: {
-      size: 1,
-      level: 1,
       maxHealth: 10,
       maxMana: 0,
       speed: 8,

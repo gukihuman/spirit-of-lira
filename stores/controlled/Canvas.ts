@@ -1,10 +1,12 @@
 export const Canvas = defineStore("canvas", {
   state: () => ({
-    // controlled by @/components/CanvasWrapper.ts
-    width: 0,
-    height: 0,
+    width: 1920,
+    height: 1080,
+
+    // controlled by CanvasWrapper
     context: null,
-    // controlled by @/composables/canvasAPI.ts
+
+    // controlled by canvasAPI
     entities: [
       // {
       //   breed: hero,

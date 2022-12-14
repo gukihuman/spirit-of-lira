@@ -21,16 +21,16 @@
 
 <script setup>
 function toggle() {
-  toggleFullscreen();
+  toggleFullscreen()
 }
 const style = computed(() => {
-  let size = 60 * scale() + "px";
-  let margin = 20 * scale() + "px";
+  let size = 60 + "px"
+  let margin = 20 + "px"
   return {
     width: size,
     height: size,
     right: margin,
     top: margin,
-  };
-});
+  }
+})
 </script>

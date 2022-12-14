@@ -6,7 +6,7 @@ export function keyboardListeners() {
     keys.forEach((key, index) => {
       if (event.key == key) {
         const state = states[index]
-        Common().states[state] = !Common().states[state]
+        States()[state] = !States()[state]
       }
     })
 

@@ -2,7 +2,7 @@
 div(class='absolute' :style='imageStyle')
   img(:src='map' class='absolute -z-20 opacity-50 w-full')
 div(class='absolute' :style='collisionStyle')
-  MapCollision(v-if='Common().states.mapEdit')
+  MapCollision(v-if='States().mapEdit')
 
 </template>
 <script setup>
