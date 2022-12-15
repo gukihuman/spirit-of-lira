@@ -1,5 +1,5 @@
 export function idleAnim() {
-  let hero = Entity().entities.find((i) => i.id == 0)
+  let hero = Entity().hero
   let framerate = 60
   let switchFrames = Animation().switchFrames
 

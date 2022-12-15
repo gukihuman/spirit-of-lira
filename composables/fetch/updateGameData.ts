@@ -1,5 +1,5 @@
 export async function updateGameData() {
-  if (States().isDataFetched) {
+  if (States().updateAllowed) {
     const res = await useFetch("api/updateGameData", {
       method: "POST",
       body: {

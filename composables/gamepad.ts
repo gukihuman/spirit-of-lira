@@ -13,14 +13,14 @@ export function gamepadUpdate() {
     const pressed = []
     gamepadRaw.buttons.forEach((button, index) => {
       if (button.pressed) {
-        pressed.push(Gamepad().buttons[index])
+        pressed.push(Gamepad().buttonList[index])
       }
     })
     const axes = []
     gamepadRaw.axes.forEach((axis) => {
       axes.push(Number(axis.toFixed(2)))
     })
-    Gamepad().axesStatus = axes
-    Gamepad().buttonsStatus = pressed
+    Gamepad().axes = axes
+    Gamepad().buttons = pressed
   }
 }

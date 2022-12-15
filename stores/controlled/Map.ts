@@ -4,9 +4,9 @@ export const Map = defineStore("map", {
     collision: [],
 
     // controlled by @/composables/movement
-    mapOffset: [0, 0],
+    offset: [0, 0],
 
     // controlled by @/composables/mapAPI
-    mapOffsetDelay: [0, 0],
+    offsetDelay: [0, 0],
   }),
 })

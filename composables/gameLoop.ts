@@ -3,7 +3,7 @@ export function gameLoop() {
     if (!States().pause) {
       Frame().current++
       gamepadUpdate()
-      movement()
+      heroMove()
       Animation().idleAnim ? idleAnim() : {}
       canvasClear()
       canvasGenerate()

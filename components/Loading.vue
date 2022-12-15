@@ -1,5 +1,7 @@
 <template lang="pug">
 
-SvgLoading
+div(class="absolute flex w-full h-full bg-slate-600 z-40 text-gray-300 \
+justify-center items-center")
+  SvgLoading
 
 </template>

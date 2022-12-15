@@ -8,6 +8,6 @@ export const States = defineStore("states", {
     mapEdit: false,
     mainWindow: true,
     bobcat: false,
-    isDataFetched: false,
+    updateAllowed: false,
   }),
 })

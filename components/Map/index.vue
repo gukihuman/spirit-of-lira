@@ -10,8 +10,8 @@ import map from "@/assets/map.webp"
 const collisionStyle = computed(() => {
   let size = 4800 + "px"
   return {
-    top: -1 * Map().mapOffsetDelay[1] + "px",
-    left: -1 * Map().mapOffsetDelay[0] + "px",
+    top: -1 * Map().offsetDelay[1] + "px",
+    left: -1 * Map().offsetDelay[0] + "px",
     width: size,
     height: size,
   }
@@ -19,8 +19,8 @@ const collisionStyle = computed(() => {
 const imageStyle = computed(() => {
   let size = 4800 + "px"
   return {
-    top: -1 * Map().mapOffset[1] + "px",
-    left: -1 * Map().mapOffset[0] + "px",
+    top: -1 * Map().offset[1] + "px",
+    left: -1 * Map().offset[0] + "px",
     width: size,
     height: size,
   }

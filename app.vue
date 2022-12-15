@@ -9,6 +9,8 @@ div(
     class='bg-gray-500 absolute overflow-hidden'
     :style='mainWindowStyle'
   )
+    transition
+      Loading(v-if="!States().updateAllowed")
     AntiFlicker
     Pause(v-if="States().pause")
 
@@ -51,8 +53,8 @@ onMounted(() => {
   gameLoop()
   mouseLoop()
 
-  generateEntity("heroArcher", 960, 540)
-  generateEntity("goblin", 1550, 450)
+  generateHero("heroArcher", 960, 540)
+  generateEnemy("goblin", 1550, 450)
 })
 </script>
 <style>
@@ -63,5 +65,15 @@ onMounted(() => {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
