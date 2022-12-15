@@ -5,7 +5,6 @@ export function generateEnemy(breed, X, Y) {
 
   enemy.id = Object.keys(Entity().enemy).length
 
-  const animBreed = Animation().breeds[breed]
   enemy.X = X
   enemy.Y = Y
   enemy.x = enemy.X + Map().offset[0]

@@ -3,7 +3,6 @@ export function generateHero(breed, X, Y) {
   const hero = JSON.parse(JSON.stringify(Breed()[breed]))
   hero.breed = breed
 
-  const animBreed = Animation().breeds[breed]
   hero.X = X
   hero.Y = Y
   hero.x = hero.X + Map().offset[0]

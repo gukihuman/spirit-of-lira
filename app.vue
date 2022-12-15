@@ -48,12 +48,12 @@ onMounted(() => {
   mouseListener()
   resizeListener()
 
-  animSetup() // adds info to store from raw JSON files
+  setVisual()
   mapSetup()
   gameLoop()
   mouseLoop()
 
-  generateHero("heroArcher", 960, 540)
+  generateHero("hero", 960, 540)
   generateEnemy("goblin", 1550, 450)
 })
 </script>

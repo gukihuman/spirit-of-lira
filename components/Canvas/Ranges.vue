@@ -1,6 +1,4 @@
 <script>
-import { sources } from "@/composables/imports/webp"
-
 export default {
   props: [
     "breed",
@@ -12,8 +10,6 @@ export default {
     "range",
   ],
   render() {
-    const image = new Image()
-    image.src = sources[this.breed]
     const c = Canvas().context
 
     // draw range circles

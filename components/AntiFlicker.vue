@@ -1,11 +1,11 @@
 <template lang="pug">
-div(class='absolute hidden')
+div(class='absolute opacity-0')
   img(
-    v-for="(source, index) in sources" :key="index"
-    :src='source.src'
+    v-for="(webp, index) in webp" :key="index"
+    :src='webp.src'
   )
 
 </template>
 <script setup>
-import { sources } from "@/composables/imports/webp"
+import { webp } from "@/composables/imports/webp"
 </script>

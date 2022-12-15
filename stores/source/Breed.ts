@@ -1,6 +1,6 @@
 export const Breed = defineStore("breed", {
   state: () => ({
-    heroArcher: {
+    hero: {
       maxHealth: 100,
       maxMana: 0,
       speed: 14,
