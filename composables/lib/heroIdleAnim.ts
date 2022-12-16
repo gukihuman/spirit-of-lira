@@ -1,4 +1,4 @@
-export function idleAnim() {
+export function heroIdleAnim() {
   let framerate = 60
   let switchFrames = Animation().switchFrames
 

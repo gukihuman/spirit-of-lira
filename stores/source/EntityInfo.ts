@@ -12,7 +12,7 @@ export const EntityInfo = defineStore("entityInfo", {
       weaponType: "bow",
       damage: [5, 7],
       damageType: "physical",
-      range: 400,
+      range: 350,
     },
     goblin: {
       type: "enemy",
@@ -26,7 +26,7 @@ export const EntityInfo = defineStore("entityInfo", {
       weaponType: "melee",
       damage: [3, 4],
       damageType: "physical",
-      range: 80,
+      range: 110,
     },
   }),
 })

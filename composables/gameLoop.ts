@@ -6,8 +6,8 @@ export function gameLoop() {
       gamepadUpdate()
       heroMove()
       statusManager() // must be after heroMove because of new coordinates
+      animManager()
       setCamera() // must be after heroMove because of new coordinates
-      Animation().idleAnim ? idleAnim() : {}
       Game().entities.sort((a, b) => a.y - b.y)
       States().mapEdit && States().bobcat ? mapEdit() : {}
       Frame().current % 60 == 0 ? updateGameData() : {}

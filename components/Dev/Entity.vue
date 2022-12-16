@@ -8,7 +8,7 @@ bg-gradient-to-r from-slate-500/70 to-slate-500/0')
   p(
     class='text-start mx-auto text-white w-[350px]'
     v-for="(value, key, index) in Game().entities.find(e => e.name == 'hero')"
-    key=index
+    :key='index'
   )
     p(v-if="key == 'x' || key == 'y' || key == 'prevX' || key == 'prevY'")
       | {{key}}: {{value.toFixed()}}

@@ -4,6 +4,6 @@ div( class='absolute left-0 w-fit h-9 text-3xl leading-8 max-w-[280px] \
 
   div(class='w-fit bg-slate-600/70 px-2 rounded-md') {{ Frame().current }}
   DevEntity
-  DevKeyboard
+  DevKeyboard(v-if='States().bobcat')
 
 </template>

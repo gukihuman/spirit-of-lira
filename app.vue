@@ -15,6 +15,7 @@ div(
     Pause(v-if="States().pause")
 
     Map
+    Ranges(v-if="States().ranges")
     Canvas
 
     Dev(v-if="States().dev")
@@ -49,11 +50,11 @@ onMounted(() => {
   resizeListener()
 
   setVisual()
+
   gameLoop()
+
   mouseLoop()
 
-  // generateHero("hero", 960, 540)
-  // generateEnemy("goblin", 1550, 450)
   generateEntity("hero", 960, 540)
   generateEntity("goblin", 1550, 450)
 })
