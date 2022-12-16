@@ -1,5 +1,5 @@
-export function heroMove() {
-  let hero = Entity().hero
+export function oldHeroMove() {
+  let hero = OldEntity().hero
   let speed = hero.speed * 10
   let moved = false
 

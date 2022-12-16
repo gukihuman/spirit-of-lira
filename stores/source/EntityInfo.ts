@@ -1,0 +1,32 @@
+export const EntityInfo = defineStore("entityInfo", {
+  state: () => ({
+    hero: {
+      type: "peaceful",
+      size: 50,
+      breed: "human",
+      maxHealth: 100,
+      maxMana: 0,
+      speed: 14,
+      attackSpeed: 50,
+      weapon: "woodenBow",
+      weaponType: "bow",
+      damage: [5, 7],
+      damageType: "physical",
+      range: 400,
+    },
+    goblin: {
+      type: "enemy",
+      size: 50,
+      breed: "beastman",
+      maxHealth: 10,
+      maxMana: 0,
+      speed: 8,
+      attackSpeed: 50,
+      weapon: "woodenClub",
+      weaponType: "melee",
+      damage: [3, 4],
+      damageType: "physical",
+      range: 80,
+    },
+  }),
+})

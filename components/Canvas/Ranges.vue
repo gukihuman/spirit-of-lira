@@ -10,6 +10,7 @@ export default {
     "range",
   ],
   render() {
+    if (!this.range) return
     const c = Canvas().context
 
     // draw range circles

@@ -49,12 +49,13 @@ onMounted(() => {
   resizeListener()
 
   setVisual()
-  mapSetup()
   gameLoop()
   mouseLoop()
 
-  generateHero("hero", 960, 540)
-  generateEnemy("goblin", 1550, 450)
+  // generateHero("hero", 960, 540)
+  // generateEnemy("goblin", 1550, 450)
+  generateEntity("hero", 960, 540)
+  generateEntity("goblin", 1550, 450)
 })
 </script>
 <style>
