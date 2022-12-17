@@ -6,7 +6,7 @@ export const Visual = defineStore("visual", {
     //   height: 300,
     //
     //   // webp coordinates
-    //   animSet: {
+    //   statusSet: {
     //     move: [
     //       { x: 1, y: 1 },
     //       { x: 303, y: 1 },

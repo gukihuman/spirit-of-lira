@@ -2,7 +2,7 @@
 div(class='absolute opacity-0')
   img(
     v-for="(webp, index) in webp" :key="index"
-    :src='webp.src'
+    :src='webp'
   )
 
 </template>

@@ -2,23 +2,23 @@
 import { webp } from "@/composables/imports/webp"
 
 export default {
-  props: ["name", "anim", "animFrame", "x", "y", "mirrored"],
+  props: ["name", "status", "statusFrame", "x", "y", "mirrored"],
   render() {
     if (!this.name) return
     const image = new Image()
     image.src = webp[this.name]
     const visualOffsetY = 0.2
     const i = getAnimFrameIndex(
-      this.animFrame,
+      this.statusFrame,
       Frame().current,
-      Visual()[this.name].animSet[this.anim].length
+      Visual()[this.name].statusSet[this.status].length
     )
     const c = Canvas().context
 
     const drawArgs = [
       image,
-      Visual()[this.name].animSet[this.anim][i].x,
-      Visual()[this.name].animSet[this.anim][i].y,
+      Visual()[this.name].statusSet[this.status][i].x,
+      Visual()[this.name].statusSet[this.status][i].y,
       Visual()[this.name].width,
       Visual()[this.name].height,
       this.x - Visual()[this.name].width / 2 - Map().offset[0],

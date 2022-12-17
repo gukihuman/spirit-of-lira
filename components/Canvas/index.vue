@@ -6,8 +6,8 @@ CanvasWrapper
     :updateEach='Frame().current'
 
     :name='entity.name'
-    :anim='entity.anim'
-    :animFrame='entity.animFrame'
+    :status='entity.status'
+    :statusFrame='entity.statusFrame'
     :x='entity.x',
     :y='entity.y',
     :mirrored='entity.mirrored',

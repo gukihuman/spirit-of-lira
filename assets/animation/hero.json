@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "bowAttackEnd00.png",
+	"filename": "bowAttackDelay.png",
 	"frame": {"x":1,"y":1,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "bowAttackStart00.png",
+	"filename": "bowAttackRelease00.png",
 	"frame": {"x":1,"y":303,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "bowAttackStart01.png",
+	"filename": "bowAttackSetup00.png",
 	"frame": {"x":1,"y":605,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "bowAttackStart02.png",
+	"filename": "bowAttackSetup01.png",
 	"frame": {"x":1,"y":907,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "bowAttackStart03.png",
+	"filename": "bowAttackSetup02.png",
 	"frame": {"x":1,"y":1209,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "bowAttackStart04.png",
+	"filename": "bowAttackSetup03.png",
 	"frame": {"x":1,"y":1511,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -247,6 +247,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1208,"h":1812},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1cef1cd2f0c7ec1080491d52b60eb8b2:8bc98db38d04e9008799a18fe0673a4b:be12fec449f958ab7072c7b23544beb9$"
+	"smartupdate": "$TexturePacker:SmartUpdate:85951cb3ab66f79ce16baa8c90e498bc:46fedcfbfc6c4e2f5c7dd12408133d74:be12fec449f958ab7072c7b23544beb9$"
 }
 }
