@@ -18,6 +18,8 @@ export function generateEntity(name, x, y) {
   entity.anim = "idle"
   entity.animFrame = Frame().current
   entity.mirrored = false
+  entity.targetId = undefined
+  entity.targetDistance = undefined
 
   Game().entities.push(entity)
 }

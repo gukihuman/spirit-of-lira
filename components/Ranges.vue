@@ -1,18 +1,33 @@
 <template lang="pug">
-img(
+div(
   v-for="(entity, index) in Game().entities" :key="index"
-
-  :src='entity.range > 150 ? range : melee'
-  class='absolute opacity-60 animate-spin'
-  :style="style(entity)"
 )
+  img(
+    :src='entity.range > 150 ? range : melee'
+    class='absolute opacity-60 animate-spin'
+    :style="rangeStyle(entity)"
+  )
+  div(
+    class='absolute opacity-50 bg-gray-600 rounded-full'
+    :style='sizeStyle(entity)'
+  )
+
 
 </template>
 <script setup>
 import range from "@/assets/range.webp"
 import melee from "@/assets/melee.webp"
 
-const style = (entity) => {
+const sizeStyle = (entity) => {
+  return {
+    left: entity.x - Map().offset[0] - entity.size + "px",
+    top: entity.y - Map().offset[1] - entity.size + "px",
+    width: entity.size * 2 + "px",
+    height: entity.size * 2 + "px",
+  }
+}
+
+const rangeStyle = (entity) => {
   let time
   entity.range > 150 ? (time = 100) : (time = 35)
   return {

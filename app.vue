@@ -9,10 +9,11 @@ div(
     class='bg-gray-500 absolute overflow-hidden'
     :style='mainWindowStyle'
   )
+    AntiFlicker
     transition
       Loading(v-if="!States().updateAllowed")
-    AntiFlicker
-    Pause(v-if="States().pause")
+    transition(name='fast')
+      Pause(v-if="States().pause")
 
     Map
     Ranges(v-if="States().ranges")
@@ -67,6 +68,16 @@ onMounted(() => {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+}
+
+.fast-enter-active,
+.fast-leave-active {
+  transition: opacity 0.1s ease;
+}
+
+.fast-enter-from,
+.fast-leave-to {
+  opacity: 0;
 }
 
 .v-enter-active,

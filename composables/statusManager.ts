@@ -1,61 +1,117 @@
-function heroIdleAnim() {
+function moved(entity) {
+  if (entity.x === entity.prevX && entity.y === entity.prevY) {
+    return false
+  } else {
+    return true
+  }
+}
+
+function mirrored(entity) {
+  if (!entity.status.toLowerCase().includes("attack")) {
+    if (entity.prevX > entity.x) {
+      entity.mirrored = true
+    } else if (entity.prevX < entity.x) {
+      entity.mirrored = false
+    }
+  } else {
+    const targetEntity = Game().entities.find((e) => e.id == entity.targetId)
+    if (targetEntity.x < entity.x) {
+      entity.mirrored = true
+    } else if (targetEntity.x > entity.x) {
+      entity.mirrored = false
+    }
+  }
+}
+
+function targetInRange(entity) {
+  if (entity.targetDistance < entity.range) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function setIdle(entity) {
+  if (
+    entity.name === "hero" &&
+    entity.status.toLowerCase().includes("idle") // not first idle frame
+  ) {
+    idleAnim(entity)
+  } else {
+    entity.status = "idle" // first idle frame
+  }
+}
+
+function idleAnim(entity) {
   if (
     Frame().current % 60 == 0 &&
     Math.random() < 0.15 &&
-    hero().status === "idle" &&
-    Frame().current >= hero().statusFrame + 60 * 2
+    entity.status === "idle" &&
+    Frame().current >= entity.statusFrame + 60 * 2
   ) {
-    hero().status = "switchIdleIdleB"
-    HeroIdleStatus().idleIdleB = Frame().current + 60
+    entity.status = "switchIdleIdleB"
   }
-  if (Frame().current == HeroIdleStatus().idleIdleB) {
-    hero().status = "idleB"
+  if (
+    entity.status === "switchIdleIdleB" &&
+    entity.statusFrame + 60 === Frame().current
+  ) {
+    entity.status = "idleB"
   }
 
   if (
     Frame().current % 60 == 0 &&
     Math.random() < 0.1 &&
-    hero().status === "idleB" &&
-    Frame().current >= hero().statusFrame + 60 * 2
+    entity.status === "idleB" &&
+    Frame().current >= entity.statusFrame + 60 * 2
   ) {
-    hero().status = "switchIdleBIdle"
-    HeroIdleStatus().idleBIdle = Frame().current + 60
+    entity.status = "switchIdleBIdle"
   }
-  if (Frame().current == HeroIdleStatus().idleBIdle) {
-    hero().status = "idle"
+  if (
+    entity.status === "switchIdleBIdle" &&
+    entity.statusFrame + 60 === Frame().current
+  ) {
+    entity.status = "idle"
   }
 }
 
-function checkMove(entity) {
-  if (entity.x === entity.prevX && entity.y === entity.prevY) {
-    if (
-      entity.name === "hero" &&
-      entity.status.toLowerCase().includes("idle")
-    ) {
-      heroIdleAnim()
-    } else {
-      entity.status = "idle"
-    }
-  } else {
-    entity.status = "walk"
+function setAttack(entity) {
+  if (!entity.status.toLowerCase().includes("attack")) {
+    entity.status = "bowAttackSetup"
+  } else if (
+    entity.status === "bowAttackSetup" &&
+    entity.statusFrame + 60 === Frame().current
+  ) {
+    entity.status = "bowAttackDelay"
+  } else if (
+    entity.status === "bowAttackDelay" &&
+    entity.statusFrame + 30 === Frame().current
+  ) {
+    entity.status = "bowAttackRelease"
+  } else if (
+    entity.status === "bowAttackRelease" &&
+    entity.statusFrame + 15 === Frame().current
+  ) {
+    entity.status = "bowAttackSetup"
   }
-
-  if (entity.prevX > entity.x) {
-    entity.mirrored = true
-  } else if (entity.prevX < entity.x) {
-    entity.mirrored = false
-  }
-
-  entity.prevX = entity.x
-  entity.prevY = entity.y
 }
 
 export function statusManager() {
   Game().entities.forEach((entity) => {
     const currentStatus = entity.status
 
-    checkMove(entity)
+    if (moved(entity)) {
+      entity.status = "walk"
+    } else {
+      if (targetInRange(entity)) {
+        entity.name === "hero" ? setAttack(entity) : {}
+      } else {
+        setIdle(entity)
+      }
+    }
 
+    mirrored(entity)
+    entity.prevX = entity.x
+    entity.prevY = entity.y
     if (currentStatus !== entity.status) {
       entity.statusFrame = Frame().current
     }

@@ -2,7 +2,7 @@ export const EntityInfo = defineStore("entityInfo", {
   state: () => ({
     hero: {
       type: "peaceful",
-      size: 50,
+      size: 70,
       breed: "human",
       maxHealth: 100,
       maxMana: 0,
@@ -16,7 +16,7 @@ export const EntityInfo = defineStore("entityInfo", {
     },
     goblin: {
       type: "enemy",
-      size: 50,
+      size: 55,
       breed: "beastman",
       maxHealth: 10,
       maxMana: 0,
