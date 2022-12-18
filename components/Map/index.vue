@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class='absolute' :style='imageStyle')
+div(class='absolute opacity-70' :style='imageStyle')
   img(:src='map' class='absolute -z-20 opacity-50 w-full')
 div(class='absolute' :style='collisionStyle')
   MapCollision(v-if='States().mapEdit && States().bobcat')

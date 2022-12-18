@@ -53,7 +53,7 @@ function idleAnim(entity) {
   }
   if (
     entity.status === "switchIdleIdleB" &&
-    entity.statusFrame + 60 === Frame().current
+    entity.statusFrame + 15 === Frame().current
   ) {
     entity.status = "idleB"
   }
@@ -68,9 +68,20 @@ function idleAnim(entity) {
   }
   if (
     entity.status === "switchIdleBIdle" &&
-    entity.statusFrame + 60 === Frame().current
+    entity.statusFrame + 15 === Frame().current
   ) {
     entity.status = "idle"
+  }
+}
+
+function setMove(entity) {
+  const distanceX = Math.abs(entity.x - entity.prevX)
+  const distanceY = Math.abs(entity.y - entity.prevY)
+  const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+  if ((entity.speed / 6) * 0.95 > distance) {
+    entity.status = "walk"
+  } else {
+    entity.status = "run"
   }
 }
 
@@ -79,7 +90,7 @@ function setAttack(entity) {
     entity.status = "bowAttackSetup"
   } else if (
     entity.status === "bowAttackSetup" &&
-    entity.statusFrame + 60 === Frame().current
+    entity.statusFrame + 30 === Frame().current
   ) {
     entity.status = "bowAttackDelay"
   } else if (
@@ -100,7 +111,7 @@ export function statusManager() {
     const currentStatus = entity.status
 
     if (moved(entity)) {
-      entity.status = "walk"
+      entity.name === "hero" ? setMove(entity) : (entity.status = "run")
     } else {
       if (targetInRange(entity)) {
         entity.name === "hero" ? setAttack(entity) : {}

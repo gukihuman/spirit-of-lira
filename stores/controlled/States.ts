@@ -3,7 +3,7 @@ export const States = defineStore("states", {
     // controlled by @/composables/keyboardAPI and others
     dev: true,
     pause: false,
-    ranges: true,
+    ranges: false,
     cursor: true,
     mapEdit: false,
     mainWindow: true,
