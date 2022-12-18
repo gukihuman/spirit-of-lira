@@ -45,7 +45,7 @@ function setIdle(entity) {
 function idleAnim(entity) {
   if (
     Frame().current % 60 == 0 &&
-    Math.random() < 0.15 &&
+    Math.random() < 0.2 &&
     entity.status === "idle" &&
     Frame().current >= entity.statusFrame + 60 * 2
   ) {
@@ -60,7 +60,7 @@ function idleAnim(entity) {
 
   if (
     Frame().current % 60 == 0 &&
-    Math.random() < 0.1 &&
+    Math.random() < 0.15 &&
     entity.status === "idleB" &&
     Frame().current >= entity.statusFrame + 60 * 2
   ) {
@@ -95,7 +95,7 @@ function setAttack(entity) {
     entity.status = "bowAttackDelay"
   } else if (
     entity.status === "bowAttackDelay" &&
-    entity.statusFrame + 30 === Frame().current
+    entity.statusFrame + 45 === Frame().current
   ) {
     entity.status = "bowAttackRelease"
   } else if (

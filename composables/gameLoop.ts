@@ -1,9 +1,9 @@
 export function gameLoop() {
   setInterval(() => {
+    gamepadUpdate()
     if (!States().pause) {
       Canvas().context.clearRect(0, 0, Canvas().width, Canvas().height)
       Frame().current++
-      gamepadUpdate()
       heroMove()
       Frame().current % 15 == 0 ? targetUpdate() : {}
       statusManager() // must be after heroMove because of new coordinates

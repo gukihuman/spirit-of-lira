@@ -16,10 +16,12 @@ div(
       Pause(v-if="States().pause")
 
     Map
-    Ranges(v-if="States().ranges")
+    transition(name='fast')
+      Ranges(v-if="States().ranges")
     Canvas
 
-    Dev(v-if="States().dev")
+    transition(name='fast')
+      Dev(v-if="States().dev")
     Minimap
     ButtonFullscreen
 

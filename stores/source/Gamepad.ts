@@ -24,7 +24,8 @@ export const Gamepad = defineStore("gamepad", {
       "Right",
     ],
     states: {
-      ranges: ["RT", true],
+      ranges: ["Y", true],
+      pause: ["Start", false],
     },
   }),
 })

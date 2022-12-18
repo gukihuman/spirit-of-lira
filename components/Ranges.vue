@@ -1,17 +1,17 @@
 <template lang="pug">
-div(
-  v-for="(entity, index) in Game().entities" :key="index"
-)
-  img(
-    :src='entity.range > 150 ? range : melee'
-    class='absolute opacity-60 animate-spin'
-    :style="rangeStyle(entity)"
-  )
+div
   div(
-    class='absolute opacity-50 bg-gray-600 rounded-full'
-    :style='sizeStyle(entity)'
+    v-for="(entity, index) in Game().entities" :key="index"
   )
-
+    img(
+      :src='entity.range > 150 ? range : melee'
+      class='absolute opacity-60 animate-spin'
+      :style="rangeStyle(entity)"
+    )
+    div(
+      class='absolute opacity-50 bg-gray-600 rounded-full'
+      :style='sizeStyle(entity)'
+    )
 
 </template>
 <script setup>
