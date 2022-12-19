@@ -60,7 +60,7 @@ function idleAnim(entity) {
 
   if (
     Frame().current % 60 == 0 &&
-    Math.random() < 0.15 &&
+    Math.random() < 0.25 &&
     entity.status === "idleB" &&
     Frame().current >= entity.statusFrame + 60 * 2
   ) {
@@ -85,7 +85,7 @@ function setMove(entity) {
   }
 }
 
-function setAttack(entity) {
+function setHeroAttack(entity) {
   if (!entity.status.toLowerCase().includes("attack")) {
     entity.status = "bowAttackSetup"
   } else if (
@@ -95,7 +95,7 @@ function setAttack(entity) {
     entity.status = "bowAttackDelay"
   } else if (
     entity.status === "bowAttackDelay" &&
-    entity.statusFrame + 45 === Frame().current
+    entity.statusFrame + 60 === Frame().current
   ) {
     entity.status = "bowAttackRelease"
   } else if (
@@ -103,6 +103,27 @@ function setAttack(entity) {
     entity.statusFrame + 15 === Frame().current
   ) {
     entity.status = "bowAttackSetup"
+  }
+}
+
+function setAttack(entity) {
+  if (!entity.status.toLowerCase().includes("attack")) {
+    entity.status = "attackSetup"
+  } else if (
+    entity.status === "attackSetup" &&
+    entity.statusFrame + 30 === Frame().current
+  ) {
+    entity.status = "attackDelay"
+  } else if (
+    entity.status === "attackDelay" &&
+    entity.statusFrame + 15 === Frame().current
+  ) {
+    entity.status = "attackRelease"
+  } else if (
+    entity.status === "attackRelease" &&
+    entity.statusFrame + 15 === Frame().current
+  ) {
+    entity.status = "attackSetup"
   }
 }
 
@@ -114,7 +135,7 @@ export function statusManager() {
       entity.name === "hero" ? setMove(entity) : (entity.status = "run")
     } else {
       if (targetInRange(entity)) {
-        entity.name === "hero" ? setAttack(entity) : {}
+        entity.name === "hero" ? setHeroAttack(entity) : setAttack(entity)
       } else {
         setIdle(entity)
       }

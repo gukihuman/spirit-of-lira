@@ -22,7 +22,7 @@ export const EntityInfo = defineStore("entityInfo", {
       attackSpeed: 50,
       damage: [3, 4],
       damageType: "physical",
-      range: 110,
+      range: 85,
     },
   }),
 })

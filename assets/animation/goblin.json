@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "idle00.png",
+	"filename": "attackDelay.png",
 	"frame": {"x":1,"y":1,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
@@ -9,8 +9,144 @@
 	"sourceSize": {"w":300,"h":300}
 },
 {
-	"filename": "idle01.png",
+	"filename": "attackRelease0000.png",
+	"frame": {"x":1,"y":303,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0001.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0002.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0003.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0004.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0005.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0006.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackRelease0007.png",
+	"frame": {"x":1,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0000.png",
 	"frame": {"x":303,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0001.png",
+	"frame": {"x":605,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0002.png",
+	"frame": {"x":303,"y":303,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0003.png",
+	"frame": {"x":303,"y":605,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0004.png",
+	"frame": {"x":1,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0005.png",
+	"frame": {"x":1,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0006.png",
+	"frame": {"x":1,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "attackSetup0007.png",
+	"frame": {"x":1,"y":1,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "idle00.png",
+	"frame": {"x":605,"y":303,"w":300,"h":300},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
+	"sourceSize": {"w":300,"h":300}
+},
+{
+	"filename": "idle01.png",
+	"frame": {"x":605,"y":605,"w":300,"h":300},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
@@ -21,8 +157,8 @@
 	"version": "1.0",
 	"image": "goblin.webp",
 	"format": "RGBA8888",
-	"size": {"w":604,"h":302},
+	"size": {"w":906,"h":906},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:cfcc834105e899b3d331399e34578096:9a0785be623afef1afa4f71d00c3ec31:67a3c36b97b68ec8cbd52604824b292d$"
+	"smartupdate": "$TexturePacker:SmartUpdate:dabfe18867397b2e92c5e553fa6daae9:9a173c4632a3cc195ea8b59b8bc88df6:67a3c36b97b68ec8cbd52604824b292d$"
 }
 }

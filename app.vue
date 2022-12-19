@@ -58,8 +58,8 @@ onMounted(() => {
 
   mouseLoop()
 
-  generateEntity("hero", 960, 540)
-  generateEntity("goblin", 1550, 450)
+  generateEntity("hero", 1800, 6120)
+  generateEntity("goblin", 2550, 6000)
 })
 </script>
 <style>

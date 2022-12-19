@@ -1,5 +1,5 @@
 export function mapEdit() {
-  if (Frame().current % 2 === 0) {
+  if (Frame().current % 1 === 0) {
     Map().offsetDelay[0] = Map().offset[0]
     Map().offsetDelay[1] = Map().offset[1]
   }
