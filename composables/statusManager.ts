@@ -87,22 +87,22 @@ function setMove(entity) {
 
 function setHeroAttack(entity) {
   if (!entity.status.toLowerCase().includes("attack")) {
-    entity.status = "bowAttackSetup"
+    entity.status = "attackSetup"
   } else if (
-    entity.status === "bowAttackSetup" &&
+    entity.status === "attackSetup" &&
     entity.statusFrame + 30 === Frame().current
   ) {
-    entity.status = "bowAttackDelay"
+    entity.status = "attackDelay"
   } else if (
-    entity.status === "bowAttackDelay" &&
+    entity.status === "attackDelay" &&
     entity.statusFrame + 60 === Frame().current
   ) {
-    entity.status = "bowAttackRelease"
+    entity.status = "attackRelease"
   } else if (
-    entity.status === "bowAttackRelease" &&
+    entity.status === "attackRelease" &&
     entity.statusFrame + 15 === Frame().current
   ) {
-    entity.status = "bowAttackSetup"
+    entity.status = "attackSetup"
   }
 }
 

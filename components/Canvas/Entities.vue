@@ -7,7 +7,7 @@ export default {
     if (!this.name) return
     const image = new Image()
     image.src = webp[this.name]
-    const visualOffsetY = 0.2
+    const visualOffsetY = 0.31
     const i = getAnimFrameIndex(
       this.statusFrame,
       Frame().current,
