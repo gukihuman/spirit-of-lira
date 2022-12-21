@@ -13,10 +13,10 @@ export function generateEntity(name, x, y) {
   entity.y = y
   entity.prevX = x
   entity.prevY = y
-  entity.status = "idle"
-  entity.statusFrame = Frame().current
+  entity.state = "idle"
+  entity.stateFrame = Game().frame
   entity.anim = "idle"
-  entity.animFrame = Frame().current
+  entity.animFrame = Game().frame
   entity.mirrored = false
   entity.targetId = undefined
   entity.targetDistance = undefined

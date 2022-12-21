@@ -1,13 +1,13 @@
 <template lang="pug">
 CanvasWrapper
-  CanvasEntities(
+  CanvasDisplay(
     v-for='(entity, index) in Game().entities'
     :key='index'
-    :updateEach='Frame().current'
+    :updateEach='Game().frame'
 
     :name='entity.name'
-    :status='entity.status'
-    :statusFrame='entity.statusFrame'
+    :state='entity.state'
+    :stateFrame='entity.stateFrame'
     :x='entity.x',
     :y='entity.y',
     :mirrored='entity.mirrored',

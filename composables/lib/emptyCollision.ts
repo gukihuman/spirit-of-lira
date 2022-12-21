@@ -1,5 +1,5 @@
 export function emptyCollision() {
-  Frame().current % 60 == 0 ? console.log(Map().collision) : {}
+  Game().frame % 60 == 0 ? console.log(Map().collision) : {}
   if (Map().collision.length === 0) {
     for (let i = 0; i < 60; i++) {
       let row = []

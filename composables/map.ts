@@ -1,5 +1,5 @@
 export function mapEdit() {
-  if (Frame().current % 1 === 0) {
+  if (Game().frame % 1 === 0) {
     Map().offsetDelay[0] = Map().offset[0]
     Map().offsetDelay[1] = Map().offset[1]
   }
@@ -14,7 +14,7 @@ export function mapEdit() {
     Map().collision[y][x] = false
   }
 
-  if (Frame().current % 60 === 0) {
+  if (Game().frame % 60 === 0) {
     updateCollision("start", Map().collision)
   }
 }

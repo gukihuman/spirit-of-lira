@@ -1,24 +1,22 @@
 <script>
-import { webp } from "@/composables/imports/webp"
-
 export default {
-  props: ["name", "status", "statusFrame", "x", "y", "mirrored"],
+  props: ["name", "x", "y", "state", "stateFrame", "mirrored"],
   render() {
     if (!this.name) return
     const image = new Image()
     image.src = webp[this.name]
     const visualOffsetY = 0.31
     const i = getAnimFrameIndex(
-      this.statusFrame,
-      Frame().current,
-      Visual()[this.name].statusSet[this.status].length
+      this.stateFrame,
+      Game().frame,
+      Visual()[this.name].stateSet[this.state].length
     )
     const c = Canvas().context
 
     const drawArgs = [
       image,
-      Visual()[this.name].statusSet[this.status][i].x,
-      Visual()[this.name].statusSet[this.status][i].y,
+      Visual()[this.name].stateSet[this.state][i].x,
+      Visual()[this.name].stateSet[this.state][i].y,
       Visual()[this.name].width,
       Visual()[this.name].height,
       this.x - Visual()[this.name].width / 2 - Map().offset[0],
