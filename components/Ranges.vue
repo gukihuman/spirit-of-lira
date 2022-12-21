@@ -4,19 +4,18 @@ div
     v-for="(entity, index) in Game().entities" :key="index"
   )
     img(
-      :src='entity.range > 150 ? range : melee'
-      class='absolute opacity-60 animate-spin'
+      :src='range'
+      class='absolute opacity-40 animate-spin'
       :style="rangeStyle(entity)"
     )
     div(
-      class='absolute opacity-50 bg-gray-600 rounded-full'
+      class='absolute opacity-40 bg-gray-600 rounded-full'
       :style='sizeStyle(entity)'
     )
 
 </template>
 <script setup>
 import range from "@/assets/range.webp"
-import melee from "@/assets/melee.webp"
 
 const sizeStyle = (entity) => {
   return {
@@ -28,8 +27,12 @@ const sizeStyle = (entity) => {
 }
 
 const rangeStyle = (entity) => {
-  let time
-  entity.range > 150 ? (time = 100) : (time = 35)
+  let time = entity.range / 5
+  if (entity.range > 150) {
+    time = 100
+  } else {
+    time = 40
+  }
   return {
     left: entity.x - Map().offset[0] - entity.range + "px",
     top: entity.y - Map().offset[1] - entity.range + "px",

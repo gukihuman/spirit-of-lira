@@ -58,8 +58,10 @@ onMounted(() => {
 
   mouseLoop()
 
-  generateEntity("hero", 1800, 6120)
-  generateEntity("goblin", 2550, 6000)
+  Game().entities.push(new Hero("hero", 1800, 6120))
+  Game().entities.push(new Creature("goblin", 2550, 6000))
+  // generateEntity("hero", 1800, 6120)
+  // generateEntity("goblin", 2550, 6000)
 })
 </script>
 <style>

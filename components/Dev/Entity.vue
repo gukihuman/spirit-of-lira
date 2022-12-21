@@ -14,6 +14,8 @@ bg-gradient-to-r from-slate-500/70 to-slate-500/0')
       | {{key}}: {{value.toFixed()}}
     p(v-else-if="key == 'targetDistance'")
       | {{key}}: {{value ? value.toFixed() : ''}}
+    p(v-else-if="key == 'targetX' || key == 'targetY'")
+      | {{key}}: {{value ? value.toFixed() : ''}}
     p(v-else) {{key}}: {{value}}
 
 </template>

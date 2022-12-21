@@ -2,12 +2,12 @@ export function generateEntity(name, x, y) {
   const entity = {}
 
   // fill with prime parameters
-  Object.keys(EntityInfo()[name]).forEach((key) => {
-    entity[key] = EntityInfo()[name][key]
+  Object.keys(CreatureInfo()[name]).forEach((key) => {
+    entity[key] = CreatureInfo()[name][key]
   })
 
-  Game().id++
-  entity.id = Game().id
+  Game().freeId++
+  entity.id = Game().freeId
   entity.name = name
   entity.x = x
   entity.y = y
@@ -15,8 +15,6 @@ export function generateEntity(name, x, y) {
   entity.prevY = y
   entity.state = "idle"
   entity.stateFrame = Game().frame
-  entity.anim = "idle"
-  entity.animFrame = Game().frame
   entity.mirrored = false
   entity.targetId = undefined
   entity.targetDistance = undefined
