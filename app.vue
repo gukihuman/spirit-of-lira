@@ -16,6 +16,7 @@ div(
       Pause(v-if="States().pause")
 
     Map
+    Shadows
     transition(name='fast')
       Ranges(v-if="States().ranges")
     Canvas
@@ -59,7 +60,15 @@ onMounted(() => {
   mouseLoop()
 
   Game().entities.push(new Hero("hero", 1800, 6120))
-  Game().entities.push(new Creature("goblin", 2550, 6000))
+  for (let i = 0; i < 20; i++) {
+    Game().entities.push(
+      new Creature(
+        "goblin",
+        2550 - 1100 * Math.random(),
+        5700 + 800 * Math.random()
+      )
+    )
+  }
   // generateEntity("hero", 1800, 6120)
   // generateEntity("goblin", 2550, 6000)
 })

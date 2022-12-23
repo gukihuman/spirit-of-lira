@@ -5,8 +5,8 @@ export class Entity {
     this.name = name
     this.x = x
     this.y = y
-    this.targetX = x
-    this.targetY = y
+    this.nextX = x
+    this.nextY = y
     this.prevX = x
     this.prevY = y
     this.speed = 0.1
@@ -15,17 +15,13 @@ export class Entity {
     this.mirrored = false
   }
   move() {
-    if (this.x != this.targetX || this.y != this.targetY) {
+    if (this.x != this.nextX || this.y != this.nextY) {
       this.prevX = this.x
       this.prevY = this.y
-      const angle = Math.atan2(this.y - this.targetY, this.x - this.targetX)
+      const angle = Math.atan2(this.y - this.nextY, this.x - this.nextX)
       this.x += (this.speed / 6) * Math.cos(angle) * -1
       this.y += (this.speed / 6) * Math.sin(angle) * -1
-      if (this.prevX > this.x) {
-        this.mirrored = true
-      } else if (this.prevX < this.x) {
-        this.mirrored = false
-      }
+      setMirroredByMove(this)
     }
   }
 }
@@ -33,6 +29,7 @@ export class Entity {
 export class Creature extends Entity {
   constructor(name, x, y) {
     super(name, x, y)
+    this.creature = true
     this.type = CreatureInfo()[name].type || "enemy"
     this.attitude = CreatureInfo()[name].attitude || "peaceful"
     this.size = CreatureInfo()[name].size || 40
@@ -47,14 +44,51 @@ export class Creature extends Entity {
     this.range = CreatureInfo()[name].range || 80
     this.targetId = undefined
     this.targetDistance = Infinity
+    this.intersectionId = 0
+    this.intersectionFrame = undefined
+    this.isHeroTarget = false
   }
+
+  move() {
+    // find intersection
+    let minDistance = Infinity
+    Game().entities.forEach((entity) => {
+      if (entity.creature && entity.id != this.id) {
+        let distance = findDistance(this, entity)
+        if (distance < this.size + entity.size) {
+          if (distance < minDistance) {
+            this.intersectionId = entity.id
+            minDistance = distance
+            this.intersectionFrame = Game().frame
+          }
+        }
+      }
+    })
+
+    // avoid intersection
+    if (
+      Game().frame < this.intersectionFrame + 60 &&
+      !this.state.toLowerCase().includes("attack")
+    ) {
+      this.prevX = this.x
+      this.prevY = this.y
+      let intersection = getEntity(this.intersectionId)
+      const angle = Math.atan2(this.y - intersection.y, this.x - intersection.x)
+      this.x += (this.speed / 6) * Math.cos(angle)
+      this.y += (this.speed / 6) * Math.sin(angle)
+      setMirroredByMove(this)
+    } else if (this.targetDistance > this.range) {
+      super.move()
+    }
+  }
+
   setTarget() {
     // find target
     if (this.attitude === "agressive" && !this.targetId) {
       let minDistance = 400
       Game().entities.forEach((entity) => {
-        if (entity.type != this.type) {
-          let distance = findDistance(this.x, this.y, entity.x, entity.y)
+        if (entity.creature && entity.type != this.type) {
+          let distance = findDistance(this, entity)
           distance -= entity.size
           if (distance < minDistance) {
             this.targetId = entity.id
@@ -64,26 +98,23 @@ export class Creature extends Entity {
         }
       })
     }
-  }
-
-  setTargetDistance() {
-    if (this.targetId != undefined) {
-      let target = Game().entities.find((target) => target.id === this.targetId)
-      let distance = findDistance(this.x, this.y, target.x, target.y)
+    if (this.targetId) {
+      let target = getEntity(this.targetId)
+      let distance = findDistance(this, target)
       distance -= target.size
       this.targetDistance = distance
     }
     this.targetDistance > 500 ? (this.targetId = undefined) : {}
   }
 
-  setTargetXY() {
-    if (this.targetId !== undefined) {
+  setNextXY() {
+    if (this.targetId) {
       let target = Game().entities.find((target) => target.id === this.targetId)
-      this.targetX = target.x
-      this.targetY = target.y
+      this.nextX = target.x
+      this.nextY = target.y
     } else {
-      this.targetX = this.x
-      this.targetY = this.y
+      this.nextX = this.x
+      this.nextY = this.y
     }
   }
 }
@@ -93,6 +124,8 @@ export class Hero extends Creature {
     super(name, x, y)
   }
   move() {
+    this.prevX = this.x
+    this.prevY = this.y
     // LS x
     if (
       Gamepad().axes[0] <= -1 * Settings().deadZone ||
@@ -108,5 +141,37 @@ export class Hero extends Creature {
     ) {
       this.y += (this.speed / 6) * Gamepad().axes[1]
     }
+
+    if (this.prevX > this.x) {
+      this.mirrored = true
+    } else if (this.prevX < this.x) {
+      this.mirrored = false
+    }
+  }
+  setTarget() {
+    // find target
+    if (!this.targetId) {
+      let minDistance = Infinity
+      Game().entities.forEach((entity) => {
+        if (entity.creature && entity.type != this.type) {
+          let distance = findDistance(this, entity)
+          distance -= entity.size
+          if (distance < minDistance) {
+            this.targetId = entity.id
+            minDistance = distance
+            this.targetDistance = distance
+            entity.isHeroTarget = true
+          }
+        }
+      })
+    }
+    if (this.targetId) {
+      let target = getEntity(this.targetId)
+      target.isHeroTarget = true
+      let distance = findDistance(this, target)
+      distance -= target.size
+      this.targetDistance = distance
+    }
+    this.targetDistance > this.range ? (this.targetId = undefined) : {}
   }
 }

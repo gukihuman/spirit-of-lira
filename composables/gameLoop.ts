@@ -3,20 +3,18 @@ export function gameLoop() {
     gamepadUpdate()
     if (!States().pause) {
       Canvas().context.clearRect(0, 0, Canvas().width, Canvas().height)
+      clearHeroTarget()
       Game().frame++
       Game().entities.forEach((entity) => {
         entity.setTarget()
-        entity.setTargetXY()
-        entity.setTargetDistance()
+        entity.setNextXY()
         entity.move()
       })
-      // heroMove()
-      // Game().frame % 15 == 0 ? targetUpdate() : {}
-      // stateManager() // must be after heroMove because of new coordinates
-      setCamera() // must be after heroMove because of new coordinates
+      stateManager() // must be after heroMove because of new coordinates
+      setCamera()
       Game().entities.sort((a, b) => a.y - b.y)
       States().mapEdit && States().bobcat ? mapEdit() : {}
-      // Game().frame % 60 == 0 ? updateGameData() : {}
+      Game().frame % 60 == 0 ? updateGameData() : {}
     }
   }, 1000 / 60)
 }

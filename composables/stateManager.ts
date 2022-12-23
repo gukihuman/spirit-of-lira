@@ -7,13 +7,7 @@ function moved(entity) {
 }
 
 function mirrored(entity) {
-  if (!entity.state.toLowerCase().includes("attack")) {
-    if (entity.prevX > entity.x) {
-      entity.mirrored = true
-    } else if (entity.prevX < entity.x) {
-      entity.mirrored = false
-    }
-  } else {
+  if (entity.state.toLowerCase().includes("attack")) {
     const targetEntity = Game().entities.find((e) => e.id == entity.targetId)
     if (targetEntity.x < entity.x) {
       entity.mirrored = true
@@ -74,7 +68,7 @@ function idleAnim(entity) {
   }
 }
 
-function setMove(entity) {
+function setHeroMove(entity) {
   const distanceX = Math.abs(entity.x - entity.prevX)
   const distanceY = Math.abs(entity.y - entity.prevY)
   const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
@@ -116,7 +110,7 @@ function setAttack(entity) {
     entity.state = "attackDelay"
   } else if (
     entity.state === "attackDelay" &&
-    entity.stateFrame + 15 === Game().frame
+    entity.stateFrame + 30 === Game().frame
   ) {
     entity.state = "attackRelease"
   } else if (
@@ -131,8 +125,8 @@ export function stateManager() {
   Game().entities.forEach((entity) => {
     const currentStatus = entity.state
 
-    if (moved(entity)) {
-      entity.name === "hero" ? setMove(entity) : (entity.state = "run")
+    if (moved(entity) && entity.type) {
+      entity.name === "hero" ? setHeroMove(entity) : (entity.state = "run")
     } else {
       if (targetInRange(entity)) {
         entity.name === "hero" ? setHeroAttack(entity) : setAttack(entity)

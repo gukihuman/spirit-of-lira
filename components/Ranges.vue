@@ -8,23 +8,10 @@ div
       class='absolute opacity-40 animate-spin'
       :style="rangeStyle(entity)"
     )
-    div(
-      class='absolute opacity-40 bg-gray-600 rounded-full'
-      :style='sizeStyle(entity)'
-    )
 
 </template>
 <script setup>
 import range from "@/assets/range.webp"
-
-const sizeStyle = (entity) => {
-  return {
-    left: entity.x - Map().offset[0] - entity.size + "px",
-    top: entity.y - Map().offset[1] - entity.size + "px",
-    width: entity.size * 2 + "px",
-    height: entity.size * 2 + "px",
-  }
-}
 
 const rangeStyle = (entity) => {
   let time = entity.range / 5
