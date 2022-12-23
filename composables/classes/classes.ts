@@ -46,20 +46,57 @@ export class Creature extends Entity {
     this.targetDistance = Infinity
     this.intersectionId = 0
     this.intersectionFrame = undefined
+    this.intersectionAngle = undefined
     this.isHeroTarget = false
   }
 
   move() {
-    // find intersection
+    // find intersection and set best angle to avoid it based of target
     let minDistance = Infinity
     Game().entities.forEach((entity) => {
-      if (entity.creature && entity.id != this.id) {
+      if (
+        entity.creature &&
+        entity.id != this.id &&
+        entity.name != "hero" &&
+        Game().frame % Math.floor(20 * Math.random()) === 0
+      ) {
         let distance = findDistance(this, entity)
         if (distance < this.size + entity.size) {
           if (distance < minDistance) {
             this.intersectionId = entity.id
             minDistance = distance
             this.intersectionFrame = Game().frame
+
+            // find angle for avoiding intersection
+            let cacheIntersectionAngle = Math.atan2(
+              this.y - entity.y,
+              this.x - entity.x
+            )
+            let cacheX = this.x
+            let cacheY = this.y
+            this.intersectionAngle += Math.PI / 2.2
+            this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
+            this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
+            let target = getEntity(this.targetId)
+            let posDistance = findDistance(this, target)
+
+            this.intersectionAngle = cacheIntersectionAngle
+            this.x = cacheX
+            this.y = cacheY
+            this.intersectionAngle -= Math.PI / 2.2
+            this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
+            this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
+            let posDistance2 = findDistance(this, target)
+
+            this.intersectionAngle = cacheIntersectionAngle
+            this.x = cacheX
+            this.y = cacheY
+
+            if (posDistance < posDistance2) {
+              this.intersectionAngle += Math.PI / 2.2 + 0.2 * Math.random()
+            } else {
+              this.intersectionAngle -= Math.PI / 2.2 - 0.2 * Math.random()
+            }
           }
         }
       }
@@ -68,14 +105,13 @@ export class Creature extends Entity {
     // avoid intersection
     if (
       Game().frame < this.intersectionFrame + 60 &&
-      !this.state.toLowerCase().includes("attack")
+      !this.state.toLowerCase().includes("attack") &&
+      this.targetDistance > this.range
     ) {
       this.prevX = this.x
       this.prevY = this.y
-      let intersection = getEntity(this.intersectionId)
-      const angle = Math.atan2(this.y - intersection.y, this.x - intersection.x)
-      this.x += (this.speed / 6) * Math.cos(angle)
-      this.y += (this.speed / 6) * Math.sin(angle)
+      this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
+      this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
       setMirroredByMove(this)
     } else if (this.targetDistance > this.range) {
       super.move()
@@ -160,7 +196,6 @@ export class Hero extends Creature {
             this.targetId = entity.id
             minDistance = distance
             this.targetDistance = distance
-            entity.isHeroTarget = true
           }
         }
       })
