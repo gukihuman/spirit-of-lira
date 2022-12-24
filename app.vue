@@ -67,13 +67,18 @@ onMounted(() => {
   mouseLoop()
 
   Game().entities.push(new Hero("hero", 1800, 6120))
-  for (let i = 0; i < 20; i++) {
+  // for (let i = 0; i < 30; i++) {
+  //   Game().entities.push(
+  //     new Creature(
+  //       "goblin",
+  //       2550 - 1100 * Math.random(),
+  //       5700 + 800 * Math.random()
+  //     )
+  //   )
+  // }
+  for (let i = 0; i < 30; i++) {
     Game().entities.push(
-      new Creature(
-        "goblin",
-        2550 - 1100 * Math.random(),
-        5700 + 800 * Math.random()
-      )
+      new Creature("goblin", 7200 * Math.random(), 7200 * Math.random())
     )
   }
   // generateEntity("hero", 1800, 6120)

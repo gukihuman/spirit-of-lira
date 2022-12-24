@@ -2,6 +2,7 @@
 export default {
   props: ["name", "x", "y", "state", "stateFrame", "mirrored"],
   render() {
+    let performanceCache = performance.now()
     if (!this.name) return
     const image = new Image()
     image.src = webp[this.name]
@@ -36,6 +37,9 @@ export default {
       c.drawImage(...drawArgs)
       c.restore()
     }
+    let diff = performance.now() - performanceCache
+    let storage = Number(localStorage.getItem("performance"))
+    localStorage.setItem("performance", storage + diff)
   },
 }
 </script>
