@@ -3,6 +3,7 @@ export const Game = defineStore("game", {
     frame: 0,
     data: {},
     entities: [],
+    entitiesCache: [],
     freeId: 0,
   }),
 })

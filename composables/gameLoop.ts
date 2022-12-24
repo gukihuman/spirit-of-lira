@@ -15,6 +15,8 @@ export function gameLoop() {
       Canvas().context.clearRect(0, 0, Canvas().width, Canvas().height)
       clearHeroTarget()
       Game().frame++
+
+      Game().frame % 60 === 0 || Game().frame === 5 ? cacheEntities() : {}
       Game().entities.forEach((entity) => {
         entity.setTarget()
         entity.setNextXY()

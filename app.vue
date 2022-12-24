@@ -25,11 +25,8 @@ div(
       Dev(v-if="States().dev")
     Minimap
     ButtonFullscreen
+    MouseScreen
 
-    div(
-      ref="mouseScreen"
-      class="absolute z-50 w-full h-full opacity-0"
-    )
 
 
 </template>
@@ -43,11 +40,9 @@ let mainWindowStyle = computed(() => {
   }
 })
 const background = ref(null)
-const mouseScreen = ref(null)
 
 onMounted(() => {
   Ref().background = background // for fullscreen
-  Ref().mouseScreen = mouseScreen // for mouse coordinates
 
   getCollision("start")
   useCookie("name").value ? getGameData() : createUser()
@@ -76,9 +71,13 @@ onMounted(() => {
   //     )
   //   )
   // }
-  for (let i = 0; i < 30; i++) {
-    Game().entities.push(
-      new Creature("goblin", 7200 * Math.random(), 7200 * Math.random())
+  for (let i = 0; i < 70; i++) {
+    Game().entitiesCache.push(
+      new Creature(
+        "goblin",
+        1000 + 5200 * Math.random(),
+        500 + 6200 * Math.random()
+      )
     )
   }
   // generateEntity("hero", 1800, 6120)

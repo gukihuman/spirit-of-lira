@@ -15,7 +15,7 @@ div(class='absolute left-[660px] w-fit text-3xl leading-8 \
       div display
       p() {{ typeof display === "number" ? display.toFixed(1) : "..." }}
     div(class='flex justify-between text-end mx-auto w-full' )
-      div other
+      div remain
       p() {{ typeof other === "number" ? other.toFixed(1) : "..." }}
 
   div(class="bg-amber-800/30 rounded-md p-2 pt-1")
@@ -54,7 +54,7 @@ let frameCache = reactive([])
 let frameAvg = computed(() => {
   const time = Math.abs(Performance().endFrame - Performance().startFrame)
   if (Game().frame % 60 === 0) {
-    time > 0 && time < 30 ? frameCache.push(time) : {}
+    time > 0 && time < 80 ? frameCache.push(time) : {}
     frameCache.length > 10 ? frameCache.shift() : {}
   }
   return sumArray(frameCache) / frameCache.length
@@ -80,7 +80,7 @@ let gameLoopCache = reactive([])
 let gameLoopAvg = computed(() => {
   const time = Performance().endGameLoop - Performance().startGameLoop
   if (Game().frame % 60 === 0) {
-    time > 0 && time < 30 ? gameLoopCache.push(time) : {}
+    time > 0 && time < 80 ? gameLoopCache.push(time) : {}
     gameLoopCache.length > 10 ? gameLoopCache.shift() : {}
   }
   return sumArray(gameLoopCache) / gameLoopCache.length
@@ -106,7 +106,7 @@ let displayCache = reactive([])
 let displayAvg = computed(() => {
   const time = Performance().display
   if (Game().frame % 60 === 0) {
-    time > 0 && time < 30 ? displayCache.push(time) : {}
+    time > 0 && time < 80 ? displayCache.push(time) : {}
     displayCache.length > 10 ? displayCache.shift() : {}
   }
   return sumArray(displayCache) / displayCache.length
@@ -120,13 +120,13 @@ let getDisplayMax = computed(() => {
 })
 
 let other = computed(() => {
-  return frame.value - gameLoop.value - display.value
+  return 13 - gameLoop.value - display.value
 })
 let otherAvg = computed(() => {
-  return frameAvg.value - gameLoopAvg.value - displayAvg.value
+  return 13 - gameLoopAvg.value - displayAvg.value
 })
 let getOtherMax = computed(() => {
-  let result = getFrameMax.value - getGameLoopMax.value - getDisplayMax.value
-  return displayMax != -Infinity && result > 0 ? result : "..."
+  let result = 13 - getGameLoopMax.value - getDisplayMax.value
+  return displayMax != -Infinity ? result : "..."
 })
 </script>
