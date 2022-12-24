@@ -1,8 +1,8 @@
 export function mouseListener() {
-  addEventListener("mousemove", (event) => {
+  Ref().mouseScreen.addEventListener("mousemove", (event) => {
     States().cursor = true
-    Mouse().x = event.clientX
-    Mouse().y = event.clientY
+    Mouse().offsetX = event.offsetX
+    Mouse().offsetY = event.offsetY
   })
 }
 
@@ -16,6 +16,11 @@ export function isMousePositionChanged() {
     Mouse().prevY = Mouse().y
     return true
   }
+}
+
+export function mouseUpdate() {
+  Mouse().x = Mouse().offsetX + Map().offset[0]
+  Mouse().y = Mouse().offsetY + Map().offset[1]
 }
 
 export function mouseLoop() {

@@ -125,10 +125,14 @@ export function stateManager() {
   Game().entities.forEach((entity) => {
     const currentStatus = entity.state
 
-    if (moved(entity) && entity.type) {
+    if (moved(entity) && entity.creature) {
       entity.name === "hero" ? setHeroMove(entity) : (entity.state = "run")
     } else {
-      if (targetInRange(entity)) {
+      if (
+        targetInRange(entity) ||
+        (entity.state.includes("attack") &&
+          Game().frame < entity.stateFrame + 20)
+      ) {
         entity.name === "hero" ? setHeroAttack(entity) : setAttack(entity)
       } else {
         setIdle(entity)

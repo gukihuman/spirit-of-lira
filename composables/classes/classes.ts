@@ -15,7 +15,10 @@ export class Entity {
     this.mirrored = false
   }
   move() {
-    if (this.x != this.nextX || this.y != this.nextY) {
+    if (
+      (this.x != this.nextX || this.y != this.nextY) &&
+      !this.state.includes("attack")
+    ) {
       this.prevX = this.x
       this.prevY = this.y
       const angle = Math.atan2(this.y - this.nextY, this.x - this.nextX)
@@ -113,7 +116,12 @@ export class Creature extends Entity {
       this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
       this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
       setMirroredByMove(this)
-    } else if (this.targetDistance > this.range) {
+    } else if (
+      (this.targetDistance > this.range &&
+        this.state === "attack" &&
+        Game().frame > this.stateFrame + 20) ||
+      (this.targetDistance > this.range && !this.state.includes("attack"))
+    ) {
       super.move()
     }
   }
@@ -162,27 +170,33 @@ export class Hero extends Creature {
   move() {
     this.prevX = this.x
     this.prevY = this.y
-    // LS x
-    if (
-      Gamepad().axes[0] <= -1 * Settings().deadZone ||
-      Gamepad().axes[0] >= Settings().deadZone
-    ) {
-      this.x += (this.speed / 6) * Gamepad().axes[0]
-    }
+    if (States().gamepad) {
+      // LS x
+      if (
+        Gamepad().axes[0] <= -1 * Settings().deadZone ||
+        Gamepad().axes[0] >= Settings().deadZone
+      ) {
+        this.x += (this.speed / 6) * Gamepad().axes[0]
+      }
 
-    // LS y
-    if (
-      Gamepad().axes[1] <= -1 * Settings().deadZone ||
-      Gamepad().axes[1] >= Settings().deadZone
-    ) {
-      this.y += (this.speed / 6) * Gamepad().axes[1]
+      // LS y
+      if (
+        Gamepad().axes[1] <= -1 * Settings().deadZone ||
+        Gamepad().axes[1] >= Settings().deadZone
+      ) {
+        this.y += (this.speed / 6) * Gamepad().axes[1]
+      }
+    } else {
+      const angle = Math.atan2(this.y - Mouse().y, this.x - Mouse().x)
+      let distance = findDistance(this, Mouse())
+      let distanceRatio = distance / 350
+      distanceRatio > 1 ? (distanceRatio = 1) : {}
+      if (distance > 40) {
+        this.x += (this.speed / 6) * distanceRatio * Math.cos(angle) * -1
+        this.y += (this.speed / 6) * distanceRatio * Math.sin(angle) * -1
+      }
     }
-
-    if (this.prevX > this.x) {
-      this.mirrored = true
-    } else if (this.prevX < this.x) {
-      this.mirrored = false
-    }
+    setMirroredByMove(this)
   }
   setTarget() {
     // find target

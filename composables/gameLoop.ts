@@ -1,6 +1,7 @@
 export function gameLoop() {
   setInterval(() => {
     gamepadUpdate()
+    mouseUpdate()
     if (!States().pause) {
       Canvas().context.clearRect(0, 0, Canvas().width, Canvas().height)
       clearHeroTarget()

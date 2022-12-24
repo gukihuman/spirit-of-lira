@@ -26,6 +26,11 @@ div(
     Minimap
     ButtonFullscreen
 
+    div(
+      ref="mouseScreen"
+      class="absolute z-50 w-full h-full opacity-0"
+    )
+
 
 </template>
 <script setup>
@@ -38,9 +43,11 @@ let mainWindowStyle = computed(() => {
   }
 })
 const background = ref(null)
+const mouseScreen = ref(null)
 
 onMounted(() => {
   Ref().background = background // for fullscreen
+  Ref().mouseScreen = mouseScreen // for mouse coordinates
 
   getCollision("start")
   useCookie("name").value ? getGameData() : createUser()

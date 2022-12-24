@@ -9,5 +9,6 @@ export const States = defineStore("states", {
     mainWindow: true,
     bobcat: false,
     updateAllowed: false,
+    gamepad: true,
   }),
 })
