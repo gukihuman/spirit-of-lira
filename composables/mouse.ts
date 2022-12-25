@@ -3,6 +3,7 @@ export function mouseListener() {
     States().cursor = true
     Mouse().offsetX = event.offsetX
     Mouse().offsetY = event.offsetY
+    States().mouseMove = true
   })
 }
 
@@ -21,11 +22,16 @@ export function isMousePositionChanged() {
 export function mouseUpdate() {
   Mouse().x = Mouse().offsetX + Map().offset[0]
   Mouse().y = Mouse().offsetY + Map().offset[1]
+  if (!States().mouseScreen) States().mouseMove = false
 }
 
 export function mouseLoop() {
   setInterval(() => {
-    if (!isMousePositionChanged() && Gamepad().connected) {
+    if (
+      !isMousePositionChanged() &&
+      Gamepad().connected &&
+      States().mouseScreen
+    ) {
       States().cursor = false
     }
   }, 4000)

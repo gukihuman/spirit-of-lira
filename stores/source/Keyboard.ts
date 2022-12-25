@@ -6,6 +6,7 @@ export const Keyboard = defineStore("keyboard", {
       mapEdit: "m",
       ranges: "r",
       gamepad: "g",
+      mouseScreen: "c",
     },
     fullscreen: "f",
   }),

@@ -4,9 +4,10 @@ div(
   class="absolute z-50 w-full h-full opacity-0"
 )
 </template>
-<script setup>
+<script setup lang="ts">
 const mouseScreen = ref(null)
 onMounted(() => {
-  Ref().mouseScreen = mouseScreen // for mouse coordinates
+  Ref().mouseScreen = mouseScreen
+  mouseListener()
 })
 </script>

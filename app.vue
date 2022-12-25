@@ -1,33 +1,31 @@
 <template lang="pug">
 div(
-  ref='background'
+  ref="background"
   class="bg-slate-800 h-screen w-screen flex items-center \
   justify-center relative"
 )
   div(
     v-if="States().mainWindow"
-    class='bg-gray-500 absolute overflow-hidden'
-    :style='mainWindowStyle'
+    class="bg-gray-500 absolute overflow-hidden"
+    :style="mainWindowStyle"
   )
     AntiFlicker
     transition
       Loading(v-if="!States().updateAllowed")
-    transition(name='fast')
+    transition(name="fast")
       Pause(v-if="States().pause")
 
     Map
     Shadows
-    transition(name='fast')
+    transition(name="fast")
       Ranges(v-if="States().ranges")
     Canvas
 
-    transition(name='fast')
+    transition(name="fast")
       Dev(v-if="States().dev")
     Minimap
     ButtonFullscreen
-    MouseScreen
-
-
+    MouseScreen(v-if="States().mouseScreen")
 
 </template>
 <script setup>
@@ -45,14 +43,14 @@ onMounted(() => {
   Ref().background = background // for fullscreen
 
   getCollision("start")
-  useCookie("name").value ? getGameData() : createUser()
+  if (useCookie("name").value) getGameData()
+  else createUser()
   checkBobcat()
 
   mainWindowSetSize()
 
   gamepadListeners()
   keyboardListeners()
-  mouseListener()
   resizeListener()
 
   setVisual()

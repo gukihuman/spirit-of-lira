@@ -10,5 +10,7 @@ export const States = defineStore("states", {
     bobcat: false,
     updateAllowed: false,
     gamepad: true,
+    mouseScreen: false,
+    mouseMove: false,
   }),
 })

@@ -1,10 +1,15 @@
+interface Gamepad {
+  readonly buttonList: string[]
+  connected: boolean
+  buttons: string[]
+  buttonsCache: string[]
+  axes: number[]
+  states: {}
+}
+
 export const Gamepad = defineStore("gamepad", {
-  state: () => ({
-    // controlled by @/composables/gamepadAPI
-    connected: false,
-    buttons: [],
-    buttonsCache: [],
-    axes: [0, 0, 0, 0],
+  state: (): Gamepad => ({
+    // controlled by gamepadAPI
     buttonList: [
       "A",
       "B",
@@ -23,6 +28,10 @@ export const Gamepad = defineStore("gamepad", {
       "Left",
       "Right",
     ],
+    connected: false,
+    buttons: [],
+    buttonsCache: [],
+    axes: [0, 0, 0, 0],
     states: {
       ranges: ["LT", true],
       pause: ["Start", false],

@@ -129,7 +129,7 @@ export class Creature extends Entity {
   setTarget() {
     // find target
     if (this.attitude === "agressive" && !this.targetId) {
-      let minDistance = 400
+      let minDistance = 350
       Game().entities.forEach((entity) => {
         if (entity.creature && entity.type != this.type) {
           let distance = findDistance(this, entity)
@@ -148,7 +148,7 @@ export class Creature extends Entity {
       distance -= target.size
       this.targetDistance = distance
     }
-    this.targetDistance > 500 ? (this.targetId = undefined) : {}
+    this.targetDistance > 450 ? (this.targetId = undefined) : {}
   }
 
   setNextXY() {
@@ -170,23 +170,22 @@ export class Hero extends Creature {
   move() {
     this.prevX = this.x
     this.prevY = this.y
-    if (States().gamepad) {
-      // LS x
-      if (
-        Gamepad().axes[0] <= -1 * Settings().deadZone ||
-        Gamepad().axes[0] >= Settings().deadZone
-      ) {
-        this.x += (this.speed / 6) * Gamepad().axes[0]
-      }
+    // LS x
+    if (
+      Gamepad().axes[0] <= -1 * Settings().deadZone ||
+      Gamepad().axes[0] >= Settings().deadZone
+    ) {
+      this.x += (this.speed / 6) * Gamepad().axes[0]
+    }
 
-      // LS y
-      if (
-        Gamepad().axes[1] <= -1 * Settings().deadZone ||
-        Gamepad().axes[1] >= Settings().deadZone
-      ) {
-        this.y += (this.speed / 6) * Gamepad().axes[1]
-      }
-    } else {
+    // LS y
+    if (
+      Gamepad().axes[1] <= -1 * Settings().deadZone ||
+      Gamepad().axes[1] >= Settings().deadZone
+    ) {
+      this.y += (this.speed / 6) * Gamepad().axes[1]
+    }
+    if (States().mouseScreen && States().mouseMove) {
       const angle = Math.atan2(this.y - Mouse().y, this.x - Mouse().x)
       let distance = findDistance(this, Mouse())
       let distanceRatio = distance / 350
