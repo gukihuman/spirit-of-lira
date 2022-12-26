@@ -1,5 +1,7 @@
 export class Entity {
-  constructor(name, x, y) {
+  readonly id: number
+
+  constructor(name: string, x: number, y: number) {
     Game().freeId++
     this.id = Game().freeId
     this.name = name
@@ -32,7 +34,7 @@ export class Entity {
 export class Creature extends Entity {
   constructor(name, x, y) {
     super(name, x, y)
-    this.creature = true
+    this.isCreature = true
     this.type = CreatureInfo()[name].type || "enemy"
     this.attitude = CreatureInfo()[name].attitude || "peaceful"
     this.size = CreatureInfo()[name].size || 40
@@ -56,15 +58,16 @@ export class Creature extends Entity {
   move() {
     // find intersection and set best angle to avoid it based of target
     let minDistance = Infinity
+    let size = this.size ** 2
     Game().entities.forEach((entity) => {
       if (
-        entity.creature &&
+        entity.isCreature &&
         entity.id != this.id &&
         entity.name != "hero" &&
         Game().frame % Math.floor(20 * Math.random()) === 0
       ) {
-        let distance = findDistance(this, entity)
-        if (distance < this.size + entity.size) {
+        let distance = findDistanceO(this, entity)
+        if (distance < size + entity.size ** 2) {
           if (distance < minDistance) {
             this.intersectionId = entity.id
             minDistance = distance
@@ -81,7 +84,7 @@ export class Creature extends Entity {
             this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
             this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
             let target = getEntity(this.targetId)
-            let posDistance = findDistance(this, target)
+            let posDistance = findDistanceO(this, target)
 
             this.intersectionAngle = cacheIntersectionAngle
             this.x = cacheX
@@ -89,7 +92,7 @@ export class Creature extends Entity {
             this.intersectionAngle -= Math.PI / 2.2
             this.x += (this.speed / 6) * Math.cos(this.intersectionAngle)
             this.y += (this.speed / 6) * Math.sin(this.intersectionAngle)
-            let posDistance2 = findDistance(this, target)
+            let posDistance2 = findDistanceO(this, target)
 
             this.intersectionAngle = cacheIntersectionAngle
             this.x = cacheX
@@ -131,7 +134,7 @@ export class Creature extends Entity {
     if (this.attitude === "agressive" && !this.targetId) {
       let minDistance = 350
       Game().entities.forEach((entity) => {
-        if (entity.creature && entity.type != this.type) {
+        if (entity.isCreature && entity.type != this.type) {
           let distance = findDistance(this, entity)
           distance -= entity.size
           if (distance < minDistance) {
@@ -202,7 +205,7 @@ export class Hero extends Creature {
     if (!this.targetId) {
       let minDistance = Infinity
       Game().entities.forEach((entity) => {
-        if (entity.creature && entity.type != this.type) {
+        if (entity.isCreature && entity.type != this.type) {
           let distance = findDistance(this, entity)
           distance -= entity.size
           if (distance < minDistance) {

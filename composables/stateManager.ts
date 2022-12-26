@@ -125,7 +125,7 @@ export function stateManager() {
   Game().entities.forEach((entity) => {
     const currentStatus = entity.state
 
-    if (moved(entity) && entity.creature) {
+    if (moved(entity) && entity.isCreature) {
       entity.name === "hero" ? setHeroMove(entity) : (entity.state = "run")
     } else {
       if (

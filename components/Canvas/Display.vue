@@ -37,9 +37,9 @@ export default {
       c.drawImage(...drawArgs)
       c.restore()
     }
-    let diff = performance.now() - performanceCache
-    let storage = Number(localStorage.getItem("performance"))
-    localStorage.setItem("performance", storage + diff)
+    // let diff = performance.now() - performanceCache
+    // let storage = Number(localStorage.getItem("performance"))
+    // localStorage.setItem("performance", storage + diff)
   },
 }
 </script>

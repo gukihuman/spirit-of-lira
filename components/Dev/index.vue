@@ -1,18 +1,21 @@
 <template lang="pug">
-div( class="absolute left-0 w-fit h-9 text-3xl leading-8 max-w-[340px] \
-  flex items-start flex-col px-2 m-2 font-mono text-gray-300 z-30")
 
-  div(class="w-fit bg-slate-600/70 px-2 rounded-md \
-  ") frame {{ Game().frame }}
-  div(class="w-fit bg-slate-600/70 px-2 rounded-md \
-  ") entities {{ Game().entities.length }}
-  div(class="w-fit bg-slate-600/70 px-2 rounded-md \
-  ") entitiesCache {{ Game().entitiesCache.length }}
+div(class="absolute w-full h-full z-30 p-4 pt-0 \
+\
+grid grid-cols-16 grid-rows-9 gap-4 \
+\
+font-mono text-3xl text-gray-300")
 
-  DevEntity
-  DevKeyboard(v-if="States().bobcat")
-  DevPerformance
-  DevButtonEquip
+  DevBox(class="col-span-3 row-span-4 col-end-17")
+    DevMainCounter
+  DevBox(class="col-span-5 row-span-5 row-start-1")
+    DevCreaturePicker
+  DevBox(class="col-span-16 row-span-4 row-start-6")
+    DevCreature
+  //- DevEntity
+  //- DevKeyboard(v-if="States().bobcat")
+  //- DevPerformance
+  //- DevButtonEquip
 
 
 

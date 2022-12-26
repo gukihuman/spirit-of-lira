@@ -1,8 +1,8 @@
 export function gameLoop() {
   setInterval(() => {
     Performance().startGameLoop = performance.now()
-    Performance().display = Number(localStorage.getItem("performance"))
-    localStorage.setItem("performance", 0)
+    // Performance().display = Number(localStorage.getItem("performance"))
+    // localStorage.setItem("performance", 0)
     if (Game().frame % 2 === 0) Performance().startFrame = performance.now()
     else Performance().endFrame = performance.now()
 
@@ -12,7 +12,7 @@ export function gameLoop() {
       Canvas().context.clearRect(0, 0, Canvas().width, Canvas().height)
       clearHeroTarget()
       Game().frame++
-      if (Game().frame % 60 === 0 || Game().frame === 5) cacheEntities()
+      if (Game().frame % 6 === 0) cacheEntities()
       Game().entities.forEach((entity) => {
         entity.setTarget()
         entity.setNextXY()

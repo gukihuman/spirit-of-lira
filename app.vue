@@ -13,19 +13,19 @@ div(
     transition
       Loading(v-if="!States().updateAllowed")
     transition(name="fast")
-      Pause(v-if="States().pause")
+      Pause(v-show="States().pause")
 
     Map
     Shadows
     transition(name="fast")
-      Ranges(v-if="States().ranges")
+      Ranges(v-show="States().ranges")
     Canvas
 
     transition(name="fast")
-      Dev(v-if="States().dev")
+      Dev(v-show="States().dev")
     Minimap
     ButtonFullscreen
-    MouseScreen(v-if="States().mouseScreen")
+    MouseScreen(v-show="States().mouseScreen")
 
 </template>
 <script setup>
@@ -69,7 +69,7 @@ onMounted(() => {
   //     )
   //   )
   // }
-  for (let i = 0; i < 70; i++) {
+  for (let i = 0; i < 80; i++) {
     Game().entitiesCache.push(
       new Creature(
         "goblin",

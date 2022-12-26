@@ -5,7 +5,7 @@ div(class='absolute left-[660px] w-fit text-3xl leading-8 \
   bg-gradient-to-r from-slate-500/70 to-slate-500/0')
   div(class='w-[220px] flex flex-col justify-end \
   rounded-md p-2 pt-1')
-    div(class='flex justify-between mx-auto w-full' )
+    div(class='opacity-60 flex justify-between mx-auto w-full' )
       div frame
       div {{ typeof frame === "number" ? frame.toFixed(1) : "..." }} 
     div(class='flex justify-between text-end mx-auto w-full' )
@@ -14,28 +14,28 @@ div(class='absolute left-[660px] w-fit text-3xl leading-8 \
     div(class='flex justify-between text-end mx-auto w-full' )
       div display
       p() {{ typeof display === "number" ? display.toFixed(1) : "..." }}
-    div(class='flex justify-between text-end mx-auto w-full' )
+    div(class='opacity-70 flex justify-between text-end mx-auto w-full' )
       div remain
       p() {{ typeof other === "number" ? other.toFixed(1) : "..." }}
 
   div(class="bg-amber-800/30 rounded-md p-2 pt-1")
-    div(class='text-end mx-auto' )
+    div(class='opacity-60 text-end mx-auto' )
       p {{ frameAvg ? frameAvg.toFixed(1) : "..."}} 
     div(class='text-end mx-auto' )
       p {{ gameLoopAvg ? gameLoopAvg.toFixed(1) : "..."}} 
     div(class='text-end mx-auto' )
       p {{ displayAvg ? displayAvg.toFixed(1) : "..."}} 
-    div(class='text-end mx-auto' )
+    div(class='opacity-70 text-end mx-auto' )
       p {{ otherAvg ? otherAvg.toFixed(1) : "..."}} 
   
   div(class="bg-red-800/30 rounded-md p-2 pt-1")
-    div(class='text-end mx-auto' )
+    div(class='opacity-60 text-end mx-auto' )
       p {{ typeof getFrameMax === "number" ? getFrameMax.toFixed(1) : "..."}} 
     div(class='text-end mx-auto' )
       p {{ typeof getGameLoopMax === "number" ? getGameLoopMax.toFixed(1) : "..."}} 
     div(class='text-end mx-auto' )
       p {{ typeof getDisplayMax === "number" ? getDisplayMax.toFixed(1) : "..."}} 
-    div(class='text-end mx-auto' )
+    div(class='opacity-70 text-end mx-auto' )
       p {{ typeof getOtherMax === "number" ? getOtherMax.toFixed(1) : "..."}} 
 
 

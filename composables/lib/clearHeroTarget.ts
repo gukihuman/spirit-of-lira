@@ -1,6 +1,6 @@
 export function clearHeroTarget() {
   Game().entities.forEach((entity) => {
-    if (entity.creature) {
+    if (entity.isCreature) {
       entity.isHeroTarget = false
     }
   })
