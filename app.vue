@@ -38,6 +38,7 @@ const background = ref(null)
 onMounted(() => {
   Ref().background = background // for fullscreen
 
+  loadLocalStorage()
   getCollision("start")
   if (useCookie("name").value) getGameData()
   else createUser()
@@ -56,16 +57,7 @@ onMounted(() => {
   mouseLoop()
 
   Game().entities.push(new Hero("hero", 1800, 6120))
-  // for (let i = 0; i < 30; i++) {
-  //   Game().entities.push(
-  //     new Creature(
-  //       "goblin",
-  //       2550 - 1100 * Math.random(),
-  //       5700 + 800 * Math.random()
-  //     )
-  //   )
-  // }
-  for (let i = 0; i < 80; i++) {
+  for (let i of l.range(80)) {
     Game().entitiesCache.push(
       new Creature(
         "goblin",
@@ -74,8 +66,6 @@ onMounted(() => {
       )
     )
   }
-  // generateEntity("hero", 1800, 6120)
-  // generateEntity("goblin", 2550, 6000)
 })
 </script>
 <style>

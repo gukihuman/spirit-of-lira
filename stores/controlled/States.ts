@@ -1,7 +1,7 @@
-export const States = defineStore("states", {
-  state: () => ({
-    // controlled by @/composables/keyboardAPI and others
-    dev: true,
+export const States = defineStore("states", () => {
+  // controlled by @/composables/keyboardAPI and others
+  const rawState = {
+    dev: false,
     pause: false,
     ranges: false,
     cursor: true,
@@ -12,5 +12,13 @@ export const States = defineStore("states", {
     gamepad: true,
     mouseScreen: false,
     mouseMove: false,
-  }),
+  }
+
+  const state = l.mapValues(rawState, (state) => ref(state))
+
+  watch(state.dev, (dev) => {
+    localStorage.setItem("dev", l.toString(dev))
+  })
+
+  return state
 })

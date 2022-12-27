@@ -18,15 +18,18 @@ font-mono text-3xl text-gray-300")
   DevBox(class="col-span-3 row-span-2 col-start-6 row-start-1")
     DevMonitor
   
-  DevButton(class="col-span-2 col-end-17 row-start-5" @click="equipBow()")
+  DevButton(class="col-span-2 col-end-15 row-start-5" @click="equipBow()")
     div equip bow
-
-  //- DevKeyboard(v-if="States().bobcat")
-  //- DevButtonEquip
+  
+  DevButton(class="col-span-2 col-end-17 row-start-5" @click="unequipBow()")
+    div unequip bow
 
 </template>
 <script setup lang="ts">
 function equipBow(): void {
   console.log("equipped")
+}
+function unequipBow(): void {
+  console.log("unequipped")
 }
 </script>
