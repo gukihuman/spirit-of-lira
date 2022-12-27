@@ -3,6 +3,9 @@
 div
   DevTitle
     div creature
+    div(class="cursor-pointer ml-8 text-2xl text-gray-300/80"
+      @click="Dev().selectedCreature = undefined") clear
+
   div(class="grid grid-rows-8 grid-cols-5 grid-flow-col gap-x-2 \
   text-2xl")
     DevLine(
