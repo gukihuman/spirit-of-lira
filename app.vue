@@ -10,19 +10,15 @@ div(
     :style="mainWindowStyle"
   )
     AntiFlicker
-    transition
-      Loading(v-if="!States().updateAllowed")
-    transition(name="fast")
-      Pause(v-show="States().pause")
+    transition: Loading(v-if="!States().updateAllowed")
+    transition(name="fast"): Pause(v-show="States().pause")
 
     Map
     Shadows
-    transition(name="fast")
-      Ranges(v-show="States().ranges")
+    transition(name="fast"): Ranges(v-show="States().ranges")
     Canvas
 
-    transition(name="fast")
-      Dev(v-show="States().dev")
+    transition(name="fast"): Dev(v-show="States().dev")
     Minimap
     ButtonFullscreen
     MouseScreen(v-show="States().mouseScreen")
@@ -55,7 +51,7 @@ onMounted(() => {
 
   setVisual()
 
-  gameLoop()
+  startGameLoop()
 
   mouseLoop()
 

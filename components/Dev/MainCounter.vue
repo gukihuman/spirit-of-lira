@@ -1,8 +1,7 @@
 <template lang="pug">
 
 div
-  DevTitle
-    div counter
+  DevTitle: div counter
   DevLine
     div frames
     div {{ Game().frame }}
