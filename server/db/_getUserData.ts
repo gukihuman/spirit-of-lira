@@ -3,9 +3,9 @@ export interface reqData {
   name: string
 }
 
-export const _getCollision = async (reqData: reqData) => {
+export const _getUserData = async (reqData: reqData) => {
   try {
-    const res = await prisma.map.findFirst({
+    const res = await prisma.user.findFirst({
       where: {
         name: reqData.name,
       },

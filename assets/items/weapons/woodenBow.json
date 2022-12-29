@@ -1,0 +1,469 @@
+{"frames": {
+
+"woodenBowAttackDelay0000.png":
+{
+	"frame": {"x":1,"y":193,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0001.png":
+{
+	"frame": {"x":1,"y":1,"w":125,"h":190},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":26,"w":125,"h":190},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0002.png":
+{
+	"frame": {"x":1,"y":193,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0003.png":
+{
+	"frame": {"x":1,"y":1,"w":125,"h":190},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":26,"w":125,"h":190},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0004.png":
+{
+	"frame": {"x":1,"y":193,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0005.png":
+{
+	"frame": {"x":1,"y":1,"w":125,"h":190},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":26,"w":125,"h":190},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0006.png":
+{
+	"frame": {"x":1,"y":193,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackDelay0007.png":
+{
+	"frame": {"x":1,"y":1,"w":125,"h":190},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":26,"w":125,"h":190},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0000.png":
+{
+	"frame": {"x":69,"y":1467,"w":48,"h":206},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":184,"y":19,"w":48,"h":206},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0001.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0002.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0003.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0004.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0005.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0006.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackRelease0007.png":
+{
+	"frame": {"x":1,"y":1467,"w":66,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":169,"y":30,"w":66,"h":198},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0000.png":
+{
+	"frame": {"x":1,"y":1271,"w":89,"h":194},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":168,"y":36,"w":89,"h":194},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0001.png":
+{
+	"frame": {"x":1,"y":1075,"w":92,"h":194},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":153,"y":29,"w":92,"h":194},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0002.png":
+{
+	"frame": {"x":1,"y":383,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0003.png":
+{
+	"frame": {"x":1,"y":573,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0004.png":
+{
+	"frame": {"x":1,"y":573,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0005.png":
+{
+	"frame": {"x":1,"y":573,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0006.png":
+{
+	"frame": {"x":1,"y":573,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowAttackSetup0007.png":
+{
+	"frame": {"x":1,"y":573,"w":125,"h":188},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":118,"y":27,"w":125,"h":188},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0000.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0001.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0002.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0003.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0004.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0005.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0006.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdle0007.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0000.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0001.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0002.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0003.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0004.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0005.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0006.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowIdleB0007.png":
+{
+	"frame": {"x":1,"y":763,"w":153,"h":109},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":89,"y":109,"w":153,"h":109},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0000.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0001.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0002.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0003.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0004.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0005.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0006.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleBIdle0007.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0000.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0001.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0002.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0003.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0004.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0005.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0006.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+},
+"woodenBowSwitchIdleIdleB0007.png":
+{
+	"frame": {"x":1,"y":918,"w":155,"h":107},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":88,"y":110,"w":155,"h":107},
+	"sourceSize": {"w":300,"h":300}
+}},
+"animations": {
+	"woodenBowAttackDelay": ["woodenBowAttackDelay0000.png","woodenBowAttackDelay0001.png","woodenBowAttackDelay0002.png","woodenBowAttackDelay0003.png","woodenBowAttackDelay0004.png","woodenBowAttackDelay0005.png","woodenBowAttackDelay0006.png","woodenBowAttackDelay0007.png"],
+	"woodenBowAttackRelease": ["woodenBowAttackRelease0000.png","woodenBowAttackRelease0001.png","woodenBowAttackRelease0002.png","woodenBowAttackRelease0003.png","woodenBowAttackRelease0004.png","woodenBowAttackRelease0005.png","woodenBowAttackRelease0006.png","woodenBowAttackRelease0007.png"],
+	"woodenBowAttackSetup": ["woodenBowAttackSetup0000.png","woodenBowAttackSetup0001.png","woodenBowAttackSetup0002.png","woodenBowAttackSetup0003.png","woodenBowAttackSetup0004.png","woodenBowAttackSetup0005.png","woodenBowAttackSetup0006.png","woodenBowAttackSetup0007.png"],
+	"woodenBowIdle": ["woodenBowIdle0000.png","woodenBowIdle0001.png","woodenBowIdle0002.png","woodenBowIdle0003.png","woodenBowIdle0004.png","woodenBowIdle0005.png","woodenBowIdle0006.png","woodenBowIdle0007.png"],
+	"woodenBowIdleB": ["woodenBowIdleB0000.png","woodenBowIdleB0001.png","woodenBowIdleB0002.png","woodenBowIdleB0003.png","woodenBowIdleB0004.png","woodenBowIdleB0005.png","woodenBowIdleB0006.png","woodenBowIdleB0007.png"],
+	"woodenBowSwitchIdleBIdle": ["woodenBowSwitchIdleBIdle0000.png","woodenBowSwitchIdleBIdle0001.png","woodenBowSwitchIdleBIdle0002.png","woodenBowSwitchIdleBIdle0003.png","woodenBowSwitchIdleBIdle0004.png","woodenBowSwitchIdleBIdle0005.png","woodenBowSwitchIdleBIdle0006.png","woodenBowSwitchIdleBIdle0007.png"],
+	"woodenBowSwitchIdleIdleB": ["woodenBowSwitchIdleIdleB0000.png","woodenBowSwitchIdleIdleB0001.png","woodenBowSwitchIdleIdleB0002.png","woodenBowSwitchIdleIdleB0003.png","woodenBowSwitchIdleIdleB0004.png","woodenBowSwitchIdleIdleB0005.png","woodenBowSwitchIdleIdleB0006.png","woodenBowSwitchIdleIdleB0007.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "woodenBow.webp",
+	"format": "RGBA8888",
+	"size": {"w":127,"h":1674},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:0617634cd84b6d017486c82feb5fb67d:90b1bcaad82971998fa271a64bc146f1:8525d89c019d750141c2f9b30566f747$"
+}
+}

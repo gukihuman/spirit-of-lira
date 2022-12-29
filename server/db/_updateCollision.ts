@@ -1,19 +1,26 @@
 import { prisma } from "."
+export interface reqData {
+  name: string
+  accessKey: string
+  collision: string
+}
 
-export const _updateCollision = async (reqData) => {
+export const _updateCollision = async (reqData: reqData) => {
   if (process.env.ACCESS_KEY === reqData.accessKey) {
-    const res = await prisma.map.upsert({
-      where: {
-        name: reqData.name,
-      },
-      update: {
-        collision: reqData.collision,
-      },
-      create: {
-        name: reqData.name,
-        collision: reqData.collision,
-      },
-    })
-    return res
+    try {
+      const res = await prisma.map.update({
+        where: {
+          name: reqData.name,
+        },
+        data: {
+          collision: reqData.collision,
+        },
+      })
+      return res
+    } catch (err) {
+      return err
+    }
+  } else {
+    return "no access"
   }
 }

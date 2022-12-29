@@ -21,7 +21,8 @@
     "lodash": "^4.17.21",
     "nuxt": "^3.0.0",
     "pinia": "^2.0.27",
-    "prisma": "^4.7.1",
+    "pixi.js": "^7.0.5",
+    "prisma": "^4.8.0",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "unique-names-generator": "^4.7.1",
@@ -29,6 +30,6 @@
     "vitest": "^0.26.2"
   },
   "dependencies": {
-    "@prisma/client": "^4.7.1"
+    "@prisma/client": "^4.8.0"
   }
 }
