@@ -4,29 +4,29 @@ div(
   class="h-screen w-screen bg-slate-800 \
   flex items-center justify-center"
 )
-  div(class="bg-gray-700 absolute" :style="MainWindowStyle")
+  div(class="bg-gray-700 absolute" :style="viewportStyle")
     transition: Loading(v-if="!States().overwriteDataAllowed" class="z-50")
     Display
 
 </template>
 <script setup>
-let MainWindowStyle = computed(() => {
+let viewportStyle = computed(() => {
   return {
     width: Settings().displayWidth + "px",
     height: Settings().displayHeight + "px",
-    scale: MainWindow().scale,
+    scale: Viewport().scale,
     // 📜 cursor: States().cursor ? "auto" : "none",
   }
 })
 const background = ref(null)
 
 onMounted(() => {
-  Ref().background = background // for fullscreen
-  MainWindowSetSize()
-  addEventListener("resize", () => {
-    MainWindowSetSize()
-  })
-
+  Refs().background = background // for fullscreen
+  setViewportSize()
+  addEventListener(
+    "resize",
+    l.debounce(() => setViewportSize(), 20)
+  )
   // 📜 move to dev panel
   // Info().maps.forEach((map) => {
   //   createMapIfNotExist(map, useCookie("accessKey").value)
@@ -37,6 +37,8 @@ onMounted(() => {
 
   // States().overwriteDataAllowed = true after these async functions
   useCookie("name").value ? getUserData() : createUser()
+
+  watchGamepadConnection()
 })
 </script>
 <style>

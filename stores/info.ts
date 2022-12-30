@@ -1,5 +1,5 @@
 declare global {
-  export interface ItemInfo {
+  interface ItemInfo {
     name: string
   }
   interface MapInfo {

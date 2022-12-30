@@ -1,6 +1,5 @@
-export const Ref = defineStore("ref", {
+export const Refs = defineStore("ref", {
   state: () => ({
-    // controlled by app
     background: null,
     mouseScreen: null,
   }),

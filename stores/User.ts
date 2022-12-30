@@ -8,6 +8,9 @@ interface State {
 }
 export const User = defineStore("user", {
   state: (): State => ({
-    data: {},
+    data: {
+      hero: {},
+      settings: {},
+    },
   }),
 })

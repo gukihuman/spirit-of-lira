@@ -3,7 +3,7 @@ const rawStates = {
   // updateAllowed: false,
 }
 declare global {
-  type States = keyof typeof rawStates
+  type UiStates = keyof typeof rawStates
 }
 
 export const UiStates = defineStore("states", () => {

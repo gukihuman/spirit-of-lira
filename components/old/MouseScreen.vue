@@ -7,7 +7,7 @@ div(
 <script setup lang="ts">
 const mouseScreen = ref(null)
 onMounted(() => {
-  Ref().mouseScreen = mouseScreen
+  Refs().mouseScreen = mouseScreen
   mouseListener()
 })
 </script>

@@ -7,10 +7,10 @@ export function mapEdit() {
   // edit
   let x = Math.floor(hero().x / 120)
   let y = Math.floor(hero().y / 120)
-  if (Gamepad().buttons.find((key) => key === "A")) {
+  if (Pad().buttons.find((key) => key === "A")) {
     Map().collision[y][x] = true
   }
-  if (Gamepad().buttons.find((key) => key === "B")) {
+  if (Pad().buttons.find((key) => key === "B")) {
     Map().collision[y][x] = false
   }
 

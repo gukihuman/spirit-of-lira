@@ -4,12 +4,10 @@ interface State {
   buttons: string[]
   buttonsCache: string[]
   axes: number[]
-  states: {}
 }
 
-export const Gamepad = defineStore("gamepad", {
+export const Pad = defineStore("gamepad", {
   state: (): State => ({
-    // controlled by gamepadAPI
     buttonList: [
       "A",
       "B",
@@ -32,9 +30,5 @@ export const Gamepad = defineStore("gamepad", {
     buttons: [],
     buttonsCache: [],
     axes: [0, 0, 0, 0],
-    states: {
-      ranges: ["LT", true],
-      pause: ["Start", false],
-    },
   }),
 })

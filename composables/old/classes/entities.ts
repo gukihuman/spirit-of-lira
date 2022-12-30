@@ -175,18 +175,18 @@ export class Hero extends Creature {
     this.prevY = this.y
     // LS x
     if (
-      Gamepad().axes[0] <= -1 * Settings().deadZone ||
-      Gamepad().axes[0] >= Settings().deadZone
+      Pad().axes[0] <= -1 * Settings().deadZone ||
+      Pad().axes[0] >= Settings().deadZone
     ) {
-      this.x += (this.speed / 6) * Gamepad().axes[0]
+      this.x += (this.speed / 6) * Pad().axes[0]
     }
 
     // LS y
     if (
-      Gamepad().axes[1] <= -1 * Settings().deadZone ||
-      Gamepad().axes[1] >= Settings().deadZone
+      Pad().axes[1] <= -1 * Settings().deadZone ||
+      Pad().axes[1] >= Settings().deadZone
     ) {
-      this.y += (this.speed / 6) * Gamepad().axes[1]
+      this.y += (this.speed / 6) * Pad().axes[1]
     }
     if (States().mouseScreen && States().mouseMove) {
       const angle = Math.atan2(this.y - Mouse().y, this.x - Mouse().x)
