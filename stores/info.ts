@@ -2,17 +2,17 @@ declare global {
   export interface ItemInfo {
     name: string
   }
-}
-interface MapInfo {
-  name: string
-  place: [number, number]
-  collision: (0 | 1 | 2 | 3)[]
+  interface MapInfo {
+    name: string
+    place: [number, number]
+    collision: (0 | 1 | 2 | 3)[]
+  }
 }
 interface State {
   items: ItemInfo[]
   maps: MapInfo[]
 }
-export const info = defineStore("info", {
+export const Info = defineStore("info", {
   state: (): State => ({
     items: [],
     maps: [

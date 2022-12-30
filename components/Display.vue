@@ -12,10 +12,10 @@ const display: Ref = ref(null)
 onMounted((): void => {
   hookPixiDev(window, PIXI) // chrome dev extension
 
-  p().app = new PIXI.Application({
+  Pixi().app = new PIXI.Application({
     width: Settings().displayWidth,
     height: Settings().displayHeight,
   })
-  display.value.appendChild(p().app?.view)
+  display.value.appendChild(Pixi().app?.view)
 })
 </script>

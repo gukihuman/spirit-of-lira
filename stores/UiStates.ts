@@ -2,7 +2,9 @@ const rawStates = {
   // devAccess: false,
   // updateAllowed: false,
 }
-export type States = keyof typeof rawStates
+declare global {
+  type States = keyof typeof rawStates
+}
 
 export const UiStates = defineStore("states", () => {
   const state = l.mapValues(rawStates, (state) => ref(state))

@@ -1,12 +1,12 @@
 import { prisma } from "."
-export interface reqData {
+interface reqData {
   name: string
   accessKey: string
   collision: string
 }
 export const _createMapIfNotExist = async (reqData: reqData) => {
   if (process.env.ACCESS_KEY === reqData.accessKey) {
-    const nameFound = await prisma.user.findFirst({
+    const nameFound = await prisma.map.findFirst({
       where: {
         name: reqData.name,
       },
