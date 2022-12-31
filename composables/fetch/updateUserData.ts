@@ -8,12 +8,12 @@ export async function updateUserData(): Promise<void> {
       },
     })
     if (rawRes.data.value?.name) {
-      console.log(timeNow() + ` ⏫ updating user data: updated`)
+      console.log(timeNow() + ` ⏫ update user data: updated`)
     } else {
       // value is an error
-      console.log(timeNow() + ` ✘ updating user data: ` + rawRes.data.value)
+      console.log(timeNow() + ` ❗ update user data: ` + rawRes.data.value)
     }
   } else {
-    console.log(timeNow() + ` ✘ updating user data: overwrite not allowed`)
+    console.log(timeNow() + ` ❗ update user data: overwrite not allowed`)
   }
 }

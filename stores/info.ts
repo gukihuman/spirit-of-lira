@@ -1,46 +1,48 @@
 declare global {
-  interface ItemInfo {
-    name: string
-  }
+  interface ItemInfo {}
   interface MapInfo {
-    name: string
     place: [number, number]
     collision: (0 | 1 | 2 | 3)[]
   }
 }
 interface State {
-  items: ItemInfo[]
-  maps: MapInfo[]
+  hero: {
+    [index: string]: any
+  }
+  items: {
+    [index: string]: ItemInfo
+  }
+  maps: {
+    [index: string]: MapInfo
+  }
 }
 export const Info = defineStore("info", {
   state: (): State => ({
-    items: [],
-    maps: [
-      {
-        name: "greenForest",
+    hero: {
+      json: new URL("/assets/hero/hero.json", import.meta.url).href,
+    },
+    items: {},
+    maps: {
+      greenForest: {
         place: [0, 0],
         collision: new Array(60 * 60).fill(0),
       },
-      {
-        name: "yellowForest",
+      yellowForest: {
         place: [1, 0],
         collision: new Array(60 * 60).fill(0),
       },
-      {
-        name: "violetForest",
+      violetForest: {
         place: [0, -1],
         collision: new Array(60 * 60).fill(0),
       },
-      {
-        name: "redForest",
+      redForest: {
         place: [-1, 0],
         collision: new Array(60 * 60).fill(0),
       },
-      {
-        name: "blueForest",
+      blueForest: {
         place: [-1, -1],
         collision: new Array(60 * 60).fill(0),
       },
-    ],
+    },
   }),
 })

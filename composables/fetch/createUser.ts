@@ -6,10 +6,10 @@ export async function createUser(): Promise<any> {
     setInitialUserData()
     States().overwriteDataAllowed = true
     setTicker()
-    console.log(timeNow() + "⏬ creating a user: user is created")
+    console.log(timeNow() + " ⏬ create a user: user is created")
   } else {
     // if no name then value is an error
-    console.log(timeNow() + " ✘ creating a user: " + rawRes.data.value)
+    console.log(timeNow() + " ❗ create a user: " + rawRes.data.value)
   }
   return
 }

@@ -1,8 +1,10 @@
 import type { Application } from "pixi.js"
+import * as PIXI from "pixi.js"
 
 interface State {
-  app: Application | null
-  assets: {
+  ticks: number
+  app: Application
+  containers: {
     [index: string]: any
   }
   sprites: {
@@ -11,8 +13,19 @@ interface State {
 }
 export const Pixi = defineStore("pixi", {
   state: (): State => ({
-    app: null,
-    assets: {},
-    sprites: {},
+    ticks: 0,
+    app: new PIXI.Application({
+      width: Settings().displayWidth,
+      height: Settings().displayHeight,
+    }),
+    containers: {
+      map: new PIXI.Container(),
+      sortable: new PIXI.Container(),
+      hero: new PIXI.Container(),
+    },
+    sprites: {
+      hero: {},
+      maps: {},
+    },
   }),
 })

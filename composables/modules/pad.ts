@@ -17,15 +17,11 @@ function setAxesAndButtons() {
     Pad().buttons = pressed
   }
 }
-export function watchGamepadConnection() {
-  addEventListener("gamepadconnected", () => {
-    Pad().connected = true
-  })
-  addEventListener("gamepaddisconnected", () => {
-    Pad().connected = false
-  })
+export function watchPadConnection() {
+  addEventListener("gamepadconnected", Listeners().padConnect)
+  addEventListener("gamepaddisconnected", Listeners().padDisconnect)
 }
-export function gamepadUpdate() {
+export function padUpdate() {
   setAxesAndButtons()
 
   // 📜 ui states control

@@ -5,8 +5,8 @@ div(
   flex items-center justify-center"
 )
   div(class="bg-gray-700 absolute" :style="viewportStyle")
-    transition: Loading(v-if="!States().overwriteDataAllowed" class="z-50")
-    Display
+    transition: Loading(v-if="!States().allLoaded" class="z-50")
+    Viewport
 
 </template>
 <script setup>
@@ -15,7 +15,7 @@ let viewportStyle = computed(() => {
     width: Settings().displayWidth + "px",
     height: Settings().displayHeight + "px",
     scale: Viewport().scale,
-    // 📜 cursor: States().cursor ? "auto" : "none",
+    cursor: States().cursor ? "auto" : "none",
   }
 })
 const background = ref(null)
@@ -23,22 +23,20 @@ const background = ref(null)
 onMounted(() => {
   Refs().background = background // for fullscreen
   setViewportSize()
-  addEventListener(
-    "resize",
-    l.debounce(() => setViewportSize(), 20)
-  )
+  addEventListener("resize", Listeners().resize)
+
   // 📜 move to dev panel
-  // Info().maps.forEach((map) => {
-  //   createMapIfNotExist(map, useCookie("accessKey").value)
+  // l.forOwn(Info().maps, (key, value) => {
+  //   createMapIfNotExist(key, value, useCookie("accessKey").value)
   // })
 
   if (useCookie("name").value == "lime_full_bobcat") States().devAccess = true
   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
 
-  // States().overwriteDataAllowed = true after these async functions
+  // these async functions also do => setTicker()
   useCookie("name").value ? getUserData() : createUser()
 
-  watchGamepadConnection()
+  watchPadConnection()
 })
 </script>
 <style>

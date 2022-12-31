@@ -17,13 +17,13 @@ export async function getUserData(): Promise<any> {
 
     States().overwriteDataAllowed = true
     setTicker()
-    console.log(timeNow() + " ⏬ getting user data: data received")
+    console.log(timeNow() + " ⏬ get user data: data received")
   } else if (rawRes.data.value === null) {
     // db not found current name => cookie overwrite is needed
     createUser()
   } else {
     // value is an error
-    console.log(timeNow() + " ✘ getting user data: " + rawRes.data.value)
+    console.log(timeNow() + " ❗ get user data: " + rawRes.data.value)
   }
   return
 }
