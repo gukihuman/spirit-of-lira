@@ -1,4 +1,4 @@
-export const Mouse = defineStore("mouse", {
+export const Mousee = defineStore("mouse", {
   state: () => ({
     x: 0,
     y: 0,

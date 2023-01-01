@@ -4,7 +4,7 @@ interface Res {
 }
 export async function createMapIfNotExist(
   name: string,
-  info: MapInfo,
+  info: any,
   accessKey: string
 ): Promise<void> {
   const rawRes: Res | any = await useFetch("api/createMapIfNotExist", {

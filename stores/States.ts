@@ -3,6 +3,7 @@ interface State {
   overwriteDataAllowed: boolean
   cursor: boolean
   allLoaded: boolean
+  mouseMoving: boolean
 }
 export const States = defineStore("states", {
   state: (): State => ({
@@ -10,5 +11,6 @@ export const States = defineStore("states", {
     overwriteDataAllowed: false,
     cursor: true,
     allLoaded: false,
+    mouseMoving: false,
   }),
 })

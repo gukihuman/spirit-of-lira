@@ -5,7 +5,8 @@ div(
   flex items-center justify-center"
 )
   div(class="bg-gray-700 absolute" :style="viewportStyle")
-    transition: Loading(v-if="!States().allLoaded" class="z-50")
+    MouseHandler(v-if="States().mouseMoving" class="z-50")
+    transition: Loading(v-if="!States().allLoaded" class="z-40")
     Viewport
 
 </template>
@@ -24,6 +25,7 @@ onMounted(() => {
   Refs().background = background // for fullscreen
   setViewportSize()
   addEventListener("resize", Listeners().resize)
+  addEventListener("mousemove", Listeners().mouseMove)
 
   // 📜 move to dev panel
   // l.forOwn(Info().maps, (key, value) => {

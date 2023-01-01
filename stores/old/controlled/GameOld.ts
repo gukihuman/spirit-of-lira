@@ -1,4 +1,4 @@
-export const Game = defineStore("game", {
+export const GameOld = defineStore("game", {
   state: () => ({
     frame: 0,
     data: {},

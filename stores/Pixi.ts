@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js"
 interface State {
   ticks: number
   app: Application
-  containers: {
+  cons: {
     [index: string]: any
   }
   sprites: {
@@ -18,7 +18,7 @@ export const Pixi = defineStore("pixi", {
       width: Settings().displayWidth,
       height: Settings().displayHeight,
     }),
-    containers: {
+    cons: {
       map: new PIXI.Container(),
       sortable: new PIXI.Container(),
       hero: new PIXI.Container(),

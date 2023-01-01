@@ -21,5 +21,21 @@ export const Listeners = defineStore("listeners", {
       States().cursor = true
       Listeners()._hideCursor()
     },
+    _stopMouseMove: l.debounce(() => {
+      States().mouseMoving = false
+    }, 10),
+    mouseMove: () => {
+      States().mouseMoving = true
+      Listeners()._stopMouseMove()
+    },
+    mouseUpdate: (e: any) => {
+      Mouse().x = e.offsetX - Settings().displayWidth / 2 + User().data.hero.x
+      Mouse().y = e.offsetY - Settings().displayHeight / 2 + User().data.hero.y
+      Mouse().angleToHero = Math.atan2(
+        User().data.hero.y - Mouse().y,
+        User().data.hero.x - Mouse().x
+      )
+      Mouse().distanceToHero = findDistance(User().data.hero, Mouse())
+    },
   }),
 })
