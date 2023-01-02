@@ -1,11 +1,10 @@
-import { _updateUserData } from "../db/_updateUserData"
+import { _fetchUserData } from "../db/_fetchUserData"
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const reqData = {
     name: body.name,
-    userData: body.userData,
   }
-  const res = await _updateUserData(reqData)
+  const res = await _fetchUserData(reqData)
   return res
 })

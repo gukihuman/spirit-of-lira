@@ -15,6 +15,6 @@ export function mapEdit() {
   }
 
   if (Game().frame % 60 === 0) {
-    updateCollision("start", Map().collision)
+    pushCollision("start", Map().collision)
   }
 }

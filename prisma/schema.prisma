@@ -14,8 +14,8 @@ model User {
   userData String
 }
 
-model Map {
+model Collision {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String @unique
-  collision String
+  collisionData String
 }

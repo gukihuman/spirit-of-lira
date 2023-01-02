@@ -1,19 +1,16 @@
 import { prisma } from "."
 export interface reqData {
   name: string
-  userData: string
 }
 
-export const _updateUserData = async (reqData: reqData) => {
+export const _fetchUserData = async (reqData: reqData) => {
   try {
-    const res = await prisma.user.update({
+    let res: any = await prisma.user.findFirst({
       where: {
         name: reqData.name,
       },
-      data: {
-        userData: reqData.userData,
-      },
     })
+    res = res || "not found"
     return res
   } catch (err) {
     return err

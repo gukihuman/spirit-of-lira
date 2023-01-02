@@ -1,12 +1,12 @@
-import { _updateCollision } from "../db/_updateCollision"
+import { _pushCollision } from "../db/_pushCollision"
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const reqData = {
     name: body.name,
     accessKey: body.accessKey,
-    collision: body.collision,
+    collisionData: body.collisionData,
   }
-  const res = await _updateCollision(reqData)
+  const res = await _pushCollision(reqData)
   return res
 })

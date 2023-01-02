@@ -2,8 +2,8 @@ interface Res {
   name: string
   userData: string
 }
-export async function getUserData(): Promise<any> {
-  const rawRes: Res | any = await useFetch("api/getUserData", {
+export async function fetchUserData(): Promise<any> {
+  const rawRes: Res | any = await useFetch("api/fetchUserData", {
     method: "POST",
     body: {
       name: useCookie("name").value,
@@ -17,13 +17,13 @@ export async function getUserData(): Promise<any> {
 
     States().overwriteDataAllowed = true
     setTicker()
-    console.log(timeNow() + " ⏬ get user data: data received")
+    console.log(timeNow() + " ⏬ fetch user data: data received")
   } else if (rawRes.data.value === null) {
     // db not found current name => cookie overwrite is needed
     createUser()
   } else {
     // value is an error
-    console.log(timeNow() + " ❗ get user data: " + rawRes.data.value)
+    console.log(timeNow() + " ❗ fetch user data: " + rawRes.data.value)
   }
   return
 }

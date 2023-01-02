@@ -27,6 +27,6 @@ function gameLoop(): void {
     setCamera()
     Game().entities.sort((a, b) => a.y - b.y)
     if (States().mapEdit && States().devAccess) mapEdit()
-    if (Game().frame % 300 == 0) updateUserData()
+    if (Game().frame % 300 == 0) pushUserData()
   }
 }

@@ -36,7 +36,7 @@ onMounted(() => {
   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
 
   // these async functions also do => setTicker()
-  useCookie("name").value ? getUserData() : createUser()
+  useCookie("name").value ? fetchUserData() : createUser()
 
   watchPadConnection()
 })

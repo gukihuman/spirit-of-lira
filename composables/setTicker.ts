@@ -14,6 +14,8 @@ async function loadHeroSprites(): Promise<void> {
     Pixi().sprites.hero[key].animationSpeed = 1 / 8
     Pixi().sprites.hero[key].play()
     Pixi().sprites.hero[key].visible = false
+    Pixi().cons.hero.x = Settings().displayWidth / 2
+    Pixi().cons.hero.y = Settings().displayHeight / 2
     Pixi().cons.hero.addChild(Pixi().sprites.hero[key])
   })
 }
@@ -52,12 +54,8 @@ export async function setTicker(): Promise<void> {
     padUpdate()
     User().data.hero.move()
     if (eachSec(1, { random: true })) updateMaps()
-    l.keys(Pixi().sprites.maps).forEach((name: string) => {
-      setMapOffset(name)
-    })
+    l.keys(Pixi().sprites.maps).forEach((name: string) => setMapOffset(name))
     Pixi().sprites.hero["idle"].visible = true
-    Pixi().cons.hero.x = Settings().displayWidth / 2
-    Pixi().cons.hero.y = Settings().displayHeight / 2
 
     Pixi().ticks++
   })
