@@ -12,20 +12,26 @@ class Hero {
   }
 
   move() {
-    // 📜 make it work while button is pressed
-    let distanceRatio = Mouse().distanceToHero / 350
-    distanceRatio > 1 ? (distanceRatio = 1) : {}
-    if (Mouse().distanceToHero > 50) {
-      this.x +=
-        ((this.speed * 10) / Pixi().app.ticker.FPS) *
-        distanceRatio *
-        Math.cos(Mouse().angleToHero) *
-        -1
-      this.y +=
-        ((this.speed * 10) / Pixi().app.ticker.FPS) *
-        distanceRatio *
-        Math.sin(Mouse().angleToHero) *
-        -1
+    // mouse
+    if (
+      Keyboard().buttons.includes(
+        User().data.settings.control.keyMouse.heroMove
+      )
+    ) {
+      let distanceRatio = Mouse().distanceToHero / 350
+      distanceRatio > 1 ? (distanceRatio = 1) : {}
+      if (Mouse().distanceToHero > 50) {
+        this.x +=
+          ((this.speed * 10) / Pixi().app.ticker.FPS) *
+          distanceRatio *
+          Math.cos(Mouse().angleToHero) *
+          -1
+        this.y +=
+          ((this.speed * 10) / Pixi().app.ticker.FPS) *
+          distanceRatio *
+          Math.sin(Mouse().angleToHero) *
+          -1
+      }
     }
   }
 }

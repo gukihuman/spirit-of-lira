@@ -1,4 +1,4 @@
-export const Keyboard = defineStore("keyboard", {
+export const KeyboardOld = defineStore("keyboard", {
   state: () => ({
     states: {
       dev: "o",

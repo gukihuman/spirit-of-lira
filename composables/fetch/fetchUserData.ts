@@ -2,7 +2,7 @@ interface Res {
   name: string
   userData: string
 }
-export async function fetchUserData(): Promise<any> {
+export async function fetchUserData(): Promise<undefined> {
   const rawRes: Res | any = await useFetch("api/fetchUserData", {
     method: "POST",
     body: {

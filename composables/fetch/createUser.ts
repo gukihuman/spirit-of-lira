@@ -1,4 +1,4 @@
-export async function createUser(): Promise<any> {
+export async function createUser(): Promise<undefined> {
   const rawRes: any = await useFetch("api/createUser")
 
   if (rawRes.data.value?.name) {

@@ -26,16 +26,13 @@ onMounted(() => {
   setViewportSize()
   addEventListener("resize", Listeners().resize)
   addEventListener("mousemove", Listeners().mouseMove)
-
-  // 📜 move to dev panel
-  // l.forOwn(Info().maps, (key, value) => {
-  //   createMapIfNotExist(key, value, useCookie("accessKey").value)
-  // })
+  addEventListener("keydown", Listeners().keyDown)
+  addEventListener("keyup", Listeners().keyUp)
 
   if (useCookie("name").value == "lime_full_bobcat") States().devAccess = true
   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
 
-  // these async functions also do => setTicker()
+  // 📜 take out setTicker() frem these async functions to this main scope
   useCookie("name").value ? fetchUserData() : createUser()
 
   watchPadConnection()

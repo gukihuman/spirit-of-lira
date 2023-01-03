@@ -70,7 +70,7 @@ class Collision {
     const res: any = await useFetch("api/fetchCollision", {
       method: "POST",
       body: {
-        name: "Collision",
+        name: "collision",
       },
     })
     if (res.data.value?.name) {
@@ -92,4 +92,35 @@ class Collision {
     this.extendLengthIfNeeded(this.QIV, this.targetLengthQIV, "QIV")
     return
   }
+  async push(): Promise<undefined> {
+    if (States().overwriteDataAllowed) {
+      const dataTransfer: dataTransfer = {
+        QI: this.QI,
+        QII: this.QII,
+        QIII: this.QIII,
+        QIV: this.QIV,
+      }
+      const res: any = await useFetch("api/pushCollision", {
+        method: "POST",
+        body: {
+          name: "collision",
+          accessKey: useCookie("accessKey").value,
+          collisionData: JSON.stringify(dataTransfer),
+        },
+      })
+      if (res.data.value?.name) {
+        console.log(timeNow() + " ⏫ push collision: updated")
+      } else {
+        // value is an error
+        console.log(timeNow() + " ❗ push collision: " + res.data.value)
+      }
+    } else {
+      // only after initial fetch
+      console.log(
+        timeNow() + ` ❗ push ${name} collision: overwrite not allowed`
+      )
+    }
+    return
+  }
 }
+export const collision = new Collision()

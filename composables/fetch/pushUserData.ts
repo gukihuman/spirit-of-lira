@@ -1,4 +1,4 @@
-export async function pushUserData(): Promise<void> {
+export async function pushUserData(): Promise<undefined> {
   if (States().overwriteDataAllowed) {
     const rawRes: any = await useFetch("api/pushUserData", {
       method: "POST",
@@ -17,4 +17,5 @@ export async function pushUserData(): Promise<void> {
     // only after initial fetch
     console.log(timeNow() + ` ❗ push user data: overwrite not allowed`)
   }
+  return
 }

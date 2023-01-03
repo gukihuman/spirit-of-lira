@@ -3,7 +3,7 @@ interface State {
 }
 export const Listeners = defineStore("listeners", {
   state: (): State => ({
-    resize: l.debounce(() => setViewportSize(), 20),
+    resize: l.debounce(() => setViewportSize(), 5),
     padConnect: () => {
       Pad().connected = true
       Listeners()._hideCursor()
@@ -36,6 +36,17 @@ export const Listeners = defineStore("listeners", {
         User().data.hero.x - Mouse().x
       )
       Mouse().distanceToHero = findDistance(User().data.hero, Mouse())
+    },
+    _keyClear: l.debounce(() => {
+      Keyboard().buttons = []
+    }, 500),
+    keyDown: (event: any) => {
+      if (!Keyboard().buttons.includes(event.key))
+        Keyboard().buttons.push(event.key)
+      Listeners()._keyClear()
+    },
+    keyUp: (event: any) => {
+      l.remove(Keyboard().buttons, (key) => key === event.key)
     },
   }),
 })
