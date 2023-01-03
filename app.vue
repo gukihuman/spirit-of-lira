@@ -22,20 +22,25 @@ let viewportStyle = computed(() => {
 const background = ref(null)
 
 onMounted(() => {
+  function listeners() {
+    addEventListener("resize", Listeners().resize)
+    addEventListener("gamepadconnected", Listeners().padConnect)
+    addEventListener("gamepaddisconnected", Listeners().padDisconnect)
+    addEventListener("mousemove", Listeners().mouseMove)
+    addEventListener("mousedown", Listeners().mouseDown)
+    addEventListener("mouseup", Listeners().mouseUp)
+    addEventListener("keydown", Listeners().keyDown)
+    addEventListener("keyup", Listeners().keyUp)
+  }
   Refs().background = background // for fullscreen
   setViewportSize()
-  addEventListener("resize", Listeners().resize)
-  addEventListener("mousemove", Listeners().mouseMove)
-  addEventListener("keydown", Listeners().keyDown)
-  addEventListener("keyup", Listeners().keyUp)
+  listeners()
 
   if (useCookie("name").value == "lime_full_bobcat") States().devAccess = true
   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
 
   // 📜 take out setTicker() frem these async functions to this main scope
   useCookie("name").value ? fetchUserData() : createUser()
-
-  watchPadConnection()
 })
 </script>
 <style>

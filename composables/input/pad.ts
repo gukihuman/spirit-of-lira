@@ -17,10 +17,6 @@ function setAxesAndButtons() {
     Pad().buttons = pressed
   }
 }
-export function watchPadConnection() {
-  addEventListener("gamepadconnected", Listeners().padConnect)
-  addEventListener("gamepaddisconnected", Listeners().padDisconnect)
-}
 export function padUpdate() {
   setAxesAndButtons()
 

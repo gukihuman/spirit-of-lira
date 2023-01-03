@@ -9,8 +9,13 @@ export function setInitialUserData(): void {
             // 📜 menu: ["Start", false],
           },
         },
-        keyMouse: {
+        keyboard: {
           heroMove: "o",
+          autoHeroMove: "i",
+          fullscreen: "a",
+        },
+        mouse: {
+          heroMove: 0,
         },
       },
     },

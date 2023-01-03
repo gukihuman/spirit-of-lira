@@ -23,7 +23,7 @@ export const Listeners = defineStore("listeners", {
     },
     _stopMouseMove: l.debounce(() => {
       States().mouseMoving = false
-    }, 10),
+    }, 50),
     mouseMove: () => {
       States().mouseMoving = true
       Listeners()._stopMouseMove()
@@ -37,16 +37,31 @@ export const Listeners = defineStore("listeners", {
       )
       Mouse().distanceToHero = findDistance(User().data.hero, Mouse())
     },
+    mouseDown: (e: any) => {
+      if (!Mouse().buttons.includes(e.button)) Mouse().buttons.push(e.button)
+    },
+    mouseUp: (e: any) => {
+      l.remove(Mouse().buttons, (key) => key === e.button)
+    },
     _keyClear: l.debounce(() => {
       Keyboard().buttons = []
     }, 500),
-    keyDown: (event: any) => {
-      if (!Keyboard().buttons.includes(event.key))
-        Keyboard().buttons.push(event.key)
+    keyDown: (e: any) => {
+      if (!Keyboard().buttons.includes(e.key)) {
+        Keyboard().buttons.push(e.key)
+        l.keys(States()).forEach((state: string) => {
+          if (
+            l.keys(User().data.settings.control.keyboard).includes(state) &&
+            User().data.settings.control.keyboard[state] === e.key
+          ) {
+            States()[state] = !States()[state]
+          }
+        })
+      }
       Listeners()._keyClear()
     },
-    keyUp: (event: any) => {
-      l.remove(Keyboard().buttons, (key) => key === event.key)
+    keyUp: (e: any) => {
+      l.remove(Keyboard().buttons, (key) => key === e.key)
     },
   }),
 })

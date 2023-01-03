@@ -4,7 +4,6 @@ interface State {
   angleToHero: number
   distanceToHero: number
   buttons: string[]
-  buttonsCache: string[]
 }
 
 export const Mouse = defineStore("mouse", {
@@ -14,6 +13,5 @@ export const Mouse = defineStore("mouse", {
     angleToHero: 0,
     distanceToHero: 0,
     buttons: [],
-    buttonsCache: [],
   }),
 })
