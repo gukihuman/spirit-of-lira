@@ -4,26 +4,19 @@ div(
   class="h-screen w-screen bg-slate-800 \
   flex items-center justify-center"
 )
-  div(class="bg-gray-700 absolute" :style="viewportStyle")
-    MouseHandler(v-if="States().mouseMoving" class="z-50")
-    transition: Loading(v-if="!States().allLoaded" class="z-40")
+  Display
     Viewport
+
+    transition: Loading(v-if="!States().allLoaded" class="z-50")
 
 </template>
 <script setup>
-let viewportStyle = computed(() => {
-  return {
-    width: Settings().displayWidth + "px",
-    height: Settings().displayHeight + "px",
-    scale: Viewport().scale,
-    cursor: States().cursor ? "auto" : "none",
-  }
-})
 const background = ref(null)
 
 onMounted(() => {
+  //
+  // 📜 move it to input controller
   function listeners() {
-    addEventListener("resize", Listeners().resize)
     addEventListener("gamepadconnected", Listeners().padConnect)
     addEventListener("gamepaddisconnected", Listeners().padDisconnect)
     addEventListener("mousemove", Listeners().mouseMove)
@@ -32,15 +25,10 @@ onMounted(() => {
     addEventListener("keydown", Listeners().keyDown)
     addEventListener("keyup", Listeners().keyUp)
   }
+
   Refs().background = background // for fullscreen
-  setViewportSize()
-  listeners()
 
-  if (useCookie("name").value == "lime_full_bobcat") States().devAccess = true
-  useCookie("accessKey").value = useCookie("accessKey").value || "empty"
-
-  // 📜 take out setTicker() frem these async functions to this main scope
-  useCookie("name").value ? fetchUserData() : createUser()
+  startup()
 })
 </script>
 <style>

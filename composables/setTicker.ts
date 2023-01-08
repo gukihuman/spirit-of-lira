@@ -1,24 +1,3 @@
-import * as PIXI from "pixi.js"
-
-function setContainers(): void {
-  Pixi().app.stage.addChild(Pixi().cons.map)
-  Pixi().app.stage.addChild(Pixi().cons.sortable)
-  Pixi().cons.sortable.addChild(Pixi().cons.hero)
-}
-async function loadHeroSprites(): Promise<void> {
-  let heroUrl = await PIXI.Assets.load(Info().hero.json)
-  l.forOwn(heroUrl.animations, (value, key) => {
-    Pixi().sprites.hero[key] = new PIXI.AnimatedSprite(value)
-    Pixi().sprites.hero[key].anchor.x = 0.5
-    Pixi().sprites.hero[key].anchor.y = 0.7
-    Pixi().sprites.hero[key].animationSpeed = 1 / 8
-    Pixi().sprites.hero[key].play()
-    Pixi().sprites.hero[key].visible = false
-    Pixi().cons.hero.x = Settings().displayWidth / 2
-    Pixi().cons.hero.y = Settings().displayHeight / 2
-    Pixi().cons.hero.addChild(Pixi().sprites.hero[key])
-  })
-}
 function setMapOffset(name: string): void {
   if (Pixi().sprites.maps[name]) {
     Pixi().sprites.maps[name].x =
@@ -29,10 +8,10 @@ function setMapOffset(name: string): void {
 }
 async function loadMapSprite(name: string): Promise<void> {
   let mapUrl = await PIXI.Assets.load(Info().maps[name].url)
-  Pixi().sprites.maps[name] = new PIXI.Sprite(mapUrl)
+  Pixi().sprites.maps[name] = new p.Sprite(mapUrl)
   Game().activeMaps.push(name)
   Pixi().sprites.maps[name].cullable = false
-  Pixi().cons.map.addChild(Pixi().sprites.maps[name])
+  Pixi().containers.map.addChild(Pixi().sprites.maps[name])
 }
 function updateMaps(): void {
   l.forOwn(Info().maps, (value, name) => {
@@ -45,10 +24,39 @@ function updateMaps(): void {
   })
   // console.log(Game().activeMaps)
 }
-export async function setTicker(): Promise<void> {
-  setContainers()
-  await loadHeroSprites()
+function drawCollision(): void {
+  for (let y of l.range(-180, 120 * 9, 120)) {
+    let row: Array<PIXI.Graphics> = []
+    for (let x of l.range(-120, 120 * 16, 120)) {
+      let rect = new PIXI.Graphics()
+      rect.lineStyle(2, 0x6d6875)
+      rect.beginFill(0xedede9, 0.2)
+      rect.drawRect(x, y, 120, 120)
+      rect.endFill()
+      row.push(rect)
+      Pixi().containers.collision.addChild(rect)
+    }
+    Pixi().graphics.collision.push(row)
+  }
+  Pixi().containers.collision.visible = false
+}
+function tintCollision(): void {
+  const screen = collision.screen(User().data.hero)
+  let diffY = Math.floor(Math.abs(User().data.hero.y / 120)) - 6
+  let diffX = Math.floor(Math.abs(User().data.hero.x / 120)) - 9
+  diffX < 0 ? (diffX = Math.abs(diffX)) : (diffX = 0)
+  diffY < 0 ? (diffY = Math.abs(diffY)) : (diffY = 0)
+  screen.forEach((value, y) => {
+    value.forEach((value, x) => {
+      if (value === 1)
+        Pixi().graphics.collision[y + diffY][x + diffX].tint = 0x0096c7
+    })
+  })
+}
+export async function setTicker() {
   updateMaps()
+  drawCollision()
+  loadCollision()
 
   Pixi().app.ticker.add(() => {
     padUpdate()
@@ -56,6 +64,16 @@ export async function setTicker(): Promise<void> {
     if (eachSec(1, { random: true })) updateMaps()
     l.keys(Pixi().sprites.maps).forEach((name: string) => setMapOffset(name))
     Pixi().sprites.hero["idle"].visible = true
+
+    if (States().collisionEdit) {
+      Pixi().containers.collision.visible = true
+      Pixi().containers.collision.x = (-User().data.hero.x % 120) + 120
+      Pixi().containers.collision.y = (-User().data.hero.y % 120) + 120
+      tintCollision()
+      updateCollision()
+    } else {
+      Pixi().containers.collision.visible = false
+    }
 
     Pixi().ticks++
   })

@@ -8,9 +8,8 @@ class Hero {
     this.x = 660
     this.y = 110
     this.size = 50
-    this.speed = 14
+    this.speed = 12
   }
-
   move() {
     function mouseMove(hero: any) {
       if (

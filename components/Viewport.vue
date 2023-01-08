@@ -1,16 +1,19 @@
 <template lang="pug">
 
-div(ref="display" class="absolute")
+div(ref="viewportRef" class="absolute")
 
 </template>
 <script setup lang="ts">
-import type { Ref } from "vue"
-import * as PIXI from "pixi.js"
-
-const display: Ref = ref(null)
+//
+const viewportRef = ref(null)
 
 onMounted((): void => {
-  hookPixiDev(window, PIXI) // chrome dev extension
-  display.value.appendChild(Pixi().app.view)
+  // chrome dev extension
+  function hookPixiDev(window?: any, PIXI?: any) {
+    window.__PIXI_INSPECTOR_GLOBAL_HOOK__ &&
+      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI })
+  }
+  hookPixiDev(window, p)
+  Refs().viewport = viewportRef
 })
 </script>
