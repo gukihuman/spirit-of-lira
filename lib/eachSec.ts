@@ -1,13 +1,14 @@
 interface Options {
   random: boolean
 }
-export function eachSec(sec: number, options: Options = { random: false }) {
+export function eachSec(sec: number = 1, options: Options = { random: false }) {
+  let fps = 60
+  if (pixi.app) fps = pixi.app.ticker.FPS
   if (options.random) {
     return (
-      Math.floor(Math.random() * Pixi().app.ticker.FPS * sec) ===
-      Math.floor(Math.random() * Pixi().app.ticker.FPS * sec)
+      l.floor(Math.random() * fps * sec) === l.floor(Math.random() * fps * sec)
     )
   } else {
-    return Pixi().ticks % l.round(Pixi().app.ticker.FPS * sec, -1) === 0
+    return pixi.tick % l.round(fps * sec, -1) === 0
   }
 }

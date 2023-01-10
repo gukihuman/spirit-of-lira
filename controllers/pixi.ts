@@ -1,33 +1,29 @@
-import { Application, Container } from "pixi.js" // for types
+import { Application } from "pixi.js" // for type
 
-class Pixi {
-  app: Application | null
-  map: Container
-  collisionEdit: Container
-  sortable: Container
-  hero: Container
-  graphics: { collisionEdit: number[] }
-  sprites: {
-    mapChunks: {
-      [index: string]: any
-    }
-    hero: {
-      [index: string]: any
-    }
+interface Graphics {
+  collisionEdit: number[]
+}
+interface Sprites {
+  hero: {
+    [index: string]: any
   }
-  constructor() {
-    this.app = null
-    this.map = new p.Container()
-    this.collisionEdit = new p.Container()
-    this.sortable = new p.Container()
-    this.hero = new p.Container()
-    this.graphics = {
-      collisionEdit: [],
-    }
-    this.sprites = {
-      hero: {},
-      mapChunks: {},
-    }
+  mapChunks: {
+    [index: string]: any
+  }
+}
+class Pixi {
+  app: Application | null = null
+  tick = 0
+  map = new p.Container()
+  collisionEdit = new p.Container()
+  sortable = new p.Container()
+  hero = new p.Container()
+  graphics: Graphics = {
+    collisionEdit: [],
+  }
+  sprites: Sprites = {
+    hero: {},
+    mapChunks: {},
   }
   private async addContainers(app: Application) {
     app.stage.addChild(this.map)
@@ -36,10 +32,7 @@ class Pixi {
     this.sortable.addChild(this.hero)
   }
   private async loadHero() {
-    const url = new URL(
-      "/assets/creatures/hero/animations/hero.json",
-      import.meta.url
-    ).href
+    const url = new URL("/assets/hero/hero.json", import.meta.url).href
     let asset = await p.Assets.load(url)
     l.forOwn(asset.animations, (value, key) => {
       this.sprites.hero[key] = new p.AnimatedSprite(value)
@@ -66,8 +59,8 @@ class Pixi {
     this.map.addChild(this.sprites.mapChunks[index])
   }
   async loadCloseMapChunks() {
-    let startY = mapFromCo(User().data.hero.y) - 1
-    let startX = mapFromCo(User().data.hero.x) - 1
+    const startY = mapFromCo(User().data.hero.y) - 1
+    const startX = mapFromCo(User().data.hero.x) - 1
     for (let y of l.range(startY, startY + 3)) {
       for (let x of l.range(startX, startX + 3)) {
         await this.loadMapChunk(l.toString(y) + l.toString(x))

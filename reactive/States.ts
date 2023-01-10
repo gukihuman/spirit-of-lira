@@ -1,14 +1,17 @@
 const rawStates = {
+  // dev
   devAccess: false,
   overwriteDataAllowed: false,
-  cursor: true,
   allLoaded: false,
-  fullscreen: false,
-  autoHeroMove: false,
+  collisionEdit: false,
 
   // UI states
-  collisionEdit: false,
+  fullscreen: false,
+  cursor: true,
+
+  heroMove: false,
 }
+export const statesList = l.keys(rawStates)
 
 // 📜 cool syntax for type out of keys
 // declare global {

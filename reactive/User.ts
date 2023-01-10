@@ -3,20 +3,22 @@ const rawUser = {
     hero: genEntity(info.hero, { x: 51000, y: 54000 }),
   },
   settings: {
-    control: {
-      gamepad: {
-        deadZone: 0.15,
-        fullscreen: "Start",
-      },
-      keyboard: {
+    board: {
+      tap: {
         heroMove: "o",
-        autoHeroMove: "i",
         fullscreen: "a",
         collisionEdit: "m",
       },
-      mouse: {
-        heroMove: 0,
-      },
+      hold: { heroMove: "i" },
+    },
+    mouse: {
+      tap: {},
+      hold: { heroMove: 0 },
+    },
+    pad: {
+      deadZone: 0.15,
+      tap: { fullscreen: "Start" },
+      hold: {},
     },
   },
 }
