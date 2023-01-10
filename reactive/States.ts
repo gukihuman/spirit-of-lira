@@ -10,7 +10,7 @@ const rawStates = {
   collisionEdit: false,
 }
 
-// 📜
+// 📜 cool syntax for type out of keys
 // declare global {
 //   type States = keyof typeof rawStates
 // }

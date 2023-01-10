@@ -18,6 +18,6 @@ div
 </template>
 <script setup lang="ts">
 function selectedCreature() {
-  return Game().entities.find((e) => e.id === Dev().selectedCreature)
+  return game().entities.find((e) => e.id === Dev().selectedCreature)
 }
 </script>

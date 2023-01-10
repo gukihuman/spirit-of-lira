@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  ref="background"
+  ref="backgroundRef"
   class="h-screen w-screen bg-slate-800 \
   flex items-center justify-center"
 )
@@ -11,24 +11,24 @@ div(
 
 </template>
 <script setup>
-const background = ref(null)
+const backgroundRef = ref(null)
 
 onMounted(() => {
   //
-  // 📜 move it to input controller
-  function listeners() {
-    addEventListener("gamepadconnected", Listeners().padConnect)
-    addEventListener("gamepaddisconnected", Listeners().padDisconnect)
-    addEventListener("mousemove", Listeners().mouseMove)
-    addEventListener("mousedown", Listeners().mouseDown)
-    addEventListener("mouseup", Listeners().mouseUp)
-    addEventListener("keydown", Listeners().keyDown)
-    addEventListener("keyup", Listeners().keyUp)
-  }
-
-  Refs().background = background // for fullscreen
+  Refs().background = backgroundRef // for fullscreen
 
   startup()
+  //
+  // 📜 move it to input controller
+  // function listeners() {
+  //   addEventListener("gamepadconnected", Listeners().padConnect)
+  //   addEventListener("gamepaddisconnected", Listeners().padDisconnect)
+  //   addEventListener("mousemove", Listeners().mouseMove)
+  //   addEventListener("mousedown", Listeners().mouseDown)
+  //   addEventListener("mouseup", Listeners().mouseUp)
+  //   addEventListener("keydown", Listeners().keyDown)
+  //   addEventListener("keyup", Listeners().keyUp)
+  // }
 })
 </script>
 <style>

@@ -1,5 +1,7 @@
 const rawUser = {
-  data: {},
+  data: {
+    hero: genEntity(info.hero, { x: 51000, y: 54000 }),
+  },
   settings: {
     control: {
       gamepad: {
@@ -18,8 +20,7 @@ const rawUser = {
     },
   },
 }
-export const User = defineStore("user", () => {
-  const state = l.mapValues(rawUser, (state) => reactive(state))
-
+export const User: any = defineStore("user", () => {
+  const state = l.mapValues(rawUser, (key) => reactive(key))
   return state
 })

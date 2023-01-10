@@ -58,7 +58,7 @@ export class Remote {
       body: { name: "collision" },
     })
     if (res.data.value?.name) {
-      Game.collision = JSON.parse(res.data.value.collisionData)
+      info.collision = JSON.parse(res.data.value.collisionData)
       console.log(timeNow() + " ⏬ fetch collision: data received")
     } else {
       // value is an error
@@ -73,7 +73,7 @@ export class Remote {
         body: {
           name: "collision",
           accessKey: useCookie("accessKey").value,
-          collisionData: JSON.stringify(Game.collision),
+          collisionData: JSON.stringify(info.collision),
         },
       })
       if (res.data.value?.name) {

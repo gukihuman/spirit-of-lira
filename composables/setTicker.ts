@@ -6,13 +6,6 @@ function setMapOffset(name: string): void {
       Info().maps[name].y + Settings().displayHeight / 2 - User().data.hero.y
   }
 }
-async function loadMapSprite(name: string): Promise<void> {
-  let mapUrl = await PIXI.Assets.load(Info().maps[name].url)
-  Pixi().sprites.maps[name] = new p.Sprite(mapUrl)
-  Game().activeMaps.push(name)
-  Pixi().sprites.maps[name].cullable = false
-  Pixi().containers.map.addChild(Pixi().sprites.maps[name])
-}
 function updateMaps(): void {
   l.forOwn(Info().maps, (value, name) => {
     if (intersect(User().data.hero, value, { extend: 2000 })) {
@@ -56,7 +49,6 @@ function tintCollision(): void {
 export async function setTicker() {
   updateMaps()
   drawCollision()
-  loadCollision()
 
   Pixi().app.ticker.add(() => {
     padUpdate()

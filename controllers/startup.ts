@@ -6,7 +6,7 @@ export async function startup() {
   if (useCookie("name").value) await Remote.fetchUserData()
   else await Remote.createUser()
 
-  await viewport.initialize()
+  await pixi.initialize()
 
   States().allLoaded = true
 }

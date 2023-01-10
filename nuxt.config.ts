@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: ["reactive/**", "controllers/**", "info/**", "lib/**"],
+    dirs: ["reactive/**", "controllers/**", "lib/**"],
   },
 
   css: ["@/css/tailwind.css"],

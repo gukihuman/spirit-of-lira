@@ -5,8 +5,7 @@ div(ref="display" class="bg-gray-700 absolute" :style="style")
 
 </template>
 <script setup lang="ts">
-const display = ref(null)
-
+//
 const width = 1920
 const height = 1080
 let scale = ref(0)
@@ -29,11 +28,14 @@ function setScale() {
     scale.value = userWidth / width / devicePixelRatio
   }
 }
+const displayRef = ref(null)
+
 onMounted(() => {
+  //
+  Refs().display = displayRef // for mouse events
+
   setScale()
   addEventListener("resize", setScale)
-
-  Refs().display = display // for mouse events
 
   // 📜 input controller
   // Refs().display.addEventListener("mousemove", (e: any) => {
