@@ -5,11 +5,11 @@ const rawUser = {
   settings: {
     board: {
       tap: {
-        heroMove: "o",
+        heroMove: "i",
         fullscreen: "a",
         collisionEdit: "m",
       },
-      hold: { heroMove: "i" },
+      hold: { heroMove: "o" },
     },
     mouse: {
       tap: {},

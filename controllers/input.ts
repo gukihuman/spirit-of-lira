@@ -36,6 +36,8 @@ interface Pad {
   buttons: string[]
   buttonsCache: string[]
   axes: number[]
+  axesActive: boolean
+  deadZone: number
   tap: {
     buttons: string[]
     states: string[]
@@ -102,6 +104,8 @@ class Input {
     buttons: [],
     buttonsCache: [],
     axes: [0, 0, 0, 0],
+    axesActive: false,
+    deadZone: 0.15,
     tap: {
       buttons: [],
       states: [],
@@ -143,6 +147,7 @@ class Input {
       this[i].hold.buttons = l.values(User().settings[i].hold)
       this[i].hold.states = l.keys(User().settings[i].hold)
     }
+    this.pad.deadZone = User().settings.pad.deadZone
   }
   private statesUpdate(source: "board" | "mouse" | "pad") {
     // on tap
@@ -205,9 +210,7 @@ class Input {
     this.mouse.distanceToHero = findDistance(User().data.hero, this.mouse)
   }
   private mouseDownListener(event) {
-    if (!this.mouse.buttons.includes(event.button))
-      this.mouse.buttons.push(event.button)
-    this.debouncedClearMouse()
+    this.mouse.buttonsToAdd.push(event.button)
   }
   private mouseUpListener(event) {
     this.mouse.buttonsToRemove.push(event.button)
@@ -259,6 +262,13 @@ class Input {
     })
     this.pad.axes = axes
     this.pad.buttons = pressed
+
+    this.pad.axesActive = false
+    this.pad.axes.forEach((axis) => {
+      if (Math.abs(axis) > this.pad.deadZone) {
+        this.pad.axesActive = true
+      }
+    })
   }
 
   private hideCursorListener() {
@@ -268,8 +278,7 @@ class Input {
 
   debouncedHideCursor = l.debounce(() => (States().cursor = false), 3000)
 
-  // in case button up effect won't work (happens sometimes)
+  // in case button up won't work (happens sometimes)
   debouncedClearBoard = l.debounce(() => (input.board.buttons = []), 500)
-  debouncedClearMouse = l.debounce(() => (input.mouse.buttons = []), 500)
 }
 export const input = new Input()
