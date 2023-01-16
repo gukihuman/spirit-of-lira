@@ -64,7 +64,6 @@ export class Remote {
       // value is an error
       console.log(timeNow() + " ❗ fetch collision: " + res.data.value)
     }
-    return
   }
   static async pushCollision() {
     if (States().overwriteDataAllowed) {
@@ -86,6 +85,5 @@ export class Remote {
       // only after initial fetch
       console.log(timeNow() + ` ❗ push collision: overwrite not allowed`)
     }
-    return
   }
 }

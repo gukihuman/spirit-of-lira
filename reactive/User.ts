@@ -7,7 +7,6 @@ const rawUser = {
       tap: {
         heroMove: "i",
         fullscreen: "a",
-        collisionEdit: "m",
       },
       hold: { heroMove: "o" },
     },

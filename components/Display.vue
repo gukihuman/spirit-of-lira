@@ -36,10 +36,5 @@ onMounted(() => {
 
   setScale()
   addEventListener("resize", setScale)
-
-  // 📜 input controller
-  // Refs().display.addEventListener("mousemove", (e: any) => {
-  //   console.log(e.offsetY, e.offsetX)
-  // })
 })
 </script>

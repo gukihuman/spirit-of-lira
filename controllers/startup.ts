@@ -4,12 +4,12 @@ export async function startup() {
   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
   if (useCookie("name").value == "guki") States().devAccess = true
 
-  // connect User
-  if (useCookie("name").value) await Remote.fetchUserData()
-  else await Remote.createUser()
-
   input.initialize()
-  await pixi.initialize()
+
+  let handleUser = Remote.fetchUserData()
+  if (!useCookie("name").value) handleUser = Remote.createUser()
+
+  await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
 
   States().allLoaded = true
 }

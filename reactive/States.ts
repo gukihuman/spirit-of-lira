@@ -28,5 +28,9 @@ export const States: any = defineStore("states", () => {
       document.exitFullscreen()
     }
   })
+  watch(state.collisionEdit, (newValue) => {
+    if (newValue) pixi.collision.visible = true
+    else pixi.collision.visible = false
+  })
   return state
 })

@@ -137,7 +137,8 @@ class Input {
 
     if (this.pad.connected) {
       this.padUpdate()
-      this.statesUpdate("pad")
+      if (States().devAccess) this.collisionUpdate()
+      if (!States().collisionEdit) this.statesUpdate("pad")
     }
   }
   settingButtonsUpdate() {
@@ -170,6 +171,27 @@ class Input {
         States()[state] = false
       }
     })
+  }
+  private collisionUpdate() {
+    if (
+      this.board.buttons.includes("m") &&
+      !this.board.buttonsCache.includes("m")
+    ) {
+      States().collisionEdit = !States().collisionEdit
+    }
+
+    if (States().collisionEdit) {
+      let changed = true
+      let i = c.tileIndex(User().data.hero)
+
+      if (this.pad.buttons.includes("Y")) info.collision[i] = 0
+      else if (this.pad.buttons.includes("X")) info.collision[i] = 1
+      else if (this.pad.buttons.includes("B")) info.collision[i] = 2
+      else if (this.pad.buttons.includes("A")) info.collision[i] = 3
+      else changed = false
+
+      if (changed) this.debouncedPushCollision()
+    }
   }
 
   // board
@@ -277,6 +299,7 @@ class Input {
   }
 
   debouncedHideCursor = l.debounce(() => (States().cursor = false), 3000)
+  debouncedPushCollision = l.debounce(() => Remote.pushCollision(), 1000)
 
   // in case button up won't work (happens sometimes)
   debouncedClearBoard = l.debounce(() => (input.board.buttons = []), 500)

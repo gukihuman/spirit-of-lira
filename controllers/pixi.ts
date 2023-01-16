@@ -1,8 +1,5 @@
-import { Application } from "pixi.js" // for type
+import { Application, Graphics } from "pixi.js" // for type
 
-interface Graphics {
-  collision: number[]
-}
 interface Sprites {
   hero: {
     [index: string]: any
@@ -18,13 +15,11 @@ class Pixi {
 
   map = new p.Container()
   collision = new p.Container()
+  collisionGrid: Graphics[][] = []
 
   sortable = new p.Container()
   hero = new p.Container()
 
-  graphics: Graphics = {
-    collision: [],
-  }
   sprites: Sprites = {
     hero: {},
     mapChunks: {},
@@ -36,6 +31,7 @@ class Pixi {
     this.addContainers(this.app)
     await this.loadHero()
     await this.loadCloseMapChunks()
+    this.drawCollisionGrid()
     this.app.ticker.add(() => ticker())
   }
   moveMap(index: string) {
@@ -47,8 +43,8 @@ class Pixi {
       l.floor(l.toNumber(index) / 100) * 1000 + 1080 / 2 - User().data.hero.y
   }
   async loadCloseMapChunks() {
-    const startY = mapFromCo(User().data.hero.y) - 1
-    const startX = mapFromCo(User().data.hero.x) - 1
+    const startY = c.ofMapChunk(User().data.hero.y) - 1
+    const startX = c.ofMapChunk(User().data.hero.x) - 1
     for (let y of l.range(startY, startY + 3)) {
       for (let x of l.range(startX, startX + 3)) {
         await this.loadMapChunk(l.toString(y) + l.toString(x))
@@ -80,7 +76,7 @@ class Pixi {
     l.forOwn(asset.animations, (value, key) => {
       this.sprites.hero[key] = new p.AnimatedSprite(value)
       this.sprites.hero[key].anchor.x = 0.5
-      this.sprites.hero[key].anchor.y = 0.7
+      this.sprites.hero[key].anchor.y = 0.5
       this.sprites.hero[key].animationSpeed = 1 / 8
       this.sprites.hero[key].play()
       this.sprites.hero[key].visible = false
@@ -89,6 +85,49 @@ class Pixi {
       this.hero.addChild(this.sprites.hero[key])
     })
   }
+  private drawCollisionGrid() {
+    const height = 13
+    const width = 21
+    for (let y of l.range(height)) {
+      let row: Graphics[] = []
+      for (let x of l.range(width)) {
+        let square = new p.Graphics()
+        square.blendMode = p.BLEND_MODES.MULTIPLY
+        square.beginFill(0xffffff, 0.6)
+        square.drawRect(x * 100, y * 100, 100, 100)
+        square.endFill()
+        row.push(square)
+        this.collision.addChild(square)
+      }
+      this.collisionGrid.push(row)
+    }
+    for (let y of l.range(height)) {
+      for (let x of l.range(width)) {
+        let square = new p.Graphics()
+        square.blendMode = p.BLEND_MODES.MULTIPLY
+        square.lineStyle(5, 0xe6e6e6)
+        square.drawRect(x * 100, y * 100, 100, 100)
+        this.collision.addChild(square)
+      }
+    }
+    this.collision.pivot.x = this.collision.width / 2
+    this.collision.pivot.y = this.collision.height / 2
+    this.collision.visible = false
+  }
+  updateCollisionGrid() {
+    this.collision.x = 1920 / 2 - c.inTile(User().data.hero.x) + 50
+    this.collision.y = 1080 / 2 - c.inTile(User().data.hero.y) + 50
+    const startX = c.ofTile(User().data.hero.x) - 10
+    const startY = c.ofTile(User().data.hero.y) - 6
+    this.collisionGrid.forEach((row, y) => {
+      row.forEach((square, x) => {
+        const i = (startY + y) * 1000 + startX + x
+        if (info.collision[i] === 0) square.tint = 0xffffff
+        else if (info.collision[i] === 1) square.tint = 0x95d5b2
+        else if (info.collision[i] === 2) square.tint = 0xf94144
+        else square.tint = 0x9d0208
+      })
+    })
+  }
 }
-
 export const pixi = new Pixi()
