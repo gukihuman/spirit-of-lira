@@ -11,7 +11,6 @@ const rawStates = {
 
   heroMove: false,
 }
-export const statesList = l.keys(rawStates)
 
 // 📜 cool syntax for type out of keys
 // declare global {
@@ -23,7 +22,7 @@ export const States: any = defineStore("states", () => {
 
   watch(state.fullscreen, () => {
     if (!document.fullscreenElement) {
-      Refs().background.requestFullscreen()
+      ggm.refs.background.requestFullscreen()
     } else if (document.exitFullscreen) {
       document.exitFullscreen()
     }

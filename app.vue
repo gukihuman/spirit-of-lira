@@ -1,38 +1,33 @@
 <template lang="pug">
-div(
-  ref="backgroundRef"
-  class="h-screen w-screen bg-slate-800 \
-  flex items-center justify-center"
-)
-  Display
-    Viewport
 
-    transition: Loading(v-if="!States().allLoaded" class="z-50")
+//- 1920 / 1080 centered game window
+game-window
+
+  //- 1920 / 1080 pixi viewport, where the actual game is
+  viewport
+
+  //- 📜 Some interface elements
+
+  //- loading screen on top of everything
+  transition(name="fast")
+    loading(v-if="!States().allLoaded")
 
 </template>
-<script setup>
-const backgroundRef = ref(null)
 
+<script setup>
+//
 onMounted(() => {
   //
-  Refs().background = backgroundRef // for fullscreen
-
   startup()
 })
 </script>
-<style>
-::-webkit-scrollbar {
-  display: none;
-}
-* {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
 
+<style>
+/* 
+/* "fast" transition */
 .fast-enter-active,
 .fast-leave-active {
-  transition: opacity 0.1s ease;
+  transition: opacity 0.5s ease;
 }
 
 .fast-enter-from,
@@ -40,13 +35,15 @@ onMounted(() => {
   opacity: 0;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
+/* disable scrollbar */
+::-webkit-scrollbar {
+  display: none;
 }
 
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+/* disable text selection */
+* {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 </style>

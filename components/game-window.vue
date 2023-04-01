@@ -1,10 +1,19 @@
 <template lang="pug">
 
-div(ref="display" class="bg-gray-700 absolute" :style="style")
-  slot
+//- background
+div(
+  ref="background"
+  class="h-screen w-screen bg-slate-800 flex items-center justify-center"
+  )
+
+  //- game window
+  div(class="Bg-gray-700 absolute" :style="style")
+    slot
 
 </template>
 <script setup lang="ts">
+//
+const background = ref(null)
 //
 const width = 1920
 const height = 1080
@@ -28,11 +37,11 @@ function setScale() {
     scale.value = userWidth / width / devicePixelRatio
   }
 }
-const displayRef = ref(null)
 
 onMounted(() => {
   //
-  Refs().display = displayRef // for mouse events
+  // To switch fullscreen
+  ggm.refs.background = background
 
   setScale()
   addEventListener("resize", setScale)

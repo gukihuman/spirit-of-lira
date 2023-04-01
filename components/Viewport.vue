@@ -1,15 +1,16 @@
 <template lang="pug">
 
-div(ref="viewportRef" class="absolute")
+div(ref="viewport" class="absolute")
 
 </template>
 <script setup lang="ts">
 //
-const viewportRef = ref(null)
+const viewport = ref(null)
 
 onMounted((): void => {
   //
-  Refs().viewport = viewportRef
+  // To initialize pixi with
+  ggm.refs.viewport = viewport
 
   // chrome dev extension
   function hookPixiDev(window?: any, PIXI?: any) {

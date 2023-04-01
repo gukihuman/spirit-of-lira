@@ -1,77 +1,16 @@
 {
-  "vetur.validation.template": false,
-  "typescript.validate.enable": true,
   "prisma.fileWatcher": false,
-
-  "editor.tokenColorCustomizations": {
-    "textMateRules": [
-      {
-        "scope": "punctuation.definition.string",
-        "settings": {
-          "foreground": "#7c4f1c"
-        }
-      },
-      {
-        "scope": "constant.numeric",
-        "settings": {
-          "foreground": "#8ecae6"
-        }
-      },
-      {
-        "scope": "variable",
-        "settings": {
-          "foreground": "#ff1d9d"
-        }
-      },
-      {
-        "scope": "variable.other.property.js",
-        "settings": {
-          "foreground": "#ff1d9d"
-        }
-      },
-      {
-        "scope": "variable.parameter",
-        "settings": {
-          "foreground": "#d6ff50"
-          // "fontStyle": "italic bold"
-        }
-      },
-      {
-        "scope": "variable",
-        "settings": {
-          "foreground": "#ff36a8"
-        }
-      },
-      {
-        "scope": "support.variable",
-        "settings": {
-          "foreground": "#ff36a8",
-          "fontStyle": "bold"
-        }
-      },
-      {
-        "scope": "comment",
-        "settings": {
-          "foreground": "#676c92"
-        }
-      },
-      {
-        "scope": "constant.language",
-        "settings": {
-          "foreground": "#dcc3cd"
-        }
-      }
-    ]
+  "files.exclude": {
+    ".nuxt": true,
+    ".vscode": true,
+    "css": true,
+    "node_modules": true,
+    "tests": true,
+    ".env": true,
+    ".gitignore": true,
+    "package-lock.json": true,
+    "tsconfig.json": true,
+    "vitest.config.ts": true
   },
-  "workbench.colorCustomizations": {
-    "editorBracketMatch.background": "#3D2C63",
-    "editorBracketMatch.border": "#0096c7",
-    "editorBracketHighlight.foreground1": "#7456B3",
-    "editorBracketHighlight.foreground2": "#7456B3",
-    "editorBracketHighlight.foreground3": "#7456B3",
-    "editorBracketHighlight.foreground4": "#7456B3",
-    "editorBracketHighlight.foreground5": "#7456B3",
-    "editorBracketHighlight.foreground6": "#7456B3",
-    "editorBracketHighlight.unexpectedBracket.foreground": "#d00000"
-  }
+  "workspace.isHidden": true
 }

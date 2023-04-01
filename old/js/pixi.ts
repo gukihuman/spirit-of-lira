@@ -27,7 +27,7 @@ class Pixi {
   async initialize() {
     this.app = new p.Application({ width: 1920, height: 1080 })
     this.fps = this.app.ticker.FPS
-    Refs().viewport.appendChild(this.app.view)
+    ggm.refs.viewport.appendChild(this.app.view)
     this.addContainers(this.app)
     await this.loadHero()
     await this.loadCloseMapChunks()
@@ -54,9 +54,10 @@ class Pixi {
   private async loadMapChunk(index: string) {
     if (l.keys(this.sprites.mapChunks).includes(index)) return
 
-    let url = new URL(`/assets/maps/${index}.webp`, import.meta.url).href
+    let url = new URL(`/entities/map-chunks/${index}.webp`, import.meta.url)
+      .href
     if (url.includes("undefined"))
-      url = new URL("/assets/miscellaneous/mapNotFound.webp", import.meta.url)
+      url = new URL("/entities/miscellaneous/mapNotFound.webp", import.meta.url)
         .href
     let asset = await p.Assets.load(url)
     this.sprites.mapChunks[index] = new p.Sprite(asset)
@@ -71,7 +72,7 @@ class Pixi {
     this.sortable.addChild(this.hero)
   }
   private async loadHero() {
-    const url = new URL("/assets/hero/hero.json", import.meta.url).href
+    const url = new URL("/entities/hero/hero.json", import.meta.url).href
     let asset = await p.Assets.load(url)
     l.forOwn(asset.animations, (value, key) => {
       this.sprites.hero[key] = new p.AnimatedSprite(value)

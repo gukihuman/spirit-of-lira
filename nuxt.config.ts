@@ -10,7 +10,12 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: ["reactive/**", "controllers/**", "lib/**"],
+    dirs: [
+      // no files import, but with * work like dirs
+      "guki-game-manager/*index.ts",
+      "guki-game-manager/*auto-importer.ts",
+      "old/**",
+    ],
   },
 
   css: ["@/css/tailwind.css"],

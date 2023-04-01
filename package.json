@@ -30,6 +30,7 @@
     "vitest": "^0.26.2"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.0"
+    "@prisma/client": "^4.8.0",
+    "guki-input-controller": "^0.8.5"
   }
 }
