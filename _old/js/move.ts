@@ -12,7 +12,7 @@ class Move {
       States().heroMove = false
     } else if (States().heroMove && input.mouse.distanceToHero > entity.size) {
       let speedRatio = input.mouse.distanceToHero / 350
-      speedRatio = l.clamp(speedRatio, 1)
+      speedRatio = _.clamp(speedRatio, 1)
       entity.x +=
         ((entity.speed * 10) / pixi.fps) *
         speedRatio *

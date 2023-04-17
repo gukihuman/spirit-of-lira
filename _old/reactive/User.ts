@@ -22,6 +22,6 @@ const rawUser = {
   },
 }
 export const User: any = defineStore("user", () => {
-  const state = l.mapValues(rawUser, (key) => reactive(key))
+  const state = _.mapValues(rawUser, (key) => reactive(key))
   return state
 })

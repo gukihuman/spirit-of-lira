@@ -27,7 +27,7 @@ class Pixi {
   async initialize() {
     this.app = new p.Application({ width: 1920, height: 1080 })
     this.fps = this.app.ticker.FPS
-    ggm.refs.viewport.appendChild(this.app.view)
+    ggd.refs.viewport.appendChild(this.app.view)
     this.addContainers(this.app)
     await this.loadHero()
     await this.loadCloseMapChunks()
@@ -35,29 +35,28 @@ class Pixi {
     this.app.ticker.add(() => ticker())
   }
   moveMap(index: string) {
-    if (!l.keys(this.sprites.mapChunks).includes(index)) return
+    if (!_.keys(this.sprites.mapChunks).includes(index)) return
 
     this.sprites.mapChunks[index].x =
-      (l.toNumber(index) % 100) * 1000 + 1920 / 2 - User().data.hero.x
+      (_.toNumber(index) % 100) * 1000 + 1920 / 2 - User().data.hero.x
     this.sprites.mapChunks[index].y =
-      l.floor(l.toNumber(index) / 100) * 1000 + 1080 / 2 - User().data.hero.y
+      _.floor(_.toNumber(index) / 100) * 1000 + 1080 / 2 - User().data.hero.y
   }
   async loadCloseMapChunks() {
     const startY = c.ofMapChunk(User().data.hero.y) - 1
     const startX = c.ofMapChunk(User().data.hero.x) - 1
-    for (let y of l.range(startY, startY + 3)) {
-      for (let x of l.range(startX, startX + 3)) {
-        await this.loadMapChunk(l.toString(y) + l.toString(x))
+    for (let y of _.range(startY, startY + 3)) {
+      for (let x of _.range(startX, startX + 3)) {
+        await this.loadMapChunk(_.toString(y) + _.toString(x))
       }
     }
   }
   private async loadMapChunk(index: string) {
-    if (l.keys(this.sprites.mapChunks).includes(index)) return
+    if (_.keys(this.sprites.mapChunks).includes(index)) return
 
-    let url = new URL(`/entities/map-chunks/${index}.webp`, import.meta.url)
-      .href
+    let url = new URL(`/assets/map-chunks/${index}.webp`, import.meta.url).href
     if (url.includes("undefined"))
-      url = new URL("/entities/miscellaneous/mapNotFound.webp", import.meta.url)
+      url = new URL("/assets/miscellaneous/mapNotFound.webp", import.meta.url)
         .href
     let asset = await p.Assets.load(url)
     this.sprites.mapChunks[index] = new p.Sprite(asset)
@@ -72,9 +71,9 @@ class Pixi {
     this.sortable.addChild(this.hero)
   }
   private async loadHero() {
-    const url = new URL("/entities/hero/hero.json", import.meta.url).href
+    const url = new URL("/assets/hero/hero.json", import.meta.url).href
     let asset = await p.Assets.load(url)
-    l.forOwn(asset.animations, (value, key) => {
+    _.forOwn(asset.animations, (value, key) => {
       this.sprites.hero[key] = new p.AnimatedSprite(value)
       this.sprites.hero[key].anchor.x = 0.5
       this.sprites.hero[key].anchor.y = 0.5
@@ -89,9 +88,9 @@ class Pixi {
   private drawCollisionGrid() {
     const height = 13
     const width = 21
-    for (let y of l.range(height)) {
+    for (let y of _.range(height)) {
       let row: Graphics[] = []
-      for (let x of l.range(width)) {
+      for (let x of _.range(width)) {
         let square = new p.Graphics()
         square.blendMode = p.BLEND_MODES.MULTIPLY
         square.beginFill(0xffffff, 0.6)
@@ -102,8 +101,8 @@ class Pixi {
       }
       this.collisionGrid.push(row)
     }
-    for (let y of l.range(height)) {
-      for (let x of l.range(width)) {
+    for (let y of _.range(height)) {
+      for (let x of _.range(width)) {
         let square = new p.Graphics()
         square.blendMode = p.BLEND_MODES.MULTIPLY
         square.lineStyle(5, 0xe6e6e6)

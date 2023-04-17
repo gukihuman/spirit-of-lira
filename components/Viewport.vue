@@ -9,8 +9,8 @@ const viewport = ref(null)
 
 onMounted((): void => {
   //
-  // To initialize pixi with
-  ggm.refs.viewport = viewport
+  // To initialize pixi and gic with
+  ggd.refs.viewport = viewport
 
   // chrome dev extension
   function hookPixiDev(window?: any, PIXI?: any) {

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
@@ -10,12 +9,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: [
-      // no files import, but with * work like dirs
-      "guki-game-manager/*index.ts",
-      "guki-game-manager/*auto-importer.ts",
-      "old/**",
-    ],
+    dirs: ["guki-tools/**", "ts/**", "_old/**"],
   },
 
   css: ["@/css/tailwind.css"],

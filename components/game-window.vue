@@ -41,7 +41,7 @@ function setScale() {
 onMounted(() => {
   //
   // To switch fullscreen
-  ggm.refs.background = background
+  ggd.refs.background = background
 
   setScale()
   addEventListener("resize", setScale)

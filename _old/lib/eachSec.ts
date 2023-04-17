@@ -4,11 +4,11 @@ interface Options {
 export function eachSec(sec: number = 1, options: Options = { random: false }) {
   if (options.random) {
     return (
-      l.floor(Math.random() * pixi.fps * sec) ===
-      l.floor(Math.random() * pixi.fps * sec)
+      _.floor(Math.random() * pixi.fps * sec) ===
+      _.floor(Math.random() * pixi.fps * sec)
     )
   } else {
     // round is needed cause pixi.fps is not an integer
-    return pixi.tick % l.round(pixi.fps * sec, -1) === 0
+    return pixi.tick % _.round(pixi.fps * sec, -1) === 0
   }
 }

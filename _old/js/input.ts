@@ -143,10 +143,10 @@ class Input {
   }
   settingButtonsUpdate() {
     for (let i of ["board", "mouse", "pad"]) {
-      this[i].tap.buttons = l.values(User().settings[i].tap)
-      this[i].tap.states = l.keys(User().settings[i].tap)
-      this[i].hold.buttons = l.values(User().settings[i].hold)
-      this[i].hold.states = l.keys(User().settings[i].hold)
+      this[i].tap.buttons = _.values(User().settings[i].tap)
+      this[i].tap.states = _.keys(User().settings[i].tap)
+      this[i].hold.buttons = _.values(User().settings[i].hold)
+      this[i].hold.states = _.keys(User().settings[i].hold)
     }
     this.pad.deadZone = User().settings.pad.deadZone
   }
@@ -204,17 +204,17 @@ class Input {
   }
   private boardUpdate() {
     //
-    this.board.buttonsCache = l.cloneDeep(this.board.buttons)
+    this.board.buttonsCache = _.cloneDeep(this.board.buttons)
 
     this.board.buttonsToAdd.forEach((buttonToAdd) => {
       if (!this.board.buttons.includes(buttonToAdd))
         this.board.buttons.push(buttonToAdd)
-      l.remove(this.board.buttonsToAdd, (button) => button === buttonToAdd)
+      _.remove(this.board.buttonsToAdd, (button) => button === buttonToAdd)
     })
 
     this.board.buttonsToRemove.forEach((buttonToRemove) => {
-      l.remove(this.board.buttons, (button) => button === buttonToRemove)
-      l.remove(
+      _.remove(this.board.buttons, (button) => button === buttonToRemove)
+      _.remove(
         this.board.buttonsToRemove,
         (button) => button === buttonToRemove
       )
@@ -239,17 +239,17 @@ class Input {
   }
   private mouseUpdate() {
     //
-    this.mouse.buttonsCache = l.cloneDeep(this.mouse.buttons)
+    this.mouse.buttonsCache = _.cloneDeep(this.mouse.buttons)
 
     this.mouse.buttonsToAdd.forEach((buttonToAdd) => {
       if (!this.mouse.buttons.includes(buttonToAdd))
         this.mouse.buttons.push(buttonToAdd)
-      l.remove(this.mouse.buttonsToAdd, (button) => button === buttonToAdd)
+      _.remove(this.mouse.buttonsToAdd, (button) => button === buttonToAdd)
     })
 
     this.mouse.buttonsToRemove.forEach((buttonToRemove) => {
-      l.remove(this.mouse.buttons, (button) => button === buttonToRemove)
-      l.remove(
+      _.remove(this.mouse.buttons, (button) => button === buttonToRemove)
+      _.remove(
         this.mouse.buttonsToRemove,
         (button) => button === buttonToRemove
       )
@@ -298,10 +298,10 @@ class Input {
     input.debouncedHideCursor()
   }
 
-  debouncedHideCursor = l.debounce(() => (States().cursor = false), 3000)
-  debouncedPushCollision = l.debounce(() => Remote.pushCollision(), 1000)
+  debouncedHideCursor = _.debounce(() => (States().cursor = false), 3000)
+  debouncedPushCollision = _.debounce(() => Remote.pushCollision(), 1000)
 
   // in case button up won't work (happens sometimes)
-  debouncedClearBoard = l.debounce(() => (input.board.buttons = []), 500)
+  debouncedClearBoard = _.debounce(() => (input.board.buttons = []), 500)
 }
 export const input = new Input()

@@ -9,8 +9,8 @@ game-window
   //- 📜 Some interface elements
 
   //- loading screen on top of everything
-  transition(name="fast")
-    loading(v-if="!States().allLoaded")
+  //- transition(name="fast")
+  //-   loading(v-if="!States().allLoaded")
 
 </template>
 
@@ -19,7 +19,30 @@ game-window
 onMounted(() => {
   //
   startup()
+
+  // oldStartup()
 })
+
+async function startup() {
+  gic.initialize(ggd.refs.viewport) // input controller
+  gpm.initialize(ggd.refs.viewport) // pixi manager
+}
+// 📜 old
+// async function oldStartup() {
+//   //
+//   // devAccess
+//   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
+//   if (useCookie("name").value == "guki") States().devAccess = true
+
+//   input.initialize()
+
+//   let handleUser = Remote.fetchUserData()
+//   if (!useCookie("name").value) handleUser = Remote.createUser()
+
+//   await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
+
+//   States().allLoaded = true
+// }
 </script>
 
 <style>

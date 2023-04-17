@@ -18,11 +18,11 @@ const rawStates = {
 // }
 
 export const States: any = defineStore("states", () => {
-  const state = l.mapValues(rawStates, (key) => ref(key))
+  const state = _.mapValues(rawStates, (key) => ref(key))
 
   watch(state.fullscreen, () => {
-    if (!document.fullscreenElement) {
-      ggm.refs.background.requestFullscreen()
+    if (ggd.refs.background && !document.fullscreenElement) {
+      ggd.refs.background.requestFullscreen()
     } else if (document.exitFullscreen) {
       document.exitFullscreen()
     }

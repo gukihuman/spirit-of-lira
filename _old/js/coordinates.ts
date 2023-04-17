@@ -4,18 +4,18 @@ interface Entity {
 }
 class Coordinates {
   ofMapChunk(c: number) {
-    return l.floor(c / 1000)
+    return _.floor(c / 1000)
   }
   inMapChunk(c: number) {
     return c % 1000
   }
   mapChunkIndex(entity: Entity) {
-    return l.toString(
+    return _.toString(
       this.ofMapChunk(entity.y) * 100 + this.ofMapChunk(entity.x)
     )
   }
   ofTile(c: number) {
-    return l.floor(c / 100)
+    return _.floor(c / 100)
   }
   inTile(c: number) {
     return c % 100

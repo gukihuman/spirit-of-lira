@@ -1,5 +1,5 @@
 export const info = {
-  collision: l.times(1000 * 1000, l.constant(0)),
+  collision: _.times(1000 * 1000, _.constant(0)),
   hero: {
     size: 50,
     speed: 8,

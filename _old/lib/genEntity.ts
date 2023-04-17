@@ -5,7 +5,7 @@ export function genEntity(
     y: number
   }
 ): { [index: string]: any } {
-  const creature = l.cloneDeep(rawCreature)
+  const creature = _.cloneDeep(rawCreature)
   creature.x = options.x
   creature.y = options.y
   return creature
