@@ -1,4 +1,4 @@
-class gameData {
+class systemData {
   private _refs = defineStore("refs", () => {
     const raw: { [index: string]: any } = {
       //
@@ -12,4 +12,4 @@ class gameData {
     return this._refs()
   }
 }
-export const ggd = new gameData()
+export const gsd = new systemData()

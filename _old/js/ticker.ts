@@ -7,7 +7,7 @@ export function ticker() {
 
   if (States().collisionEdit) pixi.updateCollisionGrid()
 
-  pixi.sprites.hero["idle"].visible = true
+  pixi.sprites.hero.idle.visible = true
   _.keys(pixi.sprites.mapChunks).forEach((map) => pixi.moveMap(map))
 
   observer.update()

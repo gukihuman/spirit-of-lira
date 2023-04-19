@@ -24,25 +24,27 @@ onMounted(() => {
 })
 
 async function startup() {
-  gic.initialize(ggd.refs.viewport) // input controller
-  gpm.initialize(ggd.refs.viewport) // pixi manager
+  gic.initialize(gsd.refs.viewport) // input controller
+  gpm.initialize(gsd.refs.viewport) // pixi manager
+  ggm.initialize() // game manager
 }
-// 📜 old
-// async function oldStartup() {
-//   //
-//   // devAccess
-//   useCookie("accessKey").value = useCookie("accessKey").value || "empty"
-//   if (useCookie("name").value == "guki") States().devAccess = true
 
-//   input.initialize()
+// 📜 old startup
+async function oldStartup() {
+  //
+  // devAccess
+  useCookie("accessKey").value = useCookie("accessKey").value || "empty"
+  if (useCookie("name").value == "guki") States().devAccess = true
 
-//   let handleUser = Remote.fetchUserData()
-//   if (!useCookie("name").value) handleUser = Remote.createUser()
+  input.initialize()
 
-//   await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
+  let handleUser = Remote.fetchUserData()
+  if (!useCookie("name").value) handleUser = Remote.createUser()
 
-//   States().allLoaded = true
-// }
+  await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
+
+  States().allLoaded = true
+}
 </script>
 
 <style>

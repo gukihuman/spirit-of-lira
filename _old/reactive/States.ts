@@ -21,8 +21,8 @@ export const States: any = defineStore("states", () => {
   const state = _.mapValues(rawStates, (key) => ref(key))
 
   watch(state.fullscreen, () => {
-    if (ggd.refs.background && !document.fullscreenElement) {
-      ggd.refs.background.requestFullscreen()
+    if (gsd.refs.background && !document.fullscreenElement) {
+      gsd.refs.background.requestFullscreen()
     } else if (document.exitFullscreen) {
       document.exitFullscreen()
     }
