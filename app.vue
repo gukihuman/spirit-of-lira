@@ -26,7 +26,8 @@ onMounted(() => {
 async function startup() {
   gic.initialize(gsd.refs.viewport) // input controller
   gpm.initialize(gsd.refs.viewport) // pixi manager
-  ggm.initialize() // game manager
+
+  ggm.instanceEntity("hero")
 }
 
 // 📜 old startup

@@ -54,11 +54,11 @@ class Pixi {
   private async loadMapChunk(index: string) {
     if (_.keys(this.sprites.mapChunks).includes(index)) return
 
-    let url = new URL(`/_old-assets/map-chunks/${index}.webp`, import.meta.url)
+    let url = new URL(`/old/assets/map-chunks/${index}.webp`, import.meta.url)
       .href
     if (url.includes("undefined"))
       url = new URL(
-        "/_old-assets/miscellaneous/mapNotFound.webp",
+        "/old/assets/miscellaneous/mapNotFound.webp",
         import.meta.url
       ).href
     let asset = await p.Assets.load(url)
@@ -74,7 +74,7 @@ class Pixi {
     this.sortable.addChild(this.hero)
   }
   private async loadHero() {
-    const url = new URL("/_old-assets/hero/hero.json", import.meta.url).href
+    const url = new URL("/old/assets/hero/hero.json", import.meta.url).href
     let asset = await p.Assets.load(url)
     _.forOwn(asset.animations, (value, key) => {
       this.sprites.hero[key] = new p.AnimatedSprite(value)
