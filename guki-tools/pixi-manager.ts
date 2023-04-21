@@ -32,7 +32,7 @@ class pixiManager {
     }
     return undefined
   }
-  public async loadEntityContainer(id: number, entity: gEntity) {
+  public async loadEntityContainer(id: number, entity: gInstanciatedEntity) {
     if (!this.app) return
 
     const entityContainer = new PIXI.Container() as gContainer

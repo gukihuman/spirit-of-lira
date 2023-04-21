@@ -1,27 +1,24 @@
 import { Container } from "pixi.js"
 
 declare global {
-  interface gUnique {
+  interface gEntity {
+    [index: string]: any
     name: string
     sprite: string
+    process: () => void
+  }
+  interface gUniqueEntity extends gEntity {
     x: number
     y: number
-    process: () => void
   }
-  interface gEnemy {
-    name: string
-    sprite: string
+  interface gCommonEntity extends gEntity {
     mapChunks: string[]
-    process: () => void
   }
-  interface gEntity {
+  interface gInstanciatedEntity extends gEntity {
     id: number
-    name: string
-    sprite: string
     x: number
     y: number
     state: string
-    process: () => void
   }
   interface gContainer extends Container {
     id: number
@@ -29,8 +26,8 @@ declare global {
 }
 
 class TypeManager {
-  public gUnique(node: any): node is gUnique {
-    return (node as gUnique).x !== undefined
+  public gUniqueEntity(node: any): node is gUniqueEntity {
+    return (node as gUniqueEntity).x !== undefined
   }
 }
 

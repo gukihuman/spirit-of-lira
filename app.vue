@@ -24,10 +24,11 @@ onMounted(() => {
 })
 
 async function startup() {
-  gic.initialize(gsd.refs.viewport) // input controller
   gpm.initialize(gsd.refs.viewport) // pixi manager
+  gic.initialize(gsd.refs.viewport) // input controller
+  gpm.app.ticker.add(() => gic.update())
 
-  ggm.instanceEntity("hero")
+  gef.instanceEntity("hero")
 }
 
 // 📜 old startup
