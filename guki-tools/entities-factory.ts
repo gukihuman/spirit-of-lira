@@ -1,6 +1,6 @@
 class EntitiesFactory {
   private freeId: number = 0
-  private instanciatedHero: gInstanciatedEntity | undefined
+  public instanciatedHero: gInstanciatedEntity | undefined
   // entities populated from all separate entity files
   public entities: Map<string, gUniqueEntity | gCommonEntity> = new Map()
   private instanciatedEntities: Map<number, gInstanciatedEntity> = new Map()
@@ -35,7 +35,7 @@ class EntitiesFactory {
     await gpm.loadEntityContainer(this.freeId, instanciatedEntity)
     const entityContainer = gpm.findEntityContainer(this.freeId)
     if (entityContainer) {
-      gpm.app?.ticker.add(() => {
+      gpm.app?.ticker.add((delta) => {
         if (this.instanciatedHero) {
           entityContainer.x =
             instanciatedEntity.x - this.instanciatedHero.x + 960
@@ -47,7 +47,7 @@ class EntitiesFactory {
           instanciatedEntity.state
         )
         if (animatedSprite) animatedSprite.visible = true
-        instanciatedEntity.process()
+        instanciatedEntity.process(delta)
       })
     }
     this.freeId++

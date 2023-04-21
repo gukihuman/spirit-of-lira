@@ -6,11 +6,9 @@ game-window
   //- 1920 / 1080 pixi viewport, where the actual game is
   viewport
 
-  //- 📜 Some interface elements
-
   //- loading screen on top of everything
-  //- transition(name="fast")
-  //-   loading(v-if="!States().allLoaded")
+  transition(name="fast")
+    loading(v-if="!gsd.states.assetsLoaded")
 
 </template>
 
@@ -26,9 +24,14 @@ onMounted(() => {
 async function startup() {
   gpm.initialize(gsd.refs.viewport) // pixi manager
   gic.initialize(gsd.refs.viewport) // input controller
-  gpm.app.ticker.add(() => gic.update())
+  gsd.initialize() // system data
+  gpm.app.ticker.add(() => {
+    gic.update()
+  })
 
-  gef.instanceEntity("hero")
+  await gef.instanceEntity("hero")
+  await gmm.initialize() // map manager - uses hero instance
+  gsd.states.assetsLoaded = true
 }
 
 // 📜 old startup

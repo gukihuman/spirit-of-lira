@@ -64,5 +64,24 @@ class pixiManager {
 
     return entityContainer
   }
+  public async loadGroundChunk(index: string) {
+    if (gmm.loadedGroundChunks.get(index)) return
+
+    // immideately add index to the map to prevent duplicates
+    // before Sprite is actually loaded using await later
+    gmm.loadedGroundChunks.set(index, new PIXI.Sprite())
+
+    let url = new URL(`/assets/ground-chunks/${index}.webp`, import.meta.url)
+      .href
+    if (url.includes("undefined")) {
+      url = new URL("/assets/miscellaneous/map-not-found.webp", import.meta.url)
+        .href
+    }
+    const webp = await PIXI.Assets.load(url)
+    const sprite = new PIXI.Sprite(webp)
+    sprite.cullable = true
+    this.ground.addChild(sprite)
+    gmm.loadedGroundChunks.set(index, sprite)
+  }
 }
 export const gpm = new pixiManager()
