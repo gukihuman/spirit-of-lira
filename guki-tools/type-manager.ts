@@ -5,7 +5,7 @@ declare global {
     [index: string]: any
     name: string
     sprite: string
-    process: (delta: number) => void
+    process: () => void
   }
   interface gUniqueEntity extends gEntity {
     x: number

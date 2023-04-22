@@ -1,9 +1,12 @@
+import { PiniaPluginContext } from "pinia"
+import { Sprite } from "pixi.js"
+
 class EntitiesFactory {
   private freeId: number = 0
   public instanciatedHero: gInstanciatedEntity | undefined
   // entities populated from all separate entity files
   public entities: Map<string, gUniqueEntity | gCommonEntity> = new Map()
-  private instanciatedEntities: Map<number, gInstanciatedEntity> = new Map()
+  public instanciatedEntities: Map<number, gInstanciatedEntity> = new Map()
 
   public async instanceEntity(name) {
     const entity = this.entities.get(name)
@@ -42,11 +45,21 @@ class EntitiesFactory {
           entityContainer.y =
             instanciatedEntity.y - this.instanciatedHero.y + 540
         }
-        const animatedSprite = gpm.findAnimationCantainer(
-          instanciatedEntity.id,
-          instanciatedEntity.state
-        )
-        if (animatedSprite) animatedSprite.visible = true
+
+        // set visibility of animations
+        entityContainer
+          .getChildByName("animations")
+          .children?.forEach((child) => {
+            if (
+              child instanceof PIXI.Sprite &&
+              child.name === instanciatedEntity.state
+            ) {
+              child.visible = true
+            } else if (child instanceof PIXI.Sprite) {
+              child.visible = false
+            }
+          })
+
         instanciatedEntity.process()
       })
     }

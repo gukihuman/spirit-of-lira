@@ -3,10 +3,12 @@ export default {
   sprite: new URL("/assets/entities/hero.json", import.meta.url).href,
   x: 51000,
   y: 54000,
-  speed: 10,
+  speed: 12,
   size: 70,
 
   process: function () {
+    this.state = "idle"
+
     const speedPerTick = (this.speed / 6) * (gpm.deltaMS / 16.66)
     //
     // mouse move
@@ -19,11 +21,14 @@ export default {
         const distance = displacement.distance
         if (distance < this.size) return
 
-        const distanceFactor = _.clamp(distance / 350, 1)
+        const ratio = _.clamp(distance / 350, 1)
+        if (ratio < 0.9) this.state = "walk"
+        else this.state = "run"
+
         const angle = displacement.angle
         const velocity = glib.vectorFromAngle(angle, speedPerTick)
-        this.x += velocity.x * distanceFactor
-        this.y += velocity.y * distanceFactor
+        this.x += velocity.x * ratio
+        this.y += velocity.y * ratio
       }
     }
 
@@ -39,6 +44,8 @@ export default {
         const angle = axesVector.angle
         let ratio = axesVector.distance
         ratio = _.clamp(ratio, 1)
+        if (ratio < 0.9) this.state = "walk"
+        else this.state = "run"
 
         const velocity = glib.vectorFromAngle(angle, speedPerTick)
         this.x += velocity.x * ratio

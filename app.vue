@@ -23,16 +23,22 @@ onMounted(() => {
 
 async function startup() {
   //
-  // initialize order is important
-  gpm.initialize(gsd.refs.viewport) // pixi manager - independent
-  gic.initialize(gsd.refs.viewport) // input controller - independent
+  // initialize order is important, these are independent ones
+  gpm.initialize(gsd.refs.viewport) // pixi manager
+  gic.initialize(gsd.refs.viewport) // input controller
 
-  gsd.initialize() // system data - uses gpm ticker
-  gim.initialize() // input manager - uses gpm ticker & gud settings
+  // these depend on gpm ticker, have to be initialized after gpm
+  gsd.initialize() // system data
+  gim.initialize() // input manager
+  gcache.initialize()
+  gflip.initialize() // flip containers horizontally
 
-  // load assets - uses gpm
+  // these also depend on gpm, load assets
   await gef.instanceEntity("hero")
-  await gmm.initialize() // map manager - uses hero instance
+
+  // this one depend on hero instance
+  await gmm.initialize() // map manager
+
   gsd.states.assetsLoaded = true
 }
 

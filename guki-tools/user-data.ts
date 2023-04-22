@@ -7,10 +7,14 @@ class UserData {
         gamepadDeadZone: 0.15,
 
         states: {
-          heroMouseMove: { keyboard: { tap: "e", hold: "o" } },
+          heroMouseMove: {
+            keyboard: { tap: "e", hold: "o" },
+            mouse: { hold: 0 },
+          },
         },
+
         signals: {
-          fullscreen: { keyboard: { tap: "f" } },
+          fullscreen: { keyboard: { tap: "f" }, gamepad: { tap: "Start" } },
         },
       },
     }

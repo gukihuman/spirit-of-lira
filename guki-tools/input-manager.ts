@@ -40,37 +40,45 @@ class InputManager {
   private updateStatesWithUserSettings() {
     _.forEach(gud.settings.input.states, (value, key) => {
       for (let device of ["keyboard", "mouse", "gamepad"]) {
-        if (value[device]?.hold) {
+        if (!value[device]) continue
+
+        if (value[device].hold !== undefined) {
           if (gic[device].pressed.includes(value[device].hold)) {
-            this.statesSources[key] = "hold"
+            this.statesSources[key] = { [device]: "hold" }
             this.states[key] = true
-          } else if (this.statesSources[key] === "hold") {
+          } else if (this.statesSources[key]?.[device] === "hold") {
             this.states[key] = false
           }
         }
-        if (value[device]?.tap) {
+        if (value[device].tap !== undefined) {
           if (gic[device].justPressed.includes(value[device].tap)) {
-            this.statesSources[key] = "tap"
+            this.statesSources[key] = { [device]: "tap" }
             this.states[key] = !this.states[key]
           }
         }
       }
     })
   }
+  private signalsSources = {}
   private updateSignalsWithUserSettings() {
     _.forEach(gud.settings.input.signals, (value, key) => {
       for (let device of ["keyboard", "mouse", "gamepad"]) {
-        if (value[device]?.hold) {
+        if (!value[device]) continue
+
+        if (value[device].hold !== undefined) {
           if (gic[device].pressed.includes(value[device].hold)) {
+            this.signalsSources[key] = { [device]: "hold" }
             this.signals[key] = true
-          } else {
+          } else if (this.signalsSources[key]?.[device] === "hold") {
             this.signals[key] = false
           }
         }
-        if (value[device]?.tap) {
+        if (value[device].tap !== undefined) {
           if (gic[device].justPressed.includes(value[device].tap)) {
+            this.signalsSources[key] = { [device]: "tap" }
             this.signals[key] = true
-          } else {
+          } else if (this.signalsSources[key]?.[device] === "tap") {
+            this.signalsSources[key] = { [device]: "tap" }
             this.signals[key] = false
           }
         }
