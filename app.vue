@@ -22,13 +22,15 @@ onMounted(() => {
 })
 
 async function startup() {
-  gpm.initialize(gsd.refs.viewport) // pixi manager
-  gic.initialize(gsd.refs.viewport) // input controller
-  gsd.initialize() // system data
-  gpm.app.ticker.add(() => {
-    gic.update()
-  })
+  //
+  // initialize order is important
+  gpm.initialize(gsd.refs.viewport) // pixi manager - independent
+  gic.initialize(gsd.refs.viewport) // input controller - independent
 
+  gsd.initialize() // system data - uses gpm ticker
+  gim.initialize() // input manager - uses gpm ticker & gud settings
+
+  // load assets - uses gpm
   await gef.instanceEntity("hero")
   await gmm.initialize() // map manager - uses hero instance
   gsd.states.assetsLoaded = true

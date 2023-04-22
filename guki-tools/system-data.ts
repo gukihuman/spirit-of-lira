@@ -1,6 +1,6 @@
-class systemData {
+class SystemData {
   //
-  private _refs = defineStore("refs", () => {
+  private _refs = defineStore("system-data-refs", () => {
     const raw: { [index: string]: any } = {
       //
       background: undefined, // To switch fullscreen
@@ -13,7 +13,7 @@ class systemData {
     return this._refs()
   }
 
-  private _states = defineStore("states", () => {
+  private _states = defineStore("system-data-states", () => {
     const raw: { [index: string]: any } = {
       //
       gameWindowScale: 1,
@@ -37,11 +37,10 @@ class systemData {
   }
   public initialize() {
     gpm.app?.ticker.add(() => {
-      // 📜 add user settings
-      if (gic.keyboard.justPressed.includes("w")) {
+      if (gim.signals.fullscreen) {
         gsd.states.fullscreen = !gsd.states.fullscreen
       }
     })
   }
 }
-export const gsd = new systemData()
+export const gsd = new SystemData()

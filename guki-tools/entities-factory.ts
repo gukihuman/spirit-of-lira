@@ -35,7 +35,7 @@ class EntitiesFactory {
     await gpm.loadEntityContainer(this.freeId, instanciatedEntity)
     const entityContainer = gpm.findEntityContainer(this.freeId)
     if (entityContainer) {
-      gpm.app?.ticker.add((delta) => {
+      gpm.app?.ticker.add(() => {
         if (this.instanciatedHero) {
           entityContainer.x =
             instanciatedEntity.x - this.instanciatedHero.x + 960
@@ -47,7 +47,7 @@ class EntitiesFactory {
           instanciatedEntity.state
         )
         if (animatedSprite) animatedSprite.visible = true
-        instanciatedEntity.process(delta)
+        instanciatedEntity.process()
       })
     }
     this.freeId++

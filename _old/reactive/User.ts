@@ -21,7 +21,7 @@ const rawUser = {
     },
   },
 }
-export const User: any = defineStore("user", () => {
+export const User: any = defineStore("_old-user", () => {
   const state = _.mapValues(rawUser, (key) => reactive(key))
   return state
 })

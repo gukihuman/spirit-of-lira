@@ -1,12 +1,16 @@
 import { Application, Container, DisplayObject } from "pixi.js"
 
-class pixiManager {
+class PixiManager {
   public app: Application | undefined = undefined
   public ground = new PIXI.Container()
   public sortable = new PIXI.Container()
   public air = new PIXI.Container()
 
-  public async initialize(viewport) {
+  public get deltaMS() {
+    return this.app?.ticker.deltaMS || 16.66
+  }
+
+  public initialize(viewport) {
     this.app = new PIXI.Application({ width: 1920, height: 1080 })
     viewport.appendChild(this.app.view)
     globalThis.__PIXI_APP__ = this.app
@@ -84,4 +88,4 @@ class pixiManager {
     gmm.loadedGroundChunks.set(index, sprite)
   }
 }
-export const gpm = new pixiManager()
+export const gpm = new PixiManager()

@@ -17,7 +17,7 @@ const rawStates = {
 //   type States = keyof typeof rawStates
 // }
 
-export const States: any = defineStore("states", () => {
+export const States: any = defineStore("_old-states", () => {
   const state = _.mapValues(rawStates, (key) => ref(key))
 
   watch(state.fullscreen, () => {
