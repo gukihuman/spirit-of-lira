@@ -3,6 +3,7 @@ import { Application, Container, DisplayObject } from "pixi.js"
 class PixiManager {
   public app: Application | undefined = undefined
   public ground = new PIXI.Container()
+  public collision = new PIXI.Container()
   public sortable = new PIXI.Container()
   public air = new PIXI.Container()
 
@@ -15,8 +16,14 @@ class PixiManager {
     viewport.appendChild(this.app.view)
     globalThis.__PIXI_APP__ = this.app
 
-    this.app.stage.addChild(this.ground, this.sortable, this.air)
+    this.app.stage.addChild(
+      this.ground,
+      this.collision,
+      this.sortable,
+      this.air
+    )
     this.ground.name = "ground"
+    this.collision.name = "collision"
     this.sortable.name = "sortable"
     this.air.name = "air"
   }

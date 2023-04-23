@@ -8,6 +8,7 @@ class Cache {
         gef.instanciatedEntities.forEach((value, key) => {
           clonedInstanciatedEntities.set(key, _.cloneDeep(value))
         })
+
         this.previuosTick = {
           instanciatedHero: _.cloneDeep(gef.instanciatedHero),
           instanciatedEntities: clonedInstanciatedEntities,

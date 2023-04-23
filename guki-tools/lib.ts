@@ -36,7 +36,7 @@ class Lib {
     return current
   }
 
-  // vectors and coordinates
+  // vectors
   public vector(x: number, y: number) {
     return new Vector(x, y)
   }
@@ -73,8 +73,21 @@ class Lib {
       gic.mouse.y / gsd.states.gameWindowScale
     )
   }
+
+  // coordinates
   public coordinateToMapChunk(coordinate: number) {
     return _.floor(coordinate / 1000)
+  }
+  public coordinateToTile(coordinate: number) {
+    return _.floor(coordinate / 100)
+  }
+  public coordinateOffsetInTile(coordinate: number) {
+    return coordinate % 100
+  }
+  public tileIndexFromEntity(entity: gInstanciatedEntity) {
+    return (
+      this.coordinateToTile(entity.y) * 1000 + this.coordinateToTile(entity.x)
+    )
   }
 }
 

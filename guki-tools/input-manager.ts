@@ -8,6 +8,9 @@ class InputManager {
 
       // updated with user settings
       heroMouseMove: false,
+
+      // dev only
+      editingCollision: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
     return state

@@ -11,6 +11,9 @@ class UserData {
             keyboard: { tap: "e", hold: "o" },
             mouse: { hold: 0 },
           },
+
+          // only for dev
+          editingCollision: {},
         },
 
         signals: {
@@ -33,6 +36,13 @@ class UserData {
   })
   public get states() {
     return this._states()
+  }
+
+  public initialize() {
+    // 📜 check dev state
+    this.settings.input.states.editingCollision = {
+      keyboard: { tap: "m" },
+    }
   }
 }
 export const gud = new UserData()

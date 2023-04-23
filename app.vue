@@ -32,6 +32,8 @@ async function startup() {
   gim.initialize() // input manager
   gcache.initialize()
   gflip.initialize() // flip containers horizontally
+  gce.initialize() // collision editor
+  gud.initialize() // user data
 
   // these also depend on gpm, load assets
   await gef.instanceEntity("hero")
