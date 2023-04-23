@@ -89,6 +89,9 @@ class Lib {
       this.coordinateToTile(entity.y) * 1000 + this.coordinateToTile(entity.x)
     )
   }
+  public tileIndexFromCoordinates(x: number, y: number) {
+    return this.coordinateToTile(y) * 1000 + this.coordinateToTile(x)
+  }
 }
 
 export const glib = new Lib()

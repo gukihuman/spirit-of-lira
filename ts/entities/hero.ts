@@ -27,8 +27,40 @@ export default {
 
         const angle = displacement.angle
         const velocity = glib.vectorFromAngle(angle, speedPerTick)
-        this.x += velocity.x * ratio
-        this.y += velocity.y * ratio
+
+        const nextX = this.x + velocity.x * ratio
+        const nextY = this.y + velocity.y * ratio
+
+        const nextTileIndex = glib.tileIndexFromCoordinates(nextX, nextY)
+        if (
+          gce.collisionArray[nextTileIndex] === 2 ||
+          gce.collisionArray[nextTileIndex] === 3
+        ) {
+          //
+          const nextTileIndexByX = glib.tileIndexFromCoordinates(nextX, this.y)
+          if (
+            gce.collisionArray[nextTileIndexByX] !== 2 &&
+            gce.collisionArray[nextTileIndexByX] !== 3
+          ) {
+            this.x = nextX
+            return
+          }
+
+          const nextTileIndexByY = glib.tileIndexFromCoordinates(this.x, nextY)
+          if (
+            gce.collisionArray[nextTileIndexByY] !== 2 &&
+            gce.collisionArray[nextTileIndexByY] !== 3
+          ) {
+            this.y = nextY
+            return
+          }
+
+          this.state = "idle"
+          return
+        }
+
+        this.x = nextX
+        this.y = nextY
       }
     }
 

@@ -1,7 +1,7 @@
 import { Graphics } from "pixi.js"
 
 class CollisionEditor {
-  private collisionArray: number[] = []
+  public collisionArray: number[] = []
   private collisionGrid: Graphics[][] = []
 
   public drawCollisionGrid() {
@@ -69,6 +69,27 @@ class CollisionEditor {
   private debouncedSaveToLocalStorage = _.debounce(() => {
     localStorage.setItem("collisionArray", JSON.stringify(this.collisionArray))
     console.log(timeNow() + " ✅ collision saved to local storage")
+
+    const stringifiedArray = JSON.stringify(this.collisionArray)
+    const blob = new Blob([stringifiedArray], { type: "application/json" })
+
+    const url = URL.createObjectURL(blob)
+
+    // Create a hidden link element
+    const link = document.createElement("a")
+    link.style.display = "none"
+    link.href = url
+    link.download = "collisionArray.json"
+
+    // Add the link element to the document
+    document.body.appendChild(link)
+
+    // Trigger the download
+    link.click()
+
+    // Clean up the URL and link element
+    window.URL.revokeObjectURL(url)
+    document.body.removeChild(link)
   }, 30)
   public initialize() {
     const localStorageCollisionArray = localStorage.getItem("collisionArray")
