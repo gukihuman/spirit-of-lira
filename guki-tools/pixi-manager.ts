@@ -1,4 +1,4 @@
-import { Application, Container, DisplayObject } from "pixi.js"
+import { Application, Container } from "pixi.js"
 
 class PixiManager {
   public app: Application | undefined = undefined
