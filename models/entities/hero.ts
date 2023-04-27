@@ -1,3 +1,5 @@
+import { loadBitmapFont } from "pixi.js"
+
 export default {
   name: "hero",
   sprite: new URL("/assets/entities/hero.json", import.meta.url).href,
@@ -5,8 +7,7 @@ export default {
   y: 54000,
   speed: 12,
   size: 70,
-
-  process: function () {
+  process() {
     this.state = "idle"
 
     const speedPerTick = (this.speed / 6) * (gpm.deltaMS / 16.66)
@@ -85,4 +86,16 @@ export default {
       }
     }
   },
-} as gUniqueEntity
+
+  howToSwitchAnimations: {
+    idle: 11,
+    walk: {
+      idle: 4,
+      run: "smooth",
+    },
+    run: {
+      idle: 4,
+      walk: "smooth",
+    },
+  },
+} as gUniqueEntityModel

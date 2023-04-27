@@ -12,12 +12,6 @@ class Vector {
   get angle() {
     return Math.atan2(this.y, this.x)
   }
-  normalize() {
-    const length = this.distance
-    this.x /= length
-    this.y /= length
-    return this
-  }
 }
 
 class Lib {
@@ -34,6 +28,13 @@ class Lib {
       ":" +
       _pad(now.getSeconds())
     return current
+  }
+  public cloneMapDeep(map: Map<any, any>) {
+    const clonedMap = new Map()
+    map.forEach((value, key) => {
+      clonedMap.set(key, _.cloneDeep(value))
+    })
+    return clonedMap
   }
 
   // vectors
@@ -78,19 +79,58 @@ class Lib {
   public coordinateToMapChunk(coordinate: number) {
     return _.floor(coordinate / 1000)
   }
+  public mapChunkToCoordinateX(mapChunk: string) {
+    return (_.toNumber(mapChunk) % 100) * 1000
+  }
+  public mapChunkToCoordinateY(mapChunk: string) {
+    return Math.floor(_.toNumber(mapChunk) / 100) * 1000
+  }
   public coordinateToTile(coordinate: number) {
     return _.floor(coordinate / 100)
   }
   public coordinateOffsetInTile(coordinate: number) {
     return coordinate % 100
   }
-  public tileIndexFromEntity(entity: gInstanciatedEntity) {
+  public tileIndexFromEntity(entityInstance: gEntityInstance) {
     return (
-      this.coordinateToTile(entity.y) * 1000 + this.coordinateToTile(entity.x)
+      this.coordinateToTile(entityInstance.y) * 1000 +
+      this.coordinateToTile(entityInstance.x)
     )
   }
   public tileIndexFromCoordinates(x: number, y: number) {
     return this.coordinateToTile(y) * 1000 + this.coordinateToTile(x)
+  }
+
+  public setAnimationFrameBetweenStates(
+    entity: any,
+    fromState: string,
+    toState: string,
+    frame: number | "smooth" = "smooth"
+  ) {
+    //
+    const lastEntityInstance = gcache.lastTick.entityInstances.get(entity.id)
+    if (!lastEntityInstance) return
+
+    if (entity.state === toState && lastEntityInstance.state === fromState) {
+      //
+      // smooth saves the order like between run and walk
+      if (frame === "smooth") {
+        let fromAnimatedSprite = gpm.getAnimationSprite(entity.id, fromState)
+        let currentFrame = fromAnimatedSprite.currentFrame
+
+        // increment to the next frame
+        currentFrame++
+
+        // +1 here is just to fit the same frame because index started from 0
+        if (currentFrame + 1 > fromAnimatedSprite.totalFrames) currentFrame = 0
+
+        gpm.getAnimationSprite(entity.id, toState).gotoAndPlay(currentFrame)
+        console.log(gpm.getAnimationSprite(entity.id, fromState).currentFrame)
+        console.log(gpm.getAnimationSprite(entity.id, toState).currentFrame)
+      } else {
+        gpm.getAnimationSprite(entity.id, toState).gotoAndPlay(frame)
+      }
+    }
   }
 }
 

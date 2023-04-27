@@ -27,7 +27,7 @@ async function startup() {
   gpm.initialize(gsd.refs.viewport) // pixi manager
   gic.initialize(gsd.refs.viewport) // input controller
 
-  // these depend on gpm ticker, have to be initialized after gpm
+  // depend on gpm ticker, have to be initialized after gpm
   gsd.initialize() // system data
   gim.initialize() // input manager
   gcache.initialize()
@@ -35,11 +35,15 @@ async function startup() {
   gce.initialize() // collision editor
   gud.initialize() // user data
 
-  // these also depend on gpm, load assets
+  // depend on gpm
   await gef.instanceEntity("hero")
 
-  // this one depend on hero instance
+  // dapend on gpm and hero instance for its coordinates
   await gmm.initialize() // map manager
+
+  for (let i in _.range(40)) {
+    await gef.instanceEntity("bunbo")
+  }
 
   gsd.states.assetsLoaded = true
 }

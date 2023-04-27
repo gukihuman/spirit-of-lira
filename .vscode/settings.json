@@ -10,7 +10,9 @@
     ".gitignore": true,
     "package-lock.json": true,
     "tsconfig.json": true,
-    "vitest.config.ts": true
+    "vitest.config.ts": true,
+    "prisma": true,
+    "server": true
   },
   "workspace.isHidden": true
 }

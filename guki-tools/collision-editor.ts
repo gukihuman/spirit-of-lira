@@ -1,7 +1,8 @@
 import { Graphics } from "pixi.js"
+import json from "@/assets/miscellaneous/collisionArray.json"
 
 class CollisionEditor {
-  public collisionArray: number[] = []
+  public collisionArray: number[] = json
   private collisionGrid: Graphics[][] = []
 
   public drawCollisionGrid() {
@@ -33,17 +34,18 @@ class CollisionEditor {
     gpm.collision.pivot.y = gpm.collision.height / 2
     gpm.collision.visible = false
   }
+
   public updateCollisionGrid() {
-    if (!gef.instanciatedHero) return
+    if (!gef.heroInstance) return
 
     // center point of collision grid minus hero offset
     gpm.collision.x =
-      1920 / 2 - glib.coordinateOffsetInTile(gef.instanciatedHero.x) + 50
+      1920 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.x) + 50
     gpm.collision.y =
-      1080 / 2 - glib.coordinateOffsetInTile(gef.instanciatedHero.y) + 50
+      1080 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.y) + 50
 
-    const startX = glib.coordinateToTile(gef.instanciatedHero.x) - 10
-    const startY = glib.coordinateToTile(gef.instanciatedHero.y) - 6
+    const startX = glib.coordinateToTile(gef.heroInstance.x) - 10
+    const startY = glib.coordinateToTile(gef.heroInstance.y) - 6
     this.collisionGrid.forEach((row, y) => {
       row.forEach((square, x) => {
         const i = (startY + y) * 1000 + startX + x
@@ -54,22 +56,21 @@ class CollisionEditor {
       })
     })
   }
-  private updateCollisionArray() {
-    if (!gef.instanciatedHero) return
 
-    let i = glib.tileIndexFromEntity(gef.instanciatedHero)
+  private updateCollisionArray() {
+    if (!gef.heroInstance) return
+
+    let i = glib.tileIndexFromEntity(gef.heroInstance)
 
     if (gic.gamepad.pressed.includes("Y")) this.collisionArray[i] = 0
     else if (gic.gamepad.pressed.includes("X")) this.collisionArray[i] = 1
     else if (gic.gamepad.pressed.includes("B")) this.collisionArray[i] = 2
     else if (gic.gamepad.pressed.includes("A")) this.collisionArray[i] = 3
     else if (gic.gamepad.pressed.includes("RB"))
-      this.debouncedSaveToLocalStorage()
+      this.downloadCollisionArrayDebounced()
   }
-  private debouncedSaveToLocalStorage = _.debounce(() => {
-    localStorage.setItem("collisionArray", JSON.stringify(this.collisionArray))
-    console.log(timeNow() + " ✅ collision saved to local storage")
 
+  private downloadCollisionArrayDebounced = _.debounce(() => {
     const stringifiedArray = JSON.stringify(this.collisionArray)
     const blob = new Blob([stringifiedArray], { type: "application/json" })
 
@@ -91,14 +92,8 @@ class CollisionEditor {
     window.URL.revokeObjectURL(url)
     document.body.removeChild(link)
   }, 30)
-  public initialize() {
-    const localStorageCollisionArray = localStorage.getItem("collisionArray")
-    if (localStorageCollisionArray) {
-      this.collisionArray = JSON.parse(localStorageCollisionArray)
-    } else {
-      this.collisionArray = _.times(1000 * 1000, _.constant(0))
-    }
 
+  public initialize() {
     this.drawCollisionGrid()
 
     gpm.app?.ticker.add(() => {

@@ -2,12 +2,12 @@ class Flipper {
   public initialize() {
     gpm.app?.ticker.add(
       () => {
-        gef.instanciatedEntities.forEach((entity, id) => {
-          const previousX = gcache.previuosTick.instanciatedEntities.get(id).x
-          const entityContainer = gpm.findEntityContainer(id)
-          if (entity.x < previousX) {
+        gef.entityInstances.forEach((entityInstance, id) => {
+          const previousX = gcache.lastTick.entityInstances.get(id).x
+          const entityContainer = gpm.getEntityContainer(id)
+          if (entityInstance.x < previousX) {
             if (entityContainer) entityContainer.scale.x = -1
-          } else if (entity.x > previousX) {
+          } else if (entityInstance.x > previousX) {
             if (entityContainer) entityContainer.scale.x = 1
           }
           // 📜 add attack target dependence

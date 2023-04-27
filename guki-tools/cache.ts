@@ -1,17 +1,12 @@
 class Cache {
-  public previuosTick: any = {}
+  public lastTick: any = {}
 
   public initialize() {
     gpm.app?.ticker.add(
       () => {
-        const clonedInstanciatedEntities = new Map()
-        gef.instanciatedEntities.forEach((value, key) => {
-          clonedInstanciatedEntities.set(key, _.cloneDeep(value))
-        })
-
-        this.previuosTick = {
-          instanciatedHero: _.cloneDeep(gef.instanciatedHero),
-          instanciatedEntities: clonedInstanciatedEntities,
+        this.lastTick = {
+          heroInstance: _.cloneDeep(gef.heroInstance),
+          entityInstances: glib.cloneMapDeep(gef.entityInstances),
         }
       },
       null,
