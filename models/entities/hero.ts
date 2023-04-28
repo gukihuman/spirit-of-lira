@@ -1,5 +1,3 @@
-import { loadBitmapFont } from "pixi.js"
-
 export default {
   name: "hero",
   sprite: new URL("/assets/entities/hero.json", import.meta.url).href,
@@ -7,8 +5,11 @@ export default {
   y: 54000,
   speed: 12,
   size: 70,
+
   process() {
     this.state = "idle"
+
+    if (gsd.states.context !== "gameplay") return
 
     const speedPerTick = (this.speed / 6) * (gpm.deltaMS / 16.66)
     //
@@ -32,26 +33,15 @@ export default {
         const nextX = this.x + velocity.x * ratio
         const nextY = this.y + velocity.y * ratio
 
-        const nextTileIndex = glib.tileIndexFromCoordinates(nextX, nextY)
-        if (
-          gce.collisionArray[nextTileIndex] === 2 ||
-          gce.collisionArray[nextTileIndex] === 3
-        ) {
-          //
-          const nextTileIndexByX = glib.tileIndexFromCoordinates(nextX, this.y)
-          if (
-            gce.collisionArray[nextTileIndexByX] !== 2 &&
-            gce.collisionArray[nextTileIndexByX] !== 3
-          ) {
+        if (glib.isWalkable(nextX, nextY)) {
+          this.x = nextX
+          this.y = nextY
+        } else {
+          if (glib.isWalkable(nextX, this.y)) {
             this.x = nextX
             return
           }
-
-          const nextTileIndexByY = glib.tileIndexFromCoordinates(this.x, nextY)
-          if (
-            gce.collisionArray[nextTileIndexByY] !== 2 &&
-            gce.collisionArray[nextTileIndexByY] !== 3
-          ) {
+          if (glib.isWalkable(this.x, nextY)) {
             this.y = nextY
             return
           }
@@ -59,9 +49,6 @@ export default {
           this.state = "idle"
           return
         }
-
-        this.x = nextX
-        this.y = nextY
       }
     }
 
@@ -81,21 +68,33 @@ export default {
         else this.state = "run"
 
         const velocity = glib.vectorFromAngle(angle, speedPerTick)
-        this.x += velocity.x * ratio
-        this.y += velocity.y * ratio
+
+        const nextX = this.x + velocity.x * ratio
+        const nextY = this.y + velocity.y * ratio
+
+        if (glib.isWalkable(nextX, nextY)) {
+          this.x = nextX
+          this.y = nextY
+        } else {
+          if (glib.isWalkable(nextX, this.y)) {
+            this.x = nextX
+            return
+          }
+          if (glib.isWalkable(this.x, nextY)) {
+            this.y = nextY
+            return
+          }
+
+          this.state = "idle"
+          return
+        }
       }
     }
   },
 
-  howToSwitchAnimations: {
+  firstAnimationFrames: {
     idle: 11,
-    walk: {
-      idle: 4,
-      run: "smooth",
-    },
-    run: {
-      idle: 4,
-      walk: "smooth",
-    },
+    walk: 4,
+    run: 4,
   },
 } as gUniqueEntityModel

@@ -7,7 +7,7 @@ div(
   )
 
   //- game window
-  div(class="Bg-gray-700 absolute" :style="style")
+  div(class="bg-gray-700 absolute" :style="style")
     slot
 
 </template>
@@ -24,7 +24,9 @@ const style = computed(() => {
     width: width + "px",
     height: height + "px",
     scale: scale.value,
-    cursor: States().cursor ? "auto" : "none",
+
+    // 📜 turn on when custom cursor gonna be made
+    // cursor: "none",
   }
 })
 function setScale() {

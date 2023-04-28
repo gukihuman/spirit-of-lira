@@ -57,15 +57,13 @@ class MapManager {
     gpm.app?.ticker.add(() => {
       this.loadCloseMapChunks()
 
-      this.loadedGroundChunks.forEach((sprite, index) => {
-        if (gef.heroInstance) {
-          sprite.x =
-            (_.toNumber(index) % 100) * 1000 + 1920 / 2 - gef.heroInstance.x
-          sprite.y =
-            _.floor(_.toNumber(index) / 100) * 1000 +
-            1080 / 2 -
-            gef.heroInstance.y
-        }
+      // update coordinates
+      this.loadedGroundChunks.forEach((sprite, mapChunk) => {
+        if (!gef.heroInstance) return
+        sprite.x =
+          glib.mapChunkToCoordinateX(mapChunk) + 960 - gef.heroInstance.x
+        sprite.y =
+          glib.mapChunkToCoordinateY(mapChunk) + 540 - gef.heroInstance.y
       })
     })
   }

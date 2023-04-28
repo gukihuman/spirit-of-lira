@@ -11,6 +11,9 @@ class UserData {
             keyboard: { tap: "e", hold: "o" },
             mouse: { hold: 0 },
           },
+          contextInventory: {
+            keyboard: { tap: "i" },
+          },
 
           // only for dev
           editingCollision: {},

@@ -19,6 +19,8 @@ class SystemData {
       gameWindowScale: 1,
       fullscreen: false,
       assetsLoaded: false,
+      devMode: false,
+      context: "gameplay",
     }
     const state = _.mapValues(raw, (key) => ref(key))
 

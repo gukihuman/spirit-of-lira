@@ -1,4 +1,12 @@
 export class Remote {
+  // 📜 its just an example of some lines, not working =)
+  static async oldStartup() {
+    let handleUser = Remote.fetchUserData()
+    if (!useCookie("name").value) handleUser = Remote.createUser()
+
+    await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
+  }
+
   static async createUser() {
     const rawRes: any = await useFetch("api/createUser")
 

@@ -6,13 +6,25 @@ class InputManager {
       // updated manually
       activeDevice: "keyboard-mouse",
 
-      // updated with user settings
+      // updated with user settings at gameplay context
       heroMouseMove: false,
+
+      // updated with user settings always, relay on "context" in name
+      contextInventory: false,
 
       // dev only
       editingCollision: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
+
+    watch(state.contextInventory, () => {
+      if (state.contextInventory.value) {
+        gsd.states.context = "inventory"
+      } else {
+        gsd.states.context = "gameplay"
+      }
+    })
+
     return state
   })
   public get states() {
@@ -22,6 +34,7 @@ class InputManager {
   private _signals = defineStore("input-manager-signals", () => {
     const raw: { [index: string]: any } = {
       //
+      // updated with user settings always
       fullscreen: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
@@ -42,6 +55,8 @@ class InputManager {
   private statesSources = {}
   private updateStatesWithUserSettings() {
     _.forEach(gud.settings.input.states, (value, key) => {
+      if (gsd.states.context !== "gameplay" && !key.includes("context")) return
+
       for (let device of ["keyboard", "mouse", "gamepad"]) {
         if (!value[device]) continue
 

@@ -1,3 +1,4 @@
+// internal lib class
 class Vector {
   public x: number
   public y: number
@@ -35,6 +36,12 @@ class Lib {
       clonedMap.set(key, _.cloneDeep(value))
     })
     return clonedMap
+  }
+  public isWalkable(x: number, y: number) {
+    const tileIndex = glib.tileIndexFromCoordinates(x, y)
+    return (
+      gce.collisionArray[tileIndex] !== 2 && gce.collisionArray[tileIndex] !== 3
+    )
   }
 
   // vectors
@@ -83,7 +90,7 @@ class Lib {
     return (_.toNumber(mapChunk) % 100) * 1000
   }
   public mapChunkToCoordinateY(mapChunk: string) {
-    return Math.floor(_.toNumber(mapChunk) / 100) * 1000
+    return _.floor(_.toNumber(mapChunk) / 100) * 1000
   }
   public coordinateToTile(coordinate: number) {
     return _.floor(coordinate / 100)
@@ -99,38 +106,6 @@ class Lib {
   }
   public tileIndexFromCoordinates(x: number, y: number) {
     return this.coordinateToTile(y) * 1000 + this.coordinateToTile(x)
-  }
-
-  public setAnimationFrameBetweenStates(
-    entity: any,
-    fromState: string,
-    toState: string,
-    frame: number | "smooth" = "smooth"
-  ) {
-    //
-    const lastEntityInstance = gcache.lastTick.entityInstances.get(entity.id)
-    if (!lastEntityInstance) return
-
-    if (entity.state === toState && lastEntityInstance.state === fromState) {
-      //
-      // smooth saves the order like between run and walk
-      if (frame === "smooth") {
-        let fromAnimatedSprite = gpm.getAnimationSprite(entity.id, fromState)
-        let currentFrame = fromAnimatedSprite.currentFrame
-
-        // increment to the next frame
-        currentFrame++
-
-        // +1 here is just to fit the same frame because index started from 0
-        if (currentFrame + 1 > fromAnimatedSprite.totalFrames) currentFrame = 0
-
-        gpm.getAnimationSprite(entity.id, toState).gotoAndPlay(currentFrame)
-        console.log(gpm.getAnimationSprite(entity.id, fromState).currentFrame)
-        console.log(gpm.getAnimationSprite(entity.id, toState).currentFrame)
-      } else {
-        gpm.getAnimationSprite(entity.id, toState).gotoAndPlay(frame)
-      }
-    }
   }
 }
 

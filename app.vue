@@ -6,6 +6,9 @@ game-window
   //- 1920 / 1080 pixi viewport, where the actual game is
   viewport
 
+  transition(name="fast")
+    inventory(v-if="gsd.states.context === 'inventory'")
+
   //- loading screen on top of everything
   transition(name="fast")
     loading(v-if="!gsd.states.assetsLoaded")
@@ -17,8 +20,6 @@ game-window
 onMounted(() => {
   //
   startup()
-
-  // oldStartup()
 })
 
 async function startup() {
@@ -38,7 +39,7 @@ async function startup() {
   // depend on gpm
   await gef.instanceEntity("hero")
 
-  // dapend on gpm and hero instance for its coordinates
+  // depend on gpm and hero instance for its coordinates
   await gmm.initialize() // map manager
 
   for (let i in _.range(40)) {
@@ -46,23 +47,9 @@ async function startup() {
   }
 
   gsd.states.assetsLoaded = true
-}
 
-// 📜 old startup
-async function oldStartup() {
-  //
-  // devAccess
-  useCookie("accessKey").value = useCookie("accessKey").value || "empty"
-  if (useCookie("name").value == "guki") States().devAccess = true
-
-  input.initialize()
-
-  let handleUser = Remote.fetchUserData()
-  if (!useCookie("name").value) handleUser = Remote.createUser()
-
-  await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
-
-  States().allLoaded = true
+  useCookie("name").value = useCookie("name").value || "default"
+  if (useCookie("name").value == "guki") gsd.devMode = true
 }
 </script>
 
@@ -71,7 +58,7 @@ async function oldStartup() {
 /* "fast" transition */
 .fast-enter-active,
 .fast-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.2s ease;
 }
 
 .fast-enter-from,
