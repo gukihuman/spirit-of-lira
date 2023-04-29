@@ -42,9 +42,10 @@ class UserData {
   }
 
   public initialize() {
-    // 📜 check dev state
-    this.settings.input.states.editingCollision = {
-      keyboard: { tap: "m" },
+    if (gsd.states.devMode) {
+      this.settings.input.states.editingCollision = {
+        keyboard: { tap: "m" },
+      }
     }
   }
 }

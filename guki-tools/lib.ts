@@ -40,7 +40,7 @@ class Lib {
   public isWalkable(x: number, y: number) {
     const tileIndex = glib.tileIndexFromCoordinates(x, y)
     return (
-      gce.collisionArray[tileIndex] !== 2 && gce.collisionArray[tileIndex] !== 3
+      gcm.collisionArray[tileIndex] !== 2 && gcm.collisionArray[tileIndex] !== 3
     )
   }
 

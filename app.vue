@@ -6,6 +6,10 @@ game-window
   //- 1920 / 1080 pixi viewport, where the actual game is
   viewport
 
+  bars
+
+  text-input
+
   transition(name="fast")
     inventory(v-if="gsd.states.context === 'inventory'")
 
@@ -23,6 +27,9 @@ onMounted(() => {
 })
 
 async function startup() {
+  // set devMode before initialization of tools
+  useCookie("name").value = useCookie("name").value || "default"
+  if (useCookie("name").value == "guki") gsd.states.devMode = true
   //
   // initialize order is important, these are independent ones
   gpm.initialize(gsd.refs.viewport) // pixi manager
@@ -33,7 +40,7 @@ async function startup() {
   gim.initialize() // input manager
   gcache.initialize()
   gflip.initialize() // flip containers horizontally
-  gce.initialize() // collision editor
+  gcm.initialize() // collision editor
   gud.initialize() // user data
 
   // depend on gpm
@@ -47,9 +54,6 @@ async function startup() {
   }
 
   gsd.states.assetsLoaded = true
-
-  useCookie("name").value = useCookie("name").value || "default"
-  if (useCookie("name").value == "guki") gsd.devMode = true
 }
 </script>
 

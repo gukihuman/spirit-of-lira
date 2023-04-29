@@ -1,7 +1,7 @@
 import { Graphics } from "pixi.js"
 import json from "@/assets/miscellaneous/collisionArray.json"
 
-class CollisionEditor {
+class CollisionManager {
   public collisionArray: number[] = json
   private collisionGrid: Graphics[][] = []
 
@@ -108,4 +108,4 @@ class CollisionEditor {
   }
 }
 
-export const gce = new CollisionEditor()
+export const gcm = new CollisionManager()

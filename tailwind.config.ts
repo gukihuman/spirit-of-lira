@@ -7,6 +7,9 @@ module.exports = {
         mono: ["Roboto Mono"],
         display: ["Boogaloo"],
       },
+      colors: {
+        "sand-light": "#f2d7b5",
+      },
     },
   },
 }

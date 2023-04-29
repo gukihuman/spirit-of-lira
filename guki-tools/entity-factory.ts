@@ -116,7 +116,7 @@ class EntityFactory {
     y += _.random(0, 999)
 
     const tileIndex = glib.tileIndexFromCoordinates(x, y)
-    if (gce.collisionArray[tileIndex] === 0) {
+    if (gcm.collisionArray[tileIndex] === 0) {
       return { x, y }
     } else {
       return this.randomCoordinatesFromMapChunks(mapChunks)
@@ -156,9 +156,11 @@ class EntityFactory {
       animatedSprite.anchor.x = 0.5
       animatedSprite.anchor.y = 0.5
       animatedSprite.animationSpeed = 1 / 6
-      animatedSprite.play()
       animatedSprite.visible = false
       animationsContainer.addChild(animatedSprite)
+
+      const randomFrame = _.random(0, animatedSprite.totalFrames - 1)
+      animatedSprite.gotoAndPlay(randomFrame)
     })
 
     gpm.sortable.addChild(entityContainer)
