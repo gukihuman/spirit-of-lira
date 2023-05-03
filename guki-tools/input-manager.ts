@@ -36,6 +36,7 @@ class InputManager {
       //
       // updated with user settings always
       fullscreen: false,
+      sendInput: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
     return state

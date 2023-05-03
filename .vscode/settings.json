@@ -3,7 +3,6 @@
   "files.exclude": {
     ".nuxt": true,
     ".vscode": true,
-    "css": true,
     "node_modules": true,
     "tests": true,
     ".env": true,

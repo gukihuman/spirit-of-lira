@@ -1,7 +1,7 @@
 <template lang="pug">
-div(class="absolute w-full h-full z-30")
-  div(class="flex items-end w-full h-full pb-[170px] pl-[400px]")
-    textarea(class="bg-sand-light rounded-3xl text-[28px] z-10 focus:outline-none border-8 border-amber-900 opacity-25 focus:opacity-75 p-6 pt-2 resize-none duration-100 ease-in-out text-bottom selected-text text-[#552214] leading-[1.3] font-medium" ref="textarea" @input="updateWidth()" placeholder="...")
+div(class="absolute left-[1000px] w-[500px] h-full z-20")
+  div(class="flex items-end w-full h-full pb-[770px]")
+    textarea(class="bg-sand-light rounded-3xl text-[28px] z-10 focus:outline-none border-8 border-amber-900 opacity-75 p-6 pt-3 resize-none duration-100 ease-in-out text-bottom selected-text text-[#552214] leading-[1.3] font-medium" ref="textarea" @input="updateWidth()" placeholder="...")
 </template>
 
 <script setup lang="ts">
@@ -10,17 +10,16 @@ const textarea: any = ref(null)
 const maxWidth = 1110
 const minWidth = 200
 
-const updateWidth = () => {
-  if (!textarea.value || textarea.value === null) return
+const update = () => {
+  if (textarea.value === null) return
 
   // value
-  gud.states.input = textarea.value.value
+  textarea.value.value = gud.states.output
 
   // stylization
   if (textarea.value.scrollWidth < maxWidth) {
     textarea.value.style.whiteSpace = "nowrap"
   }
-
   textarea.value.style.width = "auto"
   textarea.value.style.width = `${Math.min(
     textarea.value.scrollWidth + 40,
@@ -37,14 +36,13 @@ const updateWidth = () => {
   //   textarea.value.style.width = `${minWidth}px`
   // }
   // textarea.value.style.height = "auto"
-  textarea.value.style.height = `${textarea.value.scrollHeight + 5}px`
+  textarea.value.style.height = `${textarea.value.scrollHeight + 10}px`
 }
 
 let updateInterval: any = null
 
 onMounted(() => {
-  gsd.refs.input = textarea
-  updateInterval = setInterval(() => updateWidth(), 50)
+  updateInterval = setInterval(() => update(), 50)
 })
 
 onUnmounted(() => {

@@ -9,6 +9,7 @@ game-window
   bars
 
   text-input
+  text-output
 
   transition(name="fast")
     inventory(v-if="gsd.states.context === 'inventory'")
@@ -42,6 +43,7 @@ async function startup() {
   gflip.initialize() // flip containers horizontally
   gcm.initialize() // collision editor
   gud.initialize() // user data
+  grc.initialize() // remote controller
 
   // depend on gpm
   await gef.instanceEntity("hero")
