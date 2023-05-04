@@ -6,6 +6,7 @@ class SystemData {
       background: undefined, // To switch fullscreen
       viewport: undefined, // To initialize pixi and gic with
       input: undefined,
+      output: undefined,
     }
     const state = _.mapValues(raw, (key) => ref(key))
     return state
@@ -22,6 +23,7 @@ class SystemData {
       assetsLoaded: false,
       devMode: false,
       context: "gameplay",
+      isInputFocused: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
 

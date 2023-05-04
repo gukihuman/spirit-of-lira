@@ -108,6 +108,10 @@ class InputManager {
     gpm.app?.ticker.add(() => {
       gic.update()
       this.updateStatesManually()
+
+      // 📜 clean the whole manager for stor conditions
+      if (gsd.states.isInputFocused) return
+
       this.updateStatesWithUserSettings()
       this.updateSignalsWithUserSettings()
     })

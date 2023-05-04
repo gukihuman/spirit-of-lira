@@ -1,6 +1,10 @@
 <template lang="pug">
 
-div(ref="viewport" class="absolute transition duration-200" :class="{ 'blur': gsd.states.context !== 'gameplay' }")
+div(
+  ref="viewport"
+  class="absolute transition duration-200"
+  :class="{ 'blur': gsd.states.context !== 'gameplay' }"
+)
 
 </template>
 <script setup lang="ts">

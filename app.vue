@@ -6,17 +6,22 @@ game-window
   //- 1920 / 1080 pixi viewport, where the actual game is
   viewport
 
-  bars
+  div(class="z-10")
+    bars
 
-  text-input
-  text-output
+  div(class="z-10")
+    input-area
 
-  transition(name="fast")
-    inventory(v-if="gsd.states.context === 'inventory'")
+  //- output-area
+
+  div(class="z-30")
+    transition(name="fast")
+      inventory(v-if="gsd.states.context === 'inventory'")
 
   //- loading screen on top of everything
-  transition(name="fast")
-    loading(v-if="!gsd.states.assetsLoaded")
+  div(class="z-50")
+    transition(name="fast")
+      loading(v-if="!gsd.states.assetsLoaded")
 
 </template>
 

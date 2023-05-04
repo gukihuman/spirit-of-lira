@@ -1,10 +1,10 @@
 <template lang="pug">
 
-div(class="absolute relative scale-[0.85] top-[150px] z-10")
-  img(src="@/assets/inventory/bars-bg.webp" class="absolute z-10" draggable="false")
-  img(src="@/assets/inventory/health-bar.webp" class="absolute z-10" draggable="false" )
-  img(src="@/assets/inventory/mana-bar.webp" class="absolute z-10" draggable="false" )
-  img(src="@/assets/inventory/exp-bar.webp" class="absolute z-10" draggable="false" )
+div(class="absolute relative scale-[0.85] top-[150px]")
+  img(src="@/assets/inventory/bars-bg.webp" class="absolute" draggable="false")
+  img(src="@/assets/inventory/health-bar.webp" class="absolute" draggable="false" )
+  img(src="@/assets/inventory/mana-bar.webp" class="absolute" draggable="false" )
+  img(src="@/assets/inventory/exp-bar.webp" class="absolute" draggable="false" )
 
 </template>
 <script setup lang="ts">

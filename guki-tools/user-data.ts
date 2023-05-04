@@ -34,8 +34,6 @@ class UserData {
   private _states = defineStore("user-data-states", () => {
     const raw: { [index: string]: any } = {
       //
-      input: "",
-      output: "",
     }
     const state = _.mapValues(raw, (key) => ref(key))
     return state
