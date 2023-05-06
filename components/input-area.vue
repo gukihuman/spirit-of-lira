@@ -1,8 +1,8 @@
 <template lang="pug">
 div(
   ref="background"
-  class="absolute bottom-[170px] left-[400px] rounded-3xl opacity-25 border-8 border-sand-700 bg-gradient-to-t from-sand-300 to-sand-200 transition"
-  :class="{ 'opacity-100': gsd.states.isInputFocused }"
+  class="absolute bottom-[170px] left-[400px] rounded-3xl opacity-50 border-8 border-sand-700 bg-gradient-to-t from-sand-400 to-sand-200 transition"
+  :class="{ 'opacity-100': gsd.states.inputFocus }"
   )
   textarea(
     ref="input"
@@ -10,7 +10,13 @@ div(
     @focus="turnFocusOn()"
     @blur="turnFocusOff()"
     placeholder="..."
-    class="text-[26px] bg-sand-100 rounded-3xl focus:outline-none border-8 border-sand-300 p-5 pt-2 resize-none duration-100 ease-in-out text-bottom selected-text text-sand-700 leading-[1.3] font-semibold mt-[6px] mb-[3px] mx-[10px] shadow-md placeholder:text-sand-500"
+    class="text-[26px] bg-sand-100 rounded-3xl focus:outline-none border-8 border-sand-300 px-[16px] pb-[20px] pt-[6px] resize-none duration-100 ease-in-out text-bottom selected-text text-sand-700 leading-[1.2] font-semibold mt-[6px] mb-[2px] mx-[10px] shadow-md placeholder:text-sand-500 selection:bg-sand-700 selection:text-sand-100"
+  )
+  img(
+    src="@/assets/inventory/send.webp"
+    draggable="false"
+    class="absolute bottom-[-20px] right-[-52px] cursor-pointer hover:brightness-125"
+    @click="sendInput()"
   )
 </template>
 
@@ -18,11 +24,11 @@ div(
 const background: any = ref(null)
 const input = ref(null)
 
-const turnFocusOn = () => (gsd.states.isInputFocused = true)
-const turnFocusOff = () => (gsd.states.isInputFocused = false)
+const turnFocusOn = () => (gsd.states.inputFocus = true)
+const turnFocusOff = () => (gsd.states.inputFocus = false)
+const sendInput = () => console.log("eo")
 
-const maxInputWidth = 1060
-const minInputWidth = 200
+const maxInputWidth = 1052
 
 const updateInputSize = () => {
   if (gsd.refs.input.scrollWidth < maxInputWidth) {
@@ -55,9 +61,3 @@ onUnmounted(() => {
   clearInterval(updateInterval)
 })
 </script>
-<style>
-.selected-text::selection {
-  background-color: rgb(122, 56, 21);
-  color: white;
-}
-</style>

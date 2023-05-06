@@ -110,7 +110,7 @@ class InputManager {
       this.updateStatesManually()
 
       // 📜 clean the whole manager for stor conditions
-      if (gsd.states.isInputFocused) return
+      if (gsd.states.inputFocus) return
 
       this.updateStatesWithUserSettings()
       this.updateSignalsWithUserSettings()

@@ -98,7 +98,8 @@ class Lib {
   public coordinateOffsetInTile(coordinate: number) {
     return coordinate % 100
   }
-  public tileIndexFromEntity(entityInstance: gEntityInstance) {
+  public tileIndexFromEntity(entityInstance: gEntity) {
+    if (!entityInstance.x || !entityInstance.y) return
     return (
       this.coordinateToTile(entityInstance.y) * 1000 +
       this.coordinateToTile(entityInstance.x)

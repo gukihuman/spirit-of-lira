@@ -6,4 +6,4 @@ export default {
   size: 70,
 
   process() {},
-} as gCommonEntityModel
+} as gEntity

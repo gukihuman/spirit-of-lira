@@ -3,6 +3,7 @@ class Flipper {
     gpm.app?.ticker.add(
       () => {
         gef.entityInstances.forEach((entityInstance, id) => {
+          if (!entityInstance.x || !entityInstance.y) return
           const previousX = gcache.lastTick.entityInstances.get(id).x
           const entityContainer = gpm.getEntityContainer(id)
           if (entityInstance.x < previousX) {

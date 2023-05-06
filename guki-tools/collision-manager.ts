@@ -37,6 +37,7 @@ class CollisionManager {
 
   public updateCollisionGrid() {
     if (!gef.heroInstance) return
+    if (!gef.heroInstance.x || !gef.heroInstance.y) return
 
     // center point of collision grid minus hero offset
     gpm.collision.x =

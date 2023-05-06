@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: ["guki-tools/**", "models/**", "_old/**"],
+    dirs: ["guki-tools/**", "models/**"],
   },
   css: ["@/css/tailwind.css"],
 })

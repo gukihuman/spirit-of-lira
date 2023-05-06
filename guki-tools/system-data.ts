@@ -23,7 +23,7 @@ class SystemData {
       assetsLoaded: false,
       devMode: false,
       context: "gameplay",
-      isInputFocused: false,
+      inputFocus: false,
     }
     const state = _.mapValues(raw, (key) => ref(key))
 

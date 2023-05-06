@@ -6,7 +6,6 @@ class PixiManager {
   public ground = new PIXI.Container()
   public collision = new PIXI.Container()
   public sortable = new PIXI.Container()
-  public air = new PIXI.Container()
 
   public get deltaMS() {
     return this.app?.ticker.deltaMS || 16.66
@@ -18,7 +17,7 @@ class PixiManager {
     viewport.appendChild(this.app.view)
     globalThis.__PIXI_APP__ = this.app
 
-    for (let name of ["ground", "collision", "sortable", "air"]) {
+    for (let name of ["ground", "collision", "sortable"]) {
       this[name].name = name
       this.app.stage.addChild(this[name])
     }

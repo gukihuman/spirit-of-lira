@@ -1,4 +1,4 @@
-import json from "@/language-model/messages.json"
+import json from "@/models/language/messages.json"
 
 class RemoteController {
   private systemMessage = json["system"]
@@ -78,7 +78,7 @@ class RemoteController {
   private pushNewMessages() {
     this.data.messages.push({
       role: "user",
-      content: gud.states.input,
+      content: gsd.refs.input.value,
     })
     this.data.messages.push({
       role: "system",
@@ -96,10 +96,11 @@ class RemoteController {
       if (gim.signals.sendInput) {
         if (!gsd.refs.input) return
 
+        this.pushNewMessages()
+        this.clampData()
+
         gsd.refs.input.value = ""
         gud.states.output = ""
-        this.pushNewMessages()
-        this.clampData
 
         let res = await this.queryOpenAI(this.data)
 
@@ -108,6 +109,15 @@ class RemoteController {
         console.log(
           "⏬ " + glib.timeNow() + ": " + res.choices[0].message.content
         )
+
+        // const moodReq = _.cloneDeep(this.data)
+        // moodReq.messages.push({
+        //   role: "system",
+        //   content:
+        //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
+        // })
+        // let moodRes = await this.queryOpenAI(moodReq)
+        // console.log(moodRes.choices[0].message.content)
       }
     })
   }

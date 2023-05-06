@@ -10,6 +10,7 @@ export default {
     this.state = "idle"
 
     if (gsd.states.context !== "gameplay") return
+    if (!this.size || !this.x || !this.y) return
 
     const speedPerTick = (this.speed / 6) * (gpm.deltaMS / 16.66)
     //
@@ -97,4 +98,4 @@ export default {
     walk: 4,
     run: 4,
   },
-} as gUniqueEntityModel
+} as gEntity

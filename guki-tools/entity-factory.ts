@@ -5,44 +5,34 @@ class EntityFactory {
   private nextId: number = 0
 
   // populated from entity files on project start
-  public entityModels: Map<string, gUniqueEntityModel | gCommonEntityModel> =
-    new Map()
+  public entityModels: Map<string, gEntity | gEntity> = new Map()
 
-  public entityInstances: Map<number, gEntityInstance> = new Map()
+  public entityInstances: Map<number, gEntity> = new Map()
 
   // this property is just a link, it actually stored in entityInstances
-  public heroInstance: gEntityInstance | undefined = undefined
+  public heroInstance: gEntity | undefined = undefined
 
   public async instanceEntity(name: string) {
     const entityModel = this.entityModels.get(name)
     if (!entityModel) return
 
-    let entityInstance: gEntityInstance
+    let entityInstance: gEntity = {
+      ...entityModel,
+      id: this.nextId,
+      state: "idle",
+    }
 
-    // construct entity instance depending on model type
-    if (gtm.gUniqueEntity(entityModel)) {
-      entityInstance = {
-        ...entityModel,
-        id: this.nextId,
-        state: "idle",
-        // x and y already exist in gUniqueEntity
-      }
-    } else {
-      // gCommonEntity
+    if (entityModel.mapChunks) {
       const { x, y } = this.randomCoordinatesFromMapChunks(
         entityModel.mapChunks
       )
 
-      entityInstance = {
-        ...entityModel,
-        id: this.nextId,
-        state: "idle",
-        x,
-        y,
-      }
-
+      entityInstance.x = x
+      entityInstance.y = y
       delete entityInstance.mapChunks
     }
+
+    if (entityInstance.id === undefined) return
 
     await this.loadEntityContainer(this.nextId, entityInstance)
     const entityContainer = gpm.getEntityContainer(entityInstance.id)
@@ -57,7 +47,7 @@ class EntityFactory {
     this.entityInstances.set(entityInstance.id, entityInstance)
 
     gpm.app?.ticker.add(() => {
-      entityInstance.process()
+      if (entityInstance.process) entityInstance.process()
 
       // has te be after custom process
       this.defaultProcess(entityInstance, entityContainer, animationsContainer)
@@ -70,13 +60,15 @@ class EntityFactory {
   }
 
   private defaultProcess(
-    entityInstance: gEntityInstance,
+    entityInstance: gEntity,
     entityContainer: gContainer,
     animationsContainer: Container
   ) {
+    if (!entityInstance.x || !entityInstance.y) return
     //
     // update container coordinates
     if (!this.heroInstance) return
+    if (!this.heroInstance.x || !this.heroInstance.y) return
     entityContainer.x = entityInstance.x - this.heroInstance.x + 960
     entityContainer.y = entityInstance.y - this.heroInstance.y + 540
 
@@ -100,6 +92,7 @@ class EntityFactory {
           entityInstance.state === state &&
           lastEntityInstance.state !== state
         ) {
+          if (!entityInstance.id) return
           gpm.getAnimationSprite(entityInstance.id, state).gotoAndPlay(frame)
         }
       }
@@ -123,10 +116,11 @@ class EntityFactory {
     }
   }
 
-  private async loadEntityContainer(id: number, entityModel: gEntityInstance) {
+  private async loadEntityContainer(id: number, entityModel: gEntity) {
     if (!gpm.app) return
 
     const entityContainer = new PIXI.Container() as gContainer
+    if (!entityModel.name) return
     entityContainer.name = entityModel.name
     entityContainer.id = id
 
@@ -142,6 +136,7 @@ class EntityFactory {
     let json: Record<string, undefined> | undefined = undefined
 
     if (!PIXI.Assets.cache.has(entityModel.name)) {
+      if (!entityModel.sprite) return
       json = await PIXI.Assets.load(entityModel.sprite)
       PIXI.Assets.cache.set(entityModel.name, json)
     } else {

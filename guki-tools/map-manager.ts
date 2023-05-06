@@ -2,7 +2,7 @@ import { Sprite } from "pixi.js"
 
 class MapManager {
   //
-  public loadedGroundChunks: Map<string, Sprite> = new Map()
+  public loadedMapChunks: Map<string, Sprite> = new Map()
 
   public greenForestCnunks: string[] = this.setLocationChunks(50, 54)
 
@@ -16,15 +16,14 @@ class MapManager {
     return chunks
   }
 
-  private async loadGroundChunk(index: string) {
-    if (gmm.loadedGroundChunks.get(index)) return
+  private async loadMapChunk(index: string) {
+    if (gmm.loadedMapChunks.get(index)) return
 
     // immideately add index to the map to prevent duplicates
     // before Sprite is actually loaded using await later
-    gmm.loadedGroundChunks.set(index, new PIXI.Sprite())
+    gmm.loadedMapChunks.set(index, new PIXI.Sprite())
 
-    let url = new URL(`/assets/ground-chunks/${index}.webp`, import.meta.url)
-      .href
+    let url = new URL(`/assets/map-chunks/${index}.webp`, import.meta.url).href
     if (url.includes("undefined")) {
       url = new URL("/assets/miscellaneous/map-not-found.webp", import.meta.url)
         .href
@@ -33,21 +32,21 @@ class MapManager {
     const sprite = new PIXI.Sprite(webp)
     sprite.cullable = true
     gpm.ground.addChild(sprite)
-    gmm.loadedGroundChunks.set(index, sprite)
+    gmm.loadedMapChunks.set(index, sprite)
   }
 
   private async loadCloseMapChunks() {
     if (!gef.heroInstance) return
+    if (!gef.heroInstance.x || !gef.heroInstance.y) return
 
     const startY = glib.coordinateToMapChunk(gef.heroInstance.y) - 1
     const startX = glib.coordinateToMapChunk(gef.heroInstance.x) - 1
 
     for (let y of _.range(startY, startY + 3)) {
       for (let x of _.range(startX, startX + 3)) {
-        await this.loadGroundChunk(_.toString(y) + _.toString(x))
+        await this.loadMapChunk(_.toString(y) + _.toString(x))
       }
     }
-    // 📜 load air chunks
   }
 
   public async initialize() {
@@ -58,8 +57,9 @@ class MapManager {
       this.loadCloseMapChunks()
 
       // update coordinates
-      this.loadedGroundChunks.forEach((sprite, mapChunk) => {
+      this.loadedMapChunks.forEach((sprite, mapChunk) => {
         if (!gef.heroInstance) return
+        if (!gef.heroInstance.x || !gef.heroInstance.y) return
         sprite.x =
           glib.mapChunkToCoordinateX(mapChunk) + 960 - gef.heroInstance.x
         sprite.y =
