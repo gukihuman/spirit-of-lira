@@ -1,8 +1,8 @@
-import json from "@/models/language/messages.json"
+import Hero from "~~/entities/hero"
 
 class RemoteController {
-  private systemMessage = json["system"]
-  private clarification = json["clarification"]
+  private systemMessage = new Hero().language.system
+  private clarification = new Hero().language.clarification
 
   // huggingface
   // private async queryOpenAssistant(data) {
@@ -91,8 +91,8 @@ class RemoteController {
     }
   }
 
-  public initialize() {
-    gpm.app?.ticker.add(async () => {
+  public init() {
+    gpixi.app?.ticker.add(async () => {
       if (gim.signals.sendInput) {
         if (!gsd.refs.input) return
 

@@ -31,7 +31,7 @@ class MapManager {
     const webp = await PIXI.Assets.load(url)
     const sprite = new PIXI.Sprite(webp)
     sprite.cullable = true
-    gpm.ground.addChild(sprite)
+    gpixi.ground.addChild(sprite)
     gmm.loadedMapChunks.set(index, sprite)
   }
 
@@ -49,11 +49,11 @@ class MapManager {
     }
   }
 
-  public async initialize() {
+  public async init() {
     //
     await this.loadCloseMapChunks()
 
-    gpm.app?.ticker.add(() => {
+    gpixi.app?.ticker.add(() => {
       this.loadCloseMapChunks()
 
       // update coordinates

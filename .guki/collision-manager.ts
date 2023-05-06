@@ -17,7 +17,7 @@ class CollisionManager {
         square.drawRect(x * 100, y * 100, 100, 100)
         square.endFill()
         row.push(square)
-        gpm.collision.addChild(square)
+        gpixi.collision.addChild(square)
       }
       this.collisionGrid.push(row)
     }
@@ -27,12 +27,12 @@ class CollisionManager {
         square.blendMode = PIXI.BLEND_MODES.MULTIPLY
         square.lineStyle(5, 0xe6e6e6)
         square.drawRect(x * 100, y * 100, 100, 100)
-        gpm.collision.addChild(square)
+        gpixi.collision.addChild(square)
       }
     }
-    gpm.collision.pivot.x = gpm.collision.width / 2
-    gpm.collision.pivot.y = gpm.collision.height / 2
-    gpm.collision.visible = false
+    gpixi.collision.pivot.x = gpixi.collision.width / 2
+    gpixi.collision.pivot.y = gpixi.collision.height / 2
+    gpixi.collision.visible = false
   }
 
   public updateCollisionGrid() {
@@ -40,9 +40,9 @@ class CollisionManager {
     if (!gef.heroInstance.x || !gef.heroInstance.y) return
 
     // center point of collision grid minus hero offset
-    gpm.collision.x =
+    gpixi.collision.x =
       1920 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.x) + 50
-    gpm.collision.y =
+    gpixi.collision.y =
       1080 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.y) + 50
 
     const startX = glib.coordinateToTile(gef.heroInstance.x) - 10
@@ -62,6 +62,7 @@ class CollisionManager {
     if (!gef.heroInstance) return
 
     let i = glib.tileIndexFromEntity(gef.heroInstance)
+    if (!i) return
 
     if (gic.gamepad.pressed.includes("Y")) this.collisionArray[i] = 0
     else if (gic.gamepad.pressed.includes("X")) this.collisionArray[i] = 1
@@ -94,16 +95,16 @@ class CollisionManager {
     document.body.removeChild(link)
   }, 30)
 
-  public initialize() {
+  public init() {
     this.drawCollisionGrid()
 
-    gpm.app?.ticker.add(() => {
+    gpixi.app?.ticker.add(() => {
       if (gim.states.editingCollision) {
-        gpm.collision.visible = true
+        gpixi.collision.visible = true
         this.updateCollisionArray()
         this.updateCollisionGrid()
       } else {
-        gpm.collision.visible = false
+        gpixi.collision.visible = false
       }
     })
   }

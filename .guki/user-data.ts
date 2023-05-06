@@ -42,7 +42,7 @@ class UserData {
     return this._states()
   }
 
-  public initialize() {
+  public init() {
     if (gsd.states.devMode) {
       this.settings.input.states.editingCollision = {
         keyboard: { tap: "m" },

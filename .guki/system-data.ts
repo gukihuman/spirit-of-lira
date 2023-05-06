@@ -4,7 +4,7 @@ class SystemData {
     const raw: { [index: string]: any } = {
       //
       background: undefined, // To switch fullscreen
-      viewport: undefined, // To initialize pixi and gic with
+      viewport: undefined, // To init pixi and gic with
       input: undefined,
       output: undefined,
     }
@@ -40,8 +40,8 @@ class SystemData {
   public get states() {
     return this._states()
   }
-  public initialize() {
-    gpm.app?.ticker.add(() => {
+  public init() {
+    gpixi.app?.ticker.add(() => {
       if (gim.signals.fullscreen) {
         gsd.states.fullscreen = !gsd.states.fullscreen
       }

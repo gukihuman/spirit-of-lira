@@ -1,8 +1,8 @@
 class Cache {
   public lastTick: any = {}
 
-  public initialize() {
-    gpm.app?.ticker.add(
+  public init() {
+    gpixi.app?.ticker.add(
       () => {
         this.lastTick = {
           heroInstance: _.cloneDeep(gef.heroInstance),

@@ -13,7 +13,7 @@ const viewport = ref(null)
 
 onMounted(() => {
   //
-  // To initialize pixi and gic with
+  // To init pixi and gic with
   gsd.refs.viewport = viewport
 })
 </script>

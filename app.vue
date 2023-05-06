@@ -15,77 +15,31 @@ game-window
   //- output-area
 
   div(class="z-30")
-    transition(name="fast")
+    transition
       inventory(v-if="gsd.states.context === 'inventory'")
 
   //- loading screen on top of everything
   div(class="z-50")
-    transition(name="fast")
+    transition
       loading(v-if="!gsd.states.assetsLoaded")
 
 </template>
 
 <script setup>
-//
-onMounted(() => {
-  //
-  startup()
-})
-
-async function startup() {
-  // set devMode before initialization of tools
-  useCookie("name").value = useCookie("name").value || "default"
-  if (useCookie("name").value == "guki") gsd.states.devMode = true
-  //
-  // initialize order is important, these are independent ones
-  gpm.initialize(gsd.refs.viewport) // pixi manager
-  gic.initialize(gsd.refs.viewport) // input controller
-
-  // depend on gpm ticker, have to be initialized after gpm
-  gsd.initialize() // system data
-  gim.initialize() // input manager
-  gcache.initialize()
-  gflip.initialize() // flip containers horizontally
-  gcm.initialize() // collision editor
-  gud.initialize() // user data
-  grc.initialize() // remote controller
-
-  // depend on gpm
-  await gef.instanceEntity("hero")
-
-  // depend on gpm and hero instance for its coordinates
-  await gmm.initialize() // map manager
-
-  for (let i in _.range(40)) {
-    await gef.instanceEntity("bunbo")
-  }
-
-  gsd.states.assetsLoaded = true
-}
+onMounted(() => ginit.startApp())
 </script>
 
 <style>
-/* 
-/* "fast" transition */
-.fast-enter-active,
-.fast-leave-active {
+.v-enter-active,
+.v-leave-active {
   transition: opacity 0.2s ease;
 }
-
-.fast-enter-from,
-.fast-leave-to {
+.v-enter-from,
+.v-leave-to {
   opacity: 0;
 }
-
 /* disable scrollbar */
 ::-webkit-scrollbar {
   display: none;
-}
-
-/* disable text selection */
-* {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
 }
 </style>

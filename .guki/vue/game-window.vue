@@ -3,7 +3,7 @@
 //- background
 div(
   ref="background"
-  class="h-screen w-screen bg-slate-800 flex items-center justify-center"
+  class="h-screen w-screen bg-slate-800 flex items-center justify-center select-none"
   )
 
   //- game window

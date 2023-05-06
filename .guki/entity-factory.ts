@@ -5,7 +5,7 @@ class EntityFactory {
   private nextId: number = 0
 
   // populated from entity files on project start
-  public entityModels: Map<string, gEntity | gEntity> = new Map()
+  public entityModels = gworld.entities
 
   public entityInstances: Map<number, gEntity> = new Map()
 
@@ -13,9 +13,10 @@ class EntityFactory {
   public heroInstance: gEntity | undefined = undefined
 
   public async instanceEntity(name: string) {
-    const entityModel = this.entityModels.get(name)
+    let entityModel = this.entityModels.get(name)
     if (!entityModel) return
 
+    entityModel = new entityModel()
     let entityInstance: gEntity = {
       ...entityModel,
       id: this.nextId,
@@ -35,8 +36,8 @@ class EntityFactory {
     if (entityInstance.id === undefined) return
 
     await this.loadEntityContainer(this.nextId, entityInstance)
-    const entityContainer = gpm.getEntityContainer(entityInstance.id)
-    const animationsContainer = gpm.getAnimationsContainer(entityInstance.id)
+    const entityContainer = gpixi.getEntityContainer(entityInstance.id)
+    const animationsContainer = gpixi.getAnimationsContainer(entityInstance.id)
     if (!entityContainer || !animationsContainer) return
 
     // one time heroInstance assignment
@@ -46,14 +47,14 @@ class EntityFactory {
 
     this.entityInstances.set(entityInstance.id, entityInstance)
 
-    gpm.app?.ticker.add(() => {
+    gpixi.app?.ticker.add(() => {
       if (entityInstance.process) entityInstance.process()
 
       // has te be after custom process
       this.defaultProcess(entityInstance, entityContainer, animationsContainer)
     })
 
-    // 📜 maybe add initialize function state the entityModel itself
+    // 📜 maybe add init function state the entityModel itself
     // for example state add some additional mapChunks state location
 
     this.nextId++
@@ -93,7 +94,7 @@ class EntityFactory {
           lastEntityInstance.state !== state
         ) {
           if (!entityInstance.id) return
-          gpm.getAnimationSprite(entityInstance.id, state).gotoAndPlay(frame)
+          gpixi.getAnimationSprite(entityInstance.id, state).gotoAndPlay(frame)
         }
       }
     )
@@ -117,7 +118,7 @@ class EntityFactory {
   }
 
   private async loadEntityContainer(id: number, entityModel: gEntity) {
-    if (!gpm.app) return
+    if (!gpixi.app) return
 
     const entityContainer = new PIXI.Container() as gContainer
     if (!entityModel.name) return
@@ -158,7 +159,7 @@ class EntityFactory {
       animatedSprite.gotoAndPlay(randomFrame)
     })
 
-    gpm.sortable.addChild(entityContainer)
+    gpixi.sortable.addChild(entityContainer)
   }
 }
 export const gef = new EntityFactory()

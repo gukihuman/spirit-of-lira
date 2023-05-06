@@ -30,6 +30,9 @@ class Lib {
       _pad(now.getSeconds())
     return current
   }
+  public logWarning(message: string) {
+    console.log("❗ " + this.timeNow() + ": " + message)
+  }
   public cloneMapDeep(map: Map<any, any>) {
     const clonedMap = new Map()
     map.forEach((value, key) => {

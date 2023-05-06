@@ -104,8 +104,8 @@ class InputManager {
       }
     })
   }
-  public initialize() {
-    gpm.app?.ticker.add(() => {
+  public init() {
+    gpixi.app?.ticker.add(() => {
       gic.update()
       this.updateStatesManually()
 

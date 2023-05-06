@@ -11,7 +11,7 @@ class PixiManager {
     return this.app?.ticker.deltaMS || 16.66
   }
 
-  public initialize(viewport) {
+  public init(viewport) {
     //
     this.app = new PIXI.Application({ width: 1920, height: 1080 })
     viewport.appendChild(this.app.view)
@@ -28,7 +28,7 @@ class PixiManager {
   }
 
   public getEntityContainer(id: number) {
-    for (let child of gpm.sortable.children) {
+    for (let child of gpixi.sortable.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
@@ -46,4 +46,4 @@ class PixiManager {
   }
 }
 
-export const gpm = new PixiManager()
+export const gpixi = new PixiManager()

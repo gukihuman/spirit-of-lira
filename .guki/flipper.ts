@@ -1,11 +1,11 @@
 class Flipper {
-  public initialize() {
-    gpm.app?.ticker.add(
+  public init() {
+    gpixi.app?.ticker.add(
       () => {
         gef.entityInstances.forEach((entityInstance, id) => {
           if (!entityInstance.x || !entityInstance.y) return
           const previousX = gcache.lastTick.entityInstances.get(id).x
-          const entityContainer = gpm.getEntityContainer(id)
+          const entityContainer = gpixi.getEntityContainer(id)
           if (entityInstance.x < previousX) {
             if (entityContainer) entityContainer.scale.x = -1
           } else if (entityInstance.x > previousX) {

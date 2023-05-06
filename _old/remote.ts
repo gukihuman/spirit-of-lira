@@ -4,7 +4,7 @@ export class Remote {
     let handleUser = Remote.fetchUserData()
     if (!useCookie("name").value) handleUser = Remote.createUser()
 
-    await Promise.all([Remote.fetchCollision(), pixi.initialize(), handleUser])
+    await Promise.all([Remote.fetchCollision(), pixi.init(), handleUser])
   }
 
   static async createUser() {
