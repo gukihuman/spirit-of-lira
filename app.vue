@@ -26,7 +26,7 @@ game-window
 </template>
 
 <script setup>
-onMounted(() => ginit.startApp())
+onMounted(() => {})
 </script>
 
 <style>

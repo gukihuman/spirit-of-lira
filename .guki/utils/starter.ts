@@ -1,12 +1,7 @@
-class Initializer {
-  private started = false
+export default defineNuxtPlugin(async (app) => {
+  app.hook("app:mounted", () => startApp())
 
-  public async startApp() {
-    if (this.started) {
-      glib.logWarning("ginit.startApp() can be called only once")
-      return
-    }
-
+  async function startApp() {
     // set devMode before initialization of tools
     useCookie("name").value = useCookie("name").value || "default"
     if (useCookie("name").value == "guki") gsd.states.devMode = true
@@ -36,6 +31,4 @@ class Initializer {
 
     gsd.states.assetsLoaded = true
   }
-}
-
-export const ginit = new Initializer()
+})

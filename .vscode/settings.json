@@ -11,7 +11,8 @@
     "tsconfig.json": true,
     "vitest.config.ts": true,
     "prisma": true,
-    "server": true
+    "server": true,
+    "package.json": true
   },
   "workspace.isHidden": true
 }

@@ -72,7 +72,7 @@ class RemoteController {
         content: this.systemMessage,
       },
     ],
-    temperature: 1,
+    temperature: 1.3,
     stream: false,
   }
   private pushNewMessages() {
