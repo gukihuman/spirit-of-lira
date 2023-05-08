@@ -51,9 +51,10 @@ class MapManager {
 
   public async init() {
     //
+    // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseMapChunks()
 
-    gpixi.app?.ticker.add(() => {
+    gpixi.tickerAdd(() => {
       this.loadCloseMapChunks()
 
       // update coordinates
@@ -64,7 +65,7 @@ class MapManager {
           glib.mapChunkToCoordinateX(mapChunk) + 960 - gef.heroInstance.x
         sprite.y =
           glib.mapChunkToCoordinateY(mapChunk) + 540 - gef.heroInstance.y
-      })
+      }, "gmm")
     })
   }
 }

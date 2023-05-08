@@ -48,6 +48,7 @@ class RemoteController {
     const reader = response.body.getReader()
     let result = ""
     let done = false
+    let wrongResponse = false
 
     while (!done) {
       const { value, done: streamDone } = await reader.read()
@@ -55,13 +56,21 @@ class RemoteController {
         done = true
       } else {
         const newText = new TextDecoder().decode(value)
+        if (!JSON.parse(newText).choices[0]) {
+          wrongResponse = true
+          break
+        }
         gud.states.output += JSON.parse(newText).choices[0].message.content
         result += newText
       }
     }
-    reader.releaseLock()
-    controller.abort()
-    return JSON.parse(result)
+    if (wrongResponse) {
+      await this.queryOpenAI(data)
+    } else {
+      reader.releaseLock()
+      controller.abort()
+      return JSON.parse(result)
+    }
   }
 
   private data = {
@@ -92,13 +101,14 @@ class RemoteController {
   }
 
   public init() {
-    gpixi.app?.ticker.add(async () => {
+    gpixi.tickerAdd(async () => {
       if (gim.signals.sendInput) {
         if (!gsd.refs.input) return
 
         this.pushNewMessages()
         this.clampData()
 
+        console.log("⏫ " + glib.timeNow() + " Spirit: " + gsd.refs.input.value)
         gsd.refs.input.value = ""
         gud.states.output = ""
 
@@ -107,7 +117,7 @@ class RemoteController {
         this.data.messages.push(res.choices[0].message)
 
         console.log(
-          "⏬ " + glib.timeNow() + ": " + res.choices[0].message.content
+          "⏬ " + glib.timeNow() + " Lira: " + res.choices[0].message.content
         )
 
         // const moodReq = _.cloneDeep(this.data)
@@ -119,7 +129,7 @@ class RemoteController {
         // let moodRes = await this.queryOpenAI(moodReq)
         // console.log(moodRes.choices[0].message.content)
       }
-    })
+    }, "grc")
   }
 }
 export const grc = new RemoteController()

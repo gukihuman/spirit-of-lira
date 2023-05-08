@@ -1,51 +1,70 @@
-class SystemData {
-  //
-  private _refs = defineStore("system-data-refs", () => {
-    const raw: { [index: string]: any } = {
-      //
-      background: undefined, // To switch fullscreen
-      viewport: undefined, // To init pixi and gic with
-      input: undefined,
-      output: undefined,
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
+function generateRandomString(length) {
+  let result = ""
+  for (let i = 0; i < length; i++) {
+    // Generate a random number between 0 and 9
+    const randomNumber = _.random(0, 9)
+    // Convert the number to a string and add it to the result
+    result += randomNumber.toString()
+  }
+  return result
+}
+const glib: any = {}
+glib.store = (
+  object: { [index: string]: any },
+  ...args: [string, (newValue?, oldValue?) => any][]
+) => {
+  return defineStore(generateRandomString(10), () => {
+    const state = _.mapValues(object, (key) => ref(key))
+
+    args.forEach((watcher) => {
+      watch(state[watcher[0]], watcher[1])
+    })
+
     return state
   })
-  public get refs() {
+}
+
+class SystemData {
+  //
+
+  private _refs = glib.store({
+    background: undefined, // to switch fullscreen
+    viewport: undefined, // to init pixi and gic
+    input: undefined,
+    output: undefined,
+  })
+  get refs() {
     return this._refs()
   }
-
-  private _states = defineStore("system-data-states", () => {
-    const raw: { [index: string]: any } = {
-      //
+  private _states = glib.store(
+    {
       gameWindowScale: 1,
       fullscreen: false,
-      assetsLoaded: false,
+      loadingScreen: true,
       devMode: false,
       context: "gameplay",
       inputFocus: false,
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
-
-    watch(state.fullscreen, () => {
-      if (gsd.refs.background && !document.fullscreenElement) {
-        gsd.refs.background.requestFullscreen()
-      } else if (document.exitFullscreen) {
-        document.exitFullscreen()
-      }
-    })
-
-    return state
-  })
-  public get states() {
+    },
+    [
+      "fullscreen",
+      () => {
+        if (gsd.refs.background && !document.fullscreenElement) {
+          gsd.refs.background.requestFullscreen()
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen()
+        }
+      },
+    ]
+  )
+  get states() {
     return this._states()
   }
-  public init() {
-    gpixi.app?.ticker.add(() => {
+  init() {
+    gpixi.tickerAdd(() => {
       if (gim.signals.fullscreen) {
         gsd.states.fullscreen = !gsd.states.fullscreen
       }
-    })
+    }, "gsd")
   }
 }
 export const gsd = new SystemData()

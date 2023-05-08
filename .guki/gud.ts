@@ -1,45 +1,31 @@
 class UserData {
   //
-  private _settings = defineStore("user-data-settings", () => {
-    const raw: { [index: string]: any } = {
-      //
-      input: {
-        gamepadDeadZone: 0.15,
+  private _settings = glib.store({
+    //
+    input: {
+      gamepadDeadZone: 0.15,
 
-        states: {
-          heroMouseMove: {
-            keyboard: { tap: "e", hold: "o" },
-            mouse: { hold: 0 },
-          },
-          contextInventory: {
-            keyboard: { tap: "i" },
-          },
-
-          // only for dev
-          editingCollision: {},
+      states: {
+        heroMouseMove: {
+          keyboard: { tap: "e", hold: "o" },
+          mouse: { hold: 0 },
+        },
+        contextInventory: {
+          keyboard: { tap: "i" },
         },
 
-        signals: {
-          fullscreen: { keyboard: { tap: "f" }, gamepad: { tap: "Start" } },
-          sendInput: { keyboard: { tap: "Enter" } },
-        },
+        // only for dev
+        editingCollision: {},
       },
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
-    return state
+
+      signals: {
+        fullscreen: { keyboard: { tap: "f" }, gamepad: { tap: "Start" } },
+        sendInput: { keyboard: { tap: "Enter" } },
+      },
+    },
   })
-  public get settings() {
+  get settings() {
     return this._settings()
-  }
-  private _states = defineStore("user-data-states", () => {
-    const raw: { [index: string]: any } = {
-      //
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
-    return state
-  })
-  public get states() {
-    return this._states()
   }
 
   public init() {

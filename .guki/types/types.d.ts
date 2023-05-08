@@ -1,7 +1,14 @@
-import { Container } from "pixi.js"
+// redeclare some types for global accessability, nuxt issue
+import {
+  Container,
+  Application as tempApplication,
+  AnimatedSprite as tempAnimatedSprite,
+} from "pixi.js"
 
 declare global {
-  //
+  type Application = tempApplication
+  type AnimatedSprite = tempAnimatedSprite
+
   interface gEntity {
     [index: string]: any
     id?: number
@@ -14,7 +21,6 @@ declare global {
     mapChunks?: string[]
     process?: () => void
   }
-
   interface gContainer extends Container {
     id: number
   }

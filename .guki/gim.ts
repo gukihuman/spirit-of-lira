@@ -1,8 +1,7 @@
 class InputManager {
   //
-  private _states = defineStore("input-manager-states", () => {
-    const raw: { [index: string]: any } = {
-      //
+  private _states = glib.store(
+    {
       // updated manually
       activeDevice: "keyboard-mouse",
 
@@ -14,36 +13,32 @@ class InputManager {
 
       // dev only
       editingCollision: false,
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
-
-    watch(state.contextInventory, () => {
-      if (state.contextInventory.value) {
-        gsd.states.context = "inventory"
-      } else {
-        gsd.states.context = "gameplay"
-      }
-    })
-
-    return state
-  })
+    },
+    [
+      "contextInventory",
+      (newValue) => {
+        if (newValue) {
+          gsd.states.context = "inventory"
+        } else {
+          gsd.states.context = "gameplay"
+        }
+      },
+    ]
+  )
   public get states() {
     return this._states()
   }
 
-  private _signals = defineStore("input-manager-signals", () => {
-    const raw: { [index: string]: any } = {
-      //
-      // updated with user settings always
-      fullscreen: false,
-      sendInput: false,
-    }
-    const state = _.mapValues(raw, (key) => ref(key))
-    return state
+  private _signals = glib.store({
+    //
+    // updated with user settings always
+    fullscreen: false,
+    sendInput: false,
   })
   public get signals() {
     return this._signals()
   }
+
   private updateStatesManually() {
     if (gic.gamepad.justConnected) {
       this.states.activeDevice = "gamepad"
@@ -104,8 +99,11 @@ class InputManager {
       }
     })
   }
+
   public init() {
-    gpixi.app?.ticker.add(() => {
+    gic.init(gsd.refs.viewport) // input controller
+
+    gpixi.tickerAdd(() => {
       gic.update()
       this.updateStatesManually()
 
@@ -114,7 +112,7 @@ class InputManager {
 
       this.updateStatesWithUserSettings()
       this.updateSignalsWithUserSettings()
-    })
+    }, "gim")
   }
 }
 

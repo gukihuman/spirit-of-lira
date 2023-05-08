@@ -98,7 +98,7 @@ class CollisionManager {
   public init() {
     this.drawCollisionGrid()
 
-    gpixi.app?.ticker.add(() => {
+    gpixi.tickerAdd(() => {
       if (gim.states.editingCollision) {
         gpixi.collision.visible = true
         this.updateCollisionArray()
@@ -106,7 +106,7 @@ class CollisionManager {
       } else {
         gpixi.collision.visible = false
       }
-    })
+    }, "gcm")
   }
 }
 

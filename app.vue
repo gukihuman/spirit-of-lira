@@ -21,7 +21,7 @@ game-window
   //- loading screen on top of everything
   div(class="z-50")
     transition
-      loading(v-if="!gsd.states.assetsLoaded")
+      loading(v-if="gsd.states.loadingScreen")
 
 </template>
 

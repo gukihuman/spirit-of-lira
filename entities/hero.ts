@@ -79,7 +79,7 @@ export default class Hero {
     if (gsd.states.context !== "gameplay") return
     if (!this.size || !this.x || !this.y) return
 
-    const speedPerTick = (this.speed / 6) * (gpixi.deltaMS / 16.66)
+    const speedPerTick = this.speed * 6 * gpixi.deltaSec
     //
     // mouse move
     if (gim.states.activeDevice === "keyboard-mouse") {

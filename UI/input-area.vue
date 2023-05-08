@@ -31,6 +31,7 @@ const sendInput = () => console.log("eo")
 const maxInputWidth = 1052
 
 const updateInputSize = () => {
+  if (!gsd.refs.input) return
   if (gsd.refs.input.scrollWidth < maxInputWidth) {
     gsd.refs.input.style.whiteSpace = "nowrap"
   }

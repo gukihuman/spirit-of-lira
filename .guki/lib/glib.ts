@@ -46,6 +46,37 @@ class Lib {
       gcm.collisionArray[tileIndex] !== 2 && gcm.collisionArray[tileIndex] !== 3
     )
   }
+  public generateRandomString(length) {
+    let result = ""
+    for (let i = 0; i < length; i++) {
+      // Generate a random number between 0 and 9
+      const randomNumber = _.random(0, 9)
+      // Convert the number to a string and add it to the result
+      result += randomNumber.toString()
+    }
+    return result
+  }
+
+  /**
+   * Wrapper for pinia store that optionally accepts one or more watchers.
+   * @param object - state object
+   * @param args - watcher arrays that consist of a state property name and a handler function
+   * @returns a pinia store with watchers and random name
+   */
+  store(
+    object: { [index: string]: any },
+    ...args: [string, (newValue?, oldValue?) => any][]
+  ) {
+    return defineStore(this.generateRandomString(10), () => {
+      const state = _.mapValues(object, (key) => ref(key))
+
+      args.forEach((watcher) => {
+        watch(state[watcher[0]], watcher[1])
+      })
+
+      return state
+    })
+  }
 
   // vectors
   public vector(x: number, y: number) {
