@@ -3,6 +3,8 @@ class EntityFactory {
 
   async createEntity(name: string, components?: { [key: string]: any }) {
     if (!gcs.entities.has(name)) return
+    const id = this.nextId
+    this.nextId++
 
     // transform entity class to an entity map
     // inject components declared in model
@@ -16,16 +18,15 @@ class EntityFactory {
 
     // inject default components
     entity.set("name", name)
-    if (entity.has("visual")) await this.loadContainer(this.nextId, entity)
+    if (entity.has("visual")) await this.loadContainer(id, entity)
     if (entity.get("alive")) {
       entity.get("alive").state = "idle"
       entity.get("alive").targetEntity = undefined
       entity.get("alive").targetPosition = undefined
     }
 
-    gworld.entities.set(this.nextId, entity)
-    this.nextId++
-    return this.nextId - 1
+    gworld.entities.set(id, entity)
+    return id
   }
 
   private async loadContainer(id: number, entity: gEntity) {

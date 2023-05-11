@@ -23,9 +23,10 @@ export default class Spawn {
       if (this.spawnedChunks.includes(mapChunk)) return
       this.spawnedChunks.push(mapChunk)
 
+      // 📜 make a clean separate location handler
       if (gmm.greenForestCnunks.includes(mapChunk)) {
         //
-        let ratio = 0.2
+        let ratio = 1.2
         while (ratio > 1) {
           const position = this.randomCoordinatesFromMapChunk(mapChunk)
           if (!position) return
@@ -36,7 +37,6 @@ export default class Spawn {
         if (_.random(1) < ratio) {
           const position = this.randomCoordinatesFromMapChunk(mapChunk)
           if (!position) return
-          console.log(position)
           gef.createEntity("bunbo", { position })
         }
       }
