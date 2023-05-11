@@ -1,165 +1,76 @@
-import { Sprite } from "pixi.js"
-import { Container } from "pixi.js"
-
 class EntityFactory {
-  private nextId: number = 0
+  private nextId = 1
 
-  // populated from entity files on project start
-  public entityModels = gworld.entities
+  async createEntity(name: string, components?: { [key: string]: any }) {
+    if (!gcs.entities.has(name)) return
 
-  public entityInstances: Map<number, gEntity> = new Map()
+    // transform entity class to an entity map
+    // inject components declared in model
+    const entityClass = gcs.entities.get(name)
+    const entityModel = new entityClass()
+    const entity = new Map()
+    _.forEach(entityModel, (value, name) => entity.set(name, value))
 
-  // this property is just a link, it actually stored in entityInstances
-  public heroInstance: gEntity | undefined = undefined
+    // inject components from argument
+    _.forEach(components, (value, name) => entity.set(name, value))
 
-  public async instanceEntity(name: string) {
-    let entityModel = this.entityModels.get(name)
-    if (!entityModel) return
-
-    entityModel = new entityModel()
-    let entityInstance: gEntity = {
-      ...entityModel,
-      id: this.nextId,
-      state: "idle",
+    // inject default components
+    entity.set("name", name)
+    if (entity.has("visual")) await this.loadContainer(this.nextId, entity)
+    if (entity.get("alive")) {
+      entity.get("alive").state = "idle"
+      entity.get("alive").targetEntity = undefined
+      entity.get("alive").targetPosition = undefined
     }
 
-    if (entityModel.mapChunks) {
-      const { x, y } = this.randomCoordinatesFromMapChunks(
-        entityModel.mapChunks
-      )
-
-      entityInstance.x = x
-      entityInstance.y = y
-      delete entityInstance.mapChunks
-    }
-
-    if (entityInstance.id === undefined) return
-
-    await this.loadEntityContainer(this.nextId, entityInstance)
-    const entityContainer = gpixi.getEntityContainer(entityInstance.id)
-    const animationsContainer = gpixi.getAnimationsContainer(entityInstance.id)
-    if (!entityContainer || !animationsContainer) return
-
-    // one time heroInstance assignment
-    if (!this.heroInstance && entityInstance.name === "hero") {
-      this.heroInstance = entityInstance
-    }
-
-    this.entityInstances.set(entityInstance.id, entityInstance)
-
-    gpixi.app?.ticker.add(() => {
-      if (entityInstance.process) entityInstance.process()
-
-      // has te be after custom process
-      this.defaultProcess(entityInstance, entityContainer, animationsContainer)
-    })
-
-    // 📜 maybe add init function state the entityModel itself
-    // for example state add some additional mapChunks state location
-
+    gworld.entities.set(this.nextId, entity)
     this.nextId++
+    return this.nextId - 1
   }
 
-  private defaultProcess(
-    entityInstance: gEntity,
-    entityContainer: gContainer,
-    animationsContainer: Container
-  ) {
-    if (!entityInstance.x || !entityInstance.y) return
-    //
-    // update container coordinates
-    if (!this.heroInstance) return
-    if (!this.heroInstance.x || !this.heroInstance.y) return
-    entityContainer.x = entityInstance.x - this.heroInstance.x + 960
-    entityContainer.y = entityInstance.y - this.heroInstance.y + 540
-
-    // update visibility of animations by entity state
-    animationsContainer.children.forEach((child) => {
-      if (!(child instanceof Sprite)) return
-      if (child.name === entityInstance.state) child.visible = true
-      else child.visible = false
-    })
-
-    // update animation frame on first animation tick
-    if (!entityInstance.firstAnimationFrames) return
-    const lastEntityInstance = gcache.lastTick.entityInstances.get(
-      entityInstance.id
-    )
-    if (!lastEntityInstance) return
-    _.forEach(
-      entityInstance.firstAnimationFrames,
-      (frame: number, state: string) => {
-        if (
-          entityInstance.state === state &&
-          lastEntityInstance.state !== state
-        ) {
-          if (!entityInstance.id) return
-          gpixi.getAnimationSprite(entityInstance.id, state).gotoAndPlay(frame)
-        }
-      }
-    )
-  }
-
-  private randomCoordinatesFromMapChunks(mapChunks: string[]) {
-    const randomChunk = _.sample(mapChunks)
-    if (!randomChunk) return { x: 0, y: 0 }
-
-    let x = glib.mapChunkToCoordinateX(randomChunk)
-    let y = glib.mapChunkToCoordinateY(randomChunk)
-    x += _.random(0, 999)
-    y += _.random(0, 999)
-
-    const tileIndex = glib.tileIndexFromCoordinates(x, y)
-    if (gcm.collisionArray[tileIndex] === 0) {
-      return { x, y }
-    } else {
-      return this.randomCoordinatesFromMapChunks(mapChunks)
-    }
-  }
-
-  private async loadEntityContainer(id: number, entityModel: gEntity) {
+  private async loadContainer(id: number, entity: gEntity) {
     if (!gpixi.app) return
+    const name = entity.get("name")
+    const path = entity.get("visual").path
 
-    const entityContainer = new PIXI.Container() as gContainer
-    if (!entityModel.name) return
-    entityContainer.name = entityModel.name
-    entityContainer.id = id
+    const container = new PIXI.Container() as gContainer
+    container.name = entity.get("name")
+    container.id = id
+    gpixi.sortable.addChild(container)
 
     for (let name of ["back", "animations", "front"]) {
       const childContainer = new PIXI.Container()
       childContainer.name = name
-      entityContainer.addChild(childContainer)
+      container.addChild(childContainer)
     }
-
-    const animationsContainer: Container =
-      entityContainer.getChildByName("animations")
 
     let json: Record<string, undefined> | undefined = undefined
 
-    if (!PIXI.Assets.cache.has(entityModel.name)) {
-      if (!entityModel.sprite) return
-      json = await PIXI.Assets.load(entityModel.sprite)
-      PIXI.Assets.cache.set(entityModel.name, json)
+    // less console log warnings that asset is loaded again
+    if (!PIXI.Assets.cache.has(name)) {
+      json = await PIXI.Assets.load(path)
+      PIXI.Assets.cache.set(name, json)
     } else {
-      json = PIXI.Assets.cache.get(entityModel.name)
+      json = PIXI.Assets.cache.get(name)
     }
     if (!json) return
 
-    // key is animation name, value is an array of webp images
-    _.forOwn(json.animations, (value, key) => {
-      const animatedSprite = new PIXI.AnimatedSprite(value)
-      animatedSprite.name = key
+    const animationsContainer = gpixi.getAnimationContainer(id) as Container
+
+    _.forOwn(json.animations, (arrayOfwebpImages, name) => {
+      const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
+      animatedSprite.name = name
       animatedSprite.anchor.x = 0.5
       animatedSprite.anchor.y = 0.5
       animatedSprite.animationSpeed = 1 / 6
       animatedSprite.visible = false
       animationsContainer.addChild(animatedSprite)
 
+      // to prevent synchronize mobs, looks poor
       const randomFrame = _.random(0, animatedSprite.totalFrames - 1)
+
       animatedSprite.gotoAndPlay(randomFrame)
     })
-
-    gpixi.sortable.addChild(entityContainer)
   }
 }
 export const gef = new EntityFactory()

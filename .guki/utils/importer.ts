@@ -14,18 +14,18 @@ export default defineNuxtPlugin(async () => {
   for (const path in entities) {
     const entity = await entities[path]()
     const name = `${_.toLower(entity.default.name)}`
-    gworld.entities.set(name, entity.default)
+    gcs.entities.set(name, entity.default)
   }
   const components = import.meta.glob("@/components/**")
   for (const path in components) {
     const component = await components[path]()
     const name = `${_.toLower(component.default.name)}`
-    gworld.components.set(name, component.default)
+    gcs.components.set(name, component.default)
   }
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
     const name = `${_.toLower(system.default.name)}`
-    gworld.systems.set(name, system.default)
+    gcs.systems.set(name, system.default)
   }
 })

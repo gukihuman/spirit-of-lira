@@ -1,4 +1,4 @@
-export default class Hero {
+export default class oldHero {
   name = "hero"
   sprite = new URL("/assets/entities/hero.json", import.meta.url).href
   x = 51000
@@ -166,7 +166,3 @@ export default class Hero {
     run: 4,
   }
 }
-// export default {
-//   name: "hero",
-//   class: () => new Hero(),
-// }

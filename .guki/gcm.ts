@@ -1,4 +1,3 @@
-import { Graphics } from "pixi.js"
 import json from "@/assets/miscellaneous/collisionArray.json"
 
 class CollisionManager {
@@ -36,17 +35,18 @@ class CollisionManager {
   }
 
   public updateCollisionGrid() {
-    if (!gef.heroInstance) return
-    if (!gef.heroInstance.x || !gef.heroInstance.y) return
+    if (!gsd.states.heroId) return
+    const heroPosition = gworld.entities.get(gsd.states.heroId).get("position")
 
     // center point of collision grid minus hero offset
+    // 50 is the half of the tile size of 100
     gpixi.collision.x =
-      1920 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.x) + 50
+      1920 / 2 - glib.coordinateOffsetInTile(heroPosition.x) + 50
     gpixi.collision.y =
-      1080 / 2 - glib.coordinateOffsetInTile(gef.heroInstance.y) + 50
+      1080 / 2 - glib.coordinateOffsetInTile(heroPosition.y) + 50
 
-    const startX = glib.coordinateToTile(gef.heroInstance.x) - 10
-    const startY = glib.coordinateToTile(gef.heroInstance.y) - 6
+    const startX = glib.coordinateToTile(heroPosition.x) - 10
+    const startY = glib.coordinateToTile(heroPosition.y) - 6
     this.collisionGrid.forEach((row, y) => {
       row.forEach((square, x) => {
         const i = (startY + y) * 1000 + startX + x
@@ -59,10 +59,10 @@ class CollisionManager {
   }
 
   private updateCollisionArray() {
-    if (!gef.heroInstance) return
+    if (!gsd.states.heroId) return
+    const heroPosition = gworld.entities.get(gsd.states.heroId).get("position")
 
-    let i = glib.tileIndexFromEntity(gef.heroInstance)
-    if (!i) return
+    let i = glib.tileIndexFromCoordinates(heroPosition.x, heroPosition.y)
 
     if (gic.gamepad.pressed.includes("Y")) this.collisionArray[i] = 0
     else if (gic.gamepad.pressed.includes("X")) this.collisionArray[i] = 1
@@ -99,7 +99,7 @@ class CollisionManager {
     this.drawCollisionGrid()
 
     gpixi.tickerAdd(() => {
-      if (gim.states.editingCollision) {
+      if (gsd.states.collisionEdit) {
         gpixi.collision.visible = true
         this.updateCollisionArray()
         this.updateCollisionGrid()

@@ -3,7 +3,7 @@
 div(
   ref="viewport"
   class="absolute transition duration-200"
-  :class="{ 'blur': gsd.states.context !== 'gameplay' }"
+  :class="{ 'blur': gsd.states.inventory }"
 )
 
 </template>

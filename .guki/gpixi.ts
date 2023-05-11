@@ -1,14 +1,22 @@
 class PixiManager {
-  public app?: Application
+  app?: Application
 
-  public ground = new PIXI.Container()
-  public collision = new PIXI.Container()
-  public sortable = new PIXI.Container()
+  map = new PIXI.Container()
+  ground = new PIXI.Container()
+  collision = new PIXI.Container()
+  sortable = new PIXI.Container()
 
-  // higher values goes first, 0 is default, if not set
+  // higher values goes first
+  // almost everything is 0, which is default if not set explicitly
   private tickerPriority = {
-    gcache: 1,
-    gflip: -1,
+    gcache: 13,
+    gic: 12, // gud depend on it for example, has to be first
+
+    gsignal: 1, // run all logic for collected signals and empty itself
+    gflip: -11,
+
+    state: -12,
+    render: -13,
   }
 
   /** Name is used to find ticker priority in pixi private property, if exist. */
@@ -19,8 +27,7 @@ class PixiManager {
     else this.app.ticker.add(fn)
   }
 
-  /**
-  * Initializes the PIXI application, adds ground, collision, and sortable to the stage and sets up sorting for the sortable container.
+  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container.
   @param viewport - HTML element to append the app.view to.
   @param width - default is 1920.
   @param height - default is 1080.
@@ -35,7 +42,7 @@ class PixiManager {
     viewport.appendChild(this.app.view as any) // any to fix pixi.js issue
     globalThis.__PIXI_APP__ = this.app
 
-    for (let name of ["ground", "collision", "sortable"]) {
+    for (let name of ["map", "ground", "collision", "sortable"]) {
       this[name].name = name
       this.app.stage.addChild(this[name])
     }
@@ -52,7 +59,9 @@ class PixiManager {
     return this.app.ticker.deltaMS / 16.66 / 60
   }
 
-  public getEntityContainer(id: number): gContainer | undefined {
+  // 📜 need those getters? think yes but have doubts
+
+  public getContainer(id: number): gContainer | undefined {
     for (let child of gpixi.sortable.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
@@ -60,8 +69,8 @@ class PixiManager {
     return undefined
   }
 
-  public getAnimationsContainer(id: number): gContainer | undefined {
-    const entityContainer = this.getEntityContainer(id)
+  public getAnimationContainer(id: number): gContainer | undefined {
+    const entityContainer = this.getContainer(id)
     return entityContainer?.getChildByName("animations") as gContainer
   }
 
@@ -69,7 +78,7 @@ class PixiManager {
     id: number,
     state: string
   ): AnimatedSprite | undefined {
-    const animationsContainer = this.getAnimationsContainer(id) as gContainer
+    const animationsContainer = this.getAnimationContainer(id) as gContainer
     return animationsContainer.getChildByName(state) as AnimatedSprite
   }
 }

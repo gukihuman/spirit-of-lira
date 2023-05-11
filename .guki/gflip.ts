@@ -1,15 +1,18 @@
 class Flip {
-  public init() {
+  init() {
     gpixi.tickerAdd(() => {
-      gef.entityInstances.forEach((entityInstance, id) => {
-        if (!entityInstance.x || !entityInstance.y) return
-        const previousX = gcache.lastTick.entityInstances.get(id).x
-        const entityContainer = gpixi.getEntityContainer(id)
-        if (entityInstance.x < previousX) {
-          if (entityContainer) entityContainer.scale.x = -1
-        } else if (entityInstance.x > previousX) {
-          if (entityContainer) entityContainer.scale.x = 1
+      gworld.entities.forEach((entity, id) => {
+        if (!entity.get("alive")) return
+
+        const previousX = gcache.entities.get(id).get("position").x
+        const container = gpixi.getContainer(id)
+
+        if (entity.get("position").x < previousX) {
+          if (container) container.scale.x = -1
+        } else if (entity.get("position").x > previousX) {
+          if (container) container.scale.x = 1
         }
+
         // 📜 add attack target dependence
       })
     }, "gflip")

@@ -4,7 +4,6 @@ export default defineNuxtConfig({
     HUGGINGFACE_TOKEN: process.env.HUGGINGFACE_TOKEN,
   },
   modules: [
-    // "@/.guki/lib/glib.ts",
     "@nuxtjs/tailwindcss",
     [
       "@pinia/nuxt",
@@ -14,9 +13,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    // lib is separated from .guki in case order is matter here (not sure)
-    // lib must be first
-    dirs: [".guki/lib/**.ts", ".guki/**", "models/**"],
+    dirs: [".guki/**", "models/**"],
   },
   components: {
     dirs: ["@/.guki/vue", "@/UI"],

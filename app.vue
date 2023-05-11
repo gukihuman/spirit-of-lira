@@ -16,7 +16,7 @@ game-window
 
   div(class="z-30")
     transition
-      inventory(v-if="gsd.states.context === 'inventory'")
+      inventory(v-if="gsd.states.inventory")
 
   //- loading screen on top of everything
   div(class="z-50")

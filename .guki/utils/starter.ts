@@ -7,26 +7,39 @@ export default defineNuxtPlugin(async (app) => {
     useCookie("name").value = useCookie("name").value || "default"
     if (useCookie("name").value == "guki") gsd.states.devMode = true
 
-    // every init depend on gpixi ticker, init it before any other tool
+    // everything depend on gpixi ticker, init it first
     gpixi.init(gsd.refs.viewport)
 
-    gsd.init() // system data
-    gim.init() // input manager
-    gcache.init() // caches previous iteration
+    gic.init(gsd.refs.viewport) // input controller
+    gcache.init()
     gflip.init() // flips containers horizontally
     gcm.init() // collision editor
-    gud.init() // user data
-    grc.init() // remote controller
+    // grc.init() // remote controller
     gsignal.init()
+    gud.init() // user data
+    gdev.init()
 
-    // 📜 make a separate tool for entities instanciating
-    await gef.instanceEntity("hero")
-    for (let i in _.range(40)) {
-      await gef.instanceEntity("bunbo")
-    }
+    // 📜 maybe make a separate tool for hero creating
+    gsd.states.heroId = await gef.createEntity("lira", {
+      position: { x: 51000, y: 54000 },
+    })
+
+    // for (let i in _.range(40)) {
+    //   await oldGef.instanceEntity("bunbo")
+    // }
 
     // depend on hero instance for its coordinates init it last
     await gmm.init() // map manager
+
+    gpixi.tickerAdd(() => gic.update(), "gic")
+
+    gcs.systems.forEach((systemClass, name) => {
+      const system = new systemClass()
+      gpixi.tickerAdd(() => system.process(), name)
+      gworld.systems.set(name, system)
+    })
+
+    // 📜 somehow try to get mouse position on start
 
     gsd.states.loadingScreen = false
   }

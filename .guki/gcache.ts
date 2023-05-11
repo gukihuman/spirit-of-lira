@@ -1,12 +1,9 @@
 class Cache {
-  public lastTick: any = {}
+  entities: Map<number, any> = new Map()
 
   public init() {
     gpixi.tickerAdd(() => {
-      this.lastTick = {
-        heroInstance: _.cloneDeep(gef.heroInstance),
-        entityInstances: glib.cloneMapDeep(gef.entityInstances),
-      }
+      this.entities = glib.cloneMapDeep(gworld.entities)
     }, "gcache")
   }
 }

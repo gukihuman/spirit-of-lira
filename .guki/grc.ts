@@ -1,4 +1,4 @@
-import Hero from "~~/entities/hero"
+import Hero from "~~/entities/oldhero"
 
 class RemoteController {
   private systemMessage = new Hero().language.system
@@ -60,7 +60,7 @@ class RemoteController {
           wrongResponse = true
           break
         }
-        gud.states.output += JSON.parse(newText).choices[0].message.content
+        gsd.refs.output += JSON.parse(newText).choices[0].message.content
         result += newText
       }
     }
@@ -102,33 +102,27 @@ class RemoteController {
 
   public init() {
     gpixi.tickerAdd(async () => {
-      if (gim.signals.sendInput) {
-        if (!gsd.refs.input) return
-
-        this.pushNewMessages()
-        this.clampData()
-
-        console.log("⏫ " + glib.timeNow() + " Spirit: " + gsd.refs.input.value)
-        gsd.refs.input.value = ""
-        gud.states.output = ""
-
-        let res = await this.queryOpenAI(this.data)
-
-        this.data.messages.push(res.choices[0].message)
-
-        console.log(
-          "⏬ " + glib.timeNow() + " Lira: " + res.choices[0].message.content
-        )
-
-        // const moodReq = _.cloneDeep(this.data)
-        // moodReq.messages.push({
-        //   role: "system",
-        //   content:
-        //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
-        // })
-        // let moodRes = await this.queryOpenAI(moodReq)
-        // console.log(moodRes.choices[0].message.content)
-      }
+      // if (gim.signals.sendInput) {
+      //   if (!gsd.refs.input) return
+      //   this.pushNewMessages()
+      //   this.clampData()
+      //   console.log("⏫ " + glib.timeNow() + " Spirit: " + gsd.refs.input.value)
+      //   gsd.refs.input.value = ""
+      //   gud.states.output = ""
+      //   let res = await this.queryOpenAI(this.data)
+      //   this.data.messages.push(res.choices[0].message)
+      //   console.log(
+      //     "⏬ " + glib.timeNow() + " Lira: " + res.choices[0].message.content
+      //   )
+      // const moodReq = _.cloneDeep(this.data)
+      // moodReq.messages.push({
+      //   role: "system",
+      //   content:
+      //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
+      // })
+      // let moodRes = await this.queryOpenAI(moodReq)
+      // console.log(moodRes.choices[0].message.content)
+      // }
     }, "grc")
   }
 }

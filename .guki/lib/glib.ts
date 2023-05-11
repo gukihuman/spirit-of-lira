@@ -16,8 +16,8 @@ class Vector {
 }
 
 class Lib {
-  // returns string with time in the format 22:43:54
-  public timeNow(): string {
+  /** @returns string of time for example "22:43:54" */
+  timeNow(): string {
     function _pad(num: number): string {
       return String(num).padStart(2, "0")
     }
@@ -30,23 +30,27 @@ class Lib {
       _pad(now.getSeconds())
     return current
   }
-  public logWarning(message: string) {
+  logWarning(message: string) {
     console.log("❗ " + this.timeNow() + ": " + message)
   }
-  public cloneMapDeep(map: Map<any, any>) {
+  cloneMapDeep(map: Map<any, any>) {
     const clonedMap = new Map()
     map.forEach((value, key) => {
-      clonedMap.set(key, _.cloneDeep(value))
+      if (value instanceof Map) {
+        clonedMap.set(key, this.cloneMapDeep(value))
+      } else {
+        clonedMap.set(key, _.cloneDeep(value))
+      }
     })
     return clonedMap
   }
-  public isWalkable(x: number, y: number) {
+  isWalkable(x: number, y: number) {
     const tileIndex = glib.tileIndexFromCoordinates(x, y)
     return (
       gcm.collisionArray[tileIndex] !== 2 && gcm.collisionArray[tileIndex] !== 3
     )
   }
-  public generateRandomString(length) {
+  generateRandomString(length) {
     let result = ""
     for (let i = 0; i < length; i++) {
       // Generate a random number between 0 and 9
@@ -55,6 +59,9 @@ class Lib {
       result += randomNumber.toString()
     }
     return result
+  }
+  speedPerTick(entity) {
+    return entity.get("alive").speed * 6 * gpixi.deltaSec
   }
 
   /**
@@ -79,37 +86,31 @@ class Lib {
   }
 
   // vectors
-  public vector(x: number, y: number) {
+  vector(x: number, y: number) {
     return new Vector(x, y)
   }
-  public vectorFromPoints(
-    p1: { x: number; y: number },
-    p2: { x: number; y: number }
-  ) {
+  vectorFromPoints(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return new Vector(p2.x - p1.x, p2.y - p1.y)
   }
-  public vectorFromAngle(angle: number, distance: number) {
+  vectorFromAngle(angle: number, distance: number) {
     return new Vector(distance * Math.cos(angle), distance * Math.sin(angle))
   }
-  public angle(x: number, y: number) {
+  angle(x: number, y: number) {
     return Math.atan2(y, x)
   }
-  public angleFromPoints(
-    p1: { x: number; y: number },
-    p2: { x: number; y: number }
-  ) {
+  angleFromPoints(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return Math.atan2(p2.y - p1.y, p2.x - p1.x)
   }
-  public distanceFromPoints(
+  distanceFromPoints(
     p1: { x: number; y: number },
     p2: { x: number; y: number }
   ) {
     return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
   }
-  public get centerPoint() {
+  centerPoint() {
     return this.vector(960, 540)
   }
-  public get mousePoint() {
+  mousePoint() {
     return glib.vector(
       gic.mouse.x / gsd.states.gameWindowScale,
       gic.mouse.y / gsd.states.gameWindowScale
@@ -117,29 +118,22 @@ class Lib {
   }
 
   // coordinates
-  public coordinateToMapChunk(coordinate: number) {
+  coordinateToMapChunk(coordinate: number) {
     return _.floor(coordinate / 1000)
   }
-  public mapChunkToCoordinateX(mapChunk: string) {
+  mapChunkToCoordinateX(mapChunk: string) {
     return (_.toNumber(mapChunk) % 100) * 1000
   }
-  public mapChunkToCoordinateY(mapChunk: string) {
+  mapChunkToCoordinateY(mapChunk: string) {
     return _.floor(_.toNumber(mapChunk) / 100) * 1000
   }
-  public coordinateToTile(coordinate: number) {
+  coordinateToTile(coordinate: number) {
     return _.floor(coordinate / 100)
   }
-  public coordinateOffsetInTile(coordinate: number) {
+  coordinateOffsetInTile(coordinate: number) {
     return coordinate % 100
   }
-  public tileIndexFromEntity(entityInstance: gEntity) {
-    if (!entityInstance.x || !entityInstance.y) return
-    return (
-      this.coordinateToTile(entityInstance.y) * 1000 +
-      this.coordinateToTile(entityInstance.x)
-    )
-  }
-  public tileIndexFromCoordinates(x: number, y: number) {
+  tileIndexFromCoordinates(x: number, y: number) {
     return this.coordinateToTile(y) * 1000 + this.coordinateToTile(x)
   }
 }
