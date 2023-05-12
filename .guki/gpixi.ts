@@ -1,5 +1,6 @@
 class PixiManager {
   app?: Application
+  elapsedMS: number = 0
 
   map = new PIXI.Container()
   ground = new PIXI.Container()
@@ -27,7 +28,7 @@ class PixiManager {
     else this.app.ticker.add(fn)
   }
 
-  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container.
+  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container. Run the timer of elapsedMS.
   @param viewport - HTML element to append the app.view to.
   @param width - default is 1920.
   @param height - default is 1080.
@@ -44,6 +45,10 @@ class PixiManager {
     }
 
     this.tickerAdd(() => this.sortable.children.sort((a, b) => a.y - b.y))
+    this.tickerAdd(() => {
+      if (!this.app) return
+      this.elapsedMS += this.app.ticker.deltaMS
+    })
   }
 
   /**

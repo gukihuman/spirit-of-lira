@@ -51,7 +51,9 @@ class Signal {
 
       const velocity = glib.vectorFromAngle(angle, speedPerTick)
 
-      gsignal.checkCollisionAndMove(heroEntity, velocity, ratio)
+      gworld.systems
+        .get("move")
+        .checkCollisionAndMove(heroEntity, velocity, ratio)
     },
     inventory() {
       gsd.states.inventory = !gsd.states.inventory
@@ -60,32 +62,6 @@ class Signal {
   }
   private runLogic() {
     this.active.forEach((signal) => this.logic[signal]())
-  }
-
-  checkCollisionAndMove(entity: gEntity, velocity, ratio: number) {
-    const position = entity.get("position")
-    const nextX = position.x + velocity.x * ratio
-    const nextY = position.y + velocity.y * ratio
-    if (!gsd.states.collision) {
-      position.x = nextX
-      position.y = nextY
-      return
-    }
-
-    if (glib.isWalkable(nextX, nextY)) {
-      position.x = nextX
-      position.y = nextY
-    } else {
-      if (glib.isWalkable(nextX, position.y)) {
-        position.x = nextX
-        return
-      }
-      if (glib.isWalkable(position.x, nextY)) {
-        position.y = nextY
-        return
-      }
-      return
-    }
   }
 
   emit(signal: string) {

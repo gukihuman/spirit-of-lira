@@ -1,4 +1,29 @@
 export default class Move {
+  checkCollisionAndMove(entity: gEntity, velocity, ratio: number) {
+    const position = entity.get("position")
+    const nextX = position.x + velocity.x * ratio
+    const nextY = position.y + velocity.y * ratio
+    if (!gsd.states.collision) {
+      position.x = nextX
+      position.y = nextY
+      return
+    }
+
+    if (glib.isWalkable(nextX, nextY)) {
+      position.x = nextX
+      position.y = nextY
+    } else {
+      if (glib.isWalkable(nextX, position.y)) {
+        position.x = nextX
+        return
+      }
+      if (glib.isWalkable(position.x, nextY)) {
+        position.y = nextY
+        return
+      }
+      return
+    }
+  }
   process() {
     gworld.entities.forEach((entity) => {
       if (!entity.get("alive") || !entity.get("alive").targetPosition) return
@@ -19,7 +44,7 @@ export default class Move {
       const angle = displacement.angle
       const velocity = glib.vectorFromAngle(angle, speedPerTick)
 
-      gsignal.checkCollisionAndMove(entity, velocity, ratio)
+      this.checkCollisionAndMove(entity, velocity, ratio)
     })
   }
 }

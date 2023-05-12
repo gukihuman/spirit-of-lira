@@ -23,6 +23,7 @@ class EntityFactory {
       entity.get("alive").state = "idle"
       entity.get("alive").targetEntity = undefined
       entity.get("alive").targetPosition = undefined
+      entity.get("alive").lastStateSwitchMS = 0
     }
 
     gworld.entities.set(id, entity)
