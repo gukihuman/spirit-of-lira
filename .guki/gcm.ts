@@ -1,10 +1,10 @@
 import json from "@/assets/miscellaneous/collisionArray.json"
 
 class CollisionManager {
-  public collisionArray: number[] = json
+  collisionArray: number[] = json
   private collisionGrid: Graphics[][] = []
 
-  public drawCollisionGrid() {
+  drawCollisionGrid() {
     const height = 13
     const width = 21
     for (let y of _.range(height)) {
@@ -34,7 +34,7 @@ class CollisionManager {
     gpixi.collision.visible = false
   }
 
-  public updateCollisionGrid() {
+  updateCollisionGrid() {
     if (!gsd.states.heroId) return
     const heroPosition = gworld.entities.get(gsd.states.heroId).get("position")
 
@@ -95,7 +95,7 @@ class CollisionManager {
     document.body.removeChild(link)
   }, 30)
 
-  public init() {
+  init() {
     this.drawCollisionGrid()
 
     gpixi.tickerAdd(() => {

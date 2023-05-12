@@ -16,12 +16,6 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(entity.default.name)}`
     gcs.entities.set(name, entity.default)
   }
-  const components = import.meta.glob("@/components/**")
-  for (const path in components) {
-    const component = await components[path]()
-    const name = `${_.toLower(component.default.name)}`
-    gcs.components.set(name, component.default)
-  }
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()

@@ -1,3 +1,6 @@
+import { getActivePinia } from "pinia"
+import { GameWindow } from "~~/.nuxt/components"
+
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
@@ -18,25 +21,39 @@ export default defineNuxtPlugin(async (app) => {
     gsignal.init()
     gud.init() // user data
     gdev.init()
+    glocal.init()
 
-    // 📜 maybe make a separate tool for hero creating
+    // 📜 make a separate tool that handles hero creation
     gsd.states.heroId = await gef.createEntity("lira", {
       position: { x: 51000, y: 54000 },
     })
 
-    // for (let i in _.range(40)) {
-    //   await oldGef.instanceEntity("bunbo")
-    // }
-
     // depend on hero instance for its coordinates init it last
     await gmm.init() // map manager
 
-    gpixi.tickerAdd(() => gic.update(), "gic")
+    // gic setup
+    gpixi.tickerAdd(() => {
+      gic.update()
+      if (!gsd.states.firstMouseMove) {
+        if (gic.mouse.x !== 0 || gic.mouse.y !== 0) {
+          gsd.states.firstMouseMove = true
+        }
+      }
+    }, "gic")
 
+    // handle systems
+    const inits: Promise<void>[] = []
+    const processes: { [name: string]: () => void } = {}
     gcs.systems.forEach((systemClass, name) => {
       const system = new systemClass()
-      gpixi.tickerAdd(() => system.process(), name)
+      if (system.init) inits.push(system.init())
+      processes[name] = () => system.process()
       gworld.systems.set(name, system)
+    })
+    await Promise.all(inits)
+
+    _.forEach(processes, (process, name) => {
+      gpixi.tickerAdd(() => process(), name)
     })
 
     // 📜 somehow try to get mouse position on start

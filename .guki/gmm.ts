@@ -1,12 +1,10 @@
 import { Sprite } from "pixi.js"
 
 class MapManager {
-  //
-  // 📜 implement removing chunks that are lefted far away
-  //
-  public loadedChunks: Map<string, Sprite> = new Map()
+  chunkSprites: Map<string, Sprite> = new Map()
+  closeChunks: string[] = []
 
-  public greenForestCnunks: string[] = this.setLocationChunks(50, 54)
+  greenForestChunks: string[] = this.setLocationChunks(50, 54)
 
   /** @returns square of chunks, for example for 50 and 51 ["5050", "5051", "5150", "5151"]
    */
@@ -20,7 +18,7 @@ class MapManager {
     return chunks
   }
 
-  public async init() {
+  async init() {
     //
     // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
@@ -34,20 +32,41 @@ class MapManager {
       if (!heroPosition) return
 
       // update coordinates
-      this.loadedChunks.forEach((sprite, mapChunk) => {
+      this.chunkSprites.forEach((sprite, chunk) => {
         if (!heroPosition.x || !heroPosition.y) return
-        sprite.x = glib.mapChunkToCoordinateX(mapChunk) + 960 - heroPosition.x
-        sprite.y = glib.mapChunkToCoordinateY(mapChunk) + 540 - heroPosition.y
+        sprite.x = glib.chunkToCoordinateX(chunk) + 960 - heroPosition.x
+        sprite.y = glib.chunkToCoordinateY(chunk) + 540 - heroPosition.y
       }, "gmm")
     })
   }
 
-  private async loadChunk(index: string) {
-    if (gmm.loadedChunks.get(index)) return
+  private async loadCloseChunks() {
+    if (!gsd.states.heroId) return
+    const heroEntity = gworld.entities.get(gsd.states.heroId)
+    if (!heroEntity) return
+    const heroPosition = heroEntity.get("position")
+
+    const startY = glib.coordinateToChunk(heroPosition.y) - 1
+    const startX = glib.coordinateToChunk(heroPosition.x) - 1
+
+    this.closeChunks = []
+    const sprites: Promise<void>[] = []
+    for (let y of _.range(startY, startY + 3)) {
+      for (let x of _.range(startX, startX + 3)) {
+        const chunk = `${y}${x}`
+        this.closeChunks.push(chunk)
+        sprites.push(this.loadChunkSprite(chunk))
+      }
+    }
+    await Promise.all(sprites)
+  }
+
+  private async loadChunkSprite(index: string) {
+    if (this.chunkSprites.get(index)) return
 
     // immideately add index to the map to prevent duplicates
     // before Sprite is actually loaded using await later
-    gmm.loadedChunks.set(index, new PIXI.Sprite())
+    this.chunkSprites.set(index, new PIXI.Sprite())
 
     let url = new URL(`/assets/map-chunks/${index}.webp`, import.meta.url).href
     if (url.includes("undefined")) {
@@ -58,23 +77,7 @@ class MapManager {
     const sprite = new PIXI.Sprite(webp)
     sprite.cullable = true
     gpixi.map.addChild(sprite)
-    gmm.loadedChunks.set(index, sprite)
-  }
-
-  private async loadCloseChunks() {
-    if (!gsd.states.heroId) return
-    const heroEntity = gworld.entities.get(gsd.states.heroId)
-    if (!heroEntity) return
-    const heroPosition = heroEntity.get("position")
-
-    const startY = glib.coordinateToMapChunk(heroPosition.y) - 1
-    const startX = glib.coordinateToMapChunk(heroPosition.x) - 1
-
-    for (let y of _.range(startY, startY + 3)) {
-      for (let x of _.range(startX, startX + 3)) {
-        await this.loadChunk(_.toString(y) + _.toString(x))
-      }
-    }
+    this.chunkSprites.set(index, sprite)
   }
 }
 export const gmm = new MapManager()

@@ -1,7 +1,7 @@
 // internal lib class
 class Vector {
-  public x: number
-  public y: number
+  x: number
+  y: number
 
   constructor(x: number, y: number) {
     this.x = x
@@ -111,6 +111,7 @@ class Lib {
     return this.vector(960, 540)
   }
   mousePoint() {
+    if (!gsd.states.firstMouseMove) return this.centerPoint()
     return glib.vector(
       gic.mouse.x / gsd.states.gameWindowScale,
       gic.mouse.y / gsd.states.gameWindowScale
@@ -118,14 +119,19 @@ class Lib {
   }
 
   // coordinates
-  coordinateToMapChunk(coordinate: number) {
+  coordinateToChunk(coordinate: number) {
     return _.floor(coordinate / 1000)
   }
-  mapChunkToCoordinateX(mapChunk: string) {
-    return (_.toNumber(mapChunk) % 100) * 1000
+  chunkFromCoordinates(x: number, y: number) {
+    const chunkX = this.coordinateToChunk(x)
+    const chunkY = this.coordinateToChunk(y)
+    return `${chunkY}${chunkX}`
   }
-  mapChunkToCoordinateY(mapChunk: string) {
-    return _.floor(_.toNumber(mapChunk) / 100) * 1000
+  chunkToCoordinateX(chunk: string) {
+    return (_.toNumber(chunk) % 100) * 1000
+  }
+  chunkToCoordinateY(chunk: string) {
+    return _.floor(_.toNumber(chunk) / 100) * 1000
   }
   coordinateToTile(coordinate: number) {
     return _.floor(coordinate / 100)

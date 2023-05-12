@@ -65,6 +65,7 @@ class EntityFactory {
       animatedSprite.anchor.y = 0.5
       animatedSprite.animationSpeed = 1 / 6
       animatedSprite.visible = false
+      animatedSprite.cullable = true
       animationsContainer.addChild(animatedSprite)
 
       // to prevent synchronize mobs, looks poor

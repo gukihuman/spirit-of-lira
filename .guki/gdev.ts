@@ -5,6 +5,9 @@ class Dev {
         if (gic.keyboard.justPressed.includes("z")) {
           gsignal.emit("collisionEdit")
         }
+        if (gic.keyboard.justPressed.includes("k")) {
+          gsignal.emit("collision")
+        }
       }
     }, "gdev")
   }

@@ -1,7 +1,7 @@
 class Cache {
   entities: Map<number, any> = new Map()
 
-  public init() {
+  init() {
     gpixi.tickerAdd(() => {
       this.entities = glib.cloneMapDeep(gworld.entities)
     }, "gcache")

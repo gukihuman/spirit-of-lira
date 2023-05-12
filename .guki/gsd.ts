@@ -16,6 +16,8 @@ class SystemData {
     fullscreen: false,
     devMode: false,
     collisionEdit: false,
+    collision: true,
+    firstMouseMove: false,
     autoMouseMove: false,
     loadingScreen: true,
     inventory: false,

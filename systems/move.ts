@@ -1,6 +1,6 @@
 export default class Move {
   process() {
-    gworld.entities.forEach((entity, id) => {
+    gworld.entities.forEach((entity) => {
       if (!entity.get("alive") || !entity.get("alive").targetPosition) return
 
       const speedPerTick = glib.speedPerTick(entity)
@@ -19,8 +19,7 @@ export default class Move {
       const angle = displacement.angle
       const velocity = glib.vectorFromAngle(angle, speedPerTick)
 
-      entity.get("position").x += velocity.x * ratio
-      entity.get("position").y += velocity.y * ratio
+      gsignal.checkCollisionAndMove(entity, velocity, ratio)
     })
   }
 }

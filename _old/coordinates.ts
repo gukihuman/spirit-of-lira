@@ -3,16 +3,14 @@ interface Entity {
   y: number
 }
 class Coordinates {
-  ofMapChunk(c: number) {
+  ofchunk(c: number) {
     return _.floor(c / 1000)
   }
-  inMapChunk(c: number) {
+  inchunk(c: number) {
     return c % 1000
   }
-  mapChunkIndex(entity: Entity) {
-    return _.toString(
-      this.ofMapChunk(entity.y) * 100 + this.ofMapChunk(entity.x)
-    )
+  chunkIndex(entity: Entity) {
+    return _.toString(this.ofchunk(entity.y) * 100 + this.ofchunk(entity.x))
   }
   ofTile(c: number) {
     return _.floor(c / 100)
