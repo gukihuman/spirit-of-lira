@@ -27,6 +27,7 @@ export default defineNuxtPlugin(async (app) => {
     gsd.states.heroId = await gef.createEntity("lira", {
       position: { x: 51000, y: 54000 },
     })
+    await gef.createEntity("mousemove")
 
     // depend on hero instance for its coordinates init it last
     await gmm.init() // map manager

@@ -1,4 +1,4 @@
-export default class State {
+export default class state {
   checkMove(entity, id) {
     const lastEntity = gcache.entities.get(id)
     if (!lastEntity) return
@@ -28,7 +28,7 @@ export default class State {
   process() {
     gworld.entities.forEach((entity, id) => {
       if (!entity.get("alive")) return
-      if (gpixi.elapsedMS - entity.get("alive").lastStateSwitchMS < 100) return
+      if (gpixi.elapsedMS - entity.get("alive").lastStateSwitchMS < 200) return
 
       // idle, walk, run or move
       this.checkMove(entity, id)

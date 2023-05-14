@@ -1,4 +1,4 @@
-export default class Move {
+export default class move {
   checkCollisionAndMove(entity: gEntity, velocity, ratio: number) {
     const position = entity.get("position")
     const nextX = position.x + velocity.x * ratio

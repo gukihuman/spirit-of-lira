@@ -1,4 +1,4 @@
-export default class Bunbo {
+export default class bunbo {
   alive = {
     speed: 10,
     size: 50,

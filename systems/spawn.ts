@@ -1,4 +1,4 @@
-export default class Spawn {
+export default class spawn {
   private spawnedChunks: string[] = []
 
   private locationPopulation = {

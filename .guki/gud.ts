@@ -30,6 +30,15 @@ class UserData {
   }
 
   emitSignals() {
+    gic.gamepad.axes.forEach((axis: number) => {
+      if (Math.abs(axis) > this.settings.inputOther.gamepad.deadZone) {
+        gsignal.emit("gamepadMove")
+      }
+    })
+    if (gsd.states.autoMouseMove) gsignal.emit("mouseMove")
+
+    if (gsd.states.inputFocus) return
+
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
         if (gic[device].justPressed.includes(button)) {
@@ -47,14 +56,6 @@ class UserData {
       gsignal.emit("mouseMove")
       gsd.states.autoMouseMove = false
     }
-
-    if (gsd.states.autoMouseMove) gsignal.emit("mouseMove")
-
-    gic.gamepad.axes.forEach((axis: number) => {
-      if (Math.abs(axis) > this.settings.inputOther.gamepad.deadZone) {
-        gsignal.emit("gamepadMove")
-      }
-    })
   }
 
   init() {

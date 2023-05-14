@@ -1,6 +1,4 @@
-import { first } from "lodash"
-
-export default class Render {
+export default class render {
   process() {
     // no point to render anything if hero for some reason is not chosen
     // cuz it servers as a camera target
@@ -26,7 +24,9 @@ export default class Render {
         })
       } else {
         const animationContainer = gpixi.getAnimationContainer(id)
-        if (animationContainer) container.children[0].visible = true
+        if (animationContainer) {
+          animationContainer.children[0].visible = true
+        }
       }
 
       // update animation frame on first animation tick

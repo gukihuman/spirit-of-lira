@@ -11,12 +11,14 @@ class EntityFactory {
     const entityClass = gcs.entities.get(name)
     const entityModel = new entityClass()
     const entity = new Map()
+
+    // inject model components
     _.forEach(entityModel, (value, name) => entity.set(name, value))
 
     // inject components from argument
     _.forEach(components, (value, name) => entity.set(name, value))
 
-    // inject default components
+    // inject / expand declared components
     entity.set("name", name)
     if (entity.has("visual")) await this.loadContainer(id, entity)
     if (entity.get("alive")) {
@@ -24,6 +26,16 @@ class EntityFactory {
       entity.get("alive").targetEntity = undefined
       entity.get("alive").targetPosition = undefined
       entity.get("alive").lastStateSwitchMS = 0
+      entity.get("alive").lastFlipMS = 0
+    }
+
+    // handle process
+    // 📜think about garbage collection on removing entity
+    // for now process can be used only on once declared entities
+    if (entityModel.process) {
+      gpixi.tickerAdd(() => {
+        entityModel.process(entity, id)
+      }, name)
     }
 
     gworld.entities.set(id, entity)
@@ -38,7 +50,12 @@ class EntityFactory {
     const container = new PIXI.Container() as gContainer
     container.name = entity.get("name")
     container.id = id
-    gpixi.sortable.addChild(container)
+    container.scale.x = _.random() < 0.5 ? -1 : 1
+    if (entity.get("visual").parentContainer) {
+      gpixi[entity.get("visual").parentContainer].addChild(container)
+    } else {
+      gpixi.sortable.addChild(container)
+    }
 
     for (let name of ["back", "animations", "front"]) {
       const childContainer = new PIXI.Container()

@@ -67,6 +67,10 @@ class PixiManager {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
+    for (let child of gpixi.ground.children) {
+      const gContainer = child as gContainer
+      if (gContainer.id === id) return child as gContainer
+    }
     return undefined
   }
 
