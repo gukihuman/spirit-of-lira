@@ -29,6 +29,13 @@ export default class state {
     gworld.entities.forEach((entity, id) => {
       if (!entity.get("alive")) return
       if (gpixi.elapsedMS - entity.get("alive").lastStateSwitchMS < 200) return
+      if (entity.get("alive").leaveStateConditions) {
+        if (
+          entity.get("alive").state === "move" &&
+          !entity.get("alive").leaveStateConditions.move(entity, id)
+        )
+          return
+      }
 
       // idle, walk, run or move
       this.checkMove(entity, id)

@@ -20,13 +20,19 @@ class EntityFactory {
 
     // inject / expand declared components
     entity.set("name", name)
-    if (entity.has("visual")) await this.loadContainer(id, entity)
-    if (entity.get("alive")) {
+    if (entity.has("visual")) {
+      await this.loadContainer(id, entity)
+      if (!entity.get("visual").firstFrames && entity.has("alive")) {
+        entity.get("visual").firstFrames = { idle: 0, move: 0, attack: 0 }
+      }
+    }
+    if (entity.has("alive")) {
       entity.get("alive").state = "idle"
       entity.get("alive").targetEntity = undefined
       entity.get("alive").targetPosition = undefined
       entity.get("alive").lastStateSwitchMS = 0
       entity.get("alive").lastFlipMS = 0
+      entity.get("alive").lastTargetPosition = undefined
     }
 
     // handle process
