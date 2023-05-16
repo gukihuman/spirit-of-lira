@@ -45,7 +45,7 @@ export default defineNuxtPlugin(async (app) => {
     // handle systems
     const inits: Promise<void>[] = []
     const processes: { [name: string]: () => void } = {}
-    gcs.systems.forEach((systemClass, name) => {
+    gs.systems.forEach((systemClass, name) => {
       const system = new systemClass()
       if (system.init) inits.push(system.init())
       processes[name] = () => system.process()

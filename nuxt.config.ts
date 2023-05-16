@@ -20,4 +20,12 @@ export default defineNuxtConfig({
   },
   plugins: ["@/.guki/utils/importer.ts", "@/.guki/utils/starter.ts"],
   css: ["@/tailwind.css"],
+  vite: {
+    build: {
+      minify: false,
+    },
+  },
+
+  // local build not working with sourcemap
+  sourcemap: false,
 })
