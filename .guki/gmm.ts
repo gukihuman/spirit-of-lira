@@ -68,13 +68,13 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    let url = new URL(`/assets/map-chunks/${index}.webp`, import.meta.url).href
-    if (url.includes("undefined")) {
-      url = new URL("/assets/miscellaneous/map-not-found.webp", import.meta.url)
-        .href
-    }
-    const webp = await PIXI.Assets.load(url)
-    const sprite = new PIXI.Sprite(webp)
+    const webp = gs.webps.get(index)
+    if (!webp) gs.webps.get("map-not-found")
+    if (!webp) return
+
+    const texture = PIXI.Texture.from(webp)
+
+    const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
     gpixi.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)

@@ -53,7 +53,6 @@ class EntityFactory {
   private async loadContainer(id: number, entity: gEntity) {
     if (!gpixi.app) return
     const name = entity.get("name")
-    const path = entity.get("visual").path
 
     const container = new PIXI.Container() as gContainer
     container.name = entity.get("name")
