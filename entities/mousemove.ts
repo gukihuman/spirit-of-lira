@@ -1,7 +1,6 @@
 export default class mousemove {
   visual = {
     parentContainer: "ground",
-    path: new URL("/assets/entities/mouseMove.json", import.meta.url).href,
   }
   position = { x: 0, y: 0 }
   process(entity, id) {
@@ -38,7 +37,7 @@ export default class mousemove {
     const container = gpixi.getContainer(id)
     if (container) {
       container.children[1].angle += 80 * gpixi.deltaSec
-      const scale = 0.8
+      const scale = 1
       container.scale = { x: 1, y: 0.5 }
       container.scale.x *= scale
       container.scale.y *= scale

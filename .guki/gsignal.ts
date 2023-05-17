@@ -24,7 +24,7 @@ class Signal {
         glib.mousePoint()
       )
       const distance = displacement.distance
-      if (distance < heroEntity.get("alive").size / 2) {
+      if (distance < heroEntity.get("alive").size) {
         heroEntity.get("alive").targetPosition = undefined
         return
       }

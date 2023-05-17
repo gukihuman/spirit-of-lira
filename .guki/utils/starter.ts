@@ -29,6 +29,9 @@ export default defineNuxtPlugin(async (app) => {
     })
     await gef.createEntity("mousemove")
 
+    // mast after hero creation
+    await gil.init() // item loader
+
     // depend on hero instance for its coordinates init it last
     await gmm.init() // map manager
 

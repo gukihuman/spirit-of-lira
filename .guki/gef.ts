@@ -1,5 +1,3 @@
-import { NoScript } from "~~/.nuxt/components"
-
 class EntityFactory {
   private nextId = 1
 
@@ -23,7 +21,7 @@ class EntityFactory {
     // inject / expand declared components
     entity.set("name", name)
     if (entity.has("visual")) {
-      this.loadContainer(id, entity)
+      this.loadContainer(entity, id)
       if (!entity.get("visual").firstFrames && entity.has("alive")) {
         entity.get("visual").firstFrames = { idle: 0, move: 0, attack: 0 }
       }
@@ -35,6 +33,7 @@ class EntityFactory {
       entity.get("alive").lastStateSwitchMS = 0
       entity.get("alive").lastFlipMS = 0
       entity.get("alive").lastTargetPosition = undefined
+      this.drawShadow(entity, id)
     }
 
     // handle process
@@ -50,7 +49,30 @@ class EntityFactory {
     return id
   }
 
-  private async loadContainer(id: number, entity: gEntity) {
+  private drawShadow(entity: gEntity, id: number) {
+    const shadow = new PIXI.Graphics()
+    shadow.beginFill(0x000000)
+
+    const size = entity.get("alive").size
+
+    shadow.drawCircle(0, 0, size)
+    shadow.endFill()
+    shadow.scale = { x: 1, y: 0.5 }
+    shadow.alpha = 0.08
+    shadow.blendMode = PIXI.BLEND_MODES.MULTIPLY
+
+    const blurFilter = new PIXI.filters.BlurFilter()
+    blurFilter.blur = 10
+
+    shadow.filters = [blurFilter]
+
+    const container = gpixi.getContainer(id)
+    if (!container) return
+    const back = container.children[0] as Container
+    back.addChild(shadow)
+  }
+
+  private async loadContainer(entity: gEntity, id: number) {
     if (!gpixi.app) return
     const name = entity.get("name")
 
@@ -58,6 +80,9 @@ class EntityFactory {
     container.name = entity.get("name")
     container.id = id
     container.scale.x = _.random() < 0.5 ? -1 : 1
+
+    // if parent not declared on model, add to sortable
+    // could be only direct stage child like "ground"
     if (entity.get("visual").parentContainer) {
       gpixi[entity.get("visual").parentContainer].addChild(container)
     } else {
