@@ -5,6 +5,7 @@ class Flip {
         if (!entity.get("alive")) return
         if (gpixi.elapsedMS - entity.get("alive").lastFlipMS < 200) return
 
+        if (!gcache.entities.get(id)) return
         const previousX = gcache.entities.get(id).get("position").x
         const container = gpixi.getContainer(id)
 

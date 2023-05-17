@@ -22,7 +22,7 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(system.default.name)}`
     gs.systems.set(name, system.default)
   }
-  const webps = import.meta.glob("@/**/*.webp")
+  const webps = import.meta.glob("@/assets/**/*.webp")
   for (const path in webps) {
     const webp = await webps[path]()
     let name = webp.default.match(/[^\/\\&\?]+(?=\.\w{3,4}(?=([\?&].*$|$)))/)
@@ -39,6 +39,7 @@ export default defineNuxtPlugin(async () => {
   }
   const jsons = import.meta.glob("@/assets/**/*.json")
   for (const path in jsons) {
+    if (path.includes("miscellaneous")) continue
     const json = await jsons[path]()
     if (!json.default.meta) return
     let name = json.default.meta.image

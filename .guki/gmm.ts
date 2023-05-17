@@ -72,7 +72,7 @@ class MapManager {
     if (!webp) gs.webps.get("map-not-found")
     if (!webp) return
 
-    const texture = PIXI.Texture.from(webp)
+    const texture = await PIXI.Assets.load(webp)
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true

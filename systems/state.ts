@@ -41,6 +41,7 @@ export default class state {
       this.checkMove(entity, id)
 
       const lastEntity = gcache.entities.get(id)
+      if (!lastEntity) return
       if (entity.get("alive").state !== lastEntity.get("alive").state) {
         entity.get("alive").lastStateSwitchMS = gpixi.elapsedMS
       }
