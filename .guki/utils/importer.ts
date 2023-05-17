@@ -35,7 +35,6 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    console.log(name, webp.default)
     gs.webps.set(name, webp.default)
   }
   const jsons = import.meta.glob("@/assets/**/*.json")
@@ -49,10 +48,7 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
 
     // inject webp so vite packer understand it
-    if (gs.webps.has(name)) {
-      json.default.meta.image = gs.webps.get(name)
-    }
-    console.log(name, json.default.meta.image)
+    if (gs.webps.has(name)) json.default.meta.image = gs.webps.get(name)
 
     gs.jsons.set(name, json.default)
   }

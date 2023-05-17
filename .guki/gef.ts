@@ -71,53 +71,20 @@ class EntityFactory {
       container.addChild(childContainer)
     }
 
-    // let json = gs.jsons.get(name)
-    // let json
-
-    // // less console log warnings that asset is loaded again
-    // if (!PIXI.Assets.cache.has(name)) {
-    // json = await PIXI.Assets.load(path)
-    //   // console.log(json)
-    //   PIXI.Assets.cache.set(name, json)
-    // } else {
-    //   json = PIXI.Assets.cache.get(name)
-    // }
-    // if (!json) return
-    // console.log("pixi", json)
-    // console.log(name)
-    // console.log(name, gs.jsons.get(name).meta)
-
-    // console.log(name, gs.jsons.get(name))
-
+    // make sprite sheet from stored json
     let texture
-
     if (!PIXI.Cache.has(name)) {
       texture = PIXI.Texture.from(gs.jsons.get(name).meta.image)
       PIXI.Cache.set(name, texture)
     } else {
       texture = PIXI.Cache.get(name)
     }
-
-    console.log(gs.jsons.get(name).meta.image)
-
-    let mySheet = new PIXI.Spritesheet(texture, gs.jsons.get(name))
-    await mySheet.parse()
-    // console.log("parsed", mySheet)
-
-    // mySheet.parse(() => {
-    //   const textures = mySheet.animations["animationName"];
-
-    //   // Create an AnimatedSprite using the textures array
-    //   const animatedSprite = new PIXI.AnimatedSprite(textures);
-    //   // ...
-
-    //   // Add the animatedSprite to your container or stage
-    //   // ...
-    // });
+    let spriteSheet = new PIXI.Spritesheet(texture, gs.jsons.get(name))
+    await spriteSheet.parse()
 
     const animationsContainer = gpixi.getAnimationContainer(id) as Container
 
-    _.forOwn(mySheet.animations, (arrayOfwebpImages, name) => {
+    _.forOwn(spriteSheet.animations, (arrayOfwebpImages, name) => {
       const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
       animatedSprite.name = name
       animatedSprite.anchor.x = 0.5
