@@ -8,7 +8,7 @@ export default class mousemove {
     if (!position) return
 
     const targetPosition = gworld.entities
-      .get(gsd.states.heroId)
+      .get(gconst.heroId)
       .get("alive").targetPosition
     if (!targetPosition) {
       position.x = 0
@@ -20,12 +20,10 @@ export default class mousemove {
 
     const displacement = glib.vectorFromPoints(
       position,
-      gworld.entities.get(gsd.states.heroId).get("position")
+      gworld.entities.get(gconst.heroId).get("position")
     )
     const distance = displacement.distance
-    const speedPerTick = glib.speedPerTick(
-      gworld.entities.get(gsd.states.heroId)
-    )
+    const speedPerTick = glib.speedPerTick(gworld.entities.get(gconst.heroId))
 
     // hide
     if (distance < speedPerTick) {

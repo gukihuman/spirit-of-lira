@@ -10,18 +10,21 @@ export const _ = lodash
 
 // files from outside .guki folder
 export default defineNuxtPlugin(async () => {
+  //
   const entities = import.meta.glob("@/entities/**")
   for (const path in entities) {
     const entity = await entities[path]()
     const name = `${_.toLower(entity.default.name)}`
     gstorage.entities.set(name, entity.default)
   }
+
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
     const name = `${_.toLower(system.default.name)}`
     gstorage.systems.set(name, system.default)
   }
+
   const webps = import.meta.glob("@/assets/**/*.webp")
   for (const path in webps) {
     const webp = await webps[path]()
@@ -37,6 +40,7 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
     gstorage.webps.set(name, webp.default)
   }
+
   const jsons = import.meta.glob("@/assets/**/*.json")
   for (const path in jsons) {
     if (path.includes("miscellaneous")) continue

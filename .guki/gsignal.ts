@@ -16,7 +16,7 @@ class Signal {
       }
     },
     mouseMove() {
-      const heroEntity = gworld.entities.get(gsd.states.heroId)
+      const heroEntity = gworld.entities.get(gconst.heroId)
       if (!heroEntity) return
 
       const displacement = glib.vectorFromPoints(
@@ -38,7 +38,7 @@ class Signal {
       gsd.states.autoMouseMove = !gsd.states.autoMouseMove
     },
     gamepadMove() {
-      const heroEntity = gworld.entities.get(gsd.states.heroId)
+      const heroEntity = gworld.entities.get(gconst.heroId)
       if (!heroEntity) return
 
       heroEntity.get("alive").targetPosition = undefined

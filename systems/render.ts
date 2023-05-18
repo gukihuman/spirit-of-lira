@@ -1,12 +1,9 @@
 export default class render {
   private synchronizeItems() {
-    const currentState = gworld.entities
-      .get(gsd.states.heroId)
-      .get("alive").state
+    const currentState = gworld.entities.get(gconst.heroId).get("alive").state
 
-    const back = gpixi.getContainer(gsd.states.heroId)?.children[0] as Container
-    const front = gpixi.getContainer(gsd.states.heroId)
-      ?.children[2] as Container
+    const back = gpixi.getContainer(gconst.heroId)?.children[0] as Container
+    const front = gpixi.getContainer(gconst.heroId)?.children[2] as Container
     if (!back || !front) return
     back.children.forEach((child) => {
       const itemContainer = child as Container
@@ -27,7 +24,7 @@ export default class render {
   process() {
     // no point to render anything if hero for some reason is not chosen
     // cuz it servers as a camera target
-    const heroEntity = gworld.entities.get(gsd.states.heroId)
+    const heroEntity = gworld.entities.get(gconst.heroId)
     if (!heroEntity) return
     const heroPosition = heroEntity.get("position")
 

@@ -1,4 +1,6 @@
 class PixiManager {
+  //
+  // app has to be initiated when window object exist
   app?: Application
   elapsedMS: number = 0
 
@@ -7,15 +9,14 @@ class PixiManager {
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
-  // higher values goes first
+  // higher values goes first, takes tools and systems
   // almost everything is 0, which is default if not set explicitly
   private tickerPriority = {
     gcache: 13,
-    gic: 12, // gud depend on it for example, has to be first
+    gic: 12, // at least gud depends on it
 
-    gsignal: 1, // run all logic for collected signals and empty itself
+    gsignal: 1, // runs all logic for collected signals and empty itself
     gflip: -11,
-
     state: -12,
     render: -13,
   }

@@ -1,11 +1,11 @@
-class ItemLoader {
+class Item {
   items = {
     // where items in front
     "common-sword": ["attack"],
   }
 
   async init() {
-    if (!gpixi.app) return
+    if (!gpixi.app || !gconst.heroId) return
 
     const promises: Promise<void>[] = []
 
@@ -28,13 +28,13 @@ class ItemLoader {
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = gpixi.getContainer(gsd.states.heroId)
+          const back = gpixi.getContainer(gconst.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = gpixi.getContainer(gsd.states.heroId)
+          const front = gpixi.getContainer(gconst.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 
@@ -61,4 +61,4 @@ class ItemLoader {
     await Promise.all(promises)
   }
 }
-export const gil = new ItemLoader()
+export const gitem = new Item()

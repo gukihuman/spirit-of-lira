@@ -1,8 +1,12 @@
 class EntityFactory {
   private nextId = 1
 
+  /** @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
-    if (!gstorage.entities.has(name)) return
+    if (!gstorage.entities.has(name)) {
+      glib.logWarning(`"${name}" not found (gef)`)
+      return
+    }
     const id = this.nextId
     this.nextId++
 

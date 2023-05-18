@@ -26,7 +26,7 @@ class MapManager {
     gpixi.tickerAdd(() => {
       this.loadCloseChunks()
 
-      const heroEntity = gworld.entities.get(gsd.states.heroId)
+      const heroEntity = gworld.entities.get(gconst.heroId)
       if (!heroEntity) return
       const heroPosition = heroEntity.get("position")
       if (!heroPosition) return
@@ -41,8 +41,8 @@ class MapManager {
   }
 
   private async loadCloseChunks() {
-    if (!gsd.states.heroId) return
-    const heroEntity = gworld.entities.get(gsd.states.heroId)
+    if (!gconst.heroId) return
+    const heroEntity = gworld.entities.get(gconst.heroId)
     if (!heroEntity) return
     const heroPosition = heroEntity.get("position")
 

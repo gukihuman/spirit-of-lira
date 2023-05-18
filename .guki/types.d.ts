@@ -15,5 +15,5 @@ declare global {
   interface gContainer extends Container {
     id: number
   }
-  type gEntity = Map<string, any>
+  type gEntity = { [key: string]: any }
 }

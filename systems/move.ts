@@ -28,7 +28,7 @@ export default class move {
   }
 
   setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.get("alive") && id !== gsd.states.heroId) {
+    if (entity.get("alive") && id !== gconst.heroId) {
       if (!entity.get("alive").targetPosition) {
         entity.get("alive").targetPosition = _.cloneDeep(entity.get("position"))
         entity.get("alive").lastTargetPosition = gpixi.elapsedMS - 15_000

@@ -22,7 +22,6 @@ class SystemData {
     loadingScreen: true,
     inventory: false,
     inputFocus: false,
-    heroId: undefined,
   })
   get states() {
     return this._states()
