@@ -3,22 +3,22 @@ export default class render {
     const currentState = gworld.entities
       .get(gsd.states.heroId)
       .get("alive").state
-    const heroAnimationSprite = gpixi.getAnimationSprite(
-      gsd.states.heroId,
-      currentState
-    )
-    if (!heroAnimationSprite) return
-    const currentFrame = heroAnimationSprite.currentFrame
 
-    const back = gpixi.getContainer(gsd.states.heroId)?.children[0] as Container
-    const front = gpixi.getContainer(gsd.states.heroId)
-      ?.children[2] as Container
+    const back = gp.getContainer(gsd.states.heroId)?.children[0] as Container
+    const front = gp.getContainer(gsd.states.heroId)?.children[2] as Container
     if (!back || !front) return
     back.children.forEach((child) => {
       const itemContainer = child as Container
       itemContainer.children.forEach((sprite) => {
-        if (sprite.name === currentState) sprite.visible = true
-        else sprite.visible = false
+        if (
+          sprite.name === currentState ||
+          (sprite.name === "idle" && currentState === "run") ||
+          (sprite.name === "idle" && currentState === "walk")
+        ) {
+          sprite.visible = true
+        } else {
+          sprite.visible = false
+        }
       })
     })
   }
@@ -35,7 +35,7 @@ export default class render {
     gworld.entities.forEach((entity, id) => {
       if (!entity.get("visual") || !entity.get("position")) return
       const position = entity.get("position")
-      const container = gpixi.getContainer(id)
+      const container = gp.getContainer(id)
       if (!container) return
 
       // update container coordinates
@@ -44,12 +44,12 @@ export default class render {
 
       // update visibility of animations by entity state
       if (entity.get("alive")) {
-        gpixi.getAnimationContainer(id)?.children.forEach((child) => {
+        gp.getAnimationContainer(id)?.children.forEach((child) => {
           if (child.name === entity.get("alive").state) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = gpixi.getAnimationContainer(id)
+        const animationContainer = gp.getAnimationContainer(id)
         if (animationContainer) {
           animationContainer.children[0].visible = true
         }
@@ -65,7 +65,7 @@ export default class render {
             entity.get("alive").state === state &&
             lastEntity.get("alive").state !== state
           ) {
-            gpixi.getAnimationSprite(id, state)?.gotoAndPlay(frame)
+            gp.getAnimationSprite(id, state)?.gotoAndPlay(frame)
           }
         })
       }

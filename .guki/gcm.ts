@@ -16,7 +16,7 @@ class CollisionManager {
         square.drawRect(x * 100, y * 100, 100, 100)
         square.endFill()
         row.push(square)
-        gpixi.collision.addChild(square)
+        gp.collision.addChild(square)
       }
       this.collisionGrid.push(row)
     }
@@ -26,12 +26,12 @@ class CollisionManager {
         square.blendMode = PIXI.BLEND_MODES.MULTIPLY
         square.lineStyle(5, 0xe6e6e6)
         square.drawRect(x * 100, y * 100, 100, 100)
-        gpixi.collision.addChild(square)
+        gp.collision.addChild(square)
       }
     }
-    gpixi.collision.pivot.x = gpixi.collision.width / 2
-    gpixi.collision.pivot.y = gpixi.collision.height / 2
-    gpixi.collision.visible = false
+    gp.collision.pivot.x = gp.collision.width / 2
+    gp.collision.pivot.y = gp.collision.height / 2
+    gp.collision.visible = false
   }
 
   updateCollisionGrid() {
@@ -40,10 +40,8 @@ class CollisionManager {
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
-    gpixi.collision.x =
-      1920 / 2 - glib.coordinateOffsetInTile(heroPosition.x) + 50
-    gpixi.collision.y =
-      1080 / 2 - glib.coordinateOffsetInTile(heroPosition.y) + 50
+    gp.collision.x = 1920 / 2 - glib.coordinateOffsetInTile(heroPosition.x) + 50
+    gp.collision.y = 1080 / 2 - glib.coordinateOffsetInTile(heroPosition.y) + 50
 
     const startX = glib.coordinateToTile(heroPosition.x) - 10
     const startY = glib.coordinateToTile(heroPosition.y) - 6
@@ -98,13 +96,13 @@ class CollisionManager {
   init() {
     this.drawCollisionGrid()
 
-    gpixi.tickerAdd(() => {
+    gp.tickerAdd(() => {
       if (gsd.states.collisionEdit) {
-        gpixi.collision.visible = true
+        gp.collision.visible = true
         this.updateCollisionArray()
         this.updateCollisionGrid()
       } else {
-        gpixi.collision.visible = false
+        gp.collision.visible = false
       }
     }, "gcm")
   }

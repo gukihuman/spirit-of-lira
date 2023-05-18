@@ -10,8 +10,8 @@ export default defineNuxtPlugin(async (app) => {
     useCookie("name").value = useCookie("name").value || "default"
     if (useCookie("name").value == "guki") gsd.states.devMode = true
 
-    // everything depend on gpixi ticker, init it first
-    gpixi.init(gsd.refs.viewport)
+    // everything depend on gp ticker, init it first
+    gp.init(gsd.refs.viewport)
 
     gic.init(gsd.refs.viewport) // input controller
     gcache.init()
@@ -36,7 +36,7 @@ export default defineNuxtPlugin(async (app) => {
     await gmm.init() // map manager
 
     // gic setup
-    gpixi.tickerAdd(() => {
+    gp.tickerAdd(() => {
       gic.update()
       if (!gsd.states.firstMouseMove) {
         if (gic.mouse.x !== 0 || gic.mouse.y !== 0) {
@@ -57,7 +57,7 @@ export default defineNuxtPlugin(async (app) => {
     await Promise.all(inits)
 
     _.forEach(processes, (process, name) => {
-      gpixi.tickerAdd(() => process(), name)
+      gp.tickerAdd(() => process(), name)
     })
 
     // 📜 somehow try to get mouse position on start

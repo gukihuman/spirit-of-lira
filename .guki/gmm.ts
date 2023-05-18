@@ -23,7 +23,7 @@ class MapManager {
     // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
 
-    gpixi.tickerAdd(() => {
+    gp.tickerAdd(() => {
       this.loadCloseChunks()
 
       const heroEntity = gworld.entities.get(gsd.states.heroId)
@@ -76,7 +76,7 @@ class MapManager {
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
-    gpixi.map.addChild(sprite)
+    gp.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)
   }
 }

@@ -70,7 +70,7 @@ class Signal {
   }
 
   init() {
-    gpixi.tickerAdd(() => {
+    gp.tickerAdd(() => {
       this.runLogic()
       this.active = []
     }, "gsignal")

@@ -1,6 +1,6 @@
 class Dev {
   init() {
-    gpixi.tickerAdd(() => {
+    gp.tickerAdd(() => {
       if (gsd.states.devMode) {
         if (gic.keyboard.justPressed.includes("z")) {
           gsignal.emit("collisionEdit")

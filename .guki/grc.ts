@@ -101,7 +101,7 @@ class RemoteController {
   }
 
   init() {
-    gpixi.tickerAdd(async () => {
+    gp.tickerAdd(async () => {
       // if (gim.signals.sendInput) {
       //   if (!gsd.refs.input) return
       //   this.pushNewMessages()

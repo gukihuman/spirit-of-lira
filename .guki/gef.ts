@@ -40,7 +40,7 @@ class EntityFactory {
     // 📜think about garbage collection on removing entity
     // for now process can be used only on once declared entities
     if (entityModel.process) {
-      gpixi.tickerAdd(() => {
+      gp.tickerAdd(() => {
         entityModel.process(entity, id)
       }, name)
     }
@@ -66,14 +66,14 @@ class EntityFactory {
 
     shadow.filters = [blurFilter]
 
-    const container = gpixi.getContainer(id)
+    const container = gp.getContainer(id)
     if (!container) return
     const back = container.children[0] as Container
     back.addChild(shadow)
   }
 
   private async loadContainer(entity: gEntity, id: number) {
-    if (!gpixi.app) return
+    if (!gp.app) return
     const name = entity.get("name")
 
     const container = new PIXI.Container() as gContainer
@@ -84,9 +84,9 @@ class EntityFactory {
     // if parent not declared on model, add to sortable
     // could be only direct stage child like "ground"
     if (entity.get("visual").parentContainer) {
-      gpixi[entity.get("visual").parentContainer].addChild(container)
+      gp[entity.get("visual").parentContainer].addChild(container)
     } else {
-      gpixi.sortable.addChild(container)
+      gp.sortable.addChild(container)
     }
 
     for (let name of ["back", "animations", "front"]) {
@@ -106,7 +106,7 @@ class EntityFactory {
     let spriteSheet = new PIXI.Spritesheet(texture, gs.jsons.get(name))
     await spriteSheet.parse()
 
-    const animationsContainer = gpixi.getAnimationContainer(id) as Container
+    const animationsContainer = gp.getAnimationContainer(id) as Container
 
     _.forOwn(spriteSheet.animations, (arrayOfwebpImages, name) => {
       const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
