@@ -31,15 +31,15 @@ export default class move {
     if (entity.get("alive") && id !== gsd.states.heroId) {
       if (!entity.get("alive").targetPosition) {
         entity.get("alive").targetPosition = _.cloneDeep(entity.get("position"))
-        entity.get("alive").lastTargetPosition = gp.elapsedMS - 15_000
+        entity.get("alive").lastTargetPosition = gpixi.elapsedMS - 15_000
       }
-      if (gp.elapsedMS - entity.get("alive").lastTargetPosition > 15_000) {
-        if (Math.random() > 0.08 * gp.deltaSec) return
+      if (gpixi.elapsedMS - entity.get("alive").lastTargetPosition > 15_000) {
+        if (Math.random() > 0.08 * gpixi.deltaSec) return
         let x = _.random(-500, 500)
         let y = _.random(-500, 500)
         entity.get("alive").targetPosition.x = entity.get("position").x + x
         entity.get("alive").targetPosition.y = entity.get("position").y + y
-        entity.get("alive").lastTargetPosition = gp.elapsedMS
+        entity.get("alive").lastTargetPosition = gpixi.elapsedMS
       }
     }
   }

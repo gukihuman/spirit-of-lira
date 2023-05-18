@@ -5,35 +5,36 @@ class ItemLoader {
   }
 
   async init() {
-    if (!gp.app) return
+    if (!gpixi.app) return
 
     const promises: Promise<void>[] = []
 
     _.forEach(this.items, (states, name) => {
       promises.push(
         new Promise(async (resolve) => {
-          console.log("eo")
-
           // make sprite sheet from stored json
           let texture
           if (!PIXI.Cache.has(name)) {
-            texture = PIXI.Texture.from(gs.jsons.get(name).meta.image)
+            texture = PIXI.Texture.from(gstorage.jsons.get(name).meta.image)
             PIXI.Cache.set(name, texture)
           } else {
             texture = PIXI.Cache.get(name)
           }
-          let spriteSheet = new PIXI.Spritesheet(texture, gs.jsons.get(name))
+          let spriteSheet = new PIXI.Spritesheet(
+            texture,
+            gstorage.jsons.get(name)
+          )
           await spriteSheet.parse()
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = gp.getContainer(gsd.states.heroId)
+          const back = gpixi.getContainer(gsd.states.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = gp.getContainer(gsd.states.heroId)
+          const front = gpixi.getContainer(gsd.states.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 

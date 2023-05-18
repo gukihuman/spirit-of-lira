@@ -14,7 +14,7 @@ export default class state {
       return
     }
 
-    if (gp.getAnimationSprite(id, "walk")) {
+    if (gpixi.getAnimationSprite(id, "walk")) {
       if (distance / speedPerTick < 0.8) {
         entity.get("alive").state = "walk"
       } else {
@@ -28,7 +28,7 @@ export default class state {
   process() {
     gworld.entities.forEach((entity, id) => {
       if (!entity.get("alive")) return
-      if (gp.elapsedMS - entity.get("alive").lastStateSwitchMS < 200) return
+      if (gpixi.elapsedMS - entity.get("alive").lastStateSwitchMS < 200) return
       if (entity.get("alive").leaveStateConditions) {
         if (
           entity.get("alive").state === "move" &&
@@ -43,7 +43,7 @@ export default class state {
       const lastEntity = gcache.entities.get(id)
       if (!lastEntity) return
       if (entity.get("alive").state !== lastEntity.get("alive").state) {
-        entity.get("alive").lastStateSwitchMS = gp.elapsedMS
+        entity.get("alive").lastStateSwitchMS = gpixi.elapsedMS
       }
     })
   }

@@ -59,7 +59,7 @@ class UserData {
   }
 
   init() {
-    gp.tickerAdd(() => {
+    gpixi.tickerAdd(() => {
       this.emitSignals()
     }, "gud")
   }

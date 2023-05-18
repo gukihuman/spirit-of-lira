@@ -14,13 +14,13 @@ export default defineNuxtPlugin(async () => {
   for (const path in entities) {
     const entity = await entities[path]()
     const name = `${_.toLower(entity.default.name)}`
-    gs.entities.set(name, entity.default)
+    gstorage.entities.set(name, entity.default)
   }
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
     const name = `${_.toLower(system.default.name)}`
-    gs.systems.set(name, system.default)
+    gstorage.systems.set(name, system.default)
   }
   const webps = import.meta.glob("@/assets/**/*.webp")
   for (const path in webps) {
@@ -35,7 +35,7 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    gs.webps.set(name, webp.default)
+    gstorage.webps.set(name, webp.default)
   }
   const jsons = import.meta.glob("@/assets/**/*.json")
   for (const path in jsons) {
@@ -49,8 +49,9 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
 
     // inject webp so vite packer understand it
-    if (gs.webps.has(name)) json.default.meta.image = gs.webps.get(name)
+    if (gstorage.webps.has(name))
+      json.default.meta.image = gstorage.webps.get(name)
 
-    gs.jsons.set(name, json.default)
+    gstorage.jsons.set(name, json.default)
   }
 })

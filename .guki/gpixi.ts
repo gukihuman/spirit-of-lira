@@ -63,11 +63,11 @@ class PixiManager {
   // 📜 need those getters? think yes but have doubts
 
   getContainer(id: number): gContainer | undefined {
-    for (let child of gp.sortable.children) {
+    for (let child of gpixi.sortable.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
-    for (let child of gp.ground.children) {
+    for (let child of gpixi.ground.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
@@ -85,4 +85,4 @@ class PixiManager {
   }
 }
 
-export const gp = new PixiManager()
+export const gpixi = new PixiManager()

@@ -23,7 +23,7 @@ class MapManager {
     // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
 
-    gp.tickerAdd(() => {
+    gpixi.tickerAdd(() => {
       this.loadCloseChunks()
 
       const heroEntity = gworld.entities.get(gsd.states.heroId)
@@ -68,15 +68,15 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    const webp = gs.webps.get(index)
-    if (!webp) gs.webps.get("map-not-found")
+    const webp = gstorage.webps.get(index)
+    if (!webp) gstorage.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
-    gp.map.addChild(sprite)
+    gpixi.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)
   }
 }

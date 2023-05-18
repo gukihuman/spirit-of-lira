@@ -34,14 +34,14 @@ export default class mousemove {
       return
     }
 
-    const container = gp.getContainer(id)
+    const container = gpixi.getContainer(id)
     if (container) {
-      container.children[1].angle += 80 * gp.deltaSec
+      container.children[1].angle += 80 * gpixi.deltaSec
       const scale = 1
       container.scale = { x: 1, y: 0.5 }
       container.scale.x *= scale
       container.scale.y *= scale
-      const animationSprite = gp.getAnimationSprite(id, "idle")
+      const animationSprite = gpixi.getAnimationSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       animationSprite.alpha = distance / 100

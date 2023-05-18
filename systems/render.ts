@@ -4,8 +4,9 @@ export default class render {
       .get(gsd.states.heroId)
       .get("alive").state
 
-    const back = gp.getContainer(gsd.states.heroId)?.children[0] as Container
-    const front = gp.getContainer(gsd.states.heroId)?.children[2] as Container
+    const back = gpixi.getContainer(gsd.states.heroId)?.children[0] as Container
+    const front = gpixi.getContainer(gsd.states.heroId)
+      ?.children[2] as Container
     if (!back || !front) return
     back.children.forEach((child) => {
       const itemContainer = child as Container
@@ -35,7 +36,7 @@ export default class render {
     gworld.entities.forEach((entity, id) => {
       if (!entity.get("visual") || !entity.get("position")) return
       const position = entity.get("position")
-      const container = gp.getContainer(id)
+      const container = gpixi.getContainer(id)
       if (!container) return
 
       // update container coordinates
@@ -44,12 +45,12 @@ export default class render {
 
       // update visibility of animations by entity state
       if (entity.get("alive")) {
-        gp.getAnimationContainer(id)?.children.forEach((child) => {
+        gpixi.getAnimationContainer(id)?.children.forEach((child) => {
           if (child.name === entity.get("alive").state) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = gp.getAnimationContainer(id)
+        const animationContainer = gpixi.getAnimationContainer(id)
         if (animationContainer) {
           animationContainer.children[0].visible = true
         }
@@ -65,7 +66,7 @@ export default class render {
             entity.get("alive").state === state &&
             lastEntity.get("alive").state !== state
           ) {
-            gp.getAnimationSprite(id, state)?.gotoAndPlay(frame)
+            gpixi.getAnimationSprite(id, state)?.gotoAndPlay(frame)
           }
         })
       }

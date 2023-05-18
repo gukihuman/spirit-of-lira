@@ -1,6 +1,4 @@
-import Hero from "~~/entities/oldhero"
-
-class RemoteController {
+class Remote {
   private systemMessage = new Hero().language.system
   private clarification = new Hero().language.clarification
 
@@ -101,7 +99,7 @@ class RemoteController {
   }
 
   init() {
-    gp.tickerAdd(async () => {
+    gpixi.tickerAdd(async () => {
       // if (gim.signals.sendInput) {
       //   if (!gsd.refs.input) return
       //   this.pushNewMessages()
@@ -123,7 +121,7 @@ class RemoteController {
       // let moodRes = await this.queryOpenAI(moodReq)
       // console.log(moodRes.choices[0].message.content)
       // }
-    }, "grc")
+    }, "gremote")
   }
 }
-export const grc = new RemoteController()
+export const gremote = new Remote()

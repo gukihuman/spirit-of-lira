@@ -61,7 +61,7 @@ class Lib {
     return result
   }
   speedPerTick(entity) {
-    return entity.get("alive").speed * 6 * gp.deltaSec
+    return entity.get("alive").speed * 6 * gpixi.deltaSec
   }
 
   /**

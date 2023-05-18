@@ -2,13 +2,12 @@ class EntityFactory {
   private nextId = 1
 
   async createEntity(name: string, components?: { [key: string]: any }) {
-    if (!gs.entities.has(name)) return
+    if (!gstorage.entities.has(name)) return
     const id = this.nextId
     this.nextId++
 
     // transform entity class to an entity map
-    // inject components declared in model
-    const entityClass = gs.entities.get(name)
+    const entityClass = gstorage.entities.get(name)
     const entityModel = new entityClass()
     const entity = new Map()
 
@@ -40,7 +39,7 @@ class EntityFactory {
     // 📜think about garbage collection on removing entity
     // for now process can be used only on once declared entities
     if (entityModel.process) {
-      gp.tickerAdd(() => {
+      gpixi.tickerAdd(() => {
         entityModel.process(entity, id)
       }, name)
     }
@@ -66,14 +65,14 @@ class EntityFactory {
 
     shadow.filters = [blurFilter]
 
-    const container = gp.getContainer(id)
+    const container = gpixi.getContainer(id)
     if (!container) return
     const back = container.children[0] as Container
     back.addChild(shadow)
   }
 
   private async loadContainer(entity: gEntity, id: number) {
-    if (!gp.app) return
+    if (!gpixi.app) return
     const name = entity.get("name")
 
     const container = new PIXI.Container() as gContainer
@@ -84,9 +83,9 @@ class EntityFactory {
     // if parent not declared on model, add to sortable
     // could be only direct stage child like "ground"
     if (entity.get("visual").parentContainer) {
-      gp[entity.get("visual").parentContainer].addChild(container)
+      gpixi[entity.get("visual").parentContainer].addChild(container)
     } else {
-      gp.sortable.addChild(container)
+      gpixi.sortable.addChild(container)
     }
 
     for (let name of ["back", "animations", "front"]) {
@@ -98,15 +97,15 @@ class EntityFactory {
     // make sprite sheet from stored json
     let texture
     if (!PIXI.Cache.has(name)) {
-      texture = PIXI.Texture.from(gs.jsons.get(name).meta.image)
+      texture = PIXI.Texture.from(gstorage.jsons.get(name).meta.image)
       PIXI.Cache.set(name, texture)
     } else {
       texture = PIXI.Cache.get(name)
     }
-    let spriteSheet = new PIXI.Spritesheet(texture, gs.jsons.get(name))
+    let spriteSheet = new PIXI.Spritesheet(texture, gstorage.jsons.get(name))
     await spriteSheet.parse()
 
-    const animationsContainer = gp.getAnimationContainer(id) as Container
+    const animationsContainer = gpixi.getAnimationContainer(id) as Container
 
     _.forOwn(spriteSheet.animations, (arrayOfwebpImages, name) => {
       const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)

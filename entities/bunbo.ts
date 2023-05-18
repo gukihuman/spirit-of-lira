@@ -4,7 +4,7 @@ export default class bunbo {
     size: 35,
     leaveStateConditions: {
       move: (entity, id) => {
-        return gp.getAnimationSprite(id, "move")?.currentFrame === 0
+        return gpixi.getAnimationSprite(id, "move")?.currentFrame === 0
       },
     },
   }
