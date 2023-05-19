@@ -1,12 +1,12 @@
 export default {
-  name: "mousemove",
+  name: "mousepoint",
   visual: { parentContainer: "ground" },
   position: { x: 0, y: 0 },
   process(entity, id) {
     let position = entity.position
     if (!position) return
 
-    const targetPosition = gconst.hero.alive.targetPosition
+    const targetPosition = gg.hero.alive.targetPosition
     if (!targetPosition) {
       position.x = 0
       position.y = 0
@@ -17,10 +17,10 @@ export default {
 
     const displacement = glib.vectorFromPoints(
       position,
-      gworld.entities.get(gconst.heroId).position
+      gworld.entities.get(gg.heroId).position
     )
     const distance = displacement.distance
-    const speedPerTick = glib.speedPerTick(gworld.entities.get(gconst.heroId))
+    const speedPerTick = glib.speedPerTick(gworld.entities.get(gg.heroId))
 
     // hide
     if (distance < speedPerTick) {

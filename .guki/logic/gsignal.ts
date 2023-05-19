@@ -16,7 +16,7 @@ class Signal {
       }
     },
     mouseMove() {
-      const heroEntity = gworld.entities.get(gconst.heroId)
+      const heroEntity = gg.hero
       if (!heroEntity) return
 
       const displacement = glib.vectorFromPoints(
@@ -30,15 +30,15 @@ class Signal {
       }
 
       const mousePosition = glib.mousePoint()
-      mousePosition.x += gconst.hero.position.x - 960
-      mousePosition.y += gconst.hero.position.y - 540
+      mousePosition.x += gg.hero.position.x - 960
+      mousePosition.y += gg.hero.position.y - 540
       heroEntity.alive.targetPosition = mousePosition
     },
     autoMouseMove() {
       gsd.states.autoMouseMove = !gsd.states.autoMouseMove
     },
     gamepadMove() {
-      const heroEntity = gworld.entities.get(gconst.heroId)
+      const heroEntity = gworld.entities.get(gg.heroId)
       if (!heroEntity) return
 
       heroEntity.alive.targetPosition = undefined

@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   components: {
     dirs: ["@/.guki/vue", "@/UI"],
   },
-  plugins: ["@/.guki/utils/importer.ts", "@/.guki/utils/starter.ts"],
+  plugins: ["@/.guki/boot/importer.ts", "@/.guki/boot/starter.ts"],
   css: ["@/tailwind.css"],
   vite: {
     build: {

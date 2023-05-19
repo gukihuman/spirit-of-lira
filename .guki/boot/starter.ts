@@ -15,6 +15,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // tools that are likely depend on gpixi ticker
     gic.init(gsd.refs.viewport) // input controller
+    gef.init()
     gcache.init()
     gflip.init() // flips containers horizontally
     gcm.init() // collision editor
@@ -32,10 +33,10 @@ export default defineNuxtPlugin(async (app) => {
       glib.logWarning("hero is not created (starter)")
       return
     }
-    gconst.hero = gworld.entities.get(heroId)
-    gconst.heroId = heroId
+    gg.hero = gworld.entities.get(heroId)
+    gg.heroId = heroId
 
-    await gef.createEntity("mousemove")
+    await gef.createEntity("mousepoint")
 
     // tools depend on hero instance
     await gmm.init() // map manager, needs hero coordinates to init

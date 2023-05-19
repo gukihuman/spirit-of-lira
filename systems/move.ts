@@ -29,7 +29,7 @@ export default class move {
   }
 
   setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.alive && id !== gconst.heroId) {
+    if (entity.alive && id !== gg.heroId) {
       if (!entity.alive.targetPosition) {
         entity.alive.targetPosition = _.cloneDeep(entity.position)
         // ms add

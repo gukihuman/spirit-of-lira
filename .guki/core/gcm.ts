@@ -35,8 +35,8 @@ class CollisionManager {
   }
 
   updateCollisionGrid() {
-    if (!gconst.heroId) return
-    const heroPosition = gworld.entities.get(gconst.heroId).get("position")
+    if (!gg.heroId) return
+    const heroPosition = gg.hero.position
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
@@ -59,8 +59,8 @@ class CollisionManager {
   }
 
   private updateCollisionArray() {
-    if (!gconst.heroId) return
-    const heroPosition = gworld.entities.get(gconst.heroId).get("position")
+    if (!gg.heroId) return
+    const heroPosition = gg.hero.position
 
     let i = glib.tileIndexFromCoordinates(heroPosition.x, heroPosition.y)
 

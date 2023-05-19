@@ -60,8 +60,13 @@ class Lib {
     }
     return result
   }
-  speedPerTick(entity) {
+  speedPerTick(entity: gEntity) {
     return entity.alive.speed * 6 * gpixi.deltaSec
+  }
+
+  /** @returns array of sorted keys of object by descendant order of its number values, for example {a: -1, b: 1, c: 2} became ["c", "b", "a"]" */
+  sortedKeys(object) {
+    return _.sortBy(_.keys(object), (key) => -object[key])
   }
 
   /**

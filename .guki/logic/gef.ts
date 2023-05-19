@@ -1,7 +1,16 @@
-import { g } from "vitest/dist/index-40ebba2b"
-
 class EntityFactory {
   private nextId = 1
+  private componentInjectPriority = {
+    visual: 2,
+    alive: 1,
+  }
+
+  init() {
+    gstorage.components.forEach((value, name) => {
+      if (this.componentInjectPriority[name]) return
+      this.componentInjectPriority[name] = 0
+    })
+  }
 
   /** @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
@@ -23,31 +32,36 @@ class EntityFactory {
     gworld.entities.set(id, entity)
     return id
   }
+
+  /** inject / expand components from components folder */
   private injectComponents(entity: gEntity, id: number) {
-    gstorage.components.forEach((value, name) => {
-      //
-      // special treatment
-      if (name === "position" && entity.position !== false) {
-        entity.position = _.merge(_.cloneDeep(value), entity.position)
+    const sortedPriority = glib.sortedKeys(this.componentInjectPriority)
+    sortedPriority.forEach((name) => {
+      const value = gstorage.components.get(name)
+
+      // special treat
+      if (name === "position" && entity[name] !== false) {
+        this.mergeComponent(entity, name, value)
         return
       }
-      if (name === "visual" && entity.visual !== false) {
-        if (!entity.visual) entity.visual = {}
-        // if (entity.alive) {
-        entity.visual = _.merge(_.cloneDeep(value), entity.visual)
-        // }
+      if (name === "visual" && entity[name] !== false) {
+        this.mergeComponent(entity, name, value)
         this.loadContainer(entity, id)
         return
       }
-      if (name === "alive" && entity.alive) {
-        entity.alive = _.merge(_.cloneDeep(value), entity.alive)
+      if (name === "alive" && entity[name]) {
+        entity.visual = _.merge(_.cloneDeep(value), entity.visual)
+        this.mergeComponent(entity, name, value)
         this.drawShadow(entity, id)
         return
       }
 
-      // default expand if exist
-      if (entity[name]) entity[name] = _.merge(_.cloneDeep(value), entity[name])
+      // other is just expand if exist on model
+      if (entity[name]) this.mergeComponent(entity, name, value)
     })
+  }
+  private mergeComponent(entity: gEntity, name: string, value: any) {
+    entity[name] = _.merge(_.cloneDeep(value), entity[name])
   }
 
   private drawShadow(entity: gEntity, id: number) {

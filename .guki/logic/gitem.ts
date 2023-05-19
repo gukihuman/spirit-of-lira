@@ -5,8 +5,8 @@ class Item {
   }
 
   async init() {
-    if (!gpixi.app || !gconst.heroId) return
-    if (!gpixi.getContainer(gconst.heroId)) return
+    if (!gpixi.app || !gg.heroId) return
+    if (!gpixi.getContainer(gg.heroId)) return
 
     const promises: Promise<void>[] = []
 
@@ -29,14 +29,12 @@ class Item {
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = gpixi.getContainer(gconst.heroId)
-            ?.children[0] as Container
+          const back = gpixi.getContainer(gg.heroId)?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = gpixi.getContainer(gconst.heroId)
-            ?.children[2] as Container
+          const front = gpixi.getContainer(gg.heroId)?.children[2] as Container
           front.addChild(frontItemContainer)
 
           _.forOwn(spriteSheet.animations, (arrayOfwebpImages, stateName) => {
