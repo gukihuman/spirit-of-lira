@@ -34,11 +34,13 @@ export default defineNuxtPlugin(async (app) => {
     }
     gconst.hero = gworld.entities.get(heroId)
     gconst.heroId = heroId
+
     await gef.createEntity("mousemove")
 
     // tools depend on hero instance
     await gmm.init() // map manager, needs hero coordinates to init
     await gitem.init() // item loader
+    await gworld.init() // init systems, like spawn mobs
 
     // all tools setup itself in init, gic is third-party so setup here
     gpixi.tickerAdd(() => {
@@ -53,27 +55,6 @@ export default defineNuxtPlugin(async (app) => {
       }
     }, "gic")
 
-    // may depend on tools, like gmm for spawn mobs
-    await setupSystems()
-
     gsd.states.loadingScreen = false
   }
 })
-
-async function setupSystems() {
-  const inits: Promise<void>[] = []
-  const processes: { [name: string]: () => void } = {}
-
-  gstorage.systems.forEach((systemClass, name) => {
-    const system = new systemClass()
-    if (system.init) inits.push(system.init())
-    processes[name] = () => system.process()
-    gworld.systems.set(name, system)
-  })
-  await Promise.all(inits)
-
-  // processes added later, may depend on init
-  _.forEach(processes, (process, name) => {
-    gpixi.tickerAdd(() => process(), name)
-  })
-}

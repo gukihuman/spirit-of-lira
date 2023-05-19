@@ -26,9 +26,7 @@ class MapManager {
     gpixi.tickerAdd(() => {
       this.loadCloseChunks()
 
-      const heroEntity = gworld.entities.get(gconst.heroId)
-      if (!heroEntity) return
-      const heroPosition = heroEntity.get("position")
+      const heroPosition = gconst.hero.position
       if (!heroPosition) return
 
       // update coordinates
@@ -44,7 +42,7 @@ class MapManager {
     if (!gconst.heroId) return
     const heroEntity = gworld.entities.get(gconst.heroId)
     if (!heroEntity) return
-    const heroPosition = heroEntity.get("position")
+    const heroPosition = gconst.hero.position
 
     const startY = glib.coordinateToChunk(heroPosition.y) - 1
     const startX = glib.coordinateToChunk(heroPosition.x) - 1

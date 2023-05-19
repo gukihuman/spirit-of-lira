@@ -1,6 +1,6 @@
 export default class render {
   private synchronizeItems() {
-    const currentState = gworld.entities.get(gconst.heroId).get("alive").state
+    const currentState = gconst.hero.alive.state
 
     const back = gpixi.getContainer(gconst.heroId)?.children[0] as Container
     const front = gpixi.getContainer(gconst.heroId)?.children[2] as Container
@@ -24,15 +24,14 @@ export default class render {
   process() {
     // no point to render anything if hero for some reason is not chosen
     // cuz it servers as a camera target
-    const heroEntity = gworld.entities.get(gconst.heroId)
-    if (!heroEntity) return
-    const heroPosition = heroEntity.get("position")
+    if (!gconst.hero) return
+    const heroPosition = gconst.hero.position
 
     this.synchronizeItems()
 
     gworld.entities.forEach((entity, id) => {
-      if (!entity.get("visual") || !entity.get("position")) return
-      const position = entity.get("position")
+      if (!entity.visual || !entity.position) return
+      const position = entity.position
       const container = gpixi.getContainer(id)
       if (!container) return
 
@@ -41,27 +40,27 @@ export default class render {
       container.y = position.y - heroPosition.y + 540
 
       // update visibility of animations by entity state
-      if (entity.get("alive")) {
+      if (entity.alive) {
         gpixi.getAnimationContainer(id)?.children.forEach((child) => {
-          if (child.name === entity.get("alive").state) child.visible = true
+          if (child.name === entity.alive.state) child.visible = true
           else child.visible = false
         })
       } else {
         const animationContainer = gpixi.getAnimationContainer(id)
-        if (animationContainer) {
+        if (animationContainer && animationContainer.children[0]) {
           animationContainer.children[0].visible = true
         }
       }
 
       // update animation frame on first animation tick
-      const firstFrames = entity.get("visual").firstFrames
-      if (firstFrames) {
+      const firstFrames = entity.visual.firstFrames
+      if (entity.alive && firstFrames) {
         const lastEntity = gcache.entities.get(id)
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, state: string) => {
           if (
-            entity.get("alive").state === state &&
-            lastEntity.get("alive").state !== state
+            entity.alive.state === state &&
+            lastEntity.alive.state !== state
           ) {
             gpixi.getAnimationSprite(id, state)?.gotoAndPlay(frame)
           }

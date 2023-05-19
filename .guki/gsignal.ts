@@ -24,15 +24,15 @@ class Signal {
         glib.mousePoint()
       )
       const distance = displacement.distance
-      if (distance < heroEntity.get("alive").size) {
-        heroEntity.get("alive").targetPosition = undefined
+      if (distance < heroEntity.alive.size) {
+        heroEntity.alive.targetPosition = undefined
         return
       }
 
       const mousePosition = glib.mousePoint()
-      mousePosition.x += heroEntity.get("position").x - 960
-      mousePosition.y += heroEntity.get("position").y - 540
-      heroEntity.get("alive").targetPosition = mousePosition
+      mousePosition.x += gconst.hero.position.x - 960
+      mousePosition.y += gconst.hero.position.y - 540
+      heroEntity.alive.targetPosition = mousePosition
     },
     autoMouseMove() {
       gsd.states.autoMouseMove = !gsd.states.autoMouseMove
@@ -41,7 +41,7 @@ class Signal {
       const heroEntity = gworld.entities.get(gconst.heroId)
       if (!heroEntity) return
 
-      heroEntity.get("alive").targetPosition = undefined
+      heroEntity.alive.targetPosition = undefined
       const speedPerTick = glib.speedPerTick(heroEntity)
 
       const axesVector = glib.vector(gic.gamepad.axes[0], gic.gamepad.axes[1])

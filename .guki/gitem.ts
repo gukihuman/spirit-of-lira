@@ -6,6 +6,7 @@ class Item {
 
   async init() {
     if (!gpixi.app || !gconst.heroId) return
+    if (!gpixi.getContainer(gconst.heroId)) return
 
     const promises: Promise<void>[] = []
 

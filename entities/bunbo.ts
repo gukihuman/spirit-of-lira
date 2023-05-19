@@ -1,5 +1,6 @@
-export default class bunbo {
-  alive = {
+export default {
+  name: "bunbo",
+  alive: {
     speed: 10,
     size: 35,
     leaveStateConditions: {
@@ -7,6 +8,5 @@ export default class bunbo {
         return gpixi.getAnimationSprite(id, "move")?.currentFrame === 0
       },
     },
-  }
-  visual = {}
+  },
 }

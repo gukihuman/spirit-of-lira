@@ -1,15 +1,12 @@
-export default class mousemove {
-  visual = {
-    parentContainer: "ground",
-  }
-  position = { x: 0, y: 0 }
+export default {
+  name: "mousemove",
+  visual: { parentContainer: "ground" },
+  position: { x: 0, y: 0 },
   process(entity, id) {
-    let position = entity.get("position")
+    let position = entity.position
     if (!position) return
 
-    const targetPosition = gworld.entities
-      .get(gconst.heroId)
-      .get("alive").targetPosition
+    const targetPosition = gconst.hero.alive.targetPosition
     if (!targetPosition) {
       position.x = 0
       position.y = 0
@@ -20,7 +17,7 @@ export default class mousemove {
 
     const displacement = glib.vectorFromPoints(
       position,
-      gworld.entities.get(gconst.heroId).get("position")
+      gworld.entities.get(gconst.heroId).position
     )
     const distance = displacement.distance
     const speedPerTick = glib.speedPerTick(gworld.entities.get(gconst.heroId))
@@ -44,5 +41,5 @@ export default class mousemove {
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       animationSprite.alpha = distance / 100
     }
-  }
+  },
 }

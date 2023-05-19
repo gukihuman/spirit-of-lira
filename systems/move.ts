@@ -5,14 +5,15 @@ export default class move {
       this.setRandomTargetPosition(entity, id)
     })
   }
+
   move(entity: gEntity) {
-    if (!entity.get("alive") || !entity.get("alive").targetPosition) return
+    if (!entity.alive || !entity.alive.targetPosition) return
 
     const speedPerTick = glib.speedPerTick(entity)
 
     const displacement = glib.vectorFromPoints(
-      entity.get("position"),
-      entity.get("alive").targetPosition
+      entity.position,
+      entity.alive.targetPosition
     )
     const distance = displacement.distance
     if (distance < speedPerTick) return
@@ -28,24 +29,25 @@ export default class move {
   }
 
   setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.get("alive") && id !== gconst.heroId) {
-      if (!entity.get("alive").targetPosition) {
-        entity.get("alive").targetPosition = _.cloneDeep(entity.get("position"))
-        entity.get("alive").lastTargetPosition = gpixi.elapsedMS - 15_000
+    if (entity.alive && id !== gconst.heroId) {
+      if (!entity.alive.targetPosition) {
+        entity.alive.targetPosition = _.cloneDeep(entity.position)
+        // ms add
+        entity.alive.lastTargetPositionMS = gpixi.elapsedMS - 15_000
       }
-      if (gpixi.elapsedMS - entity.get("alive").lastTargetPosition > 15_000) {
+      if (gpixi.elapsedMS - entity.alive.lastTargetPositionMS > 15_000) {
         if (Math.random() > 0.08 * gpixi.deltaSec) return
         let x = _.random(-500, 500)
         let y = _.random(-500, 500)
-        entity.get("alive").targetPosition.x = entity.get("position").x + x
-        entity.get("alive").targetPosition.y = entity.get("position").y + y
-        entity.get("alive").lastTargetPosition = gpixi.elapsedMS
+        entity.alive.targetPosition.x = entity.position.x + x
+        entity.alive.targetPosition.y = entity.position.y + y
+        entity.alive.lastTargetPositionMS = gpixi.elapsedMS
       }
     }
   }
 
   checkCollisionAndMove(entity: gEntity, velocity, ratio: number) {
-    const position = entity.get("position")
+    const position = entity.position
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
     if (!gsd.states.collision) {

@@ -2,19 +2,19 @@ class Flip {
   init() {
     gpixi.tickerAdd(() => {
       gworld.entities.forEach((entity, id) => {
-        if (!entity.get("alive")) return
-        if (gpixi.elapsedMS - entity.get("alive").lastFlipMS < 200) return
+        if (!entity.alive) return
+        if (gpixi.elapsedMS - entity.alive.lastFlipMS < 200) return
 
         if (!gcache.entities.get(id)) return
-        const previousX = gcache.entities.get(id).get("position").x
+        const previousX = gcache.entities.get(id).position.x
         const container = gpixi.getContainer(id)
 
-        if (entity.get("position").x < previousX) {
+        if (entity.position.x < previousX) {
           if (container) container.scale.x = -1
-          entity.get("alive").lastFlipMS = gpixi.elapsedMS
-        } else if (entity.get("position").x > previousX) {
+          entity.alive.lastFlipMS = gpixi.elapsedMS
+        } else if (entity.position.x > previousX) {
           if (container) container.scale.x = 1
-          entity.get("alive").lastFlipMS = gpixi.elapsedMS
+          entity.alive.lastFlipMS = gpixi.elapsedMS
         }
 
         // 📜 add attack target dependence

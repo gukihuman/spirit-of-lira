@@ -1,12 +1,13 @@
-export default class lira {
-  alive = {
+export default {
+  name: "lira",
+  alive: {
     speed: 14,
     size: 30,
-  }
-  visual = {
+  },
+  visual: {
     firstFrames: { idle: 11, walk: 8, run: 4 },
-  }
-  language = {
+  },
+  language: {
     system: `fantasy world {
       game
       unreal
@@ -71,5 +72,5 @@ export default class lira {
     // Always rework the prhase that Lira might answer! dont use it unchanged`,
     clarification:
       "answer shortly, do not offer assistance!!! never!!, do not offer assistance or help, respond as a real person, behave as Lira DO NOT OFFER HELP",
-  }
+  },
 }

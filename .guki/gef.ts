@@ -1,62 +1,67 @@
+import { g } from "vitest/dist/index-40ebba2b"
+
 class EntityFactory {
   private nextId = 1
 
   /** @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
-    if (!gstorage.entities.has(name)) {
+    //
+    const entity = _.cloneDeep(gstorage.entities.get(name))
+    if (!entity) {
       glib.logWarning(`"${name}" not found (gef)`)
       return
     }
     const id = this.nextId
     this.nextId++
 
-    // transform entity class to an entity map
-    const entityClass = gstorage.entities.get(name)
-    const entityModel = new entityClass()
-    const entity = new Map()
+    // inject / expand components from argument
+    _.forEach(components, (value, name) => (entity[name] = _.cloneDeep(value)))
 
-    // inject model components
-    _.forEach(entityModel, (value, name) => entity.set(name, value))
-
-    // inject components from argument
-    _.forEach(components, (value, name) => entity.set(name, value))
-
-    // inject / expand declared components
-    entity.set("name", name)
-    if (entity.has("visual")) {
-      this.loadContainer(entity, id)
-      if (!entity.get("visual").firstFrames && entity.has("alive")) {
-        entity.get("visual").firstFrames = { idle: 0, move: 0, attack: 0 }
-      }
-    }
-    if (entity.has("alive")) {
-      entity.get("alive").state = "idle"
-      entity.get("alive").targetEntity = undefined
-      entity.get("alive").targetPosition = undefined
-      entity.get("alive").lastStateSwitchMS = 0
-      entity.get("alive").lastFlipMS = 0
-      entity.get("alive").lastTargetPosition = undefined
-      this.drawShadow(entity, id)
-    }
-
-    // handle process
-    // 📜think about garbage collection on removing entity
-    // for now process can be used only on once declared entities
-    if (entityModel.process) {
-      gpixi.tickerAdd(() => {
-        entityModel.process(entity, id)
-      }, name)
-    }
+    // inject / expand components from components folder
+    this.injectComponents(entity, id)
 
     gworld.entities.set(id, entity)
     return id
   }
+  private injectComponents(entity: gEntity, id: number) {
+    gstorage.components.forEach((value, name) => {
+      //
+      // special treatment
+      if (name === "position" && entity.position !== false) {
+        entity.position = _.merge(_.cloneDeep(value), entity.position)
+        return
+      }
+      if (name === "visual" && entity.visual !== false) {
+        if (!entity.visual) entity.visual = {}
+        // if (entity.alive) {
+        entity.visual = _.merge(_.cloneDeep(value), entity.visual)
+        // }
+        this.loadContainer(entity, id)
+        return
+      }
+      if (name === "alive" && entity.alive) {
+        entity.alive = _.merge(_.cloneDeep(value), entity.alive)
+        this.drawShadow(entity, id)
+        return
+      }
+
+      // default expand if exist
+      if (entity[name]) entity[name] = _.merge(_.cloneDeep(value), entity[name])
+    })
+  }
 
   private drawShadow(entity: gEntity, id: number) {
+    if (!entity.alive) {
+      glib.logWarning(
+        `drawShadow called on non-alive entity: "${entity.name}" (gef)`
+      )
+      return
+    }
+
     const shadow = new PIXI.Graphics()
     shadow.beginFill(0x000000)
 
-    const size = entity.get("alive").size
+    const size = entity.alive.size
 
     shadow.drawCircle(0, 0, size)
     shadow.endFill()
@@ -77,20 +82,13 @@ class EntityFactory {
 
   private async loadContainer(entity: gEntity, id: number) {
     if (!gpixi.app) return
-    const name = entity.get("name")
 
     const container = new PIXI.Container() as gContainer
-    container.name = entity.get("name")
+    container.name = entity.name
     container.id = id
     container.scale.x = _.random() < 0.5 ? -1 : 1
 
-    // if parent not declared on model, add to sortable
-    // could be only direct stage child like "ground"
-    if (entity.get("visual").parentContainer) {
-      gpixi[entity.get("visual").parentContainer].addChild(container)
-    } else {
-      gpixi.sortable.addChild(container)
-    }
+    gpixi[entity.visual.parentContainer].addChild(container)
 
     for (let name of ["back", "animations", "front"]) {
       const childContainer = new PIXI.Container()
@@ -100,13 +98,16 @@ class EntityFactory {
 
     // make sprite sheet from stored json
     let texture
-    if (!PIXI.Cache.has(name)) {
-      texture = PIXI.Texture.from(gstorage.jsons.get(name).meta.image)
-      PIXI.Cache.set(name, texture)
+    if (!PIXI.Cache.has(entity.name)) {
+      texture = PIXI.Texture.from(gstorage.jsons.get(entity.name).meta.image)
+      PIXI.Cache.set(entity.name, texture)
     } else {
-      texture = PIXI.Cache.get(name)
+      texture = PIXI.Cache.get(entity.name)
     }
-    let spriteSheet = new PIXI.Spritesheet(texture, gstorage.jsons.get(name))
+    let spriteSheet = new PIXI.Spritesheet(
+      texture,
+      gstorage.jsons.get(entity.name)
+    )
     await spriteSheet.parse()
 
     const animationsContainer = gpixi.getAnimationContainer(id) as Container

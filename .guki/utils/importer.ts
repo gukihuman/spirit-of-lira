@@ -21,8 +21,18 @@ export default defineNuxtPlugin(async () => {
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
+
+    // here name is parsed from name of the class by using build-in name prop
     const name = `${_.toLower(system.default.name)}`
     gstorage.systems.set(name, system.default)
+  }
+
+  const components = import.meta.glob("@/components/**")
+  for (const path in components) {
+    const component = await components[path]()
+    _.forEach(component.default, (value, name) => {
+      gstorage.components.set(name, value)
+    })
   }
 
   const webps = import.meta.glob("@/assets/**/*.webp")

@@ -1,38 +1,12 @@
 export default class state {
-  checkMove(entity, id) {
-    const lastEntity = gcache.entities.get(id)
-    if (!lastEntity) return
-    const displacement = glib.vectorFromPoints(
-      entity.get("position"),
-      lastEntity.get("position")
-    )
-    const distance = displacement.distance
-    const speedPerTick = glib.speedPerTick(entity)
-
-    if (distance / speedPerTick < 0.1) {
-      entity.get("alive").state = "idle"
-      return
-    }
-
-    if (gpixi.getAnimationSprite(id, "walk")) {
-      if (distance / speedPerTick < 0.8) {
-        entity.get("alive").state = "walk"
-      } else {
-        entity.get("alive").state = "run"
-      }
-    } else {
-      entity.get("alive").state = "move"
-    }
-  }
-
   process() {
     gworld.entities.forEach((entity, id) => {
-      if (!entity.get("alive")) return
-      if (gpixi.elapsedMS - entity.get("alive").lastStateSwitchMS < 200) return
-      if (entity.get("alive").leaveStateConditions) {
+      if (!entity.alive || !entity.visual) return
+      if (gpixi.elapsedMS - entity.alive.lastStateSwitchMS < 200) return
+      if (entity.alive.leaveStateConditions) {
         if (
-          entity.get("alive").state === "move" &&
-          !entity.get("alive").leaveStateConditions.move(entity, id)
+          entity.alive.state === "move" &&
+          !entity.alive.leaveStateConditions.move(entity, id)
         )
           return
       }
@@ -42,9 +16,35 @@ export default class state {
 
       const lastEntity = gcache.entities.get(id)
       if (!lastEntity) return
-      if (entity.get("alive").state !== lastEntity.get("alive").state) {
-        entity.get("alive").lastStateSwitchMS = gpixi.elapsedMS
+      if (entity.alive.state !== lastEntity.alive.state) {
+        entity.alive.lastStateSwitchMS = gpixi.elapsedMS
       }
     })
+  }
+
+  checkMove(entity, id) {
+    const lastEntity = gcache.entities.get(id)
+    if (!lastEntity) return
+    const displacement = glib.vectorFromPoints(
+      entity.position,
+      lastEntity.position
+    )
+    const distance = displacement.distance
+    const speedPerTick = glib.speedPerTick(entity)
+
+    if (distance / speedPerTick < 0.1) {
+      entity.alive.state = "idle"
+      return
+    }
+
+    if (gpixi.getAnimationSprite(id, "walk")) {
+      if (distance / speedPerTick < 0.8) {
+        entity.alive.state = "walk"
+      } else {
+        entity.alive.state = "run"
+      }
+    } else {
+      entity.alive.state = "move"
+    }
   }
 }

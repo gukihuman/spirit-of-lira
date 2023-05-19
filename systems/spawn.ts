@@ -7,6 +7,10 @@ export default class spawn {
     },
   }
 
+  async init() {
+    await this.spawnEntities()
+  }
+
   process() {
     this.spawnEntities()
 
@@ -15,8 +19,7 @@ export default class spawn {
       if (gmm.closeChunks.includes(chunk)) return
 
       gworld.entities.forEach((entity, id) => {
-        const position = entity.get("position")
-        // console.log(position)
+        const position = entity.position
         if (!position) return
 
         const entityChunk = glib.chunkFromCoordinates(position.x, position.y)
@@ -27,15 +30,10 @@ export default class spawn {
     })
   }
 
-  async init() {
-    await this.spawnEntities()
-  }
-
   private async spawnEntities() {
     const promises: Promise<void>[] = []
     gmm.closeChunks.forEach((chunk) => {
       if (this.spawnedChunks.includes(chunk)) return
-      this.spawnedChunks.push(chunk)
 
       _.forEach(this.locationPopulation, async (spawner, location) => {
         _.forEach(spawner, async (ratio, entity) => {
@@ -44,6 +42,7 @@ export default class spawn {
           )
         })
       })
+      this.spawnedChunks.push(chunk)
     })
     await Promise.all(promises)
   }
