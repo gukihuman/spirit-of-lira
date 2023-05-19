@@ -5,6 +5,9 @@ export const gic = new GukiInputController()
 import * as pixi from "pixi.js"
 export const PIXI = pixi
 
+import * as filters from "pixi-filters"
+export const PIXIfilters = filters
+
 import lodash from "lodash"
 export const _ = lodash
 

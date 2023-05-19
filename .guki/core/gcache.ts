@@ -4,6 +4,8 @@ class Cache {
   init() {
     gpixi.tickerAdd(() => {
       this.entities = glib.cloneMapDeep(gworld.entities)
+
+      gg.lastHero = this.entities.get(gg.heroId)
     }, "gcache")
   }
 }

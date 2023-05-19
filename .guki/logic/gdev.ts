@@ -9,6 +9,8 @@ class Dev {
           gsignal.emit("collision")
         }
       }
+      if (!gg.hero) return
+      if (!gg.hero) return
     }, "gdev")
   }
 }

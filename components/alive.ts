@@ -4,6 +4,7 @@ export default {
     size: 10,
     state: "idle",
     targetEntity: undefined,
+    targetEntityId: 0,
     targetPosition: undefined,
 
     lastFlipMS: 0,

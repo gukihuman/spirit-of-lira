@@ -37,6 +37,7 @@ export default defineNuxtPlugin(async (app) => {
     gg.heroId = heroId
 
     await gef.createEntity("mousepoint")
+    await gef.createEntity("targetpoint")
 
     // tools depend on hero instance
     await gmm.init() // map manager, needs hero coordinates to init

@@ -69,6 +69,11 @@ class Lib {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
 
+  cleanFiltersById(id: number) {
+    const container = gpixi.getAnimationContainer(id)
+    if (container) container.filters = []
+  }
+
   /**
    * Wrapper for pinia store that optionally accepts one or more watchers.
    * @param object - state object

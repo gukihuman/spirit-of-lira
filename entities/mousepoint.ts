@@ -1,7 +1,6 @@
 export default {
   name: "mousepoint",
   visual: { parentContainer: "ground" },
-  position: { x: 0, y: 0 },
   process(entity, id) {
     let position = entity.position
     if (!position) return
