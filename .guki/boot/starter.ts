@@ -37,7 +37,6 @@ export default defineNuxtPlugin(async (app) => {
     gg.heroId = heroId
 
     await gef.createEntity("mousepoint")
-    await gef.createEntity("targetpoint")
 
     // tools depend on hero instance
     await gmm.init() // map manager, needs hero coordinates to init
@@ -56,6 +55,9 @@ export default defineNuxtPlugin(async (app) => {
         }
       }
     }, "gic")
+
+    // right click menu off
+    document.addEventListener("contextmenu", (event) => event.preventDefault())
 
     gsd.states.loadingScreen = false
   }

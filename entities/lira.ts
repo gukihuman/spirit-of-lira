@@ -1,8 +1,10 @@
 export default {
   name: "lira",
   alive: {
-    speed: 14,
-    size: 30,
+    width: 60,
+    height: 90,
+
+    speed: 10,
   },
   visual: {
     firstFrames: { idle: 11, walk: 8, run: 4 },

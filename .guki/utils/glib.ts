@@ -61,7 +61,18 @@ class Lib {
     return result
   }
   speedPerTick(entity: gEntity) {
-    return entity.alive.speed * 6 * gpixi.deltaSec
+    return entity.alive.speed * 10 * gpixi.deltaSec
+  }
+  deadZoneExceed(deadZone: number) {
+    const axes: number[] = [gic.gamepad.axes[0], gic.gamepad.axes[1]]
+    let moved = false
+
+    axes.forEach((axis: number) => {
+      if (Math.abs(axis) > deadZone) {
+        moved = true
+      }
+    })
+    return moved
   }
 
   /** @returns array of sorted keys of object by descendant order of its number values, for example {a: -1, b: 1, c: 2} became ["c", "b", "a"]" */
@@ -69,15 +80,10 @@ class Lib {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
 
-  cleanFiltersById(id: number) {
-    const container = gpixi.getAnimationContainer(id)
-    if (container) container.filters = []
-  }
-
   /**
    * Wrapper for pinia store that optionally accepts one or more watchers.
    * @param object - state object
-   * @param args - watcher arrays that consist of a state property name and a handler function
+   * @param args - watcher array that consist of a state property name and a handler function
    * @returns a pinia store with watchers and random name
    */
   store(
@@ -105,16 +111,10 @@ class Lib {
   vectorFromAngle(angle: number, distance: number) {
     return new Vector(distance * Math.cos(angle), distance * Math.sin(angle))
   }
-  angle(x: number, y: number) {
-    return Math.atan2(y, x)
-  }
-  angleFromPoints(p1: { x: number; y: number }, p2: { x: number; y: number }) {
+  angle(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return Math.atan2(p2.y - p1.y, p2.x - p1.x)
   }
-  distanceFromPoints(
-    p1: { x: number; y: number },
-    p2: { x: number; y: number }
-  ) {
+  distance(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
   }
   centerPoint() {

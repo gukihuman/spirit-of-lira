@@ -1,8 +1,10 @@
 export default {
   name: "bunbo",
   alive: {
-    speed: 10,
-    size: 35,
+    width: 70,
+    height: 60,
+
+    speed: 8,
     leaveStateConditions: {
       move: (entity, id) => {
         return gpixi.getAnimationSprite(id, "move")?.currentFrame === 0

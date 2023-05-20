@@ -19,12 +19,9 @@ class Signal {
       const heroEntity = gg.hero
       if (!heroEntity) return
 
-      const displacement = glib.vectorFromPoints(
-        glib.centerPoint(),
-        glib.mousePoint()
-      )
-      const distance = displacement.distance
-      if (distance < heroEntity.alive.size) {
+      const distance = glib.distance(glib.centerPoint(), glib.mousePoint())
+
+      if (distance < 10) {
         heroEntity.alive.targetPosition = undefined
         return
       }
@@ -58,10 +55,26 @@ class Signal {
     inventory() {
       gsd.states.inventory = !gsd.states.inventory
     },
+    lockTarget() {
+      if (!gg.hero.alive.targetEntityId) return
+      gg.hero.alive.targetLocked = !gg.hero.alive.targetLocked
+
+      // in case lock is used to lock a new target immidiately
+      if (gworld.systems.get("target") && gic.lastActiveDevice !== "gamepad") {
+        gworld.systems.get("target").heroTargetByMouse()
+        gg.hero.alive.targetLocked = true
+      }
+    },
     sendInput() {},
   }
   private runLogic() {
-    this.active.forEach((signal) => this.logic[signal]())
+    this.active.forEach((signal) => {
+      if (!this.logic[signal]) {
+        glib.logWarning(`Unknown signal: "${signal}" (gsignal)`)
+        return
+      }
+      this.logic[signal]()
+    })
   }
 
   emit(signal: string) {

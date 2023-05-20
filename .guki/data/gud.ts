@@ -9,14 +9,17 @@ class UserData {
         inventory: "i",
         fullscreen: "f",
         sendInput: "Enter",
+        lockTarget: "u",
       },
       mouse: {
         mouseMove: 0,
+        lockTarget: 2,
       },
       gamepad: {
         fullscreen: "Menu",
         inventory: "Start",
         sendInput: "LB",
+        lockTarget: "RT",
       },
     },
     inputOther: {
@@ -30,14 +33,13 @@ class UserData {
   }
 
   emitSignals() {
-    gic.gamepad.axes.forEach((axis: number) => {
-      if (Math.abs(axis) > this.settings.inputOther.gamepad.deadZone) {
-        gsignal.emit("gamepadMove")
-      }
-    })
+    if (glib.deadZoneExceed(this.settings.inputOther.gamepad.deadZone)) {
+      gsignal.emit("gamepadMove")
+    }
     if (gsd.states.autoMouseMove) gsignal.emit("mouseMove")
 
     if (gsd.states.inputFocus) return
+    if (gsd.states.inventory) return
 
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
@@ -47,6 +49,7 @@ class UserData {
       })
     })
 
+    // overwrite mouseMove pressed instead of defaul
     if (
       gic.mouse.pressed.includes(this.settings.inputSignals.mouse.mouseMove) ||
       gic.keyboard.pressed.includes(

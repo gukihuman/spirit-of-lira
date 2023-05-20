@@ -75,9 +75,9 @@ class EntityFactory {
     const shadow = new PIXI.Graphics()
     shadow.beginFill(0x000000)
 
-    const size = entity.alive.size
+    const width = entity.alive.width / 2
 
-    shadow.drawCircle(0, 0, size)
+    shadow.drawCircle(0, 0, width)
     shadow.endFill()
     shadow.scale = { x: 1, y: 0.5 }
     shadow.alpha = 0.08

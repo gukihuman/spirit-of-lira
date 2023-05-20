@@ -1,11 +1,15 @@
 export default {
   alive: {
+    faction: "peaceful",
+    width: 10,
+    height: 10,
+
     speed: 5,
-    size: 10,
     state: "idle",
+    targetPosition: undefined,
     targetEntity: undefined,
     targetEntityId: 0,
-    targetPosition: undefined,
+    targetLocked: false,
 
     lastFlipMS: 0,
     lastStateSwitchMS: 0,

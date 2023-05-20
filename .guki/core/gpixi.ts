@@ -12,13 +12,13 @@ class PixiManager {
   // higher values goes first, takes tools and systems
   // almost everything is 0, which is default if not set explicitly
   private tickerPriority = {
-    gcache: 13,
-    gic: 12, // at least gud depends on it
-
+    gcache: 3,
+    gic: 2, // at least gud depends on it
     gsignal: 1, // runs all logic for collected signals and empty itself
-    gflip: -11,
-    state: -12,
-    render: -13,
+
+    gflip: -1,
+    state: -2,
+    render: -3,
   }
 
   /** Name is used to find ticker priority in pixi private property, if exist. */

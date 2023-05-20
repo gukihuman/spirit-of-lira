@@ -12,7 +12,8 @@
     "vitest.config.ts": true,
     "prisma": true,
     "server": true,
-    "package.json": true
+    "package.json": true,
+    "_old": true
   },
   "workspace.isHidden": true
 }
