@@ -1,5 +1,6 @@
 export default class spawn {
   private spawnedChunks: string[] = []
+  private spawnPromises: Promise<void>[] = []
 
   private locationPopulation = {
     greenForestChunks: {
@@ -13,7 +14,26 @@ export default class spawn {
 
   process() {
     this.spawnEntities()
+    this.despawnEntities()
+  }
 
+  private async spawnEntities() {
+    gmm.closeChunks.forEach((chunk) => {
+      if (this.spawnedChunks.includes(chunk)) return
+
+      _.forEach(this.locationPopulation, async (spawner, location) => {
+        _.forEach(spawner, async (ratio, entity) => {
+          this.spawnPromises.push(
+            this.createEntitiesOnChunk(chunk, gmm[location], entity, ratio)
+          )
+        })
+      })
+      this.spawnedChunks.push(chunk)
+    })
+    await this.spawnPromises.pop()
+  }
+
+  private despawnEntities() {
     // despawn far chunks
     this.spawnedChunks.forEach((chunk) => {
       if (gmm.closeChunks.includes(chunk)) return
@@ -23,28 +43,15 @@ export default class spawn {
         if (!position) return
 
         const entityChunk = glib.chunkFromCoordinates(position.x, position.y)
-        if (entityChunk === chunk) gworld.entities.delete(id)
+        if (entityChunk === chunk) {
+          gworld.entities.delete(id)
+          let container = gpixi.getContainer(id)
+          if (container) gpixi.sortable.removeChild(container)
+        }
       })
 
       _.remove(this.spawnedChunks, (chunktoDelete) => chunktoDelete === chunk)
     })
-  }
-
-  private async spawnEntities() {
-    const promises: Promise<void>[] = []
-    gmm.closeChunks.forEach((chunk) => {
-      if (this.spawnedChunks.includes(chunk)) return
-
-      _.forEach(this.locationPopulation, async (spawner, location) => {
-        _.forEach(spawner, async (ratio, entity) => {
-          promises.push(
-            this.createEntitiesOnChunk(chunk, gmm[location], entity, ratio)
-          )
-        })
-      })
-      this.spawnedChunks.push(chunk)
-    })
-    await Promise.all(promises)
   }
 
   private async createEntitiesOnChunk(
@@ -59,7 +66,7 @@ export default class spawn {
         const counter = 0
         const position = this.randomCoordinatesFromChunk(chunk, counter)
 
-        // stor loop if position not found, all liles in chunks are collisioned
+        // stop loop if position not found, all tiles in chunks with collision
         if (!position) return
 
         await gef.createEntity(entity, { position })

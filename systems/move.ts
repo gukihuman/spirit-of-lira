@@ -16,7 +16,11 @@ export default class move {
       entity.alive.targetPosition
     )
     const distance = displacement.distance
-    if (distance < speedPerTick) return
+
+    if (distance < speedPerTick) {
+      // entity.alive.targetPosition = undefined
+      return
+    }
 
     let ratio = _.clamp(distance / 200, 1)
     ratio = Math.sqrt(ratio)
@@ -32,7 +36,6 @@ export default class move {
     if (entity.alive && id !== gg.heroId) {
       if (!entity.alive.targetPosition) {
         entity.alive.targetPosition = _.cloneDeep(entity.position)
-        // ms add
         entity.alive.lastTargetPositionMS = gpixi.elapsedMS - 15_000
       }
       if (gpixi.elapsedMS - entity.alive.lastTargetPositionMS > 15_000) {

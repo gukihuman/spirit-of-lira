@@ -39,7 +39,6 @@ class UserData {
     if (gsd.states.autoMouseMove) gsignal.emit("mouseMove")
 
     if (gsd.states.inputFocus) return
-    if (gsd.states.inventory) return
 
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
@@ -49,7 +48,7 @@ class UserData {
       })
     })
 
-    // overwrite mouseMove pressed instead of defaul
+    // overwrite mouseMove pressed instead of default
     if (
       gic.mouse.pressed.includes(this.settings.inputSignals.mouse.mouseMove) ||
       gic.keyboard.pressed.includes(

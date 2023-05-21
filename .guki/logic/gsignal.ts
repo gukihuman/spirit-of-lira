@@ -18,6 +18,7 @@ class Signal {
     mouseMove() {
       const heroEntity = gg.hero
       if (!heroEntity) return
+      if (gsd.states.inventory) return
 
       const distance = glib.distance(glib.centerPoint(), glib.mousePoint())
 
