@@ -7,7 +7,6 @@ export default {
     speed: 5,
     state: "idle",
     targetPosition: undefined,
-    targetEntity: undefined,
     targetEntityId: 0,
     targetLocked: false,
 

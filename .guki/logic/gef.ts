@@ -1,4 +1,4 @@
-import { Texture, BaseTexture, utils, Rectangle } from "@pixi/core"
+// import { Texture, BaseTexture, utils, Rectangle } from "@pixi/core"
 
 class EntityFactory {
   private nextId = 1
@@ -112,102 +112,12 @@ class EntityFactory {
       container.addChild(childContainer)
     }
 
-    // make sprite sheet from stored json
-    let texture
-    let spriteSheet
-    if (!PIXI.Cache.has(entity.name)) {
-      texture = PIXI.Texture.from(gstorage.jsons.get(entity.name).meta.image)
-      spriteSheet = new PIXI.Spritesheet(
-        texture,
-        gstorage.jsons.get(entity.name)
-      )
-      PIXI.Cache.set(entity.name, [texture, spriteSheet])
-    } else {
-      texture = PIXI.Cache.get(entity.name)[0]
-      spriteSheet = PIXI.Cache.get(entity.name)[1]
-    }
-
-    // 📜 clean
-    let _Spritesheet: any = {}
-    _Spritesheet.BATCH_SIZE = 1e3
-    spriteSheet.__processFrames = function (initialFrameIndex) {
-      let frameIndex = initialFrameIndex
-      const maxFrames = _Spritesheet.BATCH_SIZE
-      while (
-        frameIndex - initialFrameIndex < maxFrames &&
-        frameIndex < this._frameKeys.length
-      ) {
-        const i = this._frameKeys[frameIndex]
-        const data = this._frames[i]
-        const rect = data.frame
-        if (rect) {
-          let frame = null
-          let trim = null
-          const sourceSize =
-            data.trimmed !== false && data.sourceSize
-              ? data.sourceSize
-              : data.frame
-          const orig = new Rectangle(
-            0,
-            0,
-            Math.floor(sourceSize.w) / this.resolution,
-            Math.floor(sourceSize.h) / this.resolution
-          )
-          if (data.rotated) {
-            frame = new Rectangle(
-              Math.floor(rect.x) / this.resolution,
-              Math.floor(rect.y) / this.resolution,
-              Math.floor(rect.h) / this.resolution,
-              Math.floor(rect.w) / this.resolution
-            )
-          } else {
-            frame = new Rectangle(
-              Math.floor(rect.x) / this.resolution,
-              Math.floor(rect.y) / this.resolution,
-              Math.floor(rect.w) / this.resolution,
-              Math.floor(rect.h) / this.resolution
-            )
-          }
-          if (data.trimmed !== false && data.spriteSourceSize) {
-            trim = new Rectangle(
-              Math.floor(data.spriteSourceSize.x) / this.resolution,
-              Math.floor(data.spriteSourceSize.y) / this.resolution,
-              Math.floor(rect.w) / this.resolution,
-              Math.floor(rect.h) / this.resolution
-            )
-          }
-          this.textures[i] = new Texture(
-            this.baseTexture,
-            frame,
-            orig,
-            trim,
-            data.rotated ? 2 : 0,
-            data.anchor
-          )
-          // Texture.addToCache(this.textures[i], i)
-        }
-        frameIndex++
-      }
-    }
-    spriteSheet.parse = function () {
-      return new Promise((resolve) => {
-        this._callback = resolve
-        this._batchIndex = 0
-        if (this._frameKeys.length <= _Spritesheet.BATCH_SIZE) {
-          this.__processFrames(0)
-          this._processAnimations()
-          this._parseComplete()
-        } else {
-          this._nextBatch()
-        }
-      })
-    }
-
-    await spriteSheet.parse()
+    const spritesheet = await gpixi.getSpritesheet(entity.name)
+    if (!spritesheet) return
 
     const animationsContainer = gpixi.getAnimationContainer(id) as Container
 
-    _.forOwn(spriteSheet.animations, (arrayOfwebpImages, name) => {
+    _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
       const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
       animatedSprite.name = name
       animatedSprite.anchor.x = 0.5

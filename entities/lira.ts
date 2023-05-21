@@ -6,6 +6,9 @@ export default {
 
     speed: 10,
   },
+  attack: {
+    distance: 80,
+  },
   visual: {
     firstFrames: { idle: 11, walk: 8, run: 4 },
   },

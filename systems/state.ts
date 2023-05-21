@@ -14,12 +14,28 @@ export default class state {
       // idle, walk, run or move
       this.checkMove(entity, id)
 
+      // 📜 turn on with new animation
+      // this.checkAttack(entity, id)
+
       const lastEntity = gcache.entities.get(id)
       if (!lastEntity) return
       if (entity.alive.state !== lastEntity.alive.state) {
         entity.alive.lastStateSwitchMS = gpixi.elapsedMS
       }
     })
+  }
+
+  checkAttack(entity, id) {
+    if (!entity.alive.targetEntityId || !entity.attack) return
+
+    const targetEntity = gworld.entities.get(entity.alive.targetEntityId)
+    const distance = glib.distance(entity.position, targetEntity.position)
+
+    if (distance < targetEntity.alive.width / 2 + entity.attack.distance) {
+      if (id === gg.heroId) {
+        entity.alive.state = "sword-attack"
+      }
+    }
   }
 
   checkMove(entity, id) {

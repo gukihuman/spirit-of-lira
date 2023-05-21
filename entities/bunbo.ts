@@ -11,4 +11,7 @@ export default {
       },
     },
   },
+  attack: {
+    distance: 120,
+  },
 }

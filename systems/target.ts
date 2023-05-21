@@ -30,7 +30,6 @@ export default class target {
         const distance = glib.distance(entity.position, otherEntity.position)
         if (distance < minDistance) {
           minDistance = distance
-          entity.alive.targetEntity = otherEntity
           entity.alive.targetEntityId = otherId
         }
       })
@@ -39,7 +38,6 @@ export default class target {
       if (id === gg.heroId) maxTargetDistance = 540
 
       if (minDistance > maxTargetDistance) {
-        entity.alive.targetEntity = undefined
         entity.alive.targetEntityId = undefined
       }
     })
@@ -96,7 +94,6 @@ export default class target {
     }
 
     gg.hero.alive.targetEntityId = closestEntityId
-    gg.hero.alive.targetEntity = gworld.entities.get(closestEntityId)
   }
 
   heroTargetByMouse() {
@@ -144,7 +141,6 @@ export default class target {
     }
 
     gg.hero.alive.targetEntityId = targetEntityId
-    gg.hero.alive.targetEntity = gworld.entities.get(targetEntityId)
   }
 
   updateHeroTargetFilter() {
@@ -171,7 +167,7 @@ export default class target {
       if (!entity.alive.targetEntityId) entity.alive.targetLocked = false
     })
 
-    const targetEntity = gg.hero.alive.targetEntity
+    const targetEntity = gworld.entities.get(gg.hero.alive.targetEntityId)
     if (!targetEntity) return
     const distance = glib.distance(gg.hero.position, targetEntity.position)
 

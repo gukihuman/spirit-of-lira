@@ -1,7 +1,21 @@
 class Item {
   items = {
-    // where items in front
+    // value is an array of states that goes in front
     "common-sword": ["attack"],
+  }
+  itemSprites: AnimatedSprite[] = []
+
+  process() {
+    const heroSprite = gpixi.getAnimationSprite(gg.heroId, gg.hero.alive.state)
+    if (!heroSprite) return
+
+    this.itemSprites.forEach((sprite) => {
+      // instead of checking each state, just syncronize all item sprites
+      // and mock up if the frame difference for shorter animations =)
+      if (heroSprite.currentFrame > sprite.totalFrames - 1) return
+
+      sprite.gotoAndPlay(heroSprite.currentFrame)
+    })
   }
 
   async init() {
@@ -13,19 +27,8 @@ class Item {
     _.forEach(this.items, (states, name) => {
       promises.push(
         new Promise(async (resolve) => {
-          // make sprite sheet from stored json
-          let texture
-          if (!PIXI.Cache.has(name)) {
-            texture = PIXI.Texture.from(gstorage.jsons.get(name).meta.image)
-            PIXI.Cache.set(name, texture)
-          } else {
-            texture = PIXI.Cache.get(name)
-          }
-          let spriteSheet = new PIXI.Spritesheet(
-            texture,
-            gstorage.jsons.get(name)
-          )
-          await spriteSheet.parse()
+          const spritesheet = await gpixi.getSpritesheet(name)
+          if (!spritesheet) return
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
@@ -37,7 +40,7 @@ class Item {
           const front = gpixi.getContainer(gg.heroId)?.children[2] as Container
           front.addChild(frontItemContainer)
 
-          _.forOwn(spriteSheet.animations, (arrayOfwebpImages, stateName) => {
+          _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {
             const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
             animatedSprite.name = stateName
             animatedSprite.anchor.x = 0.5
@@ -46,6 +49,7 @@ class Item {
             animatedSprite.visible = false
             animatedSprite.cullable = true
             animatedSprite.play()
+            this.itemSprites.push(animatedSprite)
 
             // classify items on back or in front
             if (states.includes(stateName)) {
@@ -58,6 +62,10 @@ class Item {
       )
     })
     await Promise.all(promises)
+
+    gpixi.tickerAdd(() => {
+      this.process()
+    }, "gitem")
   }
 }
 export const gitem = new Item()
