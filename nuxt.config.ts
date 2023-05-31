@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: [".guki/**", "models/**"],
+    dirs: [".guki/**"],
   },
   components: {
     dirs: ["@/.guki/vue", "@/UI"],

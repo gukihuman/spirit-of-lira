@@ -15,56 +15,44 @@ class Signal {
         document.exitFullscreen()
       }
     },
-    mouseMove() {
-      const heroEntity = gg.hero
-      if (!heroEntity) return
-      if (gsd.states.inventory) return
+    mouseMoveOrAttack() {
+      gworld.systems.get("move")?.mouseMove()
 
-      const distance = glib.distance(glib.centerPoint(), glib.mousePoint())
-
-      if (distance < 10) {
-        heroEntity.alive.targetPosition = undefined
-        return
+      if (gg.hero.alive.targetEntityId === gg.hoverId) {
+        gg.hero.alive.targetAttacked = true
+        gg.hero.alive.targetLocked = true
+      } else {
+        gg.hero.alive.targetAttacked = false
       }
-
-      const mousePosition = glib.mousePoint()
-      mousePosition.x += gg.hero.position.x - 960
-      mousePosition.y += gg.hero.position.y - 540
-      heroEntity.alive.targetPosition = mousePosition
+    },
+    mouseMove() {
+      gworld.systems.get("move")?.mouseMove()
     },
     autoMouseMove() {
       gsd.states.autoMouseMove = !gsd.states.autoMouseMove
+      if (gg.context === "autoMove") gg.context = "default"
+      else gg.context = "autoMove"
     },
     gamepadMove() {
-      const heroEntity = gworld.entities.get(gg.heroId)
-      if (!heroEntity) return
-
-      heroEntity.alive.targetPosition = undefined
-      const speedPerTick = glib.speedPerTick(heroEntity)
-
-      const axesVector = glib.vector(gic.gamepad.axes[0], gic.gamepad.axes[1])
-      const angle = axesVector.angle
-      let ratio = axesVector.distance
-      ratio = _.clamp(ratio, 1)
-
-      const velocity = glib.vectorFromAngle(angle, speedPerTick)
-
-      gworld.systems
-        .get("move")
-        .checkCollisionAndMove(heroEntity, velocity, ratio)
+      gworld.systems.get("move")?.gamepadMove()
     },
     inventory() {
       gsd.states.inventory = !gsd.states.inventory
     },
     lockTarget() {
       if (!gg.hero.alive.targetEntityId) return
+
       gg.hero.alive.targetLocked = !gg.hero.alive.targetLocked
 
       // in case lock is used to lock a new target immidiately
       if (gworld.systems.get("target") && gic.lastActiveDevice !== "gamepad") {
-        gworld.systems.get("target").heroTargetByMouse()
+        if (!gg.hoverId) return
+        gg.hero.alive.targetEntityId = gg.hoverId
         gg.hero.alive.targetLocked = true
       }
+
+      // if (!gg.hoverId && gg.hero.alive.targetLocked) {
+      // }
     },
     sendInput() {},
   }

@@ -10,7 +10,7 @@ export default {
     distance: 80,
   },
   visual: {
-    firstFrames: { idle: 11, walk: 8, run: 4 },
+    firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 13 },
   },
   language: {
     system: `fantasy world {

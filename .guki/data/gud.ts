@@ -4,7 +4,7 @@ class UserData {
     //
     inputSignals: {
       keyboard: {
-        mouseMove: "o",
+        mouseMoveOrAttack: "o",
         autoMouseMove: "e",
         inventory: "i",
         fullscreen: "f",
@@ -12,7 +12,7 @@ class UserData {
         lockTarget: "u",
       },
       mouse: {
-        mouseMove: 0,
+        mouseMoveOrAttack: 0,
         lockTarget: 2,
       },
       gamepad: {
@@ -36,7 +36,6 @@ class UserData {
     if (glib.deadZoneExceed(this.settings.inputOther.gamepad.deadZone)) {
       gsignal.emit("gamepadMove")
     }
-    if (gsd.states.autoMouseMove) gsignal.emit("mouseMove")
 
     if (gsd.states.inputFocus) return
 
@@ -50,13 +49,15 @@ class UserData {
 
     // overwrite mouseMove pressed instead of default
     if (
-      gic.mouse.pressed.includes(this.settings.inputSignals.mouse.mouseMove) ||
+      gic.mouse.pressed.includes(
+        this.settings.inputSignals.mouse.mouseMoveOrAttack
+      ) ||
       gic.keyboard.pressed.includes(
-        this.settings.inputSignals.keyboard.mouseMove
+        this.settings.inputSignals.keyboard.mouseMoveOrAttack
       )
     ) {
       gsignal.emit("mouseMove")
-      gsd.states.autoMouseMove = false
+      gg.context = "default"
     }
   }
 

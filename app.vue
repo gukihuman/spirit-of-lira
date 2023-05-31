@@ -10,7 +10,8 @@ game-window
     bars
 
   div(class="z-10")
-    input-area
+    transition
+      input-area(v-if="gsd.states.input")
 
   //- output-area
 

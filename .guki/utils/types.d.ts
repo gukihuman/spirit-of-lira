@@ -9,6 +9,7 @@ import {
   Spritesheet as tempSpritesheet,
   Texture as tempTexture,
   Rectangle as tempRectangle,
+  Sprite as tempSprite,
 } from "pixi.js"
 
 declare global {
@@ -20,6 +21,7 @@ declare global {
   type Spritesheet = tempSpritesheet
   type Texture = tempTexture
   type Rectangle = tempRectangle
+  type Sprite = tempSprite
 
   interface gContainer extends Container {
     id: number

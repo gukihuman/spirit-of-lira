@@ -9,6 +9,7 @@ export default class attack {
       const distance = glib.distance(entity.position, targetEntity.position)
 
       if (distance < targetEntity.alive.width / 2 + entity.attack.distance) {
+        //
         // 📜 write logic and maybe think about state managment
         // in a different way that is more consise
       }

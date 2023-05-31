@@ -4,6 +4,43 @@ export default class move {
       this.move(entity)
       this.setRandomTargetPosition(entity, id)
     })
+
+    if (gg.context === "autoMove") gsignal.emit("mouseMove")
+  }
+
+  // set hero target position to mouse position
+  mouseMove() {
+    if (!gg.hero) return
+    if (gsd.states.inventory) return
+
+    const distance = glib.distance(glib.centerPoint(), glib.mousePoint())
+
+    if (distance < 10) {
+      gg.hero.alive.targetPosition = undefined
+      return
+    }
+
+    const mousePosition = glib.mousePoint()
+    mousePosition.x += gg.hero.position.x - 960
+    mousePosition.y += gg.hero.position.y - 540
+    gg.hero.alive.targetPosition = mousePosition
+  }
+
+  // move directly and set hero target position to undefined
+  gamepadMove() {
+    if (!gg.hero) return
+
+    gg.hero.alive.targetPosition = undefined
+    const speedPerTick = glib.speedPerTick(gg.hero)
+
+    const axesVector = glib.vector(gic.gamepad.axes[0], gic.gamepad.axes[1])
+    const angle = axesVector.angle
+    let ratio = axesVector.distance
+    ratio = _.clamp(ratio, 1)
+
+    const velocity = glib.vectorFromAngle(angle, speedPerTick)
+
+    this.checkCollisionAndMove(gg.hero, velocity, ratio)
   }
 
   move(entity: gEntity) {
@@ -25,6 +62,8 @@ export default class move {
     let ratio = _.clamp(distance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
+
+    if (gg.hero.alive.targetAttacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = glib.vectorFromAngle(angle, speedPerTick)

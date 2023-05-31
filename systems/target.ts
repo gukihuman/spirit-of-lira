@@ -2,12 +2,15 @@ export default class target {
   //
   process() {
     //
+    this.updateHoverEntity()
+
     this.autoTarget() // work on all entities and hero with gamepad
 
     this.heroTargetByGamepad()
-    this.heroTargetByMouse()
 
-    this.updateHeroTargetFilter() // bloom
+    if (gg.context !== "autoMove") this.heroTargetByMouse()
+
+    this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
   }
 
@@ -95,15 +98,18 @@ export default class target {
 
     gg.hero.alive.targetEntityId = closestEntityId
   }
-
   heroTargetByMouse() {
-    if (gg.hero.alive.targetLocked) return
+    if (gg.hero.alive.targetLocked || !gg.hoverId) return
+    gg.hero.alive.targetEntityId = gg.hoverId
+  }
+
+  updateHoverEntity() {
     if (gic.lastActiveDevice === "gamepad") return
 
     const point = glib.mousePoint()
     const heroPosition = gg.hero.position
     const intersections: number[] = []
-    let targetEntityId = 0
+    let hoverEntityId = 0
 
     gworld.entities.forEach((entity, id) => {
       if (id === gg.heroId || !entity.alive) return
@@ -133,32 +139,46 @@ export default class target {
         if (gworld.entities.get(id).position.y > higherY) {
           higherY = gworld.entities.get(id).position.y
         }
-        targetEntityId = id
+        hoverEntityId = id
       })
     } else if (intersections.length === 1) {
-      targetEntityId = intersections[0]
+      hoverEntityId = intersections[0]
       //
     }
 
-    gg.hero.alive.targetEntityId = targetEntityId
+    gg.hoverId = hoverEntityId
+    gg.hover = gworld.entities.get(hoverEntityId)
   }
 
+  lastSprite: Sprite | undefined
+
   updateHeroTargetFilter() {
-    const lastId = gg.lastHero.alive.targetEntityId
-    const lastContainer = gpixi.getAnimationContainer(lastId)
-    if (lastContainer) lastContainer.filters = []
+    if (this.lastSprite) this.lastSprite.filters = []
 
     const id = gg.hero.alive.targetEntityId
-    const container = gpixi.getAnimationContainer(id)
+    const entity = gworld.entities.get(id)
+    if (!id || !entity) return
+    const sprite = gpixi.getAnimationSprite(id, entity.alive.state)
 
-    if (container) {
-      container.filters = [
+    if (sprite) {
+      sprite.filters = [
         new PIXIfilters.AdvancedBloomFilter({
+          quality: 2,
           bloomScale: 0.23,
-          blur: 9,
+          blur: 6,
         }),
       ]
+      if (gg.hero.alive.targetAttacked) {
+        sprite.filters.push(
+          new PIXIfilters.AdjustmentFilter({
+            red: 1.2,
+            saturation: 0.9,
+            brightness: 0.9,
+          })
+        )
+      }
     }
+    this.lastSprite = sprite
   }
 
   targetUnlock() {

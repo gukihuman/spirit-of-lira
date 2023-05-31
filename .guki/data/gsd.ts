@@ -14,14 +14,16 @@ class SystemData {
   private _states = glib.store({
     gameWindowScale: 1,
     fullscreen: false,
+    loadingScreen: true,
     devMode: false,
     collisionEdit: false,
     collision: true,
     firstMouseMove: false,
-    autoMouseMove: false,
-    loadingScreen: true,
-    inventory: false,
     inputFocus: false,
+
+    // UI on / off
+    inventory: false,
+    input: false,
   })
   get states() {
     return this._states()

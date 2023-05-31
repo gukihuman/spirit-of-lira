@@ -10,8 +10,8 @@ class Item {
     if (!heroSprite) return
 
     this.itemSprites.forEach((sprite) => {
-      // instead of checking each state, just syncronize all item sprites
-      // and mock up if the frame difference for shorter animations =)
+      // instead of checking each state, just syncronizes all item sprites
+      // and mock up if the frame difference for shorter state animations =)
       if (heroSprite.currentFrame > sprite.totalFrames - 1) return
 
       sprite.gotoAndPlay(heroSprite.currentFrame)

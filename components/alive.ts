@@ -9,6 +9,7 @@ export default {
     targetPosition: undefined,
     targetEntityId: 0,
     targetLocked: false,
+    targetAttacked: false,
 
     lastFlipMS: 0,
     lastStateSwitchMS: 0,

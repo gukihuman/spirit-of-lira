@@ -22,7 +22,7 @@ export default {
     const speedPerTick = glib.speedPerTick(gworld.entities.get(gg.heroId))
 
     // hide
-    if (distance < speedPerTick) {
+    if (distance < speedPerTick || gg.hero.alive.targetAttacked) {
       position.x = 0
       position.y = 0
       return

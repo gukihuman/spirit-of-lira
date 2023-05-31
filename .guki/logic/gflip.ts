@@ -8,16 +8,27 @@ class Flip {
         if (!gcache.entities.get(id)) return
         const previousX = gcache.entities.get(id).position.x
         const container = gpixi.getContainer(id)
+        if (!container) return
 
         if (entity.position.x < previousX) {
-          if (container) container.scale.x = -1
+          container.scale.x = -1
           entity.alive.lastFlipMS = gpixi.elapsedMS
         } else if (entity.position.x > previousX) {
-          if (container) container.scale.x = 1
+          container.scale.x = 1
           entity.alive.lastFlipMS = gpixi.elapsedMS
         }
 
         // 📜 add attack target dependence
+        if (entity.alive.targetEntityId && entity.alive.targetAttacked) {
+          const targetEntity = gworld.entities.get(entity.alive.targetEntityId)
+          if (targetEntity.position.x < entity.position.x) {
+            container.scale.x = -1
+            entity.alive.lastFlipMS = gpixi.elapsedMS
+          } else if (targetEntity.position.x > entity.position.x) {
+            container.scale.x = 1
+            entity.alive.lastFlipMS = gpixi.elapsedMS
+          }
+        }
       })
     }, "gflip")
   }

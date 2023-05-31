@@ -14,8 +14,7 @@ export default class state {
       // idle, walk, run or move
       this.checkMove(entity, id)
 
-      // 📜 turn on with new animation
-      // this.checkAttack(entity, id)
+      this.checkAttack(entity, id)
 
       const lastEntity = gcache.entities.get(id)
       if (!lastEntity) return
@@ -27,6 +26,7 @@ export default class state {
 
   checkAttack(entity, id) {
     if (!entity.alive.targetEntityId || !entity.attack) return
+    if (!entity.alive.targetAttacked) return
 
     const targetEntity = gworld.entities.get(entity.alive.targetEntityId)
     const distance = glib.distance(entity.position, targetEntity.position)

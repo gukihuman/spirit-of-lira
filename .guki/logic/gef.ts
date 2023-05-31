@@ -14,7 +14,7 @@ class EntityFactory {
     })
   }
 
-  /** @returns promise of entity id or undefined */
+  /**  @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
     //
     const entity = _.cloneDeep(gstorage.entities.get(name))
