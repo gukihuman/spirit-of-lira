@@ -23,29 +23,29 @@ class MapManager {
     // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
 
-    gpixi.tickerAdd(() => {
+    PIXI_GUKI.tickerAdd(() => {
       this.loadCloseChunks()
 
-      const heroPosition = gg.hero.position
+      const heroPosition = GLOBAL.hero.position
       if (!heroPosition) return
 
       // update coordinates
       this.chunkSprites.forEach((sprite, chunk) => {
         if (!heroPosition.x || !heroPosition.y) return
-        sprite.x = glib.chunkToCoordinateX(chunk) + 960 - heroPosition.x
-        sprite.y = glib.chunkToCoordinateY(chunk) + 540 - heroPosition.y
-      }, "gmm")
+        sprite.x = LIB.chunkToCoordinateX(chunk) + 960 - heroPosition.x
+        sprite.y = LIB.chunkToCoordinateY(chunk) + 540 - heroPosition.y
+      }, "MAP")
     })
   }
 
   private async loadCloseChunks() {
-    if (!gg.heroId) return
-    const heroEntity = gworld.entities.get(gg.heroId)
+    if (!GLOBAL.heroId) return
+    const heroEntity = WORLD.entities.get(GLOBAL.heroId)
     if (!heroEntity) return
-    const heroPosition = gg.hero.position
+    const heroPosition = GLOBAL.hero.position
 
-    const startY = glib.coordinateToChunk(heroPosition.y) - 1
-    const startX = glib.coordinateToChunk(heroPosition.x) - 1
+    const startY = LIB.coordinateToChunk(heroPosition.y) - 1
+    const startX = LIB.coordinateToChunk(heroPosition.x) - 1
 
     this.closeChunks = []
     const sprites: Promise<void>[] = []
@@ -66,16 +66,16 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    const webp = DEV_STORE.webps.get(index)
-    if (!webp) DEV_STORE.webps.get("map-not-found")
+    const webp = STORE.webps.get(index)
+    if (!webp) STORE.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
-    gpixi.map.addChild(sprite)
+    PIXI_GUKI.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)
   }
 }
-export const gmm = new MapManager()
+export const MAP = new MapManager()

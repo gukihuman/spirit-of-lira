@@ -8,29 +8,29 @@ export default class target {
 
     this.heroTargetByGamepad()
 
-    if (gg.context !== "autoMove") this.heroTargetByMouse()
+    if (GLOBAL.context !== "autoMove") this.heroTargetByMouse()
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
   }
 
   autoTarget() {
-    gworld.entities.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.alive) return
       if (entity.alive.targetLocked) return
       let minDistance = Infinity
 
-      gworld.entities.forEach((otherEntity, otherId) => {
+      WORLD.entities.forEach((otherEntity, otherId) => {
         if (id === otherId || !otherEntity.alive) return
         if (
           entity.alive.faction === otherEntity.alive.faction &&
-          id !== gg.heroId
+          id !== GLOBAL.heroId
         ) {
           return
         }
-        if (id === gg.heroId && gic.lastActiveDevice !== "gamepad") return
+        if (id === GLOBAL.heroId && INPUT.lastActiveDevice !== "gamepad") return
 
-        const distance = glib.distance(entity.position, otherEntity.position)
+        const distance = LIB.distance(entity.position, otherEntity.position)
         if (distance < minDistance) {
           minDistance = distance
           entity.alive.targetEntityId = otherId
@@ -38,7 +38,7 @@ export default class target {
       })
 
       let maxTargetDistance = 300
-      if (id === gg.heroId) maxTargetDistance = 540
+      if (id === GLOBAL.heroId) maxTargetDistance = 540
 
       if (minDistance > maxTargetDistance) {
         entity.alive.targetEntityId = undefined
@@ -47,13 +47,13 @@ export default class target {
   }
 
   heroTargetByGamepad() {
-    if (gg.hero.alive.targetLocked) return
-    if (gic.lastActiveDevice !== "gamepad") return
-    if (!glib.deadZoneExceed(gud.settings.inputOther.gamepad.deadZone)) {
+    if (GLOBAL.hero.alive.targetLocked) return
+    if (INPUT.lastActiveDevice !== "gamepad") return
+    if (!LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       return
     }
 
-    const axesVector = glib.vector(gic.gamepad.axes[0], gic.gamepad.axes[1])
+    const axesVector = LIB.vector(INPUT.gamepad.axes[0], INPUT.gamepad.axes[1])
     const axesAngle = axesVector.angle
 
     let minAngle = Infinity
@@ -64,13 +64,13 @@ export default class target {
     const correspondDistances: number[] = []
     const angleToGroup = 0.3 // about 20 degrees
 
-    gworld.entities.forEach((entity, id) => {
-      if (!entity.alive || id === gg.heroId) return
+    WORLD.entities.forEach((entity, id) => {
+      if (!entity.alive || id === GLOBAL.heroId) return
 
-      const distance = glib.distance(gg.hero.position, entity.position)
+      const distance = LIB.distance(GLOBAL.hero.position, entity.position)
       if (distance > 540) return
 
-      const entityAngle = glib.angle(gg.hero.position, entity.position)
+      const entityAngle = LIB.angle(GLOBAL.hero.position, entity.position)
       const angle = Math.abs(entityAngle - axesAngle)
 
       if (angle < angleToGroup) {
@@ -96,23 +96,23 @@ export default class target {
       })
     }
 
-    gg.hero.alive.targetEntityId = closestEntityId
+    GLOBAL.hero.alive.targetEntityId = closestEntityId
   }
   heroTargetByMouse() {
-    if (gg.hero.alive.targetLocked || !gg.hoverId) return
-    gg.hero.alive.targetEntityId = gg.hoverId
+    if (GLOBAL.hero.alive.targetLocked || !GLOBAL.hoverId) return
+    GLOBAL.hero.alive.targetEntityId = GLOBAL.hoverId
   }
 
   updateHoverEntity() {
-    if (gic.lastActiveDevice === "gamepad") return
+    if (INPUT.lastActiveDevice === "gamepad") return
 
-    const point = glib.mousePoint()
-    const heroPosition = gg.hero.position
+    const point = LIB.mousePoint()
+    const heroPosition = GLOBAL.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0
 
-    gworld.entities.forEach((entity, id) => {
-      if (id === gg.heroId || !entity.alive) return
+    WORLD.entities.forEach((entity, id) => {
+      if (id === GLOBAL.heroId || !entity.alive) return
 
       // how mutch height goes under the y coordinate
       let offset = entity.alive.width / 4
@@ -136,8 +136,8 @@ export default class target {
       let higherY = 0
 
       intersections.forEach((id) => {
-        if (gworld.entities.get(id).position.y > higherY) {
-          higherY = gworld.entities.get(id).position.y
+        if (WORLD.entities.get(id).position.y > higherY) {
+          higherY = WORLD.entities.get(id).position.y
         }
         hoverEntityId = id
       })
@@ -146,8 +146,8 @@ export default class target {
       //
     }
 
-    gg.hoverId = hoverEntityId
-    gg.hover = gworld.entities.get(hoverEntityId)
+    GLOBAL.hoverId = hoverEntityId
+    GLOBAL.hover = WORLD.entities.get(hoverEntityId)
   }
 
   lastSprite: Sprite | undefined
@@ -155,10 +155,10 @@ export default class target {
   updateHeroTargetFilter() {
     if (this.lastSprite) this.lastSprite.filters = []
 
-    const id = gg.hero.alive.targetEntityId
-    const entity = gworld.entities.get(id)
+    const id = GLOBAL.hero.alive.targetEntityId
+    const entity = WORLD.entities.get(id)
     if (!id || !entity) return
-    const sprite = gpixi.getAnimationSprite(id, entity.alive.state)
+    const sprite = PIXI_GUKI.getAnimationSprite(id, entity.alive.state)
 
     if (sprite) {
       sprite.filters = [
@@ -168,7 +168,7 @@ export default class target {
           blur: 6,
         }),
       ]
-      if (gg.hero.alive.targetAttacked) {
+      if (GLOBAL.hero.alive.targetAttacked) {
         sprite.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.2,
@@ -182,15 +182,15 @@ export default class target {
   }
 
   targetUnlock() {
-    gworld.entities.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.alive) return
       if (!entity.alive.targetEntityId) entity.alive.targetLocked = false
     })
 
-    const targetEntity = gworld.entities.get(gg.hero.alive.targetEntityId)
+    const targetEntity = WORLD.entities.get(GLOBAL.hero.alive.targetEntityId)
     if (!targetEntity) return
-    const distance = glib.distance(gg.hero.position, targetEntity.position)
+    const distance = LIB.distance(GLOBAL.hero.position, targetEntity.position)
 
-    if (distance > 1000) gg.hero.alive.targetLocked = false
+    if (distance > 1000) GLOBAL.hero.alive.targetLocked = false
   }
 }

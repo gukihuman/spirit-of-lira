@@ -58,7 +58,8 @@ class Remote {
           wrongResponse = true
           break
         }
-        gsd.refs.output += JSON.parse(newText).choices[0].message.content
+        SYSTEM_DATA.refs.output +=
+          JSON.parse(newText).choices[0].message.content
         result += newText
       }
     }
@@ -85,7 +86,7 @@ class Remote {
   private pushNewMessages() {
     this.data.messages.push({
       role: "user",
-      content: gsd.refs.input.value,
+      content: SYSTEM_DATA.refs.input.value,
     })
     this.data.messages.push({
       role: "system",
@@ -99,18 +100,18 @@ class Remote {
   }
 
   init() {
-    gpixi.tickerAdd(async () => {
+    PIXI_GUKI.tickerAdd(async () => {
       // if (gim.signals.sendInput) {
-      //   if (!gsd.refs.input) return
+      //   if (!SYSTEM_DATA.refs.input) return
       //   this.pushNewMessages()
       //   this.clampData()
-      //   console.log("⏫ " + glib.timeNow() + " Spirit: " + gsd.refs.input.value)
-      //   gsd.refs.input.value = ""
-      //   gud.states.output = ""
+      //   console.log("⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value)
+      //   SYSTEM_DATA.refs.input.value = ""
+      //   USER_DATA.states.output = ""
       //   let res = await this.queryOpenAI(this.data)
       //   this.data.messages.push(res.choices[0].message)
       //   console.log(
-      //     "⏬ " + glib.timeNow() + " Lira: " + res.choices[0].message.content
+      //     "⏬ " + LIB.timeNow() + " Lira: " + res.choices[0].message.content
       //   )
       // const moodReq = _.cloneDeep(this.data)
       // moodReq.messages.push({
@@ -121,7 +122,7 @@ class Remote {
       // let moodRes = await this.queryOpenAI(moodReq)
       // console.log(moodRes.choices[0].message.content)
       // }
-    }, "gremote")
+    }, "REMOTE")
   }
 }
-export const gremote = new Remote()
+export const REMOTE = new Remote()

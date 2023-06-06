@@ -7,7 +7,7 @@ export default {
     speed: 8,
     leaveStateConditions: {
       move: (entity, id) => {
-        return gpixi.getAnimationSprite(id, "move")?.currentFrame === 0
+        return PIXI_GUKI.getAnimationSprite(id, "move")?.currentFrame === 0
       },
     },
   },

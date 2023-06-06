@@ -13,18 +13,18 @@ fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-cente
 
     div(class="z-10")
       transition
-        input-area(v-if="gsd.states.input")
+        input-area(v-if="SYSTEM_DATA.states.input")
 
     //- output-area
 
     div(class="z-30")
       transition
-        inventory(v-if="gsd.states.inventory")
+        inventory(v-if="SYSTEM_DATA.states.inventory")
 
     //- loading screen on top of everything
     div(class="z-50")
       transition
-        loading(v-if="gsd.states.loadingScreen")
+        loading(v-if="SYSTEM_DATA.states.loadingScreen")
 
 </template>
 

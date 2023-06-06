@@ -18,13 +18,13 @@ export default class spawn {
   }
 
   private async spawnEntities() {
-    gmm.closeChunks.forEach((chunk) => {
+    MAP.closeChunks.forEach((chunk) => {
       if (this.spawnedChunks.includes(chunk)) return
 
       _.forEach(this.locationPopulation, async (spawner, location) => {
         _.forEach(spawner, async (ratio, entity) => {
           this.spawnPromises.push(
-            this.createEntitiesOnChunk(chunk, gmm[location], entity, ratio)
+            this.createEntitiesOnChunk(chunk, MAP[location], entity, ratio)
           )
         })
       })
@@ -36,17 +36,17 @@ export default class spawn {
   private despawnEntities() {
     // despawn far chunks
     this.spawnedChunks.forEach((chunk) => {
-      if (gmm.closeChunks.includes(chunk)) return
+      if (MAP.closeChunks.includes(chunk)) return
 
-      gworld.entities.forEach((entity, id) => {
+      WORLD.entities.forEach((entity, id) => {
         const position = entity.position
         if (!position) return
 
-        const entityChunk = glib.chunkFromCoordinates(position.x, position.y)
+        const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
-          gworld.entities.delete(id)
-          let container = gpixi.getContainer(id)
-          if (container) gpixi.sortable.removeChild(container)
+          WORLD.entities.delete(id)
+          let container = PIXI_GUKI.getContainer(id)
+          if (container) PIXI_GUKI.sortable.removeChild(container)
         }
       })
 
@@ -69,21 +69,21 @@ export default class spawn {
         // stop loop if position not found, all tiles in chunks with collision
         if (!position) return
 
-        await gef.createEntity(entity, { position })
+        await ENTITY_FACTORY.createEntity(entity, { position })
         ratio -= 1
       }
     }
   }
 
   private randomCoordinatesFromChunk(chunk: string, counter: number) {
-    let x = glib.chunkToCoordinateX(chunk)
-    let y = glib.chunkToCoordinateY(chunk)
+    let x = LIB.chunkToCoordinateX(chunk)
+    let y = LIB.chunkToCoordinateY(chunk)
     x += _.random(0, 999)
     y += _.random(0, 999)
 
-    const i = glib.tileIndexFromCoordinates(x, y)
+    const i = LIB.tileIndexFromCoordinates(x, y)
 
-    if (gcm.collisionArray[i] === 0) {
+    if (COLLISION.collisionArray[i] === 0) {
       return { x, y }
     } else if (counter < 10) {
       counter++

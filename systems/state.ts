@@ -1,8 +1,8 @@
 export default class state {
   process() {
-    gworld.entities.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.alive || !entity.visual) return
-      if (gpixi.elapsedMS - entity.alive.lastStateSwitchMS < 200) return
+      if (PIXI_GUKI.elapsedMS - entity.alive.lastStateSwitchMS < 200) return
       if (entity.alive.leaveStateConditions) {
         if (
           entity.alive.state === "move" &&
@@ -16,10 +16,10 @@ export default class state {
 
       this.checkAttack(entity, id)
 
-      const lastEntity = gcache.entities.get(id)
+      const lastEntity = CACHE.entities.get(id)
       if (!lastEntity) return
       if (entity.alive.state !== lastEntity.alive.state) {
-        entity.alive.lastStateSwitchMS = gpixi.elapsedMS
+        entity.alive.lastStateSwitchMS = PIXI_GUKI.elapsedMS
       }
     })
   }
@@ -28,32 +28,32 @@ export default class state {
     if (!entity.alive.targetEntityId || !entity.attack) return
     if (!entity.alive.targetAttacked) return
 
-    const targetEntity = gworld.entities.get(entity.alive.targetEntityId)
-    const distance = glib.distance(entity.position, targetEntity.position)
+    const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+    const distance = LIB.distance(entity.position, targetEntity.position)
 
     if (distance < targetEntity.alive.width / 2 + entity.attack.distance) {
-      if (id === gg.heroId) {
+      if (id === GLOBAL.heroId) {
         entity.alive.state = "sword-attack"
       }
     }
   }
 
   checkMove(entity, id) {
-    const lastEntity = gcache.entities.get(id)
+    const lastEntity = CACHE.entities.get(id)
     if (!lastEntity) return
-    const displacement = glib.vectorFromPoints(
+    const displacement = LIB.vectorFromPoints(
       entity.position,
       lastEntity.position
     )
     const distance = displacement.distance
-    const speedPerTick = glib.speedPerTick(entity)
+    const speedPerTick = LIB.speedPerTick(entity)
 
     if (distance / speedPerTick < 0.1) {
       entity.alive.state = "idle"
       return
     }
 
-    if (gpixi.getAnimationSprite(id, "walk")) {
+    if (PIXI_GUKI.getAnimationSprite(id, "walk")) {
       if (distance / speedPerTick < 0.8) {
         entity.alive.state = "walk"
       } else {

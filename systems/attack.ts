@@ -1,12 +1,12 @@
 export default class attack {
   process() {
-    gworld.entities.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.alive || !entity.alive.targetEntityId || !entity.attack) {
         return
       }
 
-      const targetEntity = gworld.entities.get(entity.alive.targetEntityId)
-      const distance = glib.distance(entity.position, targetEntity.position)
+      const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+      const distance = LIB.distance(entity.position, targetEntity.position)
 
       if (distance < targetEntity.alive.width / 2 + entity.attack.distance) {
         //

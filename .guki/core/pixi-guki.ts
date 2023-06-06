@@ -13,11 +13,11 @@ class PixiManager {
   // almost everything is 0, which is default if not set explicitly
   private tickerPriority = {
     render: 4,
-    gcache: 3,
-    gic: 2, // at least gud depends on it
+    CACHE: 3,
+    INPUT: 2, // at least USER_DATA depends on it
 
-    gsignal: -1, // runs all logic for collected signals and empty itself
-    gflip: -2,
+    SIGNAL: -1, // runs all logic for collected signals and empty itself
+    FLIP: -2,
     attack: -3,
     state: -4,
   }
@@ -65,11 +65,11 @@ class PixiManager {
   // 📜 need those getters? think yes but have doubts
 
   getContainer(id: number): gContainer | undefined {
-    for (let child of gpixi.sortable.children) {
+    for (let child of PIXI_GUKI.sortable.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
-    for (let child of gpixi.ground.children) {
+    for (let child of PIXI_GUKI.ground.children) {
       const gContainer = child as gContainer
       if (gContainer.id === id) return child as gContainer
     }
@@ -87,10 +87,10 @@ class PixiManager {
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
-    let json = DEV_STORE.jsons.get(name)
+    let json = STORE.jsons.get(name)
 
     if (!json) {
-      glib.logWarning(`no json for ${name} in DEV_STORE.jsons (gpixi)`)
+      LIB.logWarning(`no json for ${name} in STORE.jsons (PIXI_GUKI)`)
       return
     }
 
@@ -101,7 +101,7 @@ class PixiManager {
     let spritesheet
 
     if (!PIXI.Cache.has(name)) {
-      if (!DEV_STORE.jsons.get(name)) return
+      if (!STORE.jsons.get(name)) return
       texture = PIXI.Texture.from(json.meta.image)
       spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
       PIXI.Cache.set(name, [texture, spritesheet])
@@ -111,7 +111,7 @@ class PixiManager {
     }
 
     // adds gParse function as a non-cache alternative to parse
-    glib.addParseWithoutCaching(spritesheet)
+    LIB.addParseWithoutCaching(spritesheet)
 
     await spritesheet.gParse()
 
@@ -119,4 +119,4 @@ class PixiManager {
   }
 }
 
-export const gpixi = new PixiManager()
+export const PIXI_GUKI = new PixiManager()

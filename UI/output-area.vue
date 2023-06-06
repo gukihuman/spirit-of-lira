@@ -14,7 +14,7 @@ const update = () => {
   if (textarea.value === null) return
 
   // value
-  textarea.value.value = gud.states.output
+  textarea.value.value = USER_DATA.states.output
 
   // stylization
   if (textarea.value.scrollWidth < maxWidth) {

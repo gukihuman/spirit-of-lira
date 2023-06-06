@@ -5,9 +5,9 @@ class World {
   async init() {
     await this.setupSystems()
 
-    gpixi.tickerAdd(() => {
+    PIXI_GUKI.tickerAdd(() => {
       this.entityProcess()
-    }, "gworld")
+    }, "WORLD")
   }
 
   // 📜 implement dynamic system process, allowing adding and removing systems
@@ -16,17 +16,17 @@ class World {
     const inits: Promise<void>[] = []
     const processes: { [name: string]: () => void } = {}
 
-    DEV_STORE.systems.forEach((systemClass, name) => {
+    STORE.systems.forEach((systemClass, name) => {
       const system = new systemClass()
       if (system.init) inits.push(system.init())
       processes[name] = () => system.process()
-      gworld.systems.set(name, system)
+      WORLD.systems.set(name, system)
     })
     await Promise.all(inits)
 
     // processes added later, may depend on init
     _.forEach(processes, (process, name) => {
-      gpixi.tickerAdd(() => process(), name)
+      PIXI_GUKI.tickerAdd(() => process(), name)
     })
   }
 
@@ -36,4 +36,4 @@ class World {
     })
   }
 }
-export const gworld = new World()
+export const WORLD = new World()

@@ -45,9 +45,10 @@ class Lib {
     return clonedMap
   }
   isWalkable(x: number, y: number) {
-    const tileIndex = glib.tileIndexFromCoordinates(x, y)
+    const tileIndex = LIB.tileIndexFromCoordinates(x, y)
     return (
-      gcm.collisionArray[tileIndex] !== 2 && gcm.collisionArray[tileIndex] !== 3
+      COLLISION.collisionArray[tileIndex] !== 2 &&
+      COLLISION.collisionArray[tileIndex] !== 3
     )
   }
   generateRandomString(length) {
@@ -61,10 +62,10 @@ class Lib {
     return result
   }
   speedPerTick(entity: gEntity) {
-    return entity.alive.speed * 10 * gpixi.deltaSec
+    return entity.alive.speed * 10 * PIXI_GUKI.deltaSec
   }
   deadZoneExceed(deadZone: number) {
-    const axes: number[] = [gic.gamepad.axes[0], gic.gamepad.axes[1]]
+    const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]
     let moved = false
 
     axes.forEach((axis: number) => {
@@ -81,10 +82,10 @@ class Lib {
   }
 
   /**
-   * Wrapper for pinia DEV_STORE that optionally accepts one or more watchers.
+   * Wrapper for pinia STORE that optionally accepts one or more watchers.
    * @param object - state object
    * @param args - watcher array that consist of a state property name and a handler function
-   * @returns a pinia DEV_STORE with watchers and random name
+   * @returns a pinia STORE with watchers and random name
    */
   store(
     object: { [index: string]: any },
@@ -205,10 +206,10 @@ class Lib {
     return this.vector(960, 540)
   }
   mousePoint() {
-    if (!gsd.states.firstMouseMove) return this.centerPoint()
-    return glib.vector(
-      gic.mouse.x / gsd.states.gameWindowScale,
-      gic.mouse.y / gsd.states.gameWindowScale
+    if (!SYSTEM_DATA.states.firstMouseMove) return this.centerPoint()
+    return LIB.vector(
+      INPUT.mouse.x / SYSTEM_DATA.states.gameWindowScale,
+      INPUT.mouse.y / SYSTEM_DATA.states.gameWindowScale
     )
   }
 
@@ -238,4 +239,4 @@ class Lib {
   }
 }
 
-export const glib = new Lib()
+export const LIB = new Lib()

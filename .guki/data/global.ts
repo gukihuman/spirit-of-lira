@@ -6,4 +6,4 @@ class Global {
   hoverId: number = 0
   context: "autoMove" | "follow" | "default" = "default"
 }
-export const gg = new Global()
+export const GLOBAL = new Global()

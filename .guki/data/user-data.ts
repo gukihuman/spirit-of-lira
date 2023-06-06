@@ -1,6 +1,6 @@
 class UserData {
   //
-  private _settings = glib.store({
+  private _settings = LIB.store({
     //
     inputSignals: {
       keyboard: {
@@ -33,39 +33,39 @@ class UserData {
   }
 
   emitSignals() {
-    if (glib.deadZoneExceed(this.settings.inputOther.gamepad.deadZone)) {
-      gsignal.emit("gamepadMove")
+    if (LIB.deadZoneExceed(this.settings.inputOther.gamepad.deadZone)) {
+      SIGNAL.emit("gamepadMove")
     }
 
-    if (gsd.states.inputFocus) return
+    if (SYSTEM_DATA.states.inputFocus) return
 
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
-        if (gic[device].justPressed.includes(button)) {
-          gsignal.emit(setting)
+        if (INPUT[device].justPressed.includes(button)) {
+          SIGNAL.emit(setting)
         }
       })
     })
 
     // overwrite mouseMove pressed instead of default
     if (
-      gic.mouse.pressed.includes(
+      INPUT.mouse.pressed.includes(
         this.settings.inputSignals.mouse.mouseMoveOrAttack
       ) ||
-      gic.keyboard.pressed.includes(
+      INPUT.keyboard.pressed.includes(
         this.settings.inputSignals.keyboard.mouseMoveOrAttack
       )
     ) {
-      gsignal.emit("mouseMove")
-      gg.context = "default"
+      SIGNAL.emit("mouseMove")
+      GLOBAL.context = "default"
     }
   }
 
   init() {
-    gpixi.tickerAdd(() => {
+    PIXI_GUKI.tickerAdd(() => {
       this.emitSignals()
-    }, "gud")
+    }, "USER_DATA")
   }
 }
 
-export const gud = new UserData()
+export const USER_DATA = new UserData()

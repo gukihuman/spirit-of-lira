@@ -9,4 +9,4 @@ class Store {
   webps: Map<string, string> = new Map()
   jsons: Map<string, { [key: string]: any }> = new Map()
 }
-export const DEV_STORE = new Store()
+export const STORE = new Store()

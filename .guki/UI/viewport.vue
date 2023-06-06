@@ -3,7 +3,7 @@
 div(
   ref="viewport"
   class="absolute transition duration-200"
-  :class="{ 'blur': gsd.states.inventory }"
+  :class="{ 'blur': SYSTEM_DATA.states.inventory }"
 )
 
 </template>
@@ -13,7 +13,7 @@ const viewport = ref(null)
 
 onMounted(() => {
   //
-  // To init pixi and gic with
-  gsd.refs.viewport = viewport
+  // To init pixi and INPUT with
+  SYSTEM_DATA.refs.viewport = viewport
 })
 </script>

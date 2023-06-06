@@ -1,6 +1,6 @@
 // third-party libs
 import GukiInputController from "guki-input-controller"
-export const gic = new GukiInputController()
+export const INPUT = new GukiInputController()
 
 import * as pixi from "pixi.js"
 export const PIXI = pixi
@@ -19,14 +19,14 @@ export default defineNuxtPlugin(async () => {
   for (const path in entities) {
     const entity = await entities[path]()
     const name = `${_.toLower(entity.default.name)}`
-    DEV_STORE.entities.set(name, entity.default)
+    STORE.entities.set(name, entity.default)
   }
 
   const components = import.meta.glob("@/components/**")
   for (const path in components) {
     const component = await components[path]()
     _.forEach(component.default, (value, name) => {
-      DEV_STORE.components.set(name, value)
+      STORE.components.set(name, value)
     })
   }
 
@@ -36,7 +36,7 @@ export default defineNuxtPlugin(async () => {
 
     // here name is parsed from name of the class by using build-in name prop
     const name = `${_.toLower(system.default.name)}`
-    DEV_STORE.systems.set(name, system.default)
+    STORE.systems.set(name, system.default)
   }
 
   const webps = import.meta.glob("@/assets/**/*.webp")
@@ -52,7 +52,7 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    DEV_STORE.webps.set(name, webp.default)
+    STORE.webps.set(name, webp.default)
   }
 
   const jsons = import.meta.glob("@/assets/**/*.json")
@@ -67,9 +67,8 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
 
     // inject parsed path of webp file so vite packer understand it
-    if (DEV_STORE.webps.has(name))
-      json.default.meta.image = DEV_STORE.webps.get(name)
+    if (STORE.webps.has(name)) json.default.meta.image = STORE.webps.get(name)
 
-    DEV_STORE.jsons.set(name, json.default)
+    STORE.jsons.set(name, json.default)
   }
 })

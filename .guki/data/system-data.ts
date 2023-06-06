@@ -1,7 +1,7 @@
 class SystemData {
   //
 
-  private _refs = glib.store({
+  private _refs = LIB.store({
     fullscreen: undefined,
     viewport: undefined,
     input: undefined,
@@ -11,7 +11,7 @@ class SystemData {
     return this._refs()
   }
 
-  private _states = glib.store({
+  private _states = LIB.store({
     gameWindowScale: 1,
     fullscreen: false,
     loadingScreen: true,
@@ -29,4 +29,4 @@ class SystemData {
     return this._states()
   }
 }
-export const gsd = new SystemData()
+export const SYSTEM_DATA = new SystemData()

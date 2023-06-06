@@ -5,7 +5,7 @@ export default {
     let position = entity.position
     if (!position) return
 
-    const targetPosition = gg.hero.alive.targetPosition
+    const targetPosition = GLOBAL.hero.alive.targetPosition
     if (!targetPosition) {
       position.x = 0
       position.y = 0
@@ -14,28 +14,28 @@ export default {
     position.x = targetPosition.x
     position.y = targetPosition.y
 
-    const displacement = glib.vectorFromPoints(
+    const displacement = LIB.vectorFromPoints(
       position,
-      gworld.entities.get(gg.heroId).position
+      WORLD.entities.get(GLOBAL.heroId).position
     )
     const distance = displacement.distance
-    const speedPerTick = glib.speedPerTick(gworld.entities.get(gg.heroId))
+    const speedPerTick = LIB.speedPerTick(WORLD.entities.get(GLOBAL.heroId))
 
     // hide
-    if (distance < speedPerTick || gg.hero.alive.targetAttacked) {
+    if (distance < speedPerTick || GLOBAL.hero.alive.targetAttacked) {
       position.x = 0
       position.y = 0
       return
     }
 
-    const container = gpixi.getContainer(id)
+    const container = PIXI_GUKI.getContainer(id)
     if (container) {
-      container.children[1].angle += 80 * gpixi.deltaSec
+      container.children[1].angle += 80 * PIXI_GUKI.deltaSec
       const scale = 1
       container.scale = { x: 1, y: 0.5 }
       container.scale.x *= scale
       container.scale.y *= scale
-      const animationSprite = gpixi.getAnimationSprite(id, "idle")
+      const animationSprite = PIXI_GUKI.getAnimationSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       animationSprite.alpha = distance / 100
