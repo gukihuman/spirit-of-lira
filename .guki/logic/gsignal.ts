@@ -9,8 +9,8 @@ class Signal {
     },
     fullscreen() {
       gsd.states.fullscreen = !gsd.states.fullscreen
-      if (gsd.refs.background && !document.fullscreenElement) {
-        gsd.refs.background.requestFullscreen()
+      if (gsd.refs.fullscreen && !document.fullscreenElement) {
+        gsd.refs.fullscreen.requestFullscreen()
       } else if (document.exitFullscreen) {
         document.exitFullscreen()
       }

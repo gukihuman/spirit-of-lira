@@ -1,28 +1,30 @@
 <template lang="pug">
 
-//- 1920 / 1080 centered game window
-game-window
+fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-center select-none")
 
-  //- 1920 / 1080 pixi viewport, where the actual game is
-  viewport
+  //- 1920 / 1080 centered game window
+  game-window
 
-  div(class="z-10")
-    bars
+    //- 1920 / 1080 pixi viewport, where the actual game is
+    viewport
 
-  div(class="z-10")
-    transition
-      input-area(v-if="gsd.states.input")
+    div(class="z-10")
+      bars
 
-  //- output-area
+    div(class="z-10")
+      transition
+        input-area(v-if="gsd.states.input")
 
-  div(class="z-30")
-    transition
-      inventory(v-if="gsd.states.inventory")
+    //- output-area
 
-  //- loading screen on top of everything
-  div(class="z-50")
-    transition
-      loading(v-if="gsd.states.loadingScreen")
+    div(class="z-30")
+      transition
+        inventory(v-if="gsd.states.inventory")
+
+    //- loading screen on top of everything
+    div(class="z-50")
+      transition
+        loading(v-if="gsd.states.loadingScreen")
 
 </template>
 

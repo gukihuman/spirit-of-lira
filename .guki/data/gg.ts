@@ -1,7 +1,7 @@
 class Global {
   hero: gEntity = {}
   heroId: number = 0
-  lastHero: gEntity = {} // last tick
+  lastHero: gEntity = {} // previous tick hero
   hover: gEntity = {}
   hoverId: number = 0
   context: "autoMove" | "follow" | "default" = "default"

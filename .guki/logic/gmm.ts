@@ -66,8 +66,8 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    const webp = gstorage.webps.get(index)
-    if (!webp) gstorage.webps.get("map-not-found")
+    const webp = DEV_STORE.webps.get(index)
+    if (!webp) DEV_STORE.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)

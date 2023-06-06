@@ -2,8 +2,8 @@ class SystemData {
   //
 
   private _refs = glib.store({
-    background: undefined, // to switch fullscreen
-    viewport: undefined, // to init pixi and gic
+    fullscreen: undefined,
+    viewport: undefined,
     input: undefined,
     output: undefined,
   })

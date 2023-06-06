@@ -8,7 +8,7 @@ class EntityFactory {
   }
 
   init() {
-    gstorage.components.forEach((value, name) => {
+    DEV_STORE.components.forEach((value, name) => {
       if (this.componentInjectPriority[name]) return
       this.componentInjectPriority[name] = 0
     })
@@ -17,7 +17,7 @@ class EntityFactory {
   /**  @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
     //
-    const entity = _.cloneDeep(gstorage.entities.get(name))
+    const entity = _.cloneDeep(DEV_STORE.entities.get(name))
     if (!entity) {
       glib.logWarning(`"${name}" not found (gef)`)
       return
@@ -39,7 +39,7 @@ class EntityFactory {
   private injectComponents(entity: gEntity, id: number) {
     const sortedPriority = glib.sortedKeys(this.componentInjectPriority)
     sortedPriority.forEach((name) => {
-      const value = gstorage.components.get(name)
+      const value = DEV_STORE.components.get(name)
 
       // special treat
       if (name === "position" && entity[name] !== false) {

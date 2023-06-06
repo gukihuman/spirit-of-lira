@@ -16,7 +16,7 @@ class World {
     const inits: Promise<void>[] = []
     const processes: { [name: string]: () => void } = {}
 
-    gstorage.systems.forEach((systemClass, name) => {
+    DEV_STORE.systems.forEach((systemClass, name) => {
       const system = new systemClass()
       if (system.init) inits.push(system.init())
       processes[name] = () => system.process()

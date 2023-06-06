@@ -10,6 +10,7 @@ import {
   Texture as tempTexture,
   Rectangle as tempRectangle,
   Sprite as tempSprite,
+  ISpritesheetData as tempISpriteSheetData,
 } from "pixi.js"
 
 declare global {
@@ -22,12 +23,13 @@ declare global {
   type Texture = tempTexture
   type Rectangle = tempRectangle
   type Sprite = tempSprite
+  type ISpritesheetData = tempISpriteSheetData
 
   interface gContainer extends Container {
     id: number
   }
 
-  // basically turns off cache from vanilla functions
+  // used to turn off lagging cache
   interface gSpritesheet extends Spritesheet {
     _frameKeys: any
     _frames: any

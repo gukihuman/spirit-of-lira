@@ -6,5 +6,5 @@
     "noImplicitReturns": true,
     "noImplicitAny": false
   },
-  "include": ["./.nuxt/nuxt.d.ts", "./**/*.ts", ".guki/utils/types.d.ts"]
+  "include": ["./.nuxt/nuxt.d.ts", "./**/*.ts", ".guki/types/types.d.ts"]
 }

@@ -13,10 +13,10 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: [".guki/**"],
+    dirs: [".guki/**/*.{vue,js,ts}"],
   },
   components: {
-    dirs: ["@/.guki/vue", "@/UI"],
+    dirs: ["@/.guki/UI", "@/UI"],
   },
   plugins: ["@/.guki/boot/importer.ts", "@/.guki/boot/starter.ts"],
   css: ["@/tailwind.css"],

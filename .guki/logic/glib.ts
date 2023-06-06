@@ -81,10 +81,10 @@ class Lib {
   }
 
   /**
-   * Wrapper for pinia store that optionally accepts one or more watchers.
+   * Wrapper for pinia DEV_STORE that optionally accepts one or more watchers.
    * @param object - state object
    * @param args - watcher array that consist of a state property name and a handler function
-   * @returns a pinia store with watchers and random name
+   * @returns a pinia DEV_STORE with watchers and random name
    */
   store(
     object: { [index: string]: any },
@@ -99,6 +99,90 @@ class Lib {
 
       return state
     })
+  }
+
+  /**
+   * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache is handled separatly with binding to entity name.
+   * @param spritesheet - instance of PIXI.Spritesheet
+   */
+  addParseWithoutCaching(spritesheet: gSpritesheet) {
+    const BATCH_SIZE = 1e3
+
+    spritesheet.gProcessFrames = function (initialFrameIndex) {
+      let frameIndex = initialFrameIndex
+      const maxFrames = BATCH_SIZE
+      while (
+        frameIndex - initialFrameIndex < maxFrames &&
+        frameIndex < this._frameKeys.length
+      ) {
+        const i = this._frameKeys[frameIndex]
+        const data = this._frames[i]
+        const rect = data.frame
+        if (rect) {
+          let frame: Rectangle | undefined = undefined
+          let trim: Rectangle | undefined = undefined
+          const sourceSize =
+            data.trimmed !== false && data.sourceSize
+              ? data.sourceSize
+              : data.frame
+          const orig = new PIXI.Rectangle(
+            0,
+            0,
+            Math.floor(sourceSize.w) / this.resolution,
+            Math.floor(sourceSize.h) / this.resolution
+          )
+          if (data.rotated) {
+            frame = new PIXI.Rectangle(
+              Math.floor(rect.x) / this.resolution,
+              Math.floor(rect.y) / this.resolution,
+              Math.floor(rect.h) / this.resolution,
+              Math.floor(rect.w) / this.resolution
+            )
+          } else {
+            frame = new PIXI.Rectangle(
+              Math.floor(rect.x) / this.resolution,
+              Math.floor(rect.y) / this.resolution,
+              Math.floor(rect.w) / this.resolution,
+              Math.floor(rect.h) / this.resolution
+            )
+          }
+          if (data.trimmed !== false && data.spriteSourceSize) {
+            trim = new PIXI.Rectangle(
+              Math.floor(data.spriteSourceSize.x) / this.resolution,
+              Math.floor(data.spriteSourceSize.y) / this.resolution,
+              Math.floor(rect.w) / this.resolution,
+              Math.floor(rect.h) / this.resolution
+            )
+          }
+          this.textures[i] = new PIXI.Texture(
+            this.baseTexture,
+            frame,
+            orig,
+            trim,
+            data.rotated ? 2 : 0,
+            data.anchor
+          )
+          // this is the line that was turned off:
+          // Texture.addToCache(this.textures[i], i)
+        }
+        frameIndex++
+      }
+    }
+
+    spritesheet.gParse = function () {
+      return new Promise((resolve) => {
+        this._callback = resolve
+        this._batchIndex = 0
+        if (this._frameKeys.length <= BATCH_SIZE) {
+          //
+          this.gProcessFrames(0) // changed to modified function
+          this._processAnimations()
+          this._parseComplete()
+        } else {
+          this._nextBatch()
+        }
+      })
+    }
   }
 
   // vectors

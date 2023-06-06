@@ -6,19 +6,28 @@ import * as pixi from "pixi.js"
 export const PIXI = pixi
 
 import * as filters from "pixi-filters"
-export const PIXIfilters = filters
+export const PIXI_FILTERS = filters
 
 import lodash from "lodash"
 export const _ = lodash
 
-// files from outside .guki folder
+// fill storage with data from entities/components/systems folders
+// as well as webp and json from assets folder
 export default defineNuxtPlugin(async () => {
   //
   const entities = import.meta.glob("@/entities/**")
   for (const path in entities) {
     const entity = await entities[path]()
     const name = `${_.toLower(entity.default.name)}`
-    gstorage.entities.set(name, entity.default)
+    DEV_STORE.entities.set(name, entity.default)
+  }
+
+  const components = import.meta.glob("@/components/**")
+  for (const path in components) {
+    const component = await components[path]()
+    _.forEach(component.default, (value, name) => {
+      DEV_STORE.components.set(name, value)
+    })
   }
 
   const systems = import.meta.glob("@/systems/**")
@@ -27,15 +36,7 @@ export default defineNuxtPlugin(async () => {
 
     // here name is parsed from name of the class by using build-in name prop
     const name = `${_.toLower(system.default.name)}`
-    gstorage.systems.set(name, system.default)
-  }
-
-  const components = import.meta.glob("@/components/**")
-  for (const path in components) {
-    const component = await components[path]()
-    _.forEach(component.default, (value, name) => {
-      gstorage.components.set(name, value)
-    })
+    DEV_STORE.systems.set(name, system.default)
   }
 
   const webps = import.meta.glob("@/assets/**/*.webp")
@@ -51,7 +52,7 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    gstorage.webps.set(name, webp.default)
+    DEV_STORE.webps.set(name, webp.default)
   }
 
   const jsons = import.meta.glob("@/assets/**/*.json")
@@ -65,10 +66,10 @@ export default defineNuxtPlugin(async () => {
     }
     name = name[0].toLowerCase()
 
-    // inject webp so vite packer understand it
-    if (gstorage.webps.has(name))
-      json.default.meta.image = gstorage.webps.get(name)
+    // inject parsed path of webp file so vite packer understand it
+    if (DEV_STORE.webps.has(name))
+      json.default.meta.image = DEV_STORE.webps.get(name)
 
-    gstorage.jsons.set(name, json.default)
+    DEV_STORE.jsons.set(name, json.default)
   }
 })

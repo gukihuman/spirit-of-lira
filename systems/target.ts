@@ -162,7 +162,7 @@ export default class target {
 
     if (sprite) {
       sprite.filters = [
-        new PIXIfilters.AdvancedBloomFilter({
+        new PIXI_FILTERS.AdvancedBloomFilter({
           quality: 2,
           bloomScale: 0.23,
           blur: 6,
@@ -170,7 +170,7 @@ export default class target {
       ]
       if (gg.hero.alive.targetAttacked) {
         sprite.filters.push(
-          new PIXIfilters.AdjustmentFilter({
+          new PIXI_FILTERS.AdjustmentFilter({
             red: 1.2,
             saturation: 0.9,
             brightness: 0.9,
