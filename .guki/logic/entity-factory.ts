@@ -1,20 +1,10 @@
 class EntityFactory {
   private nextId = 1
-  private componentPriority = {
-    visual: 2,
-    alive: 1,
-  }
-
-  init() {
-    STORE.components.forEach((value, name) => {
-      if (this.componentPriority[name]) return
-      this.componentPriority[name] = 0
-    })
-  }
 
   /**  @returns promise of entity id or undefined */
   async createEntity(name: string, components?: { [key: string]: any }) {
-    //
+    if (!STORE.entities.has(name)) return
+
     const entity = _.cloneDeep(STORE.entities.get(name))
     if (!entity) {
       LIB.logWarning(`"${name}" not found (ENTITY_FACTORY)`)
@@ -36,15 +26,15 @@ class EntityFactory {
   /** inject / expand components from components folder */
   private async injectComponents(entity: gEntity, id: number) {
     //
-    const sortedPriority = LIB.sortedKeys(this.componentPriority)
+    const sortedPriority = LIB.sortedKeys(CONFIG.priority.components)
 
     const promises: Promise<void>[] = []
     sortedPriority.forEach((name) => {
       const value = STORE.components.get(name)
       if (!value) return
 
-      // entity model has this component or component is default
-      if (entity[name] || value.default) {
+      // entity model has this component or component is auto injected
+      if (entity[name] || value.autoInject) {
         this.dependCounter = 0
         promises.push(this.mergeComponent(entity, id, name, value))
       }
@@ -63,6 +53,7 @@ class EntityFactory {
       return
     }
 
+    // inject dependencies components first
     if (value.depend) {
       const promises: Promise<void>[] = []
       value.depend.forEach((dependName) => {
@@ -85,7 +76,7 @@ class EntityFactory {
     if (entity[name].init) await entity[name].init(entity, id, name, value)
 
     delete entity[name].depend
-    delete entity[name].default
+    delete entity[name].autoInject
     delete entity[name].init
   }
 }

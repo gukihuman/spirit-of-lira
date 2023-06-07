@@ -9,24 +9,11 @@ class PixiManager {
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
-  // higher values goes first, takes tools and systems
-  // almost everything is 0, which is default if not set explicitly
-  private tickerPriority = {
-    render: 4,
-    CACHE: 3,
-    INPUT: 2, // at least USER_DATA depends on it
-
-    SIGNAL: -1, // runs all logic for collected signals and empty itself
-    FLIP: -2,
-    attack: -3,
-    state: -4,
-  }
-
-  /** Name is used to find ticker priority in pixi private property, if exist. */
+  /** Name is used to find priority in config, if exist. */
   tickerAdd(fn, name?: string) {
     if (!this.app) return
-    if (name && this.tickerPriority[name])
-      this.app.ticker.add(fn, undefined, this.tickerPriority[name])
+    if (name && CONFIG.priority.toolsAndSystems[name])
+      this.app.ticker.add(fn, undefined, CONFIG.priority.toolsAndSystems[name])
     else this.app.ticker.add(fn)
   }
 

@@ -10,19 +10,24 @@ export default defineNuxtPlugin(async (app) => {
     useCookie("name").value = useCookie("name").value || "default"
     if (useCookie("name").value == "guki") SYSTEM_DATA.states.devMode = true
 
-    // everything depend on PIXI_GUKI ticker, init it first
-    PIXI_GUKI.init(SYSTEM_DATA.refs.viewport)
+    CONFIG.init()
+
+    // everything depend on PIXI_GUKI ticker, init it right after CONFIG
+    PIXI_GUKI.init(
+      SYSTEM_DATA.refs.viewport,
+      CONFIG.viewport.width,
+      CONFIG.viewport.height
+    )
 
     // tools that are likely depend on PIXI_GUKI ticker
     INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
-    ENTITY_FACTORY.init()
     CACHE.init()
-    FLIP.init() // flips containers horizontally
+    FLIP.init() // flips alive entities horizontally 📜 move to systems
     COLLISION.init() // collision editor
     SIGNAL.init()
-    USER_DATA.init() // user data
+    USER_DATA.init()
     DEV_MODE.init()
-    LOCAL.init()
+    LOCAL.init() // local storage
     // REMOTE.init() // remote controller
 
     // hero creation
@@ -43,7 +48,7 @@ export default defineNuxtPlugin(async (app) => {
     await ITEM.init() // item loader
     await WORLD.init() // init systems, like spawn mobs
 
-    // all tools setup itself in init, INPUT is third-party so setup here
+    // all tools setup itself in init, INPUT is third-party (guki) so setup here
     PIXI_GUKI.tickerAdd(() => {
       INPUT.update()
 
