@@ -22,7 +22,6 @@ export default defineNuxtPlugin(async (app) => {
     // tools that are likely depend on PIXI_GUKI ticker
     INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
     CACHE.init()
-    FLIP.init() // flips alive entities horizontally 📜 move to systems
     COLLISION.init()
     SIGNAL.init()
     USER_DATA.init()

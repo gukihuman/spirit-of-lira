@@ -44,7 +44,7 @@ class GukiConfig {
       INPUT: 2, // at least USER_DATA depends on it
 
       SIGNAL: -1, // runs all logic for collected signals and empty itself
-      FLIP: -2,
+      flip: -2,
       attack: -3,
       state: -4,
     },
