@@ -23,7 +23,7 @@ export default defineNuxtPlugin(async (app) => {
     INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
     CACHE.init()
     FLIP.init() // flips alive entities horizontally 📜 move to systems
-    COLLISION.init() // collision editor
+    COLLISION.init()
     SIGNAL.init()
     USER_DATA.init()
     DEV_MODE.init()

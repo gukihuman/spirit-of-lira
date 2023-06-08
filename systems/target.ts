@@ -112,18 +112,18 @@ export default class target {
     let hoverEntityId = 0
 
     WORLD.entities.forEach((entity, id) => {
-      if (id === GLOBAL.heroId || !entity.alive) return
+      if (id === GLOBAL.heroId || !entity.alive || !entity.size) return
 
       // how mutch height goes under the y coordinate
-      let offset = entity.alive.width / 4
+      let offset = entity.size.width / 4
 
       const position = entity.position
 
       const rect = {
-        x: position.x - heroPosition.x + 960 - entity.alive.width / 2,
-        y: position.y - heroPosition.y + 540 - entity.alive.height + offset,
-        width: entity.alive.width,
-        height: entity.alive.height,
+        x: position.x - heroPosition.x + 960 - entity.size.width / 2,
+        y: position.y - heroPosition.y + 540 - entity.size.height + offset,
+        width: entity.size.width,
+        height: entity.size.height,
       }
       const intersectX = point.x < rect.x + rect.width && point.x > rect.x
       const intersectY = point.y < rect.y + rect.height && point.y > rect.y

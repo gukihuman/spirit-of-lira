@@ -43,7 +43,6 @@ class EntityFactory {
   }
 
   private dependCounter = 0
-
   private async mergeComponent(entity, id, name, value) {
     this.dependCounter++
     if (this.dependCounter > 100) {

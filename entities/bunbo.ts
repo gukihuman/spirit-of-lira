@@ -1,9 +1,10 @@
 export default {
   name: "bunbo",
-  alive: {
+  size: {
     width: 70,
     height: 60,
-
+  },
+  alive: {
     speed: 8,
     leaveStateConditions: {
       move: (entity, id) => {

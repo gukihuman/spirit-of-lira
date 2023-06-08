@@ -25,13 +25,13 @@ export default class state {
   }
 
   checkAttack(entity, id) {
-    if (!entity.alive.targetEntityId || !entity.attack) return
+    if (!entity.alive.targetEntityId || !entity.attack || !entity.size) return
     if (!entity.alive.targetAttacked) return
 
     const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
     const distance = LIB.distance(entity.position, targetEntity.position)
 
-    if (distance < targetEntity.alive.width / 2 + entity.attack.distance) {
+    if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
       if (id === GLOBAL.heroId) {
         entity.alive.state = "sword-attack"
       }

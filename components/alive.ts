@@ -1,8 +1,6 @@
 export default {
   alive: {
     faction: "peaceful",
-    width: 10,
-    height: 10,
 
     speed: 5,
     state: "idle",
@@ -15,14 +13,14 @@ export default {
     lastStateSwitchMS: 0,
     lastTargetPositionMS: 0,
 
-    depend: ["visual"],
+    depend: ["visual", "size"],
     init(entity, id, name, value) {
       //
       // draw shadow
       const shadow = new PIXI.Graphics()
       shadow.beginFill(0x000000)
 
-      const width = entity.alive.width / 2
+      const width = entity.size.width / 2
 
       shadow.drawCircle(0, 0, width)
       shadow.endFill()

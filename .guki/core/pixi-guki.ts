@@ -1,4 +1,4 @@
-class PixiManager {
+class PixiGuki {
   //
   // app has to be initiated when window object exist
   app?: Application
@@ -106,4 +106,4 @@ class PixiManager {
   }
 }
 
-export const PIXI_GUKI = new PixiManager()
+export const PIXI_GUKI = new PixiGuki()

@@ -1,9 +1,10 @@
 export default {
   name: "lira",
-  alive: {
+  size: {
     width: 60,
     height: 90,
-
+  },
+  alive: {
     speed: 10,
   },
   attack: {
