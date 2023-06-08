@@ -8,7 +8,7 @@ export default class Item {
   process() {
     const heroSprite = PIXI_GUKI.getAnimationSprite(
       GLOBAL.heroId,
-      GLOBAL.hero.alive.state
+      GLOBAL.hero.visual.animation
     )
     if (!heroSprite) return
 

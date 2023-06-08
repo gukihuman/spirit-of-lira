@@ -158,7 +158,7 @@ export default class target {
     const id = GLOBAL.hero.alive.targetEntityId
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
-    const sprite = PIXI_GUKI.getAnimationSprite(id, entity.alive.state)
+    const sprite = PIXI_GUKI.getAnimationSprite(id, entity.visual.animation)
 
     if (sprite) {
       sprite.filters = [

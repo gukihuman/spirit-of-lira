@@ -1,7 +1,10 @@
 export default {
   visual: {
+    animation: "idle", // even for non-alive
     firstFrames: { idle: 0, move: 0, attack: 0 },
     parentContainer: "sortable",
+
+    lastAnimationSwitchMS: 0,
 
     async init(entity, id, name, value) {
       if (!PIXI_GUKI.app) return

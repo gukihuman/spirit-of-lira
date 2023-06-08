@@ -75,15 +75,18 @@ export default class move {
     if (entity.alive && id !== GLOBAL.heroId) {
       if (!entity.alive.targetPosition) {
         entity.alive.targetPosition = _.cloneDeep(entity.position)
-        entity.alive.lastTargetPositionMS = PIXI_GUKI.elapsedMS - 15_000
+        entity.alive.lastAutoTargetPositionMS = PIXI_GUKI.elapsedMS - 15_000
       }
-      if (PIXI_GUKI.elapsedMS - entity.alive.lastTargetPositionMS > 15_000) {
+      if (
+        PIXI_GUKI.elapsedMS - entity.alive.lastAutoTargetPositionMS >
+        15_000
+      ) {
         if (Math.random() > 0.08 * PIXI_GUKI.deltaSec) return
         let x = _.random(-500, 500)
         let y = _.random(-500, 500)
         entity.alive.targetPosition.x = entity.position.x + x
         entity.alive.targetPosition.y = entity.position.y + y
-        entity.alive.lastTargetPositionMS = PIXI_GUKI.elapsedMS
+        entity.alive.lastAutoTargetPositionMS = PIXI_GUKI.elapsedMS
       }
     }
   }

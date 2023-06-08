@@ -9,9 +9,10 @@ export default {
     targetLocked: false,
     targetAttacked: false,
 
+    // 📜 move to visual cuz non-alive might need flip too like projectiles
+    // may be not but it seems like better practice
     lastFlipMS: 0,
-    lastStateSwitchMS: 0,
-    lastTargetPositionMS: 0,
+    lastAutoTargetPositionMS: 0,
 
     depend: ["visual", "size"],
     init(entity, id, name, value) {

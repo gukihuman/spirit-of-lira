@@ -4,6 +4,9 @@ class PixiGuki {
   app?: Application
   elapsedMS: number = 0
 
+  lastTicksFPS: number[] = []
+  averageFPS: number = 0
+
   map = new PIXI.Container()
   ground = new PIXI.Container()
   collision = new PIXI.Container()
@@ -37,6 +40,10 @@ class PixiGuki {
     this.tickerAdd(() => {
       if (!this.app) return
       this.elapsedMS += this.app.ticker.deltaMS
+
+      if (this.lastTicksFPS.length > 100) this.lastTicksFPS.shift()
+      this.lastTicksFPS.push(this.app.ticker.FPS)
+      this.averageFPS = _.mean(this.lastTicksFPS)
     })
   }
 
@@ -68,9 +75,12 @@ class PixiGuki {
     return entityContainer?.getChildByName("animations") as gContainer
   }
 
-  getAnimationSprite(id: number, state: string): AnimatedSprite | undefined {
+  getAnimationSprite(
+    id: number,
+    animation: string
+  ): AnimatedSprite | undefined {
     const animationsContainer = this.getAnimationContainer(id) as gContainer
-    return animationsContainer.getChildByName(state) as AnimatedSprite
+    return animationsContainer.getChildByName(animation) as AnimatedSprite
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {

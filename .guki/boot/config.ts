@@ -39,7 +39,7 @@ class GukiConfig {
 
     // order of execute in ticker, handled by PIXI_GUKI
     toolsAndSystems: {
-      render: 4,
+      animation: 4,
       CACHE: 3,
       INPUT: 2, // at least USER_DATA depends on it
 
