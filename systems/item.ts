@@ -1,4 +1,4 @@
-class Item {
+export default class Item {
   items = {
     // value is an array of states that goes in front
     "common-sword": ["attack"],
@@ -12,7 +12,9 @@ class Item {
     )
     if (!heroSprite) return
 
+    // 📜 make independent when run or walk
     this.itemSprites.forEach((sprite) => {
+      //
       // instead of checking each state, just syncronizes all item sprites
       // and mock up if the frame difference for shorter state animations =)
       if (heroSprite.currentFrame > sprite.totalFrames - 1) return
@@ -27,7 +29,7 @@ class Item {
 
     const promises: Promise<void>[] = []
 
-    _.forEach(this.items, (states, name) => {
+    _.forEach(this.items, (frontStates, name) => {
       promises.push(
         new Promise(async (resolve) => {
           const spritesheet = await PIXI_GUKI.getSpritesheet(name)
@@ -57,7 +59,7 @@ class Item {
             this.itemSprites.push(animatedSprite)
 
             // classify items on back or in front
-            if (states.includes(stateName)) {
+            if (frontStates.includes(stateName)) {
               frontItemContainer.addChild(animatedSprite)
             } else backItemContainer.addChild(animatedSprite)
           })
@@ -67,10 +69,5 @@ class Item {
       )
     })
     await Promise.all(promises)
-
-    PIXI_GUKI.tickerAdd(() => {
-      this.process()
-    }, "ITEM")
   }
 }
-export const ITEM = new Item()

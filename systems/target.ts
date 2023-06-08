@@ -171,9 +171,9 @@ export default class target {
       if (GLOBAL.hero.alive.targetAttacked) {
         sprite.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
-            red: 1.2,
+            red: 1.4,
             saturation: 0.9,
-            brightness: 0.9,
+            brightness: 0.8,
           })
         )
       }

@@ -44,7 +44,6 @@ export default defineNuxtPlugin(async (app) => {
 
     // tools depend on hero instance
     await MAP.init() // map manager, needs hero coordinates to init
-    await ITEM.init() // item loader
     await WORLD.init() // init systems, like spawn mobs
 
     // all tools setup itself in init, INPUT is third-party (guki) so setup here

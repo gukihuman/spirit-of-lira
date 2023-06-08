@@ -1,4 +1,4 @@
-export default class render {
+export default class Render {
   private synchronizeItems() {
     const currentState = GLOBAL.hero.alive.state
 
@@ -6,6 +6,7 @@ export default class render {
     const front = PIXI_GUKI.getContainer(GLOBAL.heroId)
       ?.children[2] as Container
     if (!back || !front) return
+
     back.children.forEach((child) => {
       const itemContainer = child as Container
       itemContainer.children.forEach((sprite) => {
