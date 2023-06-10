@@ -1,11 +1,16 @@
 export default class move {
+  //
+  // attack stops when force move, for example from input for hero
+  // and maybe there will be some cases for mobs too
+  private forceMove = false
+
   process() {
     WORLD.entities.forEach((entity, id) => {
       this.move(entity)
       this.setRandomTargetPosition(entity, id)
     })
 
-    if (GLOBAL.context === "autoMove") SIGNAL.emit("mouseMove")
+    if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
   }
 
   // set hero target position to mouse position
@@ -19,6 +24,8 @@ export default class move {
       GLOBAL.hero.alive.targetPosition = undefined
       return
     }
+
+    GLOBAL.hero.alive.state = "forcemove"
 
     const mousePosition = LIB.mousePoint()
     mousePosition.x += GLOBAL.hero.position.x - 960
@@ -40,11 +47,18 @@ export default class move {
 
     const velocity = LIB.vectorFromAngle(angle, speedPerTick)
 
+    this.forceMove = true // gamepad always force
     this.checkCollisionAndMove(GLOBAL.hero, velocity, ratio)
   }
 
   move(entity: gEntity) {
     if (!entity.alive || !entity.alive.targetPosition) return
+    if (entity.alive.state === "attack") return
+
+    if (entity.alive.state === "forcemove") this.forceMove = true
+    else this.forceMove = false
+
+    entity.alive.state = "idle"
 
     const speedPerTick = LIB.speedPerTick(entity)
 
@@ -55,8 +69,17 @@ export default class move {
     const distance = displacement.distance
 
     if (distance < speedPerTick) {
-      // entity.alive.targetPosition = undefined
       return
+    }
+
+    if (entity.attack && entity.alive.targetAttacked) {
+      const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+      if (
+        targetEntity &&
+        distance < targetEntity.size.width / 2 + entity.attack.distance
+      ) {
+        return
+      }
     }
 
     let ratio = _.clamp(distance / 200, 1)
@@ -95,6 +118,10 @@ export default class move {
     const position = entity.position
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
+
+    if (this.forceMove) entity.alive.state = "forcemove"
+    else entity.alive.state = "move"
+
     if (!SYSTEM_DATA.states.collision) {
       position.x = nextX
       position.y = nextY
@@ -113,6 +140,7 @@ export default class move {
         position.y = nextY
         return
       }
+      entity.alive.state = "idle"
       return
     }
   }

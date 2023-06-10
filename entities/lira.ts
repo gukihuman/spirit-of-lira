@@ -8,10 +8,11 @@ export default {
     speed: 10,
   },
   attack: {
-    distance: 80,
+    distance: 50,
+    speed: 1.2,
   },
   visual: {
-    firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 13 },
+    firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
   },
   language: {
     system: `fantasy world {

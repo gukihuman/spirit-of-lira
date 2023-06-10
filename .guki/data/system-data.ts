@@ -20,6 +20,7 @@ class SystemData {
     collision: true,
     firstMouseMove: false,
     inputFocus: false,
+    autoMouseMove: false,
 
     // UI on / off
     inventory: false,

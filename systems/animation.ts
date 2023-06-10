@@ -108,19 +108,13 @@ export default class Animation {
   }
 
   private checkAttack(entity, id) {
-    if (!entity.alive.targetEntityId || !entity.attack || !entity.size) return
-    if (!entity.alive.targetAttacked) return
-    console.log(entity.name)
+    if (!entity.alive || !entity.attack) return
+    if (entity.alive.state !== "attack") return
 
-    const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
-    const distance = LIB.distance(entity.position, targetEntity.position)
-
-    if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
-      if (id === GLOBAL.heroId) {
-        entity.visual.animation = "sword-attack"
-      } else {
-        entity.visual.animation = "attack"
-      }
+    if (id === GLOBAL.heroId) {
+      entity.visual.animation = "sword-attack"
+    } else {
+      entity.visual.animation = "attack"
     }
   }
 

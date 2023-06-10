@@ -8,7 +8,7 @@ export default class target {
 
     this.heroTargetByGamepad()
 
-    if (GLOBAL.context !== "autoMove") this.heroTargetByMouse()
+    if (!SYSTEM_DATA.states.autoMouseMove) this.heroTargetByMouse()
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
@@ -34,6 +34,13 @@ export default class target {
         if (distance < minDistance) {
           minDistance = distance
           entity.alive.targetEntityId = otherId
+        }
+
+        if (
+          entity.alive.faction !== otherEntity.alive.faction &&
+          id !== GLOBAL.heroId
+        ) {
+          entity.alive.targetAttacked = true
         }
       })
 
@@ -150,18 +157,22 @@ export default class target {
     GLOBAL.hover = WORLD.entities.get(hoverEntityId)
   }
 
-  lastSprite: Sprite | undefined
+  lastContainer: Container | undefined
 
   updateHeroTargetFilter() {
-    if (this.lastSprite) this.lastSprite.filters = []
-
     const id = GLOBAL.hero.alive.targetEntityId
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
-    const sprite = PIXI_GUKI.getAnimationSprite(id, entity.visual.animation)
 
-    if (sprite) {
-      sprite.filters = [
+    if (entity.attack.damageFilterStartMS + 100 > PIXI_GUKI.elapsedMS) return
+
+    const container = PIXI_GUKI.getAnimationContainer(id)
+
+    // 📜 implement filter handler somewhere
+    if (this.lastContainer) this.lastContainer.filters = []
+
+    if (container) {
+      container.filters = [
         new PIXI_FILTERS.AdvancedBloomFilter({
           quality: 2,
           bloomScale: 0.23,
@@ -169,7 +180,7 @@ export default class target {
         }),
       ]
       if (GLOBAL.hero.alive.targetAttacked) {
-        sprite.filters.push(
+        container.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
             saturation: 0.9,
@@ -178,7 +189,7 @@ export default class target {
         )
       }
     }
-    this.lastSprite = sprite
+    this.lastContainer = container
   }
 
   targetUnlock() {

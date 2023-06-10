@@ -30,8 +30,6 @@ class Signal {
     },
     autoMouseMove() {
       SYSTEM_DATA.states.autoMouseMove = !SYSTEM_DATA.states.autoMouseMove
-      if (GLOBAL.context === "autoMove") GLOBAL.context = "default"
-      else GLOBAL.context = "autoMove"
     },
     gamepadMove() {
       WORLD.systems.get("move")?.gamepadMove()

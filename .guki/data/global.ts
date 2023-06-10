@@ -4,6 +4,5 @@ class Global {
   lastHero: gEntity = {} // previous tick hero
   hover: gEntity = {}
   hoverId: number = 0
-  context: "autoMove" | "follow" | "default" = "default"
 }
 export const GLOBAL = new Global()

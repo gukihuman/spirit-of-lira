@@ -47,7 +47,7 @@ class UserData {
       })
     })
 
-    // overwrite mouseMove pressed instead of default
+    // overwrite default
     if (
       INPUT.mouse.pressed.includes(
         this.settings.inputSignals.mouse.mouseMoveOrAttack
@@ -57,7 +57,7 @@ class UserData {
       )
     ) {
       SIGNAL.emit("mouseMove")
-      GLOBAL.context = "default"
+      SYSTEM_DATA.states.autoMouseMove = false
     }
   }
 

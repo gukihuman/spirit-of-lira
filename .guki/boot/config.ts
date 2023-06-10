@@ -46,7 +46,6 @@ class GukiConfig {
       SIGNAL: -1, // runs all logic for collected signals and empty itself
       flip: -2,
       attack: -3,
-      state: -4,
     },
   }
 }
