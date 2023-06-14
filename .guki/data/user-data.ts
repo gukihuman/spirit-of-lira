@@ -16,6 +16,7 @@ class UserData {
         lockTarget: 2,
       },
       gamepad: {
+        attack: "A",
         fullscreen: "Menu",
         inventory: "Start",
         sendInput: "LB",

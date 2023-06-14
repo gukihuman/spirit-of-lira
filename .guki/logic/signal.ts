@@ -1,6 +1,6 @@
 class Signal {
   private active: string[] = []
-  private logic = {
+  logic = {
     collision() {
       SYSTEM_DATA.states.collision = !SYSTEM_DATA.states.collision
     },
@@ -15,10 +15,20 @@ class Signal {
         document.exitFullscreen()
       }
     },
+    attack() {
+      if (!GLOBAL.hero.alive.targetEntityId) return
+
+      GLOBAL.hero.alive.targetAttacked = true
+      GLOBAL.hero.alive.targetLocked = true
+
+      const move = WORLD.systems.get("move")
+      if (move) move.startAttackMS = PIXI_GUKI.elapsedMS
+    },
     mouseMoveOrAttack() {
       WORLD.systems.get("move")?.mouseMove()
 
-      if (GLOBAL.hero.alive.targetEntityId === GLOBAL.hoverId) {
+      if (GLOBAL.hoverId) {
+        GLOBAL.hero.alive.targetEntityId = GLOBAL.hoverId
         GLOBAL.hero.alive.targetAttacked = true
         GLOBAL.hero.alive.targetLocked = true
       } else {
@@ -41,6 +51,13 @@ class Signal {
       if (!GLOBAL.hero.alive.targetEntityId) return
 
       GLOBAL.hero.alive.targetLocked = !GLOBAL.hero.alive.targetLocked
+
+      if (!GLOBAL.hero.alive.targetLocked) {
+        GLOBAL.hero.alive.targetEntityId = undefined
+        GLOBAL.hero.alive.targetAttacked = false
+        GLOBAL.hero.alive.targetPosition = undefined
+        GLOBAL.hero.alive.state = "idle"
+      }
 
       // in case lock is used to lock a new target immidiately
       if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {

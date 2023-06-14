@@ -47,8 +47,7 @@ class PixiGuki {
     })
   }
 
-  /**
-   * Multiplier ratio of one tick iteration for values that suppose to represent one second. Knows current framerate and handles all inconsistancy in frames.
+  /** Multiplier ratio of one tick iteration for values that suppose to represent one second. Knows current framerate and handles all inconsistancy in frames.
    * @returns 1/60 for 60 fps, 1/144 for 144 fps
    */
   get deltaSec() {

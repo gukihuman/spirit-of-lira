@@ -4,13 +4,32 @@ export default class move {
   // and maybe there will be some cases for mobs too
   private forceMove = false
 
+  private startAttackMS = 0
+  private gamepadMoved = false
+
   process() {
     WORLD.entities.forEach((entity, id) => {
-      this.move(entity)
+      this.move(entity, id)
       this.setRandomTargetPosition(entity, id)
     })
 
     if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
+    this.updateGamepadMoveInfo()
+  }
+  private updateGamepadMoveInfo() {
+    if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
+      if (this.gamepadMoved === false) {
+        this.startAttackMS = PIXI_GUKI.elapsedMS
+      }
+
+      if (PIXI_GUKI.elapsedMS > this.startAttackMS + 1000) {
+        GLOBAL.hero.alive.targetPosition = undefined
+        GLOBAL.hero.alive.targetAttacked = false
+      }
+      this.gamepadMoved = true
+    } else {
+      this.gamepadMoved = false
+    }
   }
 
   // set hero target position to mouse position
@@ -37,7 +56,6 @@ export default class move {
   gamepadMove() {
     if (!GLOBAL.hero) return
 
-    GLOBAL.hero.alive.targetPosition = undefined
     const speedPerTick = LIB.speedPerTick(GLOBAL.hero)
 
     const axesVector = LIB.vector(INPUT.gamepad.axes[0], INPUT.gamepad.axes[1])
@@ -49,9 +67,11 @@ export default class move {
 
     this.forceMove = true // gamepad always force
     this.checkCollisionAndMove(GLOBAL.hero, velocity, ratio)
+    this.gamepadMoved = true
   }
 
-  move(entity: gEntity) {
+  move(entity: gEntity, id) {
+    if (id === GLOBAL.heroId && this.gamepadMoved) return
     if (!entity.alive || !entity.alive.targetPosition) return
     if (entity.alive.state === "attack") return
 

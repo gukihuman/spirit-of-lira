@@ -62,6 +62,9 @@ export default defineNuxtPlugin(async (app) => {
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())
 
-    SYSTEM_DATA.states.loadingScreen = false
+    // to make shure initial loading transition will work
+    setTimeout(() => {
+      SYSTEM_DATA.states.loadingScreen = false
+    }, 0)
   }
 })

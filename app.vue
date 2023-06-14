@@ -2,8 +2,11 @@
 
 fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-center select-none")
 
+  //- loading screen
+  p(class="text-slate-300 text-xl font-semibold") loading...
+
   //- 1920 / 1080 centered game window
-  game-window
+  transition: game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
     viewport
@@ -11,20 +14,13 @@ fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-cente
     div(class="z-10")
       bars
 
-    div(class="z-10")
-      transition
-        input-area(v-if="SYSTEM_DATA.states.input")
+    div(class="z-10"): transition
+        input-area(v-show="SYSTEM_DATA.states.input")
 
     //- output-area
 
-    div(class="z-30")
-      transition
-        inventory(v-if="SYSTEM_DATA.states.inventory")
-
-    //- loading screen on top of everything
-    div(class="z-50")
-      transition
-        loading(v-if="SYSTEM_DATA.states.loadingScreen")
+    div(class="z-30"): transition
+        inventory(v-show="SYSTEM_DATA.states.inventory")
 
 </template>
 

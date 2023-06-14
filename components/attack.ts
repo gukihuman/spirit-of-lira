@@ -5,6 +5,5 @@ export default {
 
     attackStartMS: 0,
     initialAttackStartMS: 0,
-    damageFilterStartMS: 0,
   },
 }

@@ -9,6 +9,7 @@ export default class flip {
       const container = PIXI_GUKI.getContainer(id)
       if (!container) return
 
+      // move
       if (entity.position.x < previousX) {
         container.scale.x = -1
         entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
@@ -17,7 +18,7 @@ export default class flip {
         entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
       }
 
-      // 📜 add attack target dependence
+      // attack target
       if (entity.alive.targetEntityId && entity.alive.targetAttacked) {
         const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
         if (targetEntity.position.x < entity.position.x) {

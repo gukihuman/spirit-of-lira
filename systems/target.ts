@@ -69,13 +69,13 @@ export default class target {
     // group to choose closest by distance not by angle if angle is small
     const closestGroup: number[] = []
     const correspondDistances: number[] = []
-    const angleToGroup = 0.3 // about 20 degrees
+    const angleToGroup = 0.2 // about 12 degrees
 
     WORLD.entities.forEach((entity, id) => {
       if (!entity.alive || id === GLOBAL.heroId) return
 
       const distance = LIB.distance(GLOBAL.hero.position, entity.position)
-      if (distance > 540) return
+      if (distance > 750) return
 
       const entityAngle = LIB.angle(GLOBAL.hero.position, entity.position)
       const angle = Math.abs(entityAngle - axesAngle)
@@ -160,6 +160,9 @@ export default class target {
   lastContainer: Container | undefined
 
   updateHeroTargetFilter() {
+    // 📜 implement filter handler somewhere
+    if (this.lastContainer) this.lastContainer.filters = []
+
     const id = GLOBAL.hero.alive.targetEntityId
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
@@ -167,9 +170,6 @@ export default class target {
     if (entity.attack.damageFilterStartMS + 100 > PIXI_GUKI.elapsedMS) return
 
     const container = PIXI_GUKI.getAnimationContainer(id)
-
-    // 📜 implement filter handler somewhere
-    if (this.lastContainer) this.lastContainer.filters = []
 
     if (container) {
       container.filters = [

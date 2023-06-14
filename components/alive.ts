@@ -3,7 +3,9 @@ export default {
     faction: "peaceful",
 
     speed: 5,
+    health: 10,
     state: "idle",
+
     targetPosition: undefined,
     targetEntityId: 0,
     targetLocked: false,
