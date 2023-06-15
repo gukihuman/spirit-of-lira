@@ -17,6 +17,19 @@ export default class target {
   autoTarget() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.alive) return
+
+      if (entity.alive.targetLocked) {
+        const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+        const distance = LIB.distance(entity.position, targetEntity.position)
+        if (distance > 300) {
+          entity.alive.targetEntityId = undefined
+          entity.alive.targetLocked = false
+          entity.alive.targetAttacked = false
+        } else {
+          return
+        }
+      }
+
       if (entity.alive.targetLocked) return
       let minDistance = Infinity
 
@@ -184,7 +197,7 @@ export default class target {
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
             saturation: 0.9,
-            brightness: 0.8,
+            brightness: 0.7,
           })
         )
       }

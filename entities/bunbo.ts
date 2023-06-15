@@ -10,11 +10,12 @@ export default {
         return PIXI_GUKI.getAnimationSprite(id, "move")?.currentFrame === 0
       },
     },
+    firstFrames: { attack: 18 },
   },
   alive: {
     speed: 8,
   },
   attack: {
-    distance: 120,
+    distance: 40,
   },
 }

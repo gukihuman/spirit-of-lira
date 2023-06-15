@@ -1,6 +1,5 @@
 export default class attack {
   private initialAttack = true
-  private damageDone = false
 
   process() {
     WORLD.entities.forEach((entity, id) => {
@@ -12,10 +11,10 @@ export default class attack {
       this.updateAnimationSpeed(entity, id)
 
       const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
-      // if (!targetEntity) {
-      //   entity.alive.state = "idle"
-      //   return
-      // }
+      if (!targetEntity) {
+        entity.alive.state = "idle"
+        return
+      }
 
       const distance = LIB.distance(entity.position, targetEntity.position)
 
@@ -26,7 +25,7 @@ export default class attack {
       }
 
       // delay is like 2 frames when attack is 10
-      const delay = (entity.attack.speed / 5) * 1000
+      const delay = (entity.attack.speed / entity.attack.delay) * 1000
 
       if (
         entity.alive.state === "attack" &&
@@ -39,19 +38,21 @@ export default class attack {
         }
 
         entity.alive.state = "idle"
-        this.damageDone = false
+        entity.damageDone = false
       }
 
       if (
         entity.alive.state === "attack" &&
         entity.attack.attackStartMS - delay + entity.attack.speed * 1000 <=
           PIXI_GUKI.elapsedMS &&
-        !this.damageDone
+        !entity.damageDone
       ) {
-        //
-        // 📜 add damage system
-        console.log("damage")
-        this.damageDone = true
+        // damage done here
+        WORLD.systems.get("damage").events.push({
+          entityId: id,
+          targetEntityId: entity.alive.targetEntityId,
+        })
+        entity.damageDone = true
       }
 
       const lastEntity = CACHE.entities.get(id)
@@ -63,7 +64,8 @@ export default class attack {
 
         if (
           entity.attack.initialAttackStartMS + entity.attack.speed * 2 * 1000 <=
-          PIXI_GUKI.elapsedMS
+            PIXI_GUKI.elapsedMS &&
+          id === GLOBAL.heroId
         ) {
           //
           // get animation instead of declare cuz it should already

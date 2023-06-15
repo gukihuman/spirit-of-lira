@@ -5,6 +5,7 @@ export default {
     parentContainer: "sortable",
 
     lastAnimationSwitchMS: 0,
+    stableFlip: false,
 
     async init(entity, id, name, value) {
       if (!PIXI_GUKI.app) return
@@ -12,7 +13,10 @@ export default {
       const container = new PIXI.Container() as gContainer
       container.name = entity.name
       container.id = id
-      container.scale.x = _.random() < 0.5 ? -1 : 1
+
+      if (!entity.visual.stableFlip) {
+        container.scale.x = _.random() < 0.5 ? -1 : 1
+      }
 
       PIXI_GUKI[entity.visual.parentContainer].addChild(container)
 

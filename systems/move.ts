@@ -115,7 +115,7 @@ export default class move {
   }
 
   setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.alive && id !== GLOBAL.heroId) {
+    if (entity.alive && id !== GLOBAL.heroId && !entity.alive.targetAttacked) {
       if (!entity.alive.targetPosition) {
         entity.alive.targetPosition = _.cloneDeep(entity.position)
         entity.alive.lastAutoTargetPositionMS = PIXI_GUKI.elapsedMS - 15_000

@@ -69,9 +69,19 @@ class PixiGuki {
     return undefined
   }
 
+  getBackContainer(id: number): gContainer | undefined {
+    const entityContainer = this.getContainer(id)
+    return entityContainer?.getChildByName("back") as gContainer
+  }
+
   getAnimationContainer(id: number): gContainer | undefined {
     const entityContainer = this.getContainer(id)
     return entityContainer?.getChildByName("animations") as gContainer
+  }
+
+  getFrontContainer(id: number): gContainer | undefined {
+    const entityContainer = this.getContainer(id)
+    return entityContainer?.getChildByName("front") as gContainer
   }
 
   getAnimationSprite(

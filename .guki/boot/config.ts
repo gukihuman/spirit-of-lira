@@ -43,10 +43,11 @@ class GukiConfig {
       CACHE: 3,
       INPUT: 2, // at least USER_DATA depends on it
 
-      SIGNAL: -1, // runs all logic for collected signals and empty itself
-      move: -2,
-      attack: -3,
-      flip: -4,
+      EFFECT_FACTORY: -1,
+      SIGNAL: -2, // runs all logic for collected signals and empty itself
+      move: -3,
+      attack: -4,
+      flip: -5,
     },
   }
 }

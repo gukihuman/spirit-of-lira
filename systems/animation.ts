@@ -54,7 +54,10 @@ export default class Animation {
 
     if (PIXI_GUKI.elapsedMS - entity.visual.lastAnimationSwitchMS < 200) return
 
-    if (entity.visual.leaveAnimationConditions) {
+    if (
+      entity.visual.leaveAnimationConditions &&
+      entity.alive.state !== "attack"
+    ) {
       if (
         entity.visual.animation === "move" &&
         !entity.visual.leaveAnimationConditions.move(entity, id)
