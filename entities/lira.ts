@@ -4,7 +4,7 @@ export default {
     width: 60,
     height: 90,
   },
-  alive: {
+  move: {
     speed: 10,
   },
   attack: {

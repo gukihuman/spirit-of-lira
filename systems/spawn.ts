@@ -45,8 +45,8 @@ export default class spawn {
         const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
           WORLD.entities.delete(id)
-          let container = PIXI_GUKI.getContainer(id)
-          if (container) PIXI_GUKI.sortable.removeChild(container)
+          let container = GPIXI.getMain(id)
+          if (container) GPIXI.sortable.removeChild(container)
         }
       })
 

@@ -1,3 +1,5 @@
+import { values } from "lodash"
+
 class EntityFactory {
   private nextId = 1
 
@@ -74,7 +76,27 @@ class EntityFactory {
 
     if (entity[name].init) await entity[name].init(entity, id, name, value)
 
+    if (entity[name].trigger) {
+      const promises: Promise<void>[] = []
+      value.trigger.forEach((triggerName) => {
+        if (entity[triggerName]) return
+
+        const triggerValue = STORE.components.get(triggerName)
+        if (!triggerValue) {
+          LIB.logWarning(
+            `"${triggerName}" as a "${name}" trigger is not found (ENTITY_FACTORY)`
+          )
+          return
+        }
+        promises.push(
+          this.mergeComponent(entity, id, triggerName, triggerValue)
+        )
+      })
+      await Promise.all(promises)
+    }
+
     delete entity[name].depend
+    delete entity[name].trigger
     delete entity[name].autoInject
     delete entity[name].init
   }

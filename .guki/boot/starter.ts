@@ -12,14 +12,14 @@ export default defineNuxtPlugin(async (app) => {
 
     CONFIG.init()
 
-    // everything depend on PIXI_GUKI ticker, init it right after CONFIG
-    PIXI_GUKI.init(
+    // everything depend on GPIXI ticker, init it right after CONFIG
+    GPIXI.init(
       SYSTEM_DATA.refs.viewport,
       CONFIG.viewport.width,
       CONFIG.viewport.height
     )
 
-    // tools that are likely depend on PIXI_GUKI ticker
+    // tools that are likely depend on GPIXI ticker
     INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
     CACHE.init()
     COLLISION.init()
@@ -48,7 +48,7 @@ export default defineNuxtPlugin(async (app) => {
     await WORLD.init() // init systems, like spawn mobs
 
     // all tools setup itself in init, INPUT is third-party (guki) so setup here
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       INPUT.update()
 
       // watch first mouse move (or double click)

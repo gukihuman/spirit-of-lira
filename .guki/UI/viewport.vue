@@ -2,7 +2,7 @@
 
 div(
   ref="viewport"
-  class="absolute transition duration-200"
+  class="absolute transition time-200"
   :class="{ 'blur': SYSTEM_DATA.states.inventory }"
 )
 

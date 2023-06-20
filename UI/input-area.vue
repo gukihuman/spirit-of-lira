@@ -10,7 +10,7 @@ div(
     @focus="SYSTEM_DATA.states.inputFocus = true"
     @blur="SYSTEM_DATA.states.inputFocus = false"
     placeholder="..."
-    class="text-[26px] bg-sand-100 rounded-3xl focus:outline-none border-[6px] border-sand-300 px-[16px] pb-[16px] pt-[8px] resize-none duration-100 ease-in-out text-bottom selected-text text-sand-700 leading-[1.2] font-semibold mt-[6px] mb-[2px] mx-[10px] shadow-md placeholder:text-sand-500 selection:bg-sand-700 selection:text-sand-100"
+    class="text-[26px] bg-sand-100 rounded-3xl focus:outline-none border-[6px] border-sand-300 px-[16px] pb-[16px] pt-[8px] resize-none time-100 ease-in-out text-bottom selected-text text-sand-700 leading-[1.2] font-semibold mt-[6px] mb-[2px] mx-[10px] shadow-md placeholder:text-sand-500 selection:bg-sand-700 selection:text-sand-100"
   )
   img(
     src="@/assets/inventory/send.webp"

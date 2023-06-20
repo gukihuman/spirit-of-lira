@@ -19,12 +19,12 @@ export default class move {
   private updateGamepadMoveInfo() {
     if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       if (this.gamepadMoved === false) {
-        this.startAttackMS = PIXI_GUKI.elapsedMS
+        this.startAttackMS = GPIXI.elapsedMS
       }
 
-      if (PIXI_GUKI.elapsedMS > this.startAttackMS + 1000) {
-        GLOBAL.hero.alive.targetPosition = undefined
-        GLOBAL.hero.alive.targetAttacked = false
+      if (GPIXI.elapsedMS > this.startAttackMS + 1000) {
+        GLOBAL.hero.move.destination = undefined
+        GLOBAL.hero.move.targetAttacked = false
       }
       this.gamepadMoved = true
     } else {
@@ -40,16 +40,16 @@ export default class move {
     const distance = LIB.distance(LIB.centerPoint(), LIB.mousePoint())
 
     if (distance < 10) {
-      GLOBAL.hero.alive.targetPosition = undefined
+      GLOBAL.hero.move.destination = undefined
       return
     }
 
-    GLOBAL.hero.alive.state = "forcemove"
+    GLOBAL.hero.move.state = "forcemove"
 
     const mousePosition = LIB.mousePoint()
     mousePosition.x += GLOBAL.hero.position.x - 960
     mousePosition.y += GLOBAL.hero.position.y - 540
-    GLOBAL.hero.alive.targetPosition = mousePosition
+    GLOBAL.hero.move.destination = mousePosition
   }
 
   // move directly and set hero target position to undefined
@@ -72,19 +72,19 @@ export default class move {
 
   move(entity: gEntity, id) {
     if (id === GLOBAL.heroId && this.gamepadMoved) return
-    if (!entity.alive || !entity.alive.targetPosition) return
-    if (entity.alive.state === "attack") return
+    if (!entity.move || !entity.move.destination) return
+    if (entity.move.state === "attack") return
 
-    if (entity.alive.state === "forcemove") this.forceMove = true
+    if (entity.move.state === "forcemove") this.forceMove = true
     else this.forceMove = false
 
-    entity.alive.state = "idle"
+    entity.move.state = "idle"
 
     const speedPerTick = LIB.speedPerTick(entity)
 
     const displacement = LIB.vectorFromPoints(
       entity.position,
-      entity.alive.targetPosition
+      entity.move.destination
     )
     const distance = displacement.distance
 
@@ -92,8 +92,8 @@ export default class move {
       return
     }
 
-    if (entity.attack && entity.alive.targetAttacked) {
-      const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+    if (entity.attack && entity.move.targetAttacked) {
+      const targetEntity = WORLD.entities.get(entity.move.targetEntityId)
       if (
         targetEntity &&
         distance < targetEntity.size.width / 2 + entity.attack.distance
@@ -106,7 +106,7 @@ export default class move {
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 
-    if (GLOBAL.hero.alive.targetAttacked) ratio = 1
+    if (GLOBAL.hero.move.targetAttacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = LIB.vectorFromAngle(angle, speedPerTick)
@@ -115,21 +115,18 @@ export default class move {
   }
 
   setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.alive && id !== GLOBAL.heroId && !entity.alive.targetAttacked) {
-      if (!entity.alive.targetPosition) {
-        entity.alive.targetPosition = _.cloneDeep(entity.position)
-        entity.alive.lastAutoTargetPositionMS = PIXI_GUKI.elapsedMS - 15_000
+    if (entity.move && id !== GLOBAL.heroId && entity.move.state === "idle") {
+      if (!entity.move.destination) {
+        entity.move.destination = _.cloneDeep(entity.position)
+        entity.move.lastAutoTargetPositionMS = GPIXI.elapsedMS - 15_000
       }
-      if (
-        PIXI_GUKI.elapsedMS - entity.alive.lastAutoTargetPositionMS >
-        15_000
-      ) {
-        if (Math.random() > 0.08 * PIXI_GUKI.deltaSec) return
+      if (GPIXI.elapsedMS - entity.move.lastAutoTargetPositionMS > 15_000) {
+        if (Math.random() > 0.08 * GPIXI.deltaSec) return
         let x = _.random(-500, 500)
         let y = _.random(-500, 500)
-        entity.alive.targetPosition.x = entity.position.x + x
-        entity.alive.targetPosition.y = entity.position.y + y
-        entity.alive.lastAutoTargetPositionMS = PIXI_GUKI.elapsedMS
+        entity.move.destination.x = entity.position.x + x
+        entity.move.destination.y = entity.position.y + y
+        entity.move.lastAutoTargetPositionMS = GPIXI.elapsedMS
       }
     }
   }
@@ -139,8 +136,8 @@ export default class move {
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
 
-    if (this.forceMove) entity.alive.state = "forcemove"
-    else entity.alive.state = "move"
+    if (this.forceMove) entity.move.state = "forcemove"
+    else entity.move.state = "move"
 
     if (!SYSTEM_DATA.states.collision) {
       position.x = nextX
@@ -160,7 +157,7 @@ export default class move {
         position.y = nextY
         return
       }
-      entity.alive.state = "idle"
+      entity.move.state = "idle"
       return
     }
   }

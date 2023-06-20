@@ -1,32 +1,32 @@
 export default class flip {
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.alive) return
-      if (PIXI_GUKI.elapsedMS - entity.alive.lastFlipMS < 200) return
+      if (!entity.move) return
+      if (GPIXI.elapsedMS - entity.move.lastFlipMS < 200) return
 
       if (!CACHE.entities.get(id)) return
       const previousX = CACHE.entities.get(id).position.x
-      const container = PIXI_GUKI.getContainer(id)
+      const container = GPIXI.getMain(id)
       if (!container) return
 
       // move
       if (entity.position.x < previousX) {
         container.scale.x = -1
-        entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
+        entity.move.lastFlipMS = GPIXI.elapsedMS
       } else if (entity.position.x > previousX) {
         container.scale.x = 1
-        entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
+        entity.move.lastFlipMS = GPIXI.elapsedMS
       }
 
       // attack target
-      if (entity.alive.targetEntityId && entity.alive.targetAttacked) {
-        const targetEntity = WORLD.entities.get(entity.alive.targetEntityId)
+      if (entity.move.targetEntityId && entity.move.targetAttacked) {
+        const targetEntity = WORLD.entities.get(entity.move.targetEntityId)
         if (targetEntity.position.x < entity.position.x) {
           container.scale.x = -1
-          entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
+          entity.move.lastFlipMS = GPIXI.elapsedMS
         } else if (targetEntity.position.x > entity.position.x) {
           container.scale.x = 1
-          entity.alive.lastFlipMS = PIXI_GUKI.elapsedMS
+          entity.move.lastFlipMS = GPIXI.elapsedMS
         }
       }
     })

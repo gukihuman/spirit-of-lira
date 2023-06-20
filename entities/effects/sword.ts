@@ -1,6 +1,5 @@
 export default {
   name: "sword",
   visual: {},
-
-  duration: { time: 500 },
+  time: { durationMS: 500 },
 }

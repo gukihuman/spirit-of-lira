@@ -33,13 +33,13 @@ class GukiConfig {
     //
     // order of injection in entity, nandled by Entity Factory
     components: {
-      visual: 2,
-      alive: 1,
+      visual: 3,
+      container: 2,
+      move: 1,
     },
-
-    // order of execute in ticker, handled by PIXI_GUKI
+    // order of execute in ticker, handled by GPIXI
     toolsAndSystems: {
-      animation: 4,
+      visual: 4,
       CACHE: 3,
       INPUT: 2, // at least USER_DATA depends on it
 

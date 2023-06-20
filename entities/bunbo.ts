@@ -7,12 +7,12 @@ export default {
   visual: {
     leaveAnimationConditions: {
       move: (entity, id) => {
-        return PIXI_GUKI.getAnimationSprite(id, "move")?.currentFrame === 0
+        return GPIXI.getSprite(id, "move")?.currentFrame === 0
       },
     },
     firstFrames: { attack: 18 },
   },
-  alive: {
+  move: {
     speed: 8,
   },
   attack: {

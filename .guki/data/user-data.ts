@@ -63,7 +63,7 @@ class UserData {
   }
 
   init() {
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       this.emitSignals()
     }, "USER_DATA")
   }

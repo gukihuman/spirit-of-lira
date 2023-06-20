@@ -23,7 +23,7 @@ class MapManager {
     // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
 
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       this.loadCloseChunks()
 
       const heroPosition = GLOBAL.hero.position
@@ -74,7 +74,7 @@ class MapManager {
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
-    PIXI_GUKI.map.addChild(sprite)
+    GPIXI.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)
   }
 }

@@ -3,8 +3,9 @@ export default {
     distance: 10,
     speed: 1.2,
 
+    // 🔧
     attackStartMS: 0,
     initialAttackStartMS: 0,
-    damageDone: false,
+    damageDone: true,
   },
 }

@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="absolute left-[1000px] w-[500px] h-full z-20")
   div(class="flex items-end w-full h-full pb-[770px]")
-    textarea(class="bg-sand-light rounded-3xl text-[28px] z-10 focus:outline-none border-8 border-amber-900 opacity-75 p-6 pt-3 resize-none duration-100 ease-in-out text-bottom selected-text text-[#552214] leading-[1.3] font-medium" ref="textarea" @input="updateWidth()" placeholder="...")
+    textarea(class="bg-sand-light rounded-3xl text-[28px] z-10 focus:outline-none border-8 border-amber-900 opacity-75 p-6 pt-3 resize-none time-100 ease-in-out text-bottom selected-text text-[#552214] leading-[1.3] font-medium" ref="textarea" @input="updateWidth()" placeholder="...")
 </template>
 
 <script setup lang="ts">

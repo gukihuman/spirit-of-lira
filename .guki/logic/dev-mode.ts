@@ -1,6 +1,8 @@
+import { handleError } from "nuxt/dist/app/compat/capi"
+
 class DevMode {
   init() {
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       if (SYSTEM_DATA.states.devMode) {
         if (INPUT.keyboard.justPressed.includes("z")) {
           SIGNAL.emit("collisionEdit")

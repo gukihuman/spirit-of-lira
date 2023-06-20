@@ -12,6 +12,8 @@ class PixiGuki {
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
+  entities: Map<number, gContainer> = new Map()
+
   /** Name is used to find priority in config, if exist. */
   tickerAdd(fn, name?: string) {
     if (!this.app) return
@@ -55,40 +57,27 @@ class PixiGuki {
     return this.app.ticker.deltaMS / 16.66 / 60
   }
 
-  // 📜 need those getters? think yes but have doubts
-
-  getContainer(id: number): gContainer | undefined {
-    for (let child of PIXI_GUKI.sortable.children) {
-      const gContainer = child as gContainer
-      if (gContainer.id === id) return child as gContainer
-    }
-    for (let child of PIXI_GUKI.ground.children) {
-      const gContainer = child as gContainer
-      if (gContainer.id === id) return child as gContainer
-    }
-    return undefined
+  getMain(id: number): gContainer | undefined {
+    return this.entities.get(id)
   }
 
-  getBackContainer(id: number): gContainer | undefined {
-    const entityContainer = this.getContainer(id)
+  getBack(id: number): gContainer | undefined {
+    const entityContainer = this.getMain(id)
     return entityContainer?.getChildByName("back") as gContainer
   }
 
-  getAnimationContainer(id: number): gContainer | undefined {
-    const entityContainer = this.getContainer(id)
+  getAnimation(id: number): gContainer | undefined {
+    const entityContainer = this.getMain(id)
     return entityContainer?.getChildByName("animations") as gContainer
   }
 
-  getFrontContainer(id: number): gContainer | undefined {
-    const entityContainer = this.getContainer(id)
+  getFront(id: number): gContainer | undefined {
+    const entityContainer = this.getMain(id)
     return entityContainer?.getChildByName("front") as gContainer
   }
 
-  getAnimationSprite(
-    id: number,
-    animation: string
-  ): AnimatedSprite | undefined {
-    const animationsContainer = this.getAnimationContainer(id) as gContainer
+  getSprite(id: number, animation: string): AnimatedSprite | undefined {
+    const animationsContainer = this.getAnimation(id) as gContainer
     return animationsContainer.getChildByName(animation) as AnimatedSprite
   }
 
@@ -96,7 +85,7 @@ class PixiGuki {
     let json = STORE.jsons.get(name)
 
     if (!json) {
-      LIB.logWarning(`no json for ${name} in STORE.jsons (PIXI_GUKI)`)
+      LIB.logWarning(`no json for ${name} in STORE.jsons (GPIXI)`)
       return
     }
 
@@ -125,4 +114,4 @@ class PixiGuki {
   }
 }
 
-export const PIXI_GUKI = new PixiGuki()
+export const GPIXI = new PixiGuki()

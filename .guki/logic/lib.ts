@@ -16,6 +16,14 @@ class Vector {
 }
 
 class Lib {
+  addGetter(object: { [index: string]: any }, name: string, fn: () => any) {
+    Object.defineProperty(object, name, {
+      get: fn,
+      enumerable: true,
+      configurable: true,
+    })
+  }
+
   /** @returns string of time for example "22:43:54" */
   timeNow(): string {
     function _pad(num: number): string {
@@ -62,7 +70,7 @@ class Lib {
     return result
   }
   speedPerTick(entity: gEntity) {
-    return entity.alive.speed * 10 * PIXI_GUKI.deltaSec
+    return entity.move.speed * 10 * GPIXI.deltaSec
   }
   deadZoneExceed(deadZone: number) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]

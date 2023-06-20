@@ -18,9 +18,8 @@ class EffectFactory {
       },
     })
     if (!id) return
-    const effect = WORLD.entities.get(id)
 
-    const animationsContainer = PIXI_GUKI.getAnimationContainer(id)
+    const animationsContainer = GPIXI.getAnimation(id)
     if (!animationsContainer) return
     const sprite = animationsContainer.children[0] as AnimatedSprite
 
@@ -29,43 +28,40 @@ class EffectFactory {
     sprite.gotoAndPlay(0)
     sprite.visible = true
 
-    const container = PIXI_GUKI.getContainer(id)
+    const container = GPIXI.getMain(id)
     if (!container) return
 
-    PIXI_GUKI.sortable.removeChild(container)
-    const targetFrontContiainer = PIXI_GUKI.getFrontContainer(targetEntityId)
+    GPIXI.sortable.removeChild(container) // mock default creation
+    const targetFrontContiainer = GPIXI.getFront(targetEntityId)
     if (!targetFrontContiainer) return
     targetFrontContiainer.addChild(container)
 
-    const parentContainer = PIXI_GUKI.getContainer(targetEntityId)
+    const entityContainer = GPIXI.getMain(targetEntityId)
     this.effects.set(id, {
-      deleteMS: PIXI_GUKI.elapsedMS + effect.duration.time,
       container,
-      parentContainer,
+      entityContainer,
     })
   }
 
   init() {
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       this.effects.forEach((value, id) => {
-        const deleteMS = value.deleteMS
+        if (!WORLD.entities.get(id)) {
+          this.effects.delete(id)
+          return
+        }
         const container = value.container
-        const parentContainer = value.parentContainer
+        const entityContainer = value.entityContainer
 
         const effect = WORLD.entities.get(id)
         container.x = effect.position.x
         container.y = effect.position.y
-        if (parentContainer.scale.x === -1) {
+
+        // anti-flip
+        if (entityContainer.scale.x === -1) {
           container.scale.x = -1
         } else {
           container.scale.x = 1
-        }
-
-        if (PIXI_GUKI.elapsedMS > deleteMS) {
-          this.effects.delete(id)
-          WORLD.entities.delete(id)
-
-          container.parent.removeChild(container)
         }
       })
     }, "EFFECT_FACTORY")

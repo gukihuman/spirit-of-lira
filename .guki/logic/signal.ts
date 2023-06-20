@@ -16,23 +16,23 @@ class Signal {
       }
     },
     attack() {
-      if (!GLOBAL.hero.alive.targetEntityId) return
+      if (!GLOBAL.hero.move.targetEntityId) return
 
-      GLOBAL.hero.alive.targetAttacked = true
-      GLOBAL.hero.alive.targetLocked = true
+      GLOBAL.hero.move.targetAttacked = true
+      GLOBAL.hero.move.targetLocked = true
 
       const move = WORLD.systems.get("move")
-      if (move) move.startAttackMS = PIXI_GUKI.elapsedMS
+      if (move) move.startAttackMS = GPIXI.elapsedMS
     },
     mouseMoveOrAttack() {
       WORLD.systems.get("move")?.mouseMove()
 
       if (GLOBAL.hoverId) {
-        GLOBAL.hero.alive.targetEntityId = GLOBAL.hoverId
-        GLOBAL.hero.alive.targetAttacked = true
-        GLOBAL.hero.alive.targetLocked = true
+        GLOBAL.hero.move.targetEntityId = GLOBAL.hoverId
+        GLOBAL.hero.move.targetAttacked = true
+        GLOBAL.hero.move.targetLocked = true
       } else {
-        GLOBAL.hero.alive.targetAttacked = false
+        GLOBAL.hero.move.targetAttacked = false
       }
     },
     mouseMove() {
@@ -48,25 +48,25 @@ class Signal {
       SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
     },
     lockTarget() {
-      if (!GLOBAL.hero.alive.targetEntityId) return
+      if (!GLOBAL.hero.move.targetEntityId) return
 
-      GLOBAL.hero.alive.targetLocked = !GLOBAL.hero.alive.targetLocked
+      GLOBAL.hero.move.targetLocked = !GLOBAL.hero.move.targetLocked
 
-      if (!GLOBAL.hero.alive.targetLocked) {
-        GLOBAL.hero.alive.targetEntityId = undefined
-        GLOBAL.hero.alive.targetAttacked = false
-        GLOBAL.hero.alive.targetPosition = undefined
-        GLOBAL.hero.alive.state = "idle"
+      if (!GLOBAL.hero.move.targetLocked) {
+        GLOBAL.hero.move.targetEntityId = undefined
+        GLOBAL.hero.move.targetAttacked = false
+        GLOBAL.hero.move.destination = undefined
+        GLOBAL.hero.move.state = "idle"
       }
 
       // in case lock is used to lock a new target immidiately
       if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {
         if (!GLOBAL.hoverId) return
-        GLOBAL.hero.alive.targetEntityId = GLOBAL.hoverId
-        GLOBAL.hero.alive.targetLocked = true
+        GLOBAL.hero.move.targetEntityId = GLOBAL.hoverId
+        GLOBAL.hero.move.targetLocked = true
       }
 
-      // if (!GLOBAL.hoverId && GLOBAL.hero.alive.targetLocked) {
+      // if (!GLOBAL.hoverId && GLOBAL.hero.move.targetLocked) {
       // }
     },
     sendInput() {},
@@ -87,7 +87,7 @@ class Signal {
   }
 
   init() {
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       this.runLogic()
       this.active = []
     }, "SIGNAL")

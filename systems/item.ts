@@ -6,7 +6,7 @@ export default class Item {
   itemSprites: AnimatedSprite[] = []
 
   process() {
-    const heroSprite = PIXI_GUKI.getAnimationSprite(
+    const heroSprite = GPIXI.getSprite(
       GLOBAL.heroId,
       GLOBAL.hero.visual.animation
     )
@@ -24,27 +24,25 @@ export default class Item {
   }
 
   async init() {
-    if (!PIXI_GUKI.app || !GLOBAL.heroId) return
-    if (!PIXI_GUKI.getContainer(GLOBAL.heroId)) return
+    if (!GPIXI.app || !GLOBAL.heroId) return
+    if (!GPIXI.getMain(GLOBAL.heroId)) return
 
     const promises: Promise<void>[] = []
 
     _.forEach(this.items, (frontStates, name) => {
       promises.push(
         new Promise(async (resolve) => {
-          const spritesheet = await PIXI_GUKI.getSpritesheet(name)
+          const spritesheet = await GPIXI.getSpritesheet(name)
           if (!spritesheet) return
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = PIXI_GUKI.getContainer(GLOBAL.heroId)
-            ?.children[0] as Container
+          const back = GPIXI.getMain(GLOBAL.heroId)?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = PIXI_GUKI.getContainer(GLOBAL.heroId)
-            ?.children[2] as Container
+          const front = GPIXI.getMain(GLOBAL.heroId)?.children[2] as Container
           front.addChild(frontItemContainer)
 
           _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {

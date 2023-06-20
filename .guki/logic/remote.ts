@@ -100,7 +100,7 @@ class Remote {
   }
 
   init() {
-    PIXI_GUKI.tickerAdd(async () => {
+    GPIXI.tickerAdd(async () => {
       // if (gim.signals.sendInput) {
       //   if (!SYSTEM_DATA.refs.input) return
       //   this.pushNewMessages()

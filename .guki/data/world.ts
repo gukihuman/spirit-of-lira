@@ -5,7 +5,7 @@ class World {
   async init() {
     await this.setupSystems()
 
-    PIXI_GUKI.tickerAdd(() => {
+    GPIXI.tickerAdd(() => {
       this.entityProcess()
     }, "WORLD")
   }
@@ -26,7 +26,7 @@ class World {
 
     // processes added later, may depend on init
     _.forEach(processes, (process, name) => {
-      PIXI_GUKI.tickerAdd(() => process(), name)
+      GPIXI.tickerAdd(() => process(), name)
     })
   }
 

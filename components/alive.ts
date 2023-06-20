@@ -1,17 +1,17 @@
 export default {
-  alive: {
+  move: {
     faction: "peaceful",
 
     speed: 5,
     health: 10,
     state: "idle",
 
-    targetPosition: undefined,
+    destination: undefined,
     targetEntityId: 0,
     targetLocked: false,
     targetAttacked: false,
 
-    // 📜 move to visual cuz non-alive might need flip too like projectiles
+    // 📜 move to visual cuz non-move might need flip too like projectiles
     // may be not but it seems like better practice
     lastFlipMS: 0,
     lastAutoTargetPositionMS: 0,
@@ -36,7 +36,7 @@ export default {
 
       shadow.filters = [blurFilter]
 
-      const container = PIXI_GUKI.getContainer(id)
+      const container = GPIXI.getMain(id)
       if (!container) return
       const back = container.children[0] as Container
       back.addChild(shadow)

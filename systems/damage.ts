@@ -11,7 +11,7 @@ export default class damage {
 
       const displacement = LIB.vectorFromPoints(
         entity.position,
-        entity.alive.targetPosition
+        entity.move.destination
       )
       let angle = displacement.angle
 
@@ -20,13 +20,13 @@ export default class damage {
       }
 
       if (
-        targetEntity.alive.state !== "attack" &&
+        targetEntity.move.state !== "attack" &&
         targetEntityId !== GLOBAL.heroId
       ) {
-        targetEntity.alive.state = "attack"
-        targetEntity.alive.targetEntityId = id
-        targetEntity.alive.targetAttacked = true
-        targetEntity.alive.targetLocked = true
+        targetEntity.move.state = "attack"
+        targetEntity.move.targetEntityId = id
+        targetEntity.move.targetAttacked = true
+        targetEntity.move.targetLocked = true
       }
     })
 
