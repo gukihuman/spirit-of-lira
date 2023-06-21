@@ -1,10 +1,10 @@
 export default {
   visual: {
     animation: "idle", // even for non-move
-    firstFrames: { idle: 0, move: 0, attack: 0 },
+    firstFrames: { idle: 0, move: 0, attack: 0, death: 0 },
 
     lastAnimationSwitchMS: 0,
-    stableFlip: false,
+    initialRandomFlip: true,
 
     parentContainer: "sortable",
 
@@ -17,7 +17,7 @@ export default {
       container.id = id
       GPIXI.entities.set(id, container)
 
-      if (!entity.visual.stableFlip) {
+      if (entity.visual.initialRandomFlip) {
         container.scale.x = _.random() < 0.5 ? -1 : 1
       }
 

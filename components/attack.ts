@@ -3,9 +3,10 @@ export default {
     distance: 10,
     speed: 1.2,
 
-    // 🔧
-    attackStartMS: 0,
-    initialAttackStartMS: 0,
+    startMS: 0,
+    initialStartMS: 0,
+
+    // replace with attack delay state
     damageDone: true,
   },
 }

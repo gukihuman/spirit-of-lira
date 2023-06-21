@@ -56,7 +56,7 @@ class Signal {
         GLOBAL.hero.target.id = undefined
         GLOBAL.hero.target.attacked = false
         GLOBAL.hero.move.destination = undefined
-        GLOBAL.hero.move.state = "idle"
+        GLOBAL.hero.state.main = "idle"
       }
 
       // in case lock is used to lock a new target immidiately

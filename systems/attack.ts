@@ -12,7 +12,7 @@ export default class attack {
 
       const targetEntity = WORLD.entities.get(entity.target.id)
       if (!targetEntity) {
-        entity.move.state = "idle"
+        entity.state.main = "idle"
         return
       }
 
@@ -28,22 +28,21 @@ export default class attack {
       const delay = (entity.attack.speed / entity.attack.delay) * 1000
 
       if (
-        entity.move.state === "attack" &&
-        entity.attack.attackStartMS + entity.attack.speed * 1000 <=
-          GPIXI.elapsedMS
+        entity.state.main === "attack" &&
+        entity.attack.startMS + entity.attack.speed * 1000 <= GPIXI.elapsedMS
       ) {
-        if (targetEntity.move.state !== "dead") {
-          entity.move.state = "idle"
+        if (targetEntity.state.main !== "dead") {
+          entity.state.main = "idle"
           WORLD.systems.get("move").process()
         }
 
-        entity.move.state = "idle"
+        entity.state.main = "idle"
         entity.damageDone = false
       }
 
       if (
-        entity.move.state === "attack" &&
-        entity.attack.attackStartMS - delay + entity.attack.speed * 1000 <=
+        entity.state.main === "attack" &&
+        entity.attack.startMS - delay + entity.attack.speed * 1000 <=
           GPIXI.elapsedMS &&
         !entity.damageDone
       ) {
@@ -57,13 +56,13 @@ export default class attack {
 
       const lastEntity = CACHE.entities.get(id)
       if (
-        entity.move.state !== "attack" &&
-        lastEntity.move.state === "attack"
+        entity.state.main !== "attack" &&
+        lastEntity.state.main === "attack"
       ) {
         this.initialAttack = false
 
         if (
-          entity.attack.initialAttackStartMS + entity.attack.speed * 2 * 1000 <=
+          entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
             GPIXI.elapsedMS &&
           id === GLOBAL.heroId
         ) {
@@ -76,13 +75,13 @@ export default class attack {
         }
       }
 
-      if (entity.move.state !== "attack" && entity.move.state !== "forcemove") {
+      if (entity.state.main !== "attack" && entity.state.main !== "forcemove") {
         if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
-          entity.attack.attackStartMS = GPIXI.elapsedMS
-          entity.move.state = "attack"
+          entity.attack.startMS = GPIXI.elapsedMS
+          entity.state.main = "attack"
 
           if (this.initialAttack) {
-            entity.attack.initialAttackStartMS = GPIXI.elapsedMS
+            entity.attack.initialStartMS = GPIXI.elapsedMS
           }
         }
       }

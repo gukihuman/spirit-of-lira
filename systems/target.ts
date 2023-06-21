@@ -63,7 +63,7 @@ export default class target {
       WORLD.entities.forEach((otherEntity, otherId) => {
         if (id === otherId || !otherEntity.move) return
         if (
-          entity.move.faction === otherEntity.move.faction &&
+          entity.attributes.faction === otherEntity.attributes.faction &&
           id !== GLOBAL.heroId
         ) {
           return
@@ -77,7 +77,7 @@ export default class target {
         }
 
         if (
-          entity.move.faction !== otherEntity.move.faction &&
+          entity.attributes.faction !== otherEntity.attributes.faction &&
           id !== GLOBAL.heroId
         ) {
           entity.target.attacked = true

@@ -10,7 +10,6 @@ export default class move {
   process() {
     WORLD.entities.forEach((entity, id) => {
       this.move(entity, id)
-      this.setRandomTargetPosition(entity, id)
     })
 
     if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
@@ -44,7 +43,7 @@ export default class move {
       return
     }
 
-    GLOBAL.hero.move.state = "forcemove"
+    GLOBAL.hero.state.main = "forcemove"
 
     const mousePosition = LIB.mousePoint()
     mousePosition.x += GLOBAL.hero.position.x - 960
@@ -70,15 +69,15 @@ export default class move {
     this.gamepadMoved = true
   }
 
-  move(entity: gEntity, id) {
+  move(entity: Entity, id) {
     if (id === GLOBAL.heroId && this.gamepadMoved) return
     if (!entity.move || !entity.move.destination) return
-    if (entity.move.state === "attack") return
+    if (entity.state.main === "attack") return
 
-    if (entity.move.state === "forcemove") this.forceMove = true
+    if (entity.state.main === "forcemove") this.forceMove = true
     else this.forceMove = false
 
-    entity.move.state = "idle"
+    entity.state.main = "idle"
 
     const speedPerTick = LIB.speedPerTick(entity)
 
@@ -114,30 +113,13 @@ export default class move {
     this.checkCollisionAndMove(entity, velocity, ratio)
   }
 
-  setRandomTargetPosition(entity: gEntity, id: number) {
-    if (entity.move && id !== GLOBAL.heroId && entity.move.state === "idle") {
-      if (!entity.move.destination) {
-        entity.move.destination = _.cloneDeep(entity.position)
-        entity.move.lastAutoTargetPositionMS = GPIXI.elapsedMS - 15_000
-      }
-      if (GPIXI.elapsedMS - entity.move.lastAutoTargetPositionMS > 15_000) {
-        if (Math.random() > 0.08 * GPIXI.deltaSec) return
-        let x = _.random(-500, 500)
-        let y = _.random(-500, 500)
-        entity.move.destination.x = entity.position.x + x
-        entity.move.destination.y = entity.position.y + y
-        entity.move.lastAutoTargetPositionMS = GPIXI.elapsedMS
-      }
-    }
-  }
-
-  checkCollisionAndMove(entity: gEntity, velocity, ratio: number) {
+  checkCollisionAndMove(entity: Entity, velocity, ratio: number) {
     const position = entity.position
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
 
-    if (this.forceMove) entity.move.state = "forcemove"
-    else entity.move.state = "move"
+    if (this.forceMove) entity.state.main = "forcemove"
+    else entity.state.main = "move"
 
     if (!SYSTEM_DATA.states.collision) {
       position.x = nextX
@@ -157,7 +139,7 @@ export default class move {
         position.y = nextY
         return
       }
-      entity.move.state = "idle"
+      entity.state.main = "idle"
       return
     }
   }

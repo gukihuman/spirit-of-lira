@@ -14,7 +14,7 @@ class EffectFactory {
         y: -(targetEntity.size.height / 2),
       },
       visual: {
-        stableFlip: true,
+        initialRandomFlip: false,
       },
     })
     if (!id) return

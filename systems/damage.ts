@@ -20,10 +20,10 @@ export default class damage {
       }
 
       if (
-        targetEntity.move.state !== "attack" &&
+        targetEntity.state.main !== "attack" &&
         targetEntityId !== GLOBAL.heroId
       ) {
-        targetEntity.move.state = "attack"
+        targetEntity.state.main = "attack"
         targetEntity.target.id = id
         targetEntity.target.attacked = true
         targetEntity.target.locked = true

@@ -69,7 +69,7 @@ class Lib {
     }
     return result
   }
-  speedPerTick(entity: gEntity) {
+  speedPerTick(entity: Entity) {
     return entity.move.speed * 10 * GPIXI.deltaSec
   }
   deadZoneExceed(deadZone: number) {

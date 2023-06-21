@@ -26,7 +26,7 @@ class EntityFactory {
   }
 
   /** inject / expand components from components folder */
-  private async injectComponents(entity: gEntity, id: number) {
+  private async injectComponents(entity: Entity, id: number) {
     //
     const sortedPriority = LIB.sortedKeys(CONFIG.priority.components)
 

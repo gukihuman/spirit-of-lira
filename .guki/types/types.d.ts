@@ -42,5 +42,5 @@ declare global {
     gProcessFrames: (any) => void
   }
 
-  type gEntity = { [key: string]: any }
+  type Entity = { [key: string]: any }
 }

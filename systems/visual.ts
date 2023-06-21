@@ -56,7 +56,7 @@ export default class visual {
 
     if (
       entity.visual.leaveAnimationConditions &&
-      entity.move.state !== "attack"
+      entity.state.main !== "attack"
     ) {
       if (
         entity.visual.animation === "move" &&
@@ -112,7 +112,7 @@ export default class visual {
 
   private checkAttack(entity, id) {
     if (!entity.move || !entity.attack) return
-    if (entity.move.state !== "attack") return
+    if (entity.state.main !== "attack") return
 
     if (id === GLOBAL.heroId) {
       entity.visual.animation = "sword-attack"
