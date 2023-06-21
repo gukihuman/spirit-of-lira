@@ -1,6 +1,6 @@
 export default {
-  name: "mousepoint",
-  visual: { parentContainer: "ground" },
+  position: {},
+  visual: { parent: "ground" },
 
   process(entity, id) {
     let position = entity.position
@@ -29,13 +29,15 @@ export default {
       return
     }
 
-    const container = GPIXI.getMain(id)
-    if (container) {
-      container.children[1].angle += 80 * GPIXI.deltaSec
+    const main = GPIXI.getMain(id)
+    const middle = GPIXI.getMiddle(id)
+
+    if (main && middle) {
+      middle.angle += 80 * GPIXI.deltaSec
       const scale = 1
-      container.scale = { x: 1, y: 0.5 }
-      container.scale.x *= scale
-      container.scale.y *= scale
+      main.scale = { x: 1, y: 0.5 }
+      main.scale.x *= scale
+      main.scale.y *= scale
       const animationSprite = GPIXI.getSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY

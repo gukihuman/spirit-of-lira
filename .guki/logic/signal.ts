@@ -48,26 +48,31 @@ class Signal {
       SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
     },
     lockTarget() {
-      if (!GLOBAL.hero.target.id) return
+      const hero = GLOBAL.hero
+      if (!hero.target.id) return
 
-      GLOBAL.hero.target.locked = !GLOBAL.hero.target.locked
+      hero.target.locked = !hero.target.locked
 
-      if (!GLOBAL.hero.target.locked) {
-        GLOBAL.hero.target.id = undefined
-        GLOBAL.hero.target.attacked = false
-        GLOBAL.hero.move.destination = undefined
-        GLOBAL.hero.state.main = "idle"
+      // reset destination if it is on the target
+      if (
+        !hero.target.locked &&
+        hero.target.entity.position.x === hero.move.destination.x &&
+        hero.target.entity.position.y === hero.move.destination.y
+      ) {
+        hero.move.destination = undefined
+        hero.state.main = "idle"
+      }
+      if (!hero.target.locked) {
+        hero.target.id = undefined
+        hero.target.attacked = false
       }
 
       // in case lock is used to lock a new target immidiately
       if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {
         if (!GLOBAL.hoverId) return
-        GLOBAL.hero.target.id = GLOBAL.hoverId
-        GLOBAL.hero.target.locked = true
+        hero.target.id = GLOBAL.hoverId
+        hero.target.locked = true
       }
-
-      // if (!GLOBAL.hoverId && GLOBAL.hero.target.locked) {
-      // }
     },
     sendInput() {},
   }

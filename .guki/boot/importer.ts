@@ -17,17 +17,27 @@ export default defineNuxtPlugin(async () => {
   //
   const entities = import.meta.glob("@/entities/**")
   for (const path in entities) {
+    //
+    // name of the file
+    const match = path.match(/\/([^/]+)\.ts$/)
+    if (!match) return
+    const name = `${_.toLower(match[1])}`
+
     const entity = await entities[path]()
-    const name = `${_.toLower(entity.default.name)}`
     STORE.entities.set(name, entity.default)
+    entity.default.name = name
   }
 
   const components = import.meta.glob("@/components/**")
   for (const path in components) {
+    //
+    // name of the file
+    const match = path.match(/\/([^/]+)\.ts$/)
+    if (!match) return
+    const name = `${_.toLower(match[1])}`
+
     const component = await components[path]()
-    _.forEach(component.default, (value, name) => {
-      STORE.components.set(name, value)
-    })
+    STORE.components.set(name, component.default)
   }
 
   const systems = import.meta.glob("@/systems/**")

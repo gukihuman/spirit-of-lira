@@ -22,7 +22,7 @@ class PixiGuki {
     else this.app.ticker.add(fn)
   }
 
-  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container. Run the timer of elapsedMS.
+  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container. Run the timer of elapsedMS. Sets up average FPS calculation.
   @param viewport - HTML element to append the app.view to.
   @param width - default is 1920.
   @param height - default is 1080.
@@ -39,6 +39,7 @@ class PixiGuki {
     }
 
     this.tickerAdd(() => this.sortable.children.sort((a, b) => a.y - b.y))
+
     this.tickerAdd(() => {
       if (!this.app) return
       this.elapsedMS += this.app.ticker.deltaMS
@@ -66,9 +67,9 @@ class PixiGuki {
     return entityContainer?.getChildByName("back") as gContainer
   }
 
-  getAnimation(id: number): gContainer | undefined {
+  getMiddle(id: number): gContainer | undefined {
     const entityContainer = this.getMain(id)
-    return entityContainer?.getChildByName("animations") as gContainer
+    return entityContainer?.getChildByName("middle") as gContainer
   }
 
   getFront(id: number): gContainer | undefined {
@@ -76,9 +77,17 @@ class PixiGuki {
     return entityContainer?.getChildByName("front") as gContainer
   }
 
-  getSprite(id: number, animation: string): AnimatedSprite | undefined {
-    const animationsContainer = this.getAnimation(id) as gContainer
-    return animationsContainer.getChildByName(animation) as AnimatedSprite
+  getEffect(id: number): gContainer | undefined {
+    const entityContainer = this.getMain(id)
+    return entityContainer?.getChildByName("effect") as gContainer
+  }
+
+  getSprite(
+    id: number,
+    animation: string = "idle"
+  ): AnimatedSprite | undefined {
+    const middleContainer = this.getMiddle(id) as gContainer
+    return middleContainer.getChildByName(animation) as AnimatedSprite
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {

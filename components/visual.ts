@@ -1,56 +1,73 @@
 export default {
-  visual: {
-    animation: "idle", // even for non-move
-    firstFrames: { idle: 0, move: 0, attack: 0, death: 0 },
+  animation: "idle", // even for non-move
+  firstFrames: { idle: 0, move: 0, attack: 0, death: 0 },
 
-    lastAnimationSwitchMS: 0,
-    initialRandomFlip: true,
+  initial: {
+    parent: "sortable", // direct stage container like "ground" or "sortable"
+    randomFlip: true,
+    randomFrame: true,
+    loop: true,
+  },
 
-    parentContainer: "sortable",
+  flipMS: 0,
+  animationMS: 0,
 
-    // 🔧
-    async init(entity, id, name, value) {
-      if (!GPIXI.app) return
+  // 🔧
+  async init(entity, id, name, value) {
+    if (!GPIXI.app) return
 
-      const container = new PIXI.Container() as gContainer
-      container.name = entity.name
-      container.id = id
-      GPIXI.entities.set(id, container)
+    const container = new PIXI.Container() as gContainer
+    container.name = entity.name
+    container.id = id
+    GPIXI.entities.set(id, container)
 
-      if (entity.visual.initialRandomFlip) {
-        container.scale.x = _.random() < 0.5 ? -1 : 1
+    GPIXI[entity.visual.initial.parent].addChild(container)
+
+    for (let name of ["back", "middle", "front", "effect"]) {
+      const childContainer = new PIXI.Container()
+      childContainer.name = name
+      container.addChild(childContainer)
+    }
+
+    if (entity.visual.initial.randomFlip) {
+      //
+      // exclude effect
+      const back = GPIXI.getBack(id)
+      const middle = GPIXI.getMiddle(id)
+      const front = GPIXI.getFront(id)
+      if (!back || !middle || !front) return
+      const containers = [back, middle, front]
+
+      if (_.random() > 0.5) {
+        containers.forEach((container) => {
+          container.scale.x = -1
+        })
       }
+    }
 
-      GPIXI[entity.visual.parentContainer].addChild(container)
+    const spritesheet = await GPIXI.getSpritesheet(entity.name)
+    if (!spritesheet) return
 
-      for (let name of ["back", "animations", "front"]) {
-        const childContainer = new PIXI.Container()
-        childContainer.name = name
-        container.addChild(childContainer)
-      }
+    const middle = GPIXI.getMiddle(id) as gContainer
 
-      const spritesheet = await GPIXI.getSpritesheet(entity.name)
-      if (!spritesheet) return
+    _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
+      const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
+      sprite.name = name
+      sprite.anchor.x = 0.5
+      sprite.anchor.y = 0.5
+      sprite.animationSpeed = 1 / (CONFIG.fps / 10)
+      sprite.visible = false
+      sprite.cullable = true
+      middle.addChild(sprite)
 
-      const animationsContainer = GPIXI.getAnimation(id) as Container
+      // to prevent synchronize mobs, looks poor
+      const randomFrame = _.random(0, sprite.totalFrames - 1)
 
-      _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
-        const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
-        sprite.name = name
-        sprite.anchor.x = 0.5
-        sprite.anchor.y = 0.5
-        sprite.animationSpeed = 1 / 6
-        sprite.visible = false
-        sprite.cullable = true
-        animationsContainer.addChild(sprite)
+      // loop is true by default
+      if (!entity.visual.initial.loop || name === "death") sprite.loop = false
 
-        // to prevent synchronize mobs, looks poor
-        const randomFrame = _.random(0, sprite.totalFrames - 1)
-
-        if (name === "death") sprite.loop = false
-
-        sprite.gotoAndPlay(randomFrame)
-      })
-    },
+      if (entity.visual.initial.randomFrame) sprite.gotoAndPlay(randomFrame)
+      else sprite.gotoAndPlay(0)
+    })
   },
 }

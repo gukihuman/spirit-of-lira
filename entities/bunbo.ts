@@ -1,5 +1,4 @@
 export default {
-  name: "bunbo",
   size: {
     width: 70,
     height: 60,

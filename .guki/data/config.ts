@@ -28,6 +28,8 @@ class GukiConfig {
     height: 1080,
   }
 
+  fps = 60
+
   // higher values goes first, what is not setted here will be 0
   priority = {
     //

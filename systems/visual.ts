@@ -19,12 +19,12 @@ export default class visual {
 
       // update visibility of animations
       if (entity.move) {
-        GPIXI.getAnimation(id)?.children.forEach((child) => {
+        GPIXI.getMiddle(id)?.children.forEach((child) => {
           if (child.name === entity.visual.animation) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = GPIXI.getAnimation(id)
+        const animationContainer = GPIXI.getMiddle(id)
         if (animationContainer && animationContainer.children[0]) {
           animationContainer.children[0].visible = true
         }
@@ -52,7 +52,7 @@ export default class visual {
   private updateAnimation(entity, id) {
     if (!entity.move) return
 
-    if (GPIXI.elapsedMS - entity.visual.lastAnimationSwitchMS < 200) return
+    if (GPIXI.elapsedMS - entity.visual.animationMS < 200) return
 
     if (
       entity.visual.leaveAnimationConditions &&
@@ -72,7 +72,7 @@ export default class visual {
     if (!lastEntity) return
 
     if (entity.visual.animation !== lastEntity.visual.animation) {
-      entity.visual.lastAnimationSwitchMS = GPIXI.elapsedMS
+      entity.visual.animationMS = GPIXI.elapsedMS
     }
   }
 

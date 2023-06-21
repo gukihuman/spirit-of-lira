@@ -1,5 +1,4 @@
 export default {
-  name: "lira",
   size: {
     width: 60,
     height: 90,

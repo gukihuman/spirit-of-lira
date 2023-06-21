@@ -1,5 +1,3 @@
-import { values } from "lodash"
-
 class EntityFactory {
   private nextId = 1
 
@@ -45,6 +43,7 @@ class EntityFactory {
   }
 
   private dependCounter = 0
+
   private async mergeComponent(entity, id, name, value) {
     this.dependCounter++
     if (this.dependCounter > 100) {
@@ -54,7 +53,7 @@ class EntityFactory {
       return
     }
 
-    // inject dependencies components first
+    // inject dependencies components before init
     if (value.depend) {
       const promises: Promise<void>[] = []
       value.depend.forEach((dependName) => {
@@ -76,6 +75,7 @@ class EntityFactory {
 
     if (entity[name].init) await entity[name].init(entity, id, name, value)
 
+    // inject triggered components after init
     if (entity[name].trigger) {
       const promises: Promise<void>[] = []
       value.trigger.forEach((triggerName) => {

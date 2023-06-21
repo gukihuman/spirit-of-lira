@@ -38,6 +38,15 @@ export default class target {
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
+
+    this.updateTargetEntity()
+  }
+
+  private updateTargetEntity() {
+    WORLD.entities.forEach((entity) => {
+      if (!entity.target) return
+      entity.target.entity = WORLD.entities.get(entity.target.id)
+    })
   }
 
   autoTarget() {
@@ -209,7 +218,7 @@ export default class target {
 
     if (entity.attack.damageFilterStartMS + 100 > GPIXI.elapsedMS) return
 
-    const container = GPIXI.getAnimation(id)
+    const container = GPIXI.getMiddle(id)
 
     if (container) {
       container.filters = [

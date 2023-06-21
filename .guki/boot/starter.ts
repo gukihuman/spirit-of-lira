@@ -27,7 +27,6 @@ export default defineNuxtPlugin(async (app) => {
     USER_DATA.init()
     DEV_MODE.init()
     LOCAL.init() // local storage
-    EFFECT_FACTORY.init()
     // REMOTE.init() // remote controller
 
     // hero creation

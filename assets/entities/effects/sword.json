@@ -1,6 +1,6 @@
 {"frames": {
 
-"sword0000.png":
+"idle0000.png":
 {
 	"frame": {"x":83,"y":1,"w":15,"h":91},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":87,"y":33,"w":15,"h":91},
 	"sourceSize": {"w":161,"h":163}
 },
-"sword0001.png":
+"idle0001.png":
 {
 	"frame": {"x":62,"y":1,"w":19,"h":96},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":89,"y":31,"w":19,"h":96},
 	"sourceSize": {"w":161,"h":163}
 },
-"sword0002.png":
+"idle0002.png":
 {
 	"frame": {"x":41,"y":1,"w":19,"h":98},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":96,"y":30,"w":19,"h":98},
 	"sourceSize": {"w":161,"h":163}
 },
-"sword0003.png":
+"idle0003.png":
 {
 	"frame": {"x":21,"y":1,"w":18,"h":104},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":100,"y":27,"w":18,"h":104},
 	"sourceSize": {"w":161,"h":163}
 },
-"sword0004.png":
+"idle0004.png":
 {
 	"frame": {"x":1,"y":1,"w":18,"h":116},
 	"rotated": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":161,"h":163}
 }},
 "animations": {
-	"sword": ["sword0000.png","sword0001.png","sword0002.png","sword0003.png","sword0004.png"]
+	"idle": ["idle0000.png","idle0001.png","idle0002.png","idle0003.png","idle0004.png"]
 },
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
@@ -50,6 +50,6 @@
 	"format": "RGBA8888",
 	"size": {"w":99,"h":118},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c2476ad3c250eb4fd5a7ef43c04a5f87:d752f127ed26b60fe554e5e08cb9f076:3059e0b06cb89b0d428bf9a6710c26c7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:d8d4f8b5af23388533347ada5448ad2e:d752f127ed26b60fe554e5e08cb9f076:3059e0b06cb89b0d428bf9a6710c26c7$"
 }
 }

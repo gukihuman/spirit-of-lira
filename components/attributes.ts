@@ -1,6 +1,4 @@
 export default {
-  attributes: {
-    faction: "peaceful",
-    health: 10,
-  },
+  faction: "peaceful",
+  health: 10,
 }
