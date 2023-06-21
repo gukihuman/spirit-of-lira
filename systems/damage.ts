@@ -24,9 +24,9 @@ export default class damage {
         targetEntityId !== GLOBAL.heroId
       ) {
         targetEntity.move.state = "attack"
-        targetEntity.move.targetEntityId = id
-        targetEntity.move.targetAttacked = true
-        targetEntity.move.targetLocked = true
+        targetEntity.target.id = id
+        targetEntity.target.attacked = true
+        targetEntity.target.locked = true
       }
     })
 

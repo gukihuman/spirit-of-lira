@@ -16,10 +16,10 @@ class Signal {
       }
     },
     attack() {
-      if (!GLOBAL.hero.move.targetEntityId) return
+      if (!GLOBAL.hero.target.id) return
 
-      GLOBAL.hero.move.targetAttacked = true
-      GLOBAL.hero.move.targetLocked = true
+      GLOBAL.hero.target.attacked = true
+      GLOBAL.hero.target.locked = true
 
       const move = WORLD.systems.get("move")
       if (move) move.startAttackMS = GPIXI.elapsedMS
@@ -28,11 +28,11 @@ class Signal {
       WORLD.systems.get("move")?.mouseMove()
 
       if (GLOBAL.hoverId) {
-        GLOBAL.hero.move.targetEntityId = GLOBAL.hoverId
-        GLOBAL.hero.move.targetAttacked = true
-        GLOBAL.hero.move.targetLocked = true
+        GLOBAL.hero.target.id = GLOBAL.hoverId
+        GLOBAL.hero.target.attacked = true
+        GLOBAL.hero.target.locked = true
       } else {
-        GLOBAL.hero.move.targetAttacked = false
+        GLOBAL.hero.target.attacked = false
       }
     },
     mouseMove() {
@@ -48,13 +48,13 @@ class Signal {
       SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
     },
     lockTarget() {
-      if (!GLOBAL.hero.move.targetEntityId) return
+      if (!GLOBAL.hero.target.id) return
 
-      GLOBAL.hero.move.targetLocked = !GLOBAL.hero.move.targetLocked
+      GLOBAL.hero.target.locked = !GLOBAL.hero.target.locked
 
-      if (!GLOBAL.hero.move.targetLocked) {
-        GLOBAL.hero.move.targetEntityId = undefined
-        GLOBAL.hero.move.targetAttacked = false
+      if (!GLOBAL.hero.target.locked) {
+        GLOBAL.hero.target.id = undefined
+        GLOBAL.hero.target.attacked = false
         GLOBAL.hero.move.destination = undefined
         GLOBAL.hero.move.state = "idle"
       }
@@ -62,11 +62,11 @@ class Signal {
       // in case lock is used to lock a new target immidiately
       if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {
         if (!GLOBAL.hoverId) return
-        GLOBAL.hero.move.targetEntityId = GLOBAL.hoverId
-        GLOBAL.hero.move.targetLocked = true
+        GLOBAL.hero.target.id = GLOBAL.hoverId
+        GLOBAL.hero.target.locked = true
       }
 
-      // if (!GLOBAL.hoverId && GLOBAL.hero.move.targetLocked) {
+      // if (!GLOBAL.hoverId && GLOBAL.hero.target.locked) {
       // }
     },
     sendInput() {},

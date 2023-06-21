@@ -1,5 +1,3 @@
-import { Sprite } from "pixi.js"
-
 class MapManager {
   chunkSprites: Map<string, Sprite> = new Map()
   closeChunks: string[] = []
@@ -66,8 +64,9 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    const webp = STORE.webps.get(index)
-    if (!webp) STORE.webps.get("map-not-found")
+    let webp = STORE.webps.get(index)
+
+    if (!webp) webp = STORE.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)

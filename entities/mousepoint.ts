@@ -23,7 +23,7 @@ export default {
     const speedPerTick = LIB.speedPerTick(WORLD.entities.get(GLOBAL.heroId))
 
     // hide
-    if (distance < speedPerTick || GLOBAL.hero.move.targetAttacked) {
+    if (distance < speedPerTick || GLOBAL.hero.target.attacked) {
       position.x = 0
       position.y = 0
       return

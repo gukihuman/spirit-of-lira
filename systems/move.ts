@@ -24,7 +24,7 @@ export default class move {
 
       if (GPIXI.elapsedMS > this.startAttackMS + 1000) {
         GLOBAL.hero.move.destination = undefined
-        GLOBAL.hero.move.targetAttacked = false
+        GLOBAL.hero.target.attacked = false
       }
       this.gamepadMoved = true
     } else {
@@ -92,8 +92,8 @@ export default class move {
       return
     }
 
-    if (entity.attack && entity.move.targetAttacked) {
-      const targetEntity = WORLD.entities.get(entity.move.targetEntityId)
+    if (entity.attack && entity.target.attacked) {
+      const targetEntity = WORLD.entities.get(entity.target.id)
       if (
         targetEntity &&
         distance < targetEntity.size.width / 2 + entity.attack.distance
@@ -106,7 +106,7 @@ export default class move {
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 
-    if (GLOBAL.hero.move.targetAttacked) ratio = 1
+    if (GLOBAL.hero.target.attacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = LIB.vectorFromAngle(angle, speedPerTick)

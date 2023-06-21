@@ -19,8 +19,8 @@ export default class flip {
       }
 
       // attack target
-      if (entity.move.targetEntityId && entity.move.targetAttacked) {
-        const targetEntity = WORLD.entities.get(entity.move.targetEntityId)
+      if (entity.target.id && entity.target.attacked) {
+        const targetEntity = WORLD.entities.get(entity.target.id)
         if (targetEntity.position.x < entity.position.x) {
           container.scale.x = -1
           entity.move.lastFlipMS = GPIXI.elapsedMS

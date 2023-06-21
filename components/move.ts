@@ -1,22 +1,19 @@
 export default {
   move: {
     faction: "peaceful",
-
     speed: 5,
     health: 10,
     state: "idle",
-
     destination: undefined,
-    targetEntityId: 0,
-    targetLocked: false,
-    targetAttacked: false,
 
     // 📜 move to visual cuz non-move might need flip too like projectiles
     // may be not but it seems like better practice
     lastFlipMS: 0,
     lastAutoTargetPositionMS: 0,
 
+    // 🔧
     depend: ["visual", "size"],
+    trigger: ["target"],
     init(entity, id, name, value) {
       //
       // draw shadow

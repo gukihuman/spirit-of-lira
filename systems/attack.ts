@@ -3,14 +3,14 @@ export default class attack {
 
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move || !entity.size || !entity.move.targetEntityId) {
+      if (!entity.move || !entity.size || !entity.target.id) {
         return
       }
       this.initialAttack = true
 
       this.updateAnimationSpeed(entity, id)
 
-      const targetEntity = WORLD.entities.get(entity.move.targetEntityId)
+      const targetEntity = WORLD.entities.get(entity.target.id)
       if (!targetEntity) {
         entity.move.state = "idle"
         return
@@ -18,7 +18,7 @@ export default class attack {
 
       const distance = LIB.distance(entity.position, targetEntity.position)
 
-      if (entity.move.targetAttacked) {
+      if (entity.target.attacked) {
         entity.move.destination = _.cloneDeep(targetEntity.position)
       } else {
         return
@@ -50,7 +50,7 @@ export default class attack {
         // damage done here
         WORLD.systems.get("damage").events.push({
           entityId: id,
-          targetEntityId: entity.move.targetEntityId,
+          targetEntityId: entity.target.id,
         })
         entity.damageDone = true
       }
