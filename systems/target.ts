@@ -209,7 +209,6 @@ export default class target {
   lastContainer: Container | undefined
 
   updateHeroTargetFilter() {
-    // 📜 implement filter handler somewhere
     if (this.lastContainer) this.lastContainer.filters = []
 
     const id = GLOBAL.hero.target.id

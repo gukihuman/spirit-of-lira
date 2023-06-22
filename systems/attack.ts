@@ -24,8 +24,7 @@ export default class attack {
         return
       }
 
-      // delay is like 2 frames when attack is 10
-      const delay = (entity.attack.speed / entity.attack.delay) * 1000
+      const delay = entity.attack.delay * 1000
 
       if (
         entity.state.main === "attack" &&
@@ -95,7 +94,7 @@ export default class attack {
 
     if (id === GLOBAL.heroId) {
       //
-      // 📜 later add all attack animations
+      // 📜 make attack animation dynamic depend on weapon or skill
       const sprite = GPIXI.getSprite(id, "sword-attack")
       if (!sprite) return
 

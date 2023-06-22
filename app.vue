@@ -2,8 +2,7 @@
 
 fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-center select-none")
 
-  //- loading screen
-  p(class="text-slate-300 text-xl font-semibold") loading...
+  loading
 
   //- 1920 / 1080 centered game window
   transition: game-window(v-show="!SYSTEM_DATA.states.loadingScreen")

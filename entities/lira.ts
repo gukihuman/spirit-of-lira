@@ -9,7 +9,7 @@ export default {
   attack: {
     distance: 60,
     speed: 1.2,
-    delay: 5,
+    delay: 0.24,
   },
   visual: {
     firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },

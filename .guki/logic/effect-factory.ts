@@ -17,7 +17,6 @@ class EffectFactory {
     if (!sprite) return
 
     sprite.rotation = angle
-    sprite.gotoAndPlay(0)
     sprite.visible = true
 
     const container = GPIXI.getMain(id)
@@ -27,7 +26,8 @@ class EffectFactory {
     container.x = 0
     container.y = -(targetEntity.size.height / 2)
 
-    GPIXI.sortable.removeChild(container) // mock default creation
+    // change default container to the effect container of the entity
+    GPIXI.sortable.removeChild(container)
     const parent = GPIXI.getEffect(targetEntityId)
     if (!parent) return
     parent.addChild(container)
