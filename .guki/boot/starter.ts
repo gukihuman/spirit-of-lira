@@ -1,26 +1,26 @@
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
-    if (!SYSTEM_DATA.refs.viewport) {
+    if (!REACTIVE.refs.viewport) {
       LIB.logWarning("viewport not found (starter)")
       return
     }
 
     // set devMode, set it first cuz some tools init may depend on it
     useCookie("name").value = useCookie("name").value || "default"
-    if (useCookie("name").value == "guki") SYSTEM_DATA.states.devMode = true
+    if (useCookie("name").value == "guki") REACTIVE.states.devMode = true
 
     CONFIG.init()
 
     // everything depend on GPIXI ticker, init it right after CONFIG
     GPIXI.init(
-      SYSTEM_DATA.refs.viewport,
+      REACTIVE.refs.viewport,
       CONFIG.viewport.width,
       CONFIG.viewport.height
     )
 
     // tools that are likely depend on GPIXI ticker
-    INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
+    INPUT.init(REACTIVE.refs.viewport) // input controller
     CACHE.init()
     COLLISION.init()
     SIGNAL.init()
@@ -37,8 +37,8 @@ export default defineNuxtPlugin(async (app) => {
       LIB.logWarning("hero is not created (starter)")
       return
     }
-    GLOBAL.hero = WORLD.entities.get(heroId)
-    GLOBAL.heroId = heroId
+    REACTIVE.world.hero = WORLD.entities.get(heroId)
+    REACTIVE.world.heroId = heroId
 
     await ENTITY_FACTORY.createEntity("mousepoint")
 
@@ -52,9 +52,9 @@ export default defineNuxtPlugin(async (app) => {
 
       // watch first mouse move (or double click)
       // to prevent movement to the 0 0 coordinates
-      if (!SYSTEM_DATA.states.firstMouseMove) {
+      if (!REACTIVE.states.firstMouseMove) {
         if (INPUT.mouse.x !== 0 || INPUT.mouse.y !== 0) {
-          SYSTEM_DATA.states.firstMouseMove = true
+          REACTIVE.states.firstMouseMove = true
         }
       }
     }, "INPUT")
@@ -64,7 +64,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // to make shure initial loading transition will work
     setTimeout(() => {
-      SYSTEM_DATA.states.loadingScreen = false
+      REACTIVE.states.loadingScreen = false
     }, 0)
   }
 })

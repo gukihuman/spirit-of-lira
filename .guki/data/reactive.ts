@@ -1,6 +1,5 @@
-class SystemData {
+class Reactive {
   //
-
   private _refs = LIB.store({
     fullscreen: undefined,
     viewport: undefined,
@@ -29,5 +28,16 @@ class SystemData {
   get states() {
     return this._states()
   }
+
+  private _world = LIB.store({
+    hero: {},
+    heroId: 0,
+    lastHero: {}, // previous tick
+    hover: {},
+    hoverId: 0,
+  })
+  get world() {
+    return this._world()
+  }
 }
-export const SYSTEM_DATA = new SystemData()
+export const REACTIVE = new Reactive()

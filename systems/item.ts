@@ -7,8 +7,8 @@ export default class Item {
 
   process() {
     const heroSprite = GPIXI.getSprite(
-      GLOBAL.heroId,
-      GLOBAL.hero.visual.animation
+      REACTIVE.world.heroId,
+      REACTIVE.world.hero.visual.animation
     )
     if (!heroSprite) return
 
@@ -24,8 +24,8 @@ export default class Item {
   }
 
   async init() {
-    if (!GPIXI.app || !GLOBAL.heroId) return
-    if (!GPIXI.getMain(GLOBAL.heroId)) return
+    if (!GPIXI.app || !REACTIVE.world.heroId) return
+    if (!GPIXI.getMain(REACTIVE.world.heroId)) return
 
     const promises: Promise<void>[] = []
 
@@ -37,12 +37,14 @@ export default class Item {
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = GPIXI.getMain(GLOBAL.heroId)?.children[0] as Container
+          const back = GPIXI.getMain(REACTIVE.world.heroId)
+            ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = GPIXI.getMain(GLOBAL.heroId)?.children[2] as Container
+          const front = GPIXI.getMain(REACTIVE.world.heroId)
+            ?.children[2] as Container
           front.addChild(frontItemContainer)
 
           _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {

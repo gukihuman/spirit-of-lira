@@ -63,7 +63,7 @@ export default class attack {
         if (
           entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
             GPIXI.elapsedMS &&
-          id === GLOBAL.heroId
+          id === REACTIVE.world.heroId
         ) {
           //
           // get animation instead of declare cuz it should already
@@ -92,7 +92,7 @@ export default class attack {
     // set up animation speed
     if (!entity.attack) return
 
-    if (id === GLOBAL.heroId) {
+    if (id === REACTIVE.world.heroId) {
       //
       // 📜 make attack animation dynamic depend on weapon or skill
       const sprite = GPIXI.getSprite(id, "sword-attack")

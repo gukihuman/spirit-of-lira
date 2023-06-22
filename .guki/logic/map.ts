@@ -24,7 +24,7 @@ class MapManager {
     GPIXI.tickerAdd(() => {
       this.loadCloseChunks()
 
-      const heroPosition = GLOBAL.hero.position
+      const heroPosition = REACTIVE.world.hero.position
       if (!heroPosition) return
 
       // update coordinates
@@ -37,10 +37,10 @@ class MapManager {
   }
 
   private async loadCloseChunks() {
-    if (!GLOBAL.heroId) return
-    const heroEntity = WORLD.entities.get(GLOBAL.heroId)
+    if (!REACTIVE.world.heroId) return
+    const heroEntity = WORLD.entities.get(REACTIVE.world.heroId)
     if (!heroEntity) return
-    const heroPosition = GLOBAL.hero.position
+    const heroPosition = REACTIVE.world.hero.position
 
     const startY = LIB.coordinateToChunk(heroPosition.y) - 1
     const startX = LIB.coordinateToChunk(heroPosition.x) - 1

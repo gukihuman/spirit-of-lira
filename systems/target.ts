@@ -3,7 +3,7 @@ export default class target {
   init() {
     //
     // Preload filters to prevent lag
-    const container = GPIXI.getMain(GLOBAL.heroId)
+    const container = GPIXI.getMain(REACTIVE.world.heroId)
 
     if (container) {
       container.filters = [
@@ -34,7 +34,7 @@ export default class target {
 
     this.heroTargetByGamepad()
 
-    if (!SYSTEM_DATA.states.autoMouseMove) this.heroTargetByMouse()
+    if (!REACTIVE.states.autoMouseMove) this.heroTargetByMouse()
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
@@ -57,7 +57,7 @@ export default class target {
         const targetEntity = WORLD.entities.get(entity.target.id)
         const distance = LIB.distance(entity.position, targetEntity.position)
 
-        if (id !== GLOBAL.heroId && distance > 300) {
+        if (id !== REACTIVE.world.heroId && distance > 300) {
           entity.target.id = undefined
           entity.target.locked = false
           entity.target.attacked = false
@@ -73,11 +73,15 @@ export default class target {
         if (id === otherId || !otherEntity.move) return
         if (
           entity.attributes.faction === otherEntity.attributes.faction &&
-          id !== GLOBAL.heroId
+          id !== REACTIVE.world.heroId
         ) {
           return
         }
-        if (id === GLOBAL.heroId && INPUT.lastActiveDevice !== "gamepad") return
+        if (
+          id === REACTIVE.world.heroId &&
+          INPUT.lastActiveDevice !== "gamepad"
+        )
+          return
 
         const distance = LIB.distance(entity.position, otherEntity.position)
         if (distance < minDistance) {
@@ -87,14 +91,14 @@ export default class target {
 
         if (
           entity.attributes.faction !== otherEntity.attributes.faction &&
-          id !== GLOBAL.heroId
+          id !== REACTIVE.world.heroId
         ) {
           entity.target.attacked = true
         }
       })
 
       let maxTargetDistance = 300
-      if (id === GLOBAL.heroId) maxTargetDistance = 540
+      if (id === REACTIVE.world.heroId) maxTargetDistance = 540
 
       if (minDistance > maxTargetDistance) {
         entity.target.id = undefined
@@ -103,7 +107,7 @@ export default class target {
   }
 
   heroTargetByGamepad() {
-    if (GLOBAL.hero.target.locked) return
+    if (REACTIVE.world.hero.target.locked) return
     if (INPUT.lastActiveDevice !== "gamepad") return
     if (!LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       return
@@ -121,12 +125,18 @@ export default class target {
     const angleToGroup = 0.2 // about 12 degrees
 
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move || id === GLOBAL.heroId) return
+      if (!entity.move || id === REACTIVE.world.heroId) return
 
-      const distance = LIB.distance(GLOBAL.hero.position, entity.position)
+      const distance = LIB.distance(
+        REACTIVE.world.hero.position,
+        entity.position
+      )
       if (distance > 750) return
 
-      const entityAngle = LIB.angle(GLOBAL.hero.position, entity.position)
+      const entityAngle = LIB.angle(
+        REACTIVE.world.hero.position,
+        entity.position
+      )
       const angle = Math.abs(entityAngle - axesAngle)
 
       if (angle < angleToGroup) {
@@ -152,23 +162,23 @@ export default class target {
       })
     }
 
-    GLOBAL.hero.target.id = closestEntityId
+    REACTIVE.world.hero.target.id = closestEntityId
   }
   heroTargetByMouse() {
-    if (GLOBAL.hero.target.locked || !GLOBAL.hoverId) return
-    GLOBAL.hero.target.id = GLOBAL.hoverId
+    if (REACTIVE.world.hero.target.locked || !REACTIVE.world.hoverId) return
+    REACTIVE.world.hero.target.id = REACTIVE.world.hoverId
   }
 
   updateHoverEntity() {
     if (INPUT.lastActiveDevice === "gamepad") return
 
     const point = LIB.mousePoint()
-    const heroPosition = GLOBAL.hero.position
+    const heroPosition = REACTIVE.world.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0
 
     WORLD.entities.forEach((entity, id) => {
-      if (id === GLOBAL.heroId || !entity.move || !entity.size) return
+      if (id === REACTIVE.world.heroId || !entity.move || !entity.size) return
 
       // how mutch height goes under the y coordinate
       let offset = entity.size.width / 4
@@ -202,8 +212,8 @@ export default class target {
       //
     }
 
-    GLOBAL.hoverId = hoverEntityId
-    GLOBAL.hover = WORLD.entities.get(hoverEntityId)
+    REACTIVE.world.hoverId = hoverEntityId
+    REACTIVE.world.hover = WORLD.entities.get(hoverEntityId)
   }
 
   lastContainer: Container | undefined
@@ -211,7 +221,7 @@ export default class target {
   updateHeroTargetFilter() {
     if (this.lastContainer) this.lastContainer.filters = []
 
-    const id = GLOBAL.hero.target.id
+    const id = REACTIVE.world.hero.target.id
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
 
@@ -227,7 +237,7 @@ export default class target {
           blur: 6,
         }),
       ]
-      if (GLOBAL.hero.target.attacked) {
+      if (REACTIVE.world.hero.target.attacked) {
         container.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
@@ -246,10 +256,13 @@ export default class target {
       if (!entity.target.id) entity.target.locked = false
     })
 
-    const targetEntity = WORLD.entities.get(GLOBAL.hero.target.id)
+    const targetEntity = WORLD.entities.get(REACTIVE.world.hero.target.id)
     if (!targetEntity) return
-    const distance = LIB.distance(GLOBAL.hero.position, targetEntity.position)
+    const distance = LIB.distance(
+      REACTIVE.world.hero.position,
+      targetEntity.position
+    )
 
-    if (distance > 1000) GLOBAL.hero.target.locked = false
+    if (distance > 1000) REACTIVE.world.hero.target.locked = false
   }
 }

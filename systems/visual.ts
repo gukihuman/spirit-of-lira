@@ -3,7 +3,7 @@ export default class visual {
   process() {
     // no point to update animations if hero for some reason is not chosen
     // it servers as a camera target
-    if (!GLOBAL.hero) return
+    if (!REACTIVE.world.hero) return
 
     WORLD.entities.forEach((entity, id) => {
       if (!entity.visual || !entity.position) return
@@ -14,8 +14,8 @@ export default class visual {
       if (!container) return
 
       // update container coordinates
-      container.x = entity.position.x - GLOBAL.hero.position.x + 960
-      container.y = entity.position.y - GLOBAL.hero.position.y + 540
+      container.x = entity.position.x - REACTIVE.world.hero.position.x + 960
+      container.y = entity.position.y - REACTIVE.world.hero.position.y + 540
 
       // update visibility of animations
       if (entity.move) {
@@ -114,7 +114,7 @@ export default class visual {
     if (!entity.move || !entity.attack) return
     if (entity.state.main !== "attack") return
 
-    if (id === GLOBAL.heroId) {
+    if (id === REACTIVE.world.heroId) {
       entity.visual.animation = "sword-attack"
     } else {
       entity.visual.animation = "attack"
@@ -122,10 +122,10 @@ export default class visual {
   }
 
   private synchronizeItems() {
-    const currentAnimation = GLOBAL.hero.visual.animation
+    const currentAnimation = REACTIVE.world.hero.visual.animation
 
-    const back = GPIXI.getMain(GLOBAL.heroId)?.children[0] as Container
-    const front = GPIXI.getMain(GLOBAL.heroId)?.children[2] as Container
+    const back = GPIXI.getMain(REACTIVE.world.heroId)?.children[0] as Container
+    const front = GPIXI.getMain(REACTIVE.world.heroId)?.children[2] as Container
     if (!back || !front) return
 
     back.children.forEach((child) => {

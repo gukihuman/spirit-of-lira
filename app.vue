@@ -5,7 +5,7 @@ fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-cente
   loading
 
   //- 1920 / 1080 centered game window
-  transition: game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
+  transition: game-window(v-show="!REACTIVE.states.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
     viewport
@@ -14,12 +14,12 @@ fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-cente
       bars
 
     div(class="z-10"): transition
-        input-area(v-show="SYSTEM_DATA.states.input")
+        input-area(v-show="REACTIVE.states.input")
 
     //- output-area
 
     div(class="z-30"): transition
-        inventory(v-show="SYSTEM_DATA.states.inventory")
+        inventory(v-show="REACTIVE.states.inventory")
 
 </template>
 

@@ -15,13 +15,13 @@ export default class damage {
       )
       let angle = displacement.angle
 
-      if (id === GLOBAL.heroId) {
+      if (id === REACTIVE.world.heroId) {
         EFFECT_FACTORY.createEffect("sword", targetEntityId, angle)
       }
 
       if (
         targetEntity.state.main !== "attack" &&
-        targetEntityId !== GLOBAL.heroId
+        targetEntityId !== REACTIVE.world.heroId
       ) {
         targetEntity.state.main = "attack"
         targetEntity.target.id = id

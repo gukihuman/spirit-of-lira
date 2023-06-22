@@ -35,8 +35,8 @@ class CollisionManager {
   }
 
   updateCollisionGrid() {
-    if (!GLOBAL.heroId) return
-    const heroPosition = GLOBAL.hero.position
+    if (!REACTIVE.world.heroId) return
+    const heroPosition = REACTIVE.world.hero.position
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
@@ -59,8 +59,8 @@ class CollisionManager {
   }
 
   private updateCollisionArray() {
-    if (!GLOBAL.heroId) return
-    const heroPosition = GLOBAL.hero.position
+    if (!REACTIVE.world.heroId) return
+    const heroPosition = REACTIVE.world.hero.position
 
     let i = LIB.tileIndexFromCoordinates(heroPosition.x, heroPosition.y)
 
@@ -99,7 +99,7 @@ class CollisionManager {
     this.drawCollisionGrid()
 
     GPIXI.tickerAdd(() => {
-      if (SYSTEM_DATA.states.collisionEdit) {
+      if (REACTIVE.states.collisionEdit) {
         GPIXI.collision.visible = true
         this.updateCollisionArray()
         this.updateCollisionGrid()

@@ -214,10 +214,10 @@ class Lib {
     return this.vector(960, 540)
   }
   mousePoint() {
-    if (!SYSTEM_DATA.states.firstMouseMove) return this.centerPoint()
+    if (!REACTIVE.states.firstMouseMove) return this.centerPoint()
     return LIB.vector(
-      INPUT.mouse.x / SYSTEM_DATA.states.gameWindowScale,
-      INPUT.mouse.y / SYSTEM_DATA.states.gameWindowScale
+      INPUT.mouse.x / REACTIVE.states.gameWindowScale,
+      INPUT.mouse.y / REACTIVE.states.gameWindowScale
     )
   }
 

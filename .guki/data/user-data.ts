@@ -38,7 +38,7 @@ class UserData {
       SIGNAL.emit("gamepadMove")
     }
 
-    if (SYSTEM_DATA.states.inputFocus) return
+    if (REACTIVE.states.inputFocus) return
 
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
@@ -58,7 +58,7 @@ class UserData {
       )
     ) {
       SIGNAL.emit("mouseMove")
-      SYSTEM_DATA.states.autoMouseMove = false
+      REACTIVE.states.autoMouseMove = false
     }
   }
 
