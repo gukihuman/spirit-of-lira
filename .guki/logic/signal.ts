@@ -54,7 +54,9 @@ class Signal {
       hero.target.locked = !hero.target.locked
 
       // reset destination if it is on the target
+      // it might be undefined with gamepad so first check if it exists
       if (
+        hero.move.destination &&
         !hero.target.locked &&
         hero.target.entity.position.x === hero.move.destination.x &&
         hero.target.entity.position.y === hero.move.destination.y

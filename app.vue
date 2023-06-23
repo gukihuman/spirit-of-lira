@@ -12,6 +12,7 @@ fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-cente
 
     div(class="z-10")
       bars
+      transition: target(v-show="true")
 
     div(class="z-10"): transition
         input-area(v-show="REACTIVE.states.input")
