@@ -58,7 +58,8 @@ class Remote {
           wrongResponse = true
           break
         }
-        REACTIVE.refs.output += JSON.parse(newText).choices[0].message.content
+        SYSTEM_DATA.refs.output +=
+          JSON.parse(newText).choices[0].message.content
         result += newText
       }
     }
@@ -85,7 +86,7 @@ class Remote {
   private pushNewMessages() {
     this.data.messages.push({
       role: "user",
-      content: REACTIVE.refs.input.value,
+      content: SYSTEM_DATA.refs.input.value,
     })
     this.data.messages.push({
       role: "system",
@@ -101,11 +102,11 @@ class Remote {
   init() {
     GPIXI.tickerAdd(async () => {
       // if (gim.signals.sendInput) {
-      //   if (!REACTIVE.refs.input) return
+      //   if (!SYSTEM_DATA.refs.input) return
       //   this.pushNewMessages()
       //   this.clampData()
-      //   console.log("⏫ " + LIB.timeNow() + " Spirit: " + REACTIVE.refs.input.value)
-      //   REACTIVE.refs.input.value = ""
+      //   console.log("⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value)
+      //   SYSTEM_DATA.refs.input.value = ""
       //   USER_DATA.states.output = ""
       //   let res = await this.queryOpenAI(this.data)
       //   this.data.messages.push(res.choices[0].message)

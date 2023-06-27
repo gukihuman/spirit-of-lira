@@ -4,7 +4,7 @@ class Cache {
   init() {
     GPIXI.tickerAdd(() => {
       this.entities = LIB.cloneMapDeep(WORLD.entities)
-      REACTIVE.world.lastHero = this.entities.get(REACTIVE.world.heroId)
+      SYSTEM_DATA.world.lastHero = this.entities.get(SYSTEM_DATA.world.heroId)
     }, "CACHE")
   }
 }

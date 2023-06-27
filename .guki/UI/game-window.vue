@@ -2,7 +2,7 @@
 
 
 //- game window
-div(class="bg-gray-700 absolute" :style="style")
+div(class="bg-gray-700 absolute overflow-hidden" :style="style")
   slot
 
 </template>
@@ -29,10 +29,10 @@ function setScale() {
   let [baseWidth, baseHeight] = [userWidth / 16, userHeight / 9]
   if (baseWidth > baseHeight) {
     scale.value = userHeight / height / devicePixelRatio
-    REACTIVE.states.gameWindowScale = scale.value
+    SYSTEM_DATA.states.gameWindowScale = scale.value
   } else {
     scale.value = userWidth / width / devicePixelRatio
-    REACTIVE.states.gameWindowScale = scale.value
+    SYSTEM_DATA.states.gameWindowScale = scale.value
   }
 }
 

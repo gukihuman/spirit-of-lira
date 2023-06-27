@@ -1,26 +1,26 @@
 <template lang="pug">
 
-fullscreen(class="h-screen w-screen bg-slate-800 flex items-center justify-center select-none")
+fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justify-center select-none")
 
   loading
 
   //- 1920 / 1080 centered game window
-  transition: game-window(v-show="!REACTIVE.states.loadingScreen")
+  transition: game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
     viewport
 
-    div(class="z-10")
+    div(class="z-10 overflow-hidden w-full h-full")
       bars
-      transition: target(v-show="true")
+      transition(name="fast"): target(v-show="SYSTEM_DATA.states.target")
 
     div(class="z-10"): transition
-        input-area(v-show="REACTIVE.states.input")
+        input-area(v-show="SYSTEM_DATA.states.input")
 
     //- output-area
 
     div(class="z-30"): transition
-        inventory(v-show="REACTIVE.states.inventory")
+        inventory(v-show="SYSTEM_DATA.states.inventory")
 
 </template>
 
@@ -29,6 +29,15 @@ onMounted(() => {})
 </script>
 
 <style>
+.fast-enter-active,
+.fast-leave-active {
+  transition: opacity 0.05s ease;
+}
+.fast-enter-from,
+.fast-leave-to {
+  opacity: 0;
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.2s ease;

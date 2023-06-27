@@ -6,7 +6,7 @@ export default {
     let position = entity.position
     if (!position) return
 
-    const destination = REACTIVE.world.hero.move.destination
+    const destination = SYSTEM_DATA.world.hero.move.destination
     if (!destination) {
       position.x = 0
       position.y = 0
@@ -17,15 +17,15 @@ export default {
 
     const displacement = LIB.vectorFromPoints(
       position,
-      WORLD.entities.get(REACTIVE.world.heroId).position
+      WORLD.entities.get(SYSTEM_DATA.world.heroId).position
     )
     const distance = displacement.distance
     const speedPerTick = LIB.speedPerTick(
-      WORLD.entities.get(REACTIVE.world.heroId)
+      WORLD.entities.get(SYSTEM_DATA.world.heroId)
     )
 
     // hide
-    if (distance < speedPerTick || REACTIVE.world.hero.target.attacked) {
+    if (distance < speedPerTick || SYSTEM_DATA.world.hero.target.attacked) {
       position.x = 0
       position.y = 0
       return

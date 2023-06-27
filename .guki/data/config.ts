@@ -41,6 +41,7 @@ class GukiConfig {
     },
     // order of execute in ticker, handled by GPIXI
     toolsAndSystems: {
+      state: 5,
       visual: 4,
       CACHE: 3,
       INPUT: 2, // at least USER_DATA depends on it

@@ -6,7 +6,7 @@ export default class destination {
     WORLD.entities.forEach((entity, id) => {
       //
       if (
-        id !== REACTIVE.world.heroId &&
+        id !== SYSTEM_DATA.world.heroId &&
         entity.move &&
         entity.state.main === "idle" &&
         GPIXI.elapsedMS > entity.move.randomDestinationMS + this.delayMS

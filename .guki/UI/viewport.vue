@@ -3,7 +3,7 @@
 div(
   ref="viewport"
   class="absolute transition time-200"
-  :class="{ 'blur': REACTIVE.states.inventory }"
+  :class="{ 'blur': SYSTEM_DATA.states.inventory }"
 )
 
 </template>
@@ -14,6 +14,6 @@ const viewport = ref(null)
 onMounted(() => {
   //
   // To init pixi and INPUT with
-  REACTIVE.refs.viewport = viewport
+  SYSTEM_DATA.refs.viewport = viewport
 })
 </script>

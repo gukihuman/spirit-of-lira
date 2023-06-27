@@ -8,6 +8,6 @@ div(ref="fullscreen")
 //
 const fullscreen = ref(null)
 onMounted(() => {
-  REACTIVE.refs.fullscreen = fullscreen
+  SYSTEM_DATA.refs.fullscreen = fullscreen
 })
 </script>

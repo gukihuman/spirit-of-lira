@@ -1,4 +1,4 @@
 export default {
-  faction: "peaceful",
+  mood: "peaceful",
   health: 10,
 }

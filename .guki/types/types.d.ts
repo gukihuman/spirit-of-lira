@@ -1,5 +1,5 @@
 //
-// redeclare some types for REACTIVE.world accessability
+// redeclare some types for SYSTEM_DATA.world accessability
 // nuxt issue, otherwise auto-import dont work,
 import {
   Graphics as tempGraphics,

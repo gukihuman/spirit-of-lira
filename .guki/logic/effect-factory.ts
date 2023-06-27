@@ -4,6 +4,7 @@ class EffectFactory {
     //
     const id = await ENTITY_FACTORY.createEntity(name, {
       visual: {
+        fade: false, // disable soft dissapearence
         initial: {
           randomFlip: false,
           randomFrame: false,

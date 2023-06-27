@@ -3,7 +3,7 @@ export default class visual {
   process() {
     // no point to update animations if hero for some reason is not chosen
     // it servers as a camera target
-    if (!REACTIVE.world.hero) return
+    if (!SYSTEM_DATA.world.hero) return
 
     WORLD.entities.forEach((entity, id) => {
       if (!entity.visual || !entity.position) return
@@ -14,8 +14,8 @@ export default class visual {
       if (!container) return
 
       // update container coordinates
-      container.x = entity.position.x - REACTIVE.world.hero.position.x + 960
-      container.y = entity.position.y - REACTIVE.world.hero.position.y + 540
+      container.x = entity.position.x - SYSTEM_DATA.world.hero.position.x + 960
+      container.y = entity.position.y - SYSTEM_DATA.world.hero.position.y + 540
 
       // update visibility of animations
       if (entity.move) {
@@ -65,8 +65,12 @@ export default class visual {
         return
     }
 
-    this.checkMove(entity, id)
-    this.checkAttack(entity, id)
+    this.checkDeath(entity, id)
+
+    if (entity.state.main !== "dead") {
+      this.checkMove(entity, id)
+      this.checkAttack(entity, id)
+    }
 
     const lastEntity = CACHE.entities.get(id)
     if (!lastEntity) return
@@ -74,6 +78,10 @@ export default class visual {
     if (entity.visual.animation !== lastEntity.visual.animation) {
       entity.visual.animationMS = GPIXI.elapsedMS
     }
+  }
+
+  private checkDeath(entity, id) {
+    if (entity.state.main === "dead") entity.visual.animation = "death"
   }
 
   private checkMove(entity, id) {
@@ -114,7 +122,7 @@ export default class visual {
     if (!entity.move || !entity.attack) return
     if (entity.state.main !== "attack") return
 
-    if (id === REACTIVE.world.heroId) {
+    if (id === SYSTEM_DATA.world.heroId) {
       entity.visual.animation = "sword-attack"
     } else {
       entity.visual.animation = "attack"
@@ -122,10 +130,12 @@ export default class visual {
   }
 
   private synchronizeItems() {
-    const currentAnimation = REACTIVE.world.hero.visual.animation
+    const currentAnimation = SYSTEM_DATA.world.hero.visual.animation
 
-    const back = GPIXI.getMain(REACTIVE.world.heroId)?.children[0] as Container
-    const front = GPIXI.getMain(REACTIVE.world.heroId)?.children[2] as Container
+    const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+      ?.children[0] as Container
+    const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+      ?.children[2] as Container
     if (!back || !front) return
 
     back.children.forEach((child) => {

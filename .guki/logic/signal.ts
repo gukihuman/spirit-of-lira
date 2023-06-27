@@ -2,24 +2,24 @@ class Signal {
   private active: string[] = []
   logic = {
     collision() {
-      REACTIVE.states.collision = !REACTIVE.states.collision
+      SYSTEM_DATA.states.collision = !SYSTEM_DATA.states.collision
     },
     collisionEdit() {
-      REACTIVE.states.collisionEdit = !REACTIVE.states.collisionEdit
+      SYSTEM_DATA.states.collisionEdit = !SYSTEM_DATA.states.collisionEdit
     },
     fullscreen() {
-      REACTIVE.states.fullscreen = !REACTIVE.states.fullscreen
-      if (REACTIVE.refs.fullscreen && !document.fullscreenElement) {
-        REACTIVE.refs.fullscreen.requestFullscreen()
+      SYSTEM_DATA.states.fullscreen = !SYSTEM_DATA.states.fullscreen
+      if (SYSTEM_DATA.refs.fullscreen && !document.fullscreenElement) {
+        SYSTEM_DATA.refs.fullscreen.requestFullscreen()
       } else if (document.exitFullscreen) {
         document.exitFullscreen()
       }
     },
     attack() {
-      if (!REACTIVE.world.hero.target.id) return
+      if (!SYSTEM_DATA.world.hero.target.id) return
 
-      REACTIVE.world.hero.target.attacked = true
-      REACTIVE.world.hero.target.locked = true
+      SYSTEM_DATA.world.hero.target.attacked = true
+      SYSTEM_DATA.world.hero.target.locked = true
 
       const move = WORLD.systems.get("move")
       if (move) move.startAttackMS = GPIXI.elapsedMS
@@ -27,28 +27,28 @@ class Signal {
     mouseMoveOrAttack() {
       WORLD.systems.get("move")?.mouseMove()
 
-      if (REACTIVE.world.hoverId) {
-        REACTIVE.world.hero.target.id = REACTIVE.world.hoverId
-        REACTIVE.world.hero.target.attacked = true
-        REACTIVE.world.hero.target.locked = true
+      if (SYSTEM_DATA.world.hoverId) {
+        SYSTEM_DATA.world.hero.target.id = SYSTEM_DATA.world.hoverId
+        SYSTEM_DATA.world.hero.target.attacked = true
+        SYSTEM_DATA.world.hero.target.locked = true
       } else {
-        REACTIVE.world.hero.target.attacked = false
+        SYSTEM_DATA.world.hero.target.attacked = false
       }
     },
     mouseMove() {
       WORLD.systems.get("move")?.mouseMove()
     },
     autoMouseMove() {
-      REACTIVE.states.autoMouseMove = !REACTIVE.states.autoMouseMove
+      SYSTEM_DATA.states.autoMouseMove = !SYSTEM_DATA.states.autoMouseMove
     },
     gamepadMove() {
       WORLD.systems.get("move")?.gamepadMove()
     },
     inventory() {
-      REACTIVE.states.inventory = !REACTIVE.states.inventory
+      SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
     },
     lockTarget() {
-      const hero = REACTIVE.world.hero
+      const hero = SYSTEM_DATA.world.hero
       if (!hero.target.id) return
 
       hero.target.locked = !hero.target.locked
@@ -71,8 +71,8 @@ class Signal {
 
       // in case lock is used to lock a new target immidiately
       if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {
-        if (!REACTIVE.world.hoverId) return
-        hero.target.id = REACTIVE.world.hoverId
+        if (!SYSTEM_DATA.world.hoverId) return
+        hero.target.id = SYSTEM_DATA.world.hoverId
         hero.target.locked = true
       }
     },

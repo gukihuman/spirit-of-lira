@@ -10,9 +10,13 @@ export default {
     distance: 60,
     speed: 1.2,
     delay: 0.24,
+    damage: 28,
   },
   visual: {
     firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
+  },
+  attributes: {
+    health: 100,
   },
   language: {
     system: `fantasy world {

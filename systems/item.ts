@@ -7,25 +7,30 @@ export default class Item {
 
   process() {
     const heroSprite = GPIXI.getSprite(
-      REACTIVE.world.heroId,
-      REACTIVE.world.hero.visual.animation
+      SYSTEM_DATA.world.heroId,
+      SYSTEM_DATA.world.hero.visual.animation
     )
     if (!heroSprite) return
 
-    // 📜 make independent when run or walk
-    this.itemSprites.forEach((sprite) => {
-      //
-      // instead of checking each state, just syncronizes all item sprites
-      // and mock up if the frame difference for shorter state animations =)
-      if (heroSprite.currentFrame > sprite.totalFrames - 1) return
+    if (
+      SYSTEM_DATA.world.hero.visual.animation.includes("attack") ||
+      (!SYSTEM_DATA.world.hero.visual.animation.includes("attack") &&
+        SYSTEM_DATA.world.lastHero.visual.animation.includes("attack"))
+    ) {
+      this.itemSprites.forEach((sprite) => {
+        //
+        // instead of checking each state, just syncronizes all item sprites
+        // and mock up if the frame difference for shorter state animations =)
+        if (heroSprite.currentFrame > sprite.totalFrames - 1) return
 
-      sprite.gotoAndPlay(heroSprite.currentFrame)
-    })
+        sprite.gotoAndPlay(heroSprite.currentFrame)
+      })
+    }
   }
 
   async init() {
-    if (!GPIXI.app || !REACTIVE.world.heroId) return
-    if (!GPIXI.getMain(REACTIVE.world.heroId)) return
+    if (!GPIXI.app || !SYSTEM_DATA.world.heroId) return
+    if (!GPIXI.getMain(SYSTEM_DATA.world.heroId)) return
 
     const promises: Promise<void>[] = []
 
@@ -37,13 +42,13 @@ export default class Item {
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = GPIXI.getMain(REACTIVE.world.heroId)
+          const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = GPIXI.getMain(REACTIVE.world.heroId)
+          const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 

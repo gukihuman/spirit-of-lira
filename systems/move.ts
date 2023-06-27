@@ -12,7 +12,7 @@ export default class move {
       this.move(entity, id)
     })
 
-    if (REACTIVE.states.autoMouseMove) SIGNAL.emit("mouseMove")
+    if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
   private updateGamepadMoveInfo() {
@@ -22,8 +22,8 @@ export default class move {
       }
 
       if (GPIXI.elapsedMS > this.startAttackMS + 1000) {
-        REACTIVE.world.hero.move.destination = undefined
-        REACTIVE.world.hero.target.attacked = false
+        SYSTEM_DATA.world.hero.move.destination = undefined
+        SYSTEM_DATA.world.hero.target.attacked = false
       }
       this.gamepadMoved = true
     } else {
@@ -33,29 +33,29 @@ export default class move {
 
   // set hero target position to mouse position
   mouseMove() {
-    if (!REACTIVE.world.hero) return
-    if (REACTIVE.states.inventory) return
+    if (!SYSTEM_DATA.world.hero) return
+    if (SYSTEM_DATA.states.inventory) return
 
     const distance = LIB.distance(LIB.centerPoint(), LIB.mousePoint())
 
     if (distance < 10) {
-      REACTIVE.world.hero.move.destination = undefined
+      SYSTEM_DATA.world.hero.move.destination = undefined
       return
     }
 
-    REACTIVE.world.hero.state.main = "forcemove"
+    SYSTEM_DATA.world.hero.state.main = "forcemove"
 
     const mousePosition = LIB.mousePoint()
-    mousePosition.x += REACTIVE.world.hero.position.x - 960
-    mousePosition.y += REACTIVE.world.hero.position.y - 540
-    REACTIVE.world.hero.move.destination = mousePosition
+    mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
+    mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
+    SYSTEM_DATA.world.hero.move.destination = mousePosition
   }
 
   // move directly and set hero target position to undefined
   gamepadMove() {
-    if (!REACTIVE.world.hero) return
+    if (!SYSTEM_DATA.world.hero) return
 
-    const speedPerTick = LIB.speedPerTick(REACTIVE.world.hero)
+    const speedPerTick = LIB.speedPerTick(SYSTEM_DATA.world.hero)
 
     const axesVector = LIB.vector(INPUT.gamepad.axes[0], INPUT.gamepad.axes[1])
     const angle = axesVector.angle
@@ -65,14 +65,14 @@ export default class move {
     const velocity = LIB.vectorFromAngle(angle, speedPerTick)
 
     this.forceMove = true // gamepad always force
-    this.checkCollisionAndMove(REACTIVE.world.hero, velocity, ratio)
+    this.checkCollisionAndMove(SYSTEM_DATA.world.hero, velocity, ratio)
     this.gamepadMoved = true
   }
 
   move(entity: Entity, id) {
-    if (id === REACTIVE.world.heroId && this.gamepadMoved) return
+    if (id === SYSTEM_DATA.world.heroId && this.gamepadMoved) return
     if (!entity.move || !entity.move.destination) return
-    if (entity.state.main === "attack") return
+    if (entity.state.main === "attack" || entity.state.main === "dead") return
 
     if (entity.state.main === "forcemove") this.forceMove = true
     else this.forceMove = false
@@ -105,7 +105,7 @@ export default class move {
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 
-    if (REACTIVE.world.hero.target.attacked) ratio = 1
+    if (SYSTEM_DATA.world.hero.target.attacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = LIB.vectorFromAngle(angle, speedPerTick)
@@ -121,7 +121,7 @@ export default class move {
     if (this.forceMove) entity.state.main = "forcemove"
     else entity.state.main = "move"
 
-    if (!REACTIVE.states.collision) {
+    if (!SYSTEM_DATA.states.collision) {
       position.x = nextX
       position.y = nextY
       return

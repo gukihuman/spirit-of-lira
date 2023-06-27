@@ -16,5 +16,9 @@ export default {
   },
   attack: {
     distance: 40,
+    damage: 20,
+  },
+  attributes: {
+    health: 100,
   },
 }

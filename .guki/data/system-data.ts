@@ -1,4 +1,4 @@
-class Reactive {
+class systemData {
   //
   private _refs = LIB.store({
     fullscreen: undefined,
@@ -22,6 +22,8 @@ class Reactive {
     autoMouseMove: false,
 
     // UI on / off
+    target: false,
+    targetLocked: false,
     inventory: false,
     input: false,
   })
@@ -35,9 +37,10 @@ class Reactive {
     lastHero: {}, // previous tick
     hover: {},
     hoverId: 0,
+    targetHealth: 0,
   })
   get world() {
     return this._world()
   }
 }
-export const REACTIVE = new Reactive()
+export const SYSTEM_DATA = new systemData()

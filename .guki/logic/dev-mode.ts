@@ -3,7 +3,7 @@ import { handleError } from "nuxt/dist/app/compat/capi"
 class DevMode {
   init() {
     GPIXI.tickerAdd(() => {
-      if (REACTIVE.states.devMode) {
+      if (SYSTEM_DATA.states.devMode) {
         if (INPUT.keyboard.justPressed.includes("z")) {
           SIGNAL.emit("collisionEdit")
         }
@@ -11,7 +11,7 @@ class DevMode {
           SIGNAL.emit("collision")
         }
         if (INPUT.keyboard.justPressed.includes("l")) {
-          console.log(REACTIVE.world.hover)
+          console.log(SYSTEM_DATA.world.hover)
         }
       }
     }, "DEV_MODE")

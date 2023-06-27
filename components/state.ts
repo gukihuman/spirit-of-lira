@@ -6,4 +6,5 @@ export default {
   forcemove: false,
   follow: false,
   attack: false,
+  dead: false,
 }
