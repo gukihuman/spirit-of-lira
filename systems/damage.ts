@@ -32,13 +32,13 @@ export default class damage {
 
       targetEntity.attributes.health -= entity.attack.damage
       if (targetEntity.attributes.health <= 0) {
+        entity.target.id = undefined
+        entity.target.locked = false
+        entity.target.attacked = false
+        entity.target.entity = undefined
+        entity.move.destination = entity.position
         setTimeout(() => {
-          entity.target.id = undefined
-          entity.target.locked = false
-          entity.target.attacked = false
-          entity.target.entity = undefined
           entity.state.main = "idle"
-          entity.move.destination = entity.position
           entity.damageDone = false
         }, 500)
       }

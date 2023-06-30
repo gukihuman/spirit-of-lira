@@ -1,5 +1,3 @@
-import { handleError } from "nuxt/dist/app/compat/capi"
-
 class DevMode {
   init() {
     GPIXI.tickerAdd(() => {
