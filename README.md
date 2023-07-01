@@ -1,3 +1,3 @@
-## Guki Forest
+## Spirit of Lira
 
-[early demo](game-02.vercel.app)
+[early dev build](spirit-of-lira.vercel.app)

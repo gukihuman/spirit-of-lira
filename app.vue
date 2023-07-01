@@ -10,7 +10,7 @@ fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justif
     //- 1920 / 1080 pixi viewport, where the actual game is
     viewport
 
-    div(class="z-10 overflow-hidden w-full h-full")
+    div(class="absolute z-10 overflow-hidden w-full h-full")
       bars
       transition(name="fast"): target(v-show="SYSTEM_DATA.states.target")
 

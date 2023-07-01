@@ -5,11 +5,8 @@
     ".vscode": true,
     "node_modules": true,
     "tests": true,
-    ".env": true,
     ".gitignore": true,
     "package-lock.json": true,
-    "tsconfig.json": true,
-    "vitest.config.ts": true,
     "prisma": true,
     "server": true,
     "_old": true

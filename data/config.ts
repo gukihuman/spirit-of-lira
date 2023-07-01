@@ -1,4 +1,4 @@
-import userConfig from "../../guki.config"
+import userConfig from "@/guki.config"
 
 class GukiConfig {
   //

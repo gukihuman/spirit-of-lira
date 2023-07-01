@@ -13,13 +13,20 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: [".guki/**/*.{vue,js,ts}"],
+    dirs: [
+      "boot/**/*.{js,ts}",
+      "core/**/*.{js,ts}",
+      "data/**/*.{js,ts}",
+      "logic/**/*.{js,ts}",
+    ],
   },
   components: {
-    dirs: ["@/.guki/UI", "@/UI"],
+    dirs: ["@/UI"],
   },
-  plugins: ["@/.guki/boot/importer.ts", "@/.guki/boot/starter.ts"],
+  plugins: ["@/boot/importer.ts", "@/boot/starter.ts"],
   css: ["@/tailwind.css"],
+
+  // important for correct work of importer
   vite: {
     build: {
       minify: false,

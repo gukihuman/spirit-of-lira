@@ -2,7 +2,7 @@
 
 
 //- game window
-div(class="bg-gray-700 absolute overflow-hidden" :style="style")
+div(class="absolute bg-gray-700 absolute overflow-hidden" :style="style")
   slot
 
 </template>

@@ -26,6 +26,7 @@ class EntityFactory {
   /** inject / expand components from components folder */
   private async injectComponents(entity: Entity, id: number) {
     //
+    // 📜 move sorting outside to calculate it only once
     const sortedPriority = LIB.sortedKeys(CONFIG.priority.components)
 
     const promises: Promise<void>[] = []
