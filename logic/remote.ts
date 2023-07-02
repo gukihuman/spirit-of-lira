@@ -1,6 +1,40 @@
 class Remote {
-  private systemMessage = SYSTEM_DATA.world.hero.language.system
-  private clarification = SYSTEM_DATA.world.hero.language.clarification
+  private systemMessage
+  private clarification
+  private data
+
+  init() {
+    //
+    this.systemMessage = SYSTEM_DATA.world.hero.language.system
+    this.clarification = SYSTEM_DATA.world.hero.language.clarification
+    this.data = {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: this.systemMessage,
+        },
+      ],
+      temperature: 1,
+      stream: false,
+    }
+  }
+
+  // 📜 clean up remote functionality
+  async sendInput() {
+    this.pushNewMessages()
+    this.clampData()
+    console.log(
+      "⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value
+    )
+    SYSTEM_DATA.refs.input.value = ""
+    SYSTEM_DATA.refs.output.value = ""
+    let res = await this.queryOpenAI(this.data)
+    this.data.messages.push(res.choices[0].message)
+    console.log(
+      "⏬ " + LIB.timeNow() + " Lira: " + res.choices[0].message.content
+    )
+  }
 
   async queryHuggingFace(data) {
     const response = await fetch(
@@ -29,9 +63,10 @@ class Remote {
       body: JSON.stringify(data),
       signal: controller.signal,
     }
-    let endpoint = ""
+    let endpoint
     if (apiKey === "betterGPT") {
-      delete request.headers
+      request.headers.Authorization = `Bearer BetterGPT`
+      delete request.headers["Content-Type"]
       endpoint = "https://free.churchless.tech/v1/chat/completions"
     } else {
       endpoint = "https://api.openai.com/v1/chat/completions"
@@ -57,7 +92,7 @@ class Remote {
           wrongResponse = true
           break
         }
-        SYSTEM_DATA.refs.output +=
+        SYSTEM_DATA.refs.output.value +=
           JSON.parse(newText).choices[0].message.content
         result += newText
       }
@@ -71,17 +106,6 @@ class Remote {
     }
   }
 
-  data = {
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content: this.systemMessage,
-      },
-    ],
-    temperature: 1,
-    stream: false,
-  }
   pushNewMessages() {
     this.data.messages.push({
       role: "user",

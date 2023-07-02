@@ -5,7 +5,7 @@ div(
   :class="{ 'opacity-100': SYSTEM_DATA.states.inputFocus }"
   )
   textarea(
-    ref="input"
+    ref="inputArea"
     @input="updateInputSize()"
     @focus="SYSTEM_DATA.states.inputFocus = true"
     @blur="SYSTEM_DATA.states.inputFocus = false"
@@ -22,7 +22,7 @@ div(
 
 <script setup lang="ts">
 const background: any = ref(null)
-const input = ref(null)
+const inputArea = ref(null)
 
 const sendInput = () => {
   SIGNAL.emit("sendInput")
@@ -31,32 +31,29 @@ const sendInput = () => {
 const maxInputWidth = 1052
 
 const updateInputSize = () => {
-  if (!SYSTEM_DATA.refs.input) return
-  if (SYSTEM_DATA.refs.input.scrollWidth < maxInputWidth) {
-    SYSTEM_DATA.refs.input.style.whiteSpace = "nowrap"
+  const input = SYSTEM_DATA.refs.input
+  if (!input) return
+
+  if (input.scrollWidth < maxInputWidth) {
+    input.style.whiteSpace = "nowrap"
   }
 
-  SYSTEM_DATA.refs.input.style.width = "auto"
-  SYSTEM_DATA.refs.input.style.width = `${Math.min(
-    SYSTEM_DATA.refs.input.scrollWidth + 40,
-    maxInputWidth
-  )}px`
+  input.style.width = "auto"
+  input.style.width = `${Math.min(input.scrollWidth + 40, maxInputWidth)}px`
 
-  if (SYSTEM_DATA.refs.input.scrollWidth + 40 >= maxInputWidth) {
-    SYSTEM_DATA.refs.input.style.whiteSpace = "pre-wrap"
+  if (input.scrollWidth + 40 >= maxInputWidth) {
+    input.style.whiteSpace = "pre-wrap"
   } else {
-    SYSTEM_DATA.refs.input.style.whiteSpace = "nowrap"
+    input.style.whiteSpace = "nowrap"
   }
 
-  SYSTEM_DATA.refs.input.style.height = `${
-    SYSTEM_DATA.refs.input.scrollHeight + 5
-  }px`
+  input.style.height = `${input.scrollHeight + 5}px`
 }
 
 let updateInterval: any = null
 
 onMounted(() => {
-  SYSTEM_DATA.refs.input = input
+  SYSTEM_DATA.refs.input = inputArea
   updateInterval = setInterval(() => updateInputSize(), 50)
 })
 

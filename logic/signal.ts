@@ -1,6 +1,6 @@
 class Signal {
   private active: string[] = []
-  logic = {
+  logic: { [signal: string]: () => void } = {
     collision() {
       SYSTEM_DATA.states.collision = !SYSTEM_DATA.states.collision
     },
@@ -76,29 +76,8 @@ class Signal {
         hero.target.locked = true
       }
     },
-
-    // 📜 finish remote functionality
-    async sendInput() {
-      // REMOTE.pushNewMessages()
-      // REMOTE.clampData()
-      // console.log(
-      //   "⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value
-      // )
-      // SYSTEM_DATA.refs.input.value = ""
-      // SYSTEM_DATA.refs.output.value = ""
-      // let res = await REMOTE.queryOpenAI(REMOTE.data)
-      // REMOTE.data.messages.push(res.choices[0].message)
-      // console.log(
-      //   "⏬ " + LIB.timeNow() + " Lira: " + res.choices[0].message.content
-      // )
-      // const moodReq = _.cloneDeep(REMOTE.data)
-      // moodReq.messages.push({
-      //   role: "system",
-      //   content:
-      //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
-      // })
-      // let moodRes = await REMOTE.queryOpenAI(moodReq)
-      // console.log(moodRes.choices[0].message.content)
+    sendInput() {
+      REMOTE.sendInput()
     },
   }
   private runLogic() {
