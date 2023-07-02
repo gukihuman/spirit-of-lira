@@ -1,4 +1,4 @@
-export default class move {
+export default class {
   //
   // attack stops when force move, for example from input for hero
   // and maybe there will be some cases for mobs too
@@ -8,7 +8,7 @@ export default class move {
   private gamepadMoved = false
 
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       this.move(entity, id)
     })
 
@@ -92,7 +92,7 @@ export default class move {
     }
 
     if (entity.attack && entity.target.attacked) {
-      const targetEntity = WORLD.entities.get(entity.target.id)
+      const targetEntity = ENTITIES.get(entity.target.id)
       if (
         targetEntity &&
         distance < targetEntity.size.width / 2 + entity.attack.distance

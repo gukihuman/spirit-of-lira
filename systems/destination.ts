@@ -1,9 +1,9 @@
-export default class destination {
+export default class {
   //
   delayMS = 15_000
 
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       //
       if (
         id !== SYSTEM_DATA.world.heroId &&

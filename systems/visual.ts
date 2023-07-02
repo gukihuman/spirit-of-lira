@@ -1,11 +1,11 @@
 //
-export default class visual {
+export default class {
   process() {
     // no point to update animations if hero for some reason is not chosen
     // it servers as a camera target
     if (!SYSTEM_DATA.world.hero) return
 
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.visual || !entity.position) return
 
       this.updateAnimation(entity, id)
@@ -33,7 +33,7 @@ export default class visual {
       // update animation frame on first animation tick
       const firstFrames = entity.visual.firstFrames
       if (entity.move && firstFrames) {
-        const lastEntity = CACHE.entities.get(id)
+        const lastEntity = SYSTEMS.lasttick.entities.get(id)
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, state: string) => {
           if (
@@ -72,7 +72,7 @@ export default class visual {
       this.checkAttack(entity, id)
     }
 
-    const lastEntity = CACHE.entities.get(id)
+    const lastEntity = SYSTEMS.lasttick.entities.get(id)
     if (!lastEntity) return
 
     if (entity.visual.animation !== lastEntity.visual.animation) {
@@ -85,7 +85,7 @@ export default class visual {
   }
 
   private checkMove(entity, id) {
-    const lastEntity = CACHE.entities.get(id)
+    const lastEntity = SYSTEMS.lasttick.entities.get(id)
     if (!lastEntity) return
 
     const displacement = LIB.vectorFromPoints(

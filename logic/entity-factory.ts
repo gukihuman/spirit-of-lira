@@ -2,10 +2,8 @@ class EntityFactory {
   private nextId = 1
 
   /**  @returns promise of entity id or undefined */
-  async createEntity(name: string, components?: { [key: string]: any }) {
-    if (!STORE.entities.has(name)) return
-
-    const entity = _.cloneDeep(STORE.entities.get(name))
+  async create(name: string, components?: { [key: string]: any }) {
+    const entity = _.cloneDeep(IMPORTS.entities.get(name))
     if (!entity) {
       LIB.logWarning(`"${name}" not found (ENTITY_FACTORY)`)
       return
@@ -19,7 +17,7 @@ class EntityFactory {
     // inject / expand components from components folder
     await this.injectComponents(entity, id)
 
-    WORLD.entities.set(id, entity)
+    ENTITIES.set(id, entity)
     return id
   }
 
@@ -27,17 +25,17 @@ class EntityFactory {
   private async injectComponents(entity: Entity, id: number) {
     //
     // 📜 move sorting outside to calculate it only once
-    const sortedPriority = LIB.sortedKeys(CONFIG.priority.components)
+    const sortedPriority = LIB.sortedKeys(CONFIG.priority.componentInject)
 
     const promises: Promise<void>[] = []
     sortedPriority.forEach((name) => {
-      const value = STORE.components.get(name)
+      const value = IMPORTS.components.get(name)
       if (!value) return
 
       // entity model has this component or component is auto injected
       if (entity[name] || value.autoInject) {
         this.dependCounter = 0
-        promises.push(this.mergeComponent(entity, id, name, value))
+        promises.push(this.mergeComponent(entity, id, value, name))
       }
     })
     await Promise.all(promises)
@@ -45,7 +43,7 @@ class EntityFactory {
 
   private dependCounter = 0
 
-  private async mergeComponent(entity, id, name, value) {
+  private async mergeComponent(entity, id, value, name) {
     this.dependCounter++
     if (this.dependCounter > 100) {
       LIB.logWarning(
@@ -60,21 +58,21 @@ class EntityFactory {
       value.depend.forEach((dependName) => {
         if (entity[dependName]) return
 
-        const dependValue = STORE.components.get(dependName)
+        const dependValue = IMPORTS.components.get(dependName)
         if (!dependValue) {
           LIB.logWarning(
             `"${dependName}" as a "${name}" dependency is not found (ENTITY_FACTORY)`
           )
           return
         }
-        promises.push(this.mergeComponent(entity, id, dependName, dependValue))
+        promises.push(this.mergeComponent(entity, id, dependValue, dependName))
       })
       await Promise.all(promises)
     }
 
     entity[name] = _.merge(_.cloneDeep(value), entity[name])
 
-    if (entity[name].init) await entity[name].init(entity, id, name, value)
+    if (entity[name].inject) await entity[name].inject(entity, id)
 
     // inject triggered components after init
     if (entity[name].trigger) {
@@ -82,7 +80,7 @@ class EntityFactory {
       value.trigger.forEach((triggerName) => {
         if (entity[triggerName]) return
 
-        const triggerValue = STORE.components.get(triggerName)
+        const triggerValue = IMPORTS.components.get(triggerName)
         if (!triggerValue) {
           LIB.logWarning(
             `"${triggerName}" as a "${name}" trigger is not found (ENTITY_FACTORY)`
@@ -90,16 +88,16 @@ class EntityFactory {
           return
         }
         promises.push(
-          this.mergeComponent(entity, id, triggerName, triggerValue)
+          this.mergeComponent(entity, id, triggerValue, triggerName)
         )
       })
       await Promise.all(promises)
     }
 
+    delete entity[name].autoInject
     delete entity[name].depend
     delete entity[name].trigger
-    delete entity[name].autoInject
-    delete entity[name].init
+    delete entity[name].inject
   }
 }
 export const ENTITY_FACTORY = new EntityFactory()

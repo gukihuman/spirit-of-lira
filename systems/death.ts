@@ -1,11 +1,11 @@
-export default class death {
+export default class {
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.attributes) return
       if (entity.attributes.health <= 0) {
         if (!entity.state.dead) {
           entity.time.durationMS = 1300
-          entity.time.creationMS = GPIXI.elapsedMS
+          entity.time.deathTimerStartMS = GPIXI.elapsedMS
         }
 
         entity.state.dead = true
@@ -19,7 +19,9 @@ export default class death {
         if (!middle || !back) return
         if (entity.visual.fade) {
           const timeToRemove =
-            entity.time.creationMS + entity.time.durationMS - GPIXI.elapsedMS
+            entity.time.deathTimerStartMS +
+            entity.time.durationMS -
+            GPIXI.elapsedMS
           middle.alpha = timeToRemove / 500
 
           if (timeToRemove < 500) {

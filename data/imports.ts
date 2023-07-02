@@ -1,4 +1,4 @@
-class Store {
+class Imports {
   //
   // auto-imported from corresponding folders
   entities: Map<string, { [key: string]: any }> = new Map()
@@ -9,4 +9,4 @@ class Store {
   webps: Map<string, string> = new Map()
   jsons: Map<string, { [key: string]: any }> = new Map()
 }
-export const STORE = new Store()
+export const IMPORTS = new Imports()

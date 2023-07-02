@@ -17,11 +17,11 @@ export default {
 
     const displacement = LIB.vectorFromPoints(
       position,
-      WORLD.entities.get(SYSTEM_DATA.world.heroId).position
+      ENTITIES.get(SYSTEM_DATA.world.heroId).position
     )
     const distance = displacement.distance
     const speedPerTick = LIB.speedPerTick(
-      WORLD.entities.get(SYSTEM_DATA.world.heroId)
+      ENTITIES.get(SYSTEM_DATA.world.heroId)
     )
 
     // hide

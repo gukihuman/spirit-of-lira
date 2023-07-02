@@ -1,13 +1,14 @@
-export default class damage {
+export default class {
   //
   events: { entityId: number; targetEntityId: number }[] = []
 
   process() {
+    // console.log(SPAWN.spawnedChunks)
     this.events.forEach((event) => {
       const id = event.entityId
       const targetEntityId = event.targetEntityId
-      const entity = WORLD.entities.get(id)
-      const targetEntity = WORLD.entities.get(targetEntityId)
+      const entity = ENTITIES.get(id)
+      const targetEntity = ENTITIES.get(targetEntityId)
 
       // hit effect
       const displacement = LIB.vectorFromPoints(
@@ -16,7 +17,7 @@ export default class damage {
       )
       let angle = displacement.angle
       if (id === SYSTEM_DATA.world.heroId) {
-        EFFECT_FACTORY.createEffect("sword-hit", targetEntityId, angle)
+        EFFECT_FACTORY.create("sword-hit", targetEntityId, angle)
       }
 
       // attack back

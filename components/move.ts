@@ -7,7 +7,7 @@ export default {
   // 🔧
   depend: ["position"],
   trigger: ["target", "attributes", "shadow", "state"],
-  init(entity, id, name, value) {
+  inject(entity, id) {
     entity.move.destination = _.cloneDeep(entity.position)
     entity.move.randomDestinationMS = GPIXI.elapsedMS - 10_000
   },

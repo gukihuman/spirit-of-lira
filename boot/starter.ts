@@ -10,6 +10,7 @@ export default defineNuxtPlugin(async (app) => {
     useCookie("name").value = useCookie("name").value || "default"
     if (useCookie("name").value == "guki") SYSTEM_DATA.states.devMode = true
 
+    // first to init
     CONFIG.init()
 
     // everything depend on GPIXI ticker, init it right after CONFIG
@@ -20,51 +21,64 @@ export default defineNuxtPlugin(async (app) => {
     )
 
     // tools that are likely depend on GPIXI ticker
-    INPUT.init(SYSTEM_DATA.refs.viewport) // input controller
-    CACHE.init()
-    COLLISION.init()
     SIGNAL.init()
     USER_DATA.init()
-    DEV_MODE.init()
     LOCAL.init() // local storage
-    // REMOTE.init() // remote controller
 
     // hero creation
-    let heroId = await ENTITY_FACTORY.createEntity("lira", {
+    let heroId = await ENTITY_FACTORY.create("lira", {
       position: { x: 51000, y: 54000 },
     })
     if (!heroId) {
       LIB.logWarning("hero is not created (starter)")
       return
     }
-    SYSTEM_DATA.world.hero = WORLD.entities.get(heroId)
+    SYSTEM_DATA.world.hero = ENTITIES.get(heroId)
     SYSTEM_DATA.world.heroId = heroId
 
-    await ENTITY_FACTORY.createEntity("mousepoint")
-
-    // tools depend on hero instance
-    await MAP.init() // map manager, needs hero coordinates to init
-    await WORLD.init() // init systems, like spawn mobs
-
-    // all tools setup itself in init, INPUT is third-party (guki) so setup here
-    GPIXI.tickerAdd(() => {
-      INPUT.update()
-
-      // watch first mouse move (or double click)
-      // to prevent movement to the 0 0 coordinates
-      if (!SYSTEM_DATA.states.firstMouseMove) {
-        if (INPUT.mouse.x !== 0 || INPUT.mouse.y !== 0) {
-          SYSTEM_DATA.states.firstMouseMove = true
-        }
-      }
-    }, "INPUT")
+    await ENTITY_FACTORY.create("mousepoint")
 
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())
 
-    // to make shure initial loading transition will work
+    await setupSystems()
+
+    GPIXI.tickerAdd(() => {
+      ENTITIES.forEach((entity, id) => {
+        if (entity.process) entity.process(entity, id)
+      })
+    }, "ENTITIES")
+
+    // to make sure initial loading transition will work
     setTimeout(() => {
       SYSTEM_DATA.states.loadingScreen = false
     }, 0)
   }
 })
+
+// 📜 implement dynamic system process, allowing adding and removing systems
+// now its just init everything at the start
+async function setupSystems() {
+  const inits: Promise<void>[] = []
+  const processes: { [name: string]: () => void } = {}
+  const sortedPriority = LIB.sortedKeys(CONFIG.priority.systemInit)
+
+  sortedPriority.forEach((name) => {
+    const systemClass = IMPORTS.systems.get(name)
+    if (!systemClass) return
+
+    const system = new systemClass()
+    if (system.init) inits.push(system.init())
+    processes[name] = () => system.process()
+    SYSTEMS[name] = system
+  })
+  await Promise.all(inits)
+
+  // processes added later, may depend on init
+  _.forEach(processes, (process, name) => {
+    GPIXI.tickerAdd(() => process(), name)
+  })
+}
+
+export const SYSTEMS: { [name: string]: any } = {}
+export const ENTITIES: Map<number, any> = new Map()

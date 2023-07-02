@@ -1,4 +1,4 @@
-class MapManager {
+export default class {
   chunkSprites: Map<string, Sprite> = new Map()
   closeChunks: string[] = []
 
@@ -17,28 +17,26 @@ class MapManager {
   }
 
   async init() {
-    //
-    // need to be called on init so map is loaded fully on initial loading
     await this.loadCloseChunks()
+  }
 
-    GPIXI.tickerAdd(() => {
-      this.loadCloseChunks()
+  process() {
+    this.loadCloseChunks()
 
-      const heroPosition = SYSTEM_DATA.world.hero.position
-      if (!heroPosition) return
+    const heroPosition = SYSTEM_DATA.world.hero.position
+    if (!heroPosition) return
 
-      // update coordinates
-      this.chunkSprites.forEach((sprite, chunk) => {
-        if (!heroPosition.x || !heroPosition.y) return
-        sprite.x = LIB.chunkToCoordinateX(chunk) + 960 - heroPosition.x
-        sprite.y = LIB.chunkToCoordinateY(chunk) + 540 - heroPosition.y
-      }, "MAP")
+    // update coordinates
+    this.chunkSprites.forEach((sprite, chunk) => {
+      if (!heroPosition.x || !heroPosition.y) return
+      sprite.x = LIB.chunkToCoordinateX(chunk) + 960 - heroPosition.x
+      sprite.y = LIB.chunkToCoordinateY(chunk) + 540 - heroPosition.y
     })
   }
 
   private async loadCloseChunks() {
     if (!SYSTEM_DATA.world.heroId) return
-    const heroEntity = WORLD.entities.get(SYSTEM_DATA.world.heroId)
+    const heroEntity = ENTITIES.get(SYSTEM_DATA.world.heroId)
     if (!heroEntity) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 
@@ -64,9 +62,9 @@ class MapManager {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    let webp = STORE.webps.get(index)
+    let webp = IMPORTS.webps.get(index)
 
-    if (!webp) webp = STORE.webps.get("map-not-found")
+    if (!webp) webp = IMPORTS.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)
@@ -77,4 +75,3 @@ class MapManager {
     this.chunkSprites.set(index, sprite)
   }
 }
-export const MAP = new MapManager()

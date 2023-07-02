@@ -1,9 +1,22 @@
 import json from "@/assets/miscellaneous/collisionArray.json"
 
-class CollisionManager {
+export default class {
   collisionArray: number[] = json
   private collisionGrid: Graphics[][] = []
 
+  init() {
+    this.drawCollisionGrid()
+  }
+
+  process() {
+    if (SYSTEM_DATA.states.collisionEdit) {
+      GPIXI.collision.visible = true
+      this.updateCollisionArray()
+      this.updateCollisionGrid()
+    } else {
+      GPIXI.collision.visible = false
+    }
+  }
   drawCollisionGrid() {
     const height = 13
     const width = 21
@@ -94,20 +107,4 @@ class CollisionManager {
     window.URL.revokeObjectURL(url)
     document.body.removeChild(link)
   }, 30)
-
-  init() {
-    this.drawCollisionGrid()
-
-    GPIXI.tickerAdd(() => {
-      if (SYSTEM_DATA.states.collisionEdit) {
-        GPIXI.collision.visible = true
-        this.updateCollisionArray()
-        this.updateCollisionGrid()
-      } else {
-        GPIXI.collision.visible = false
-      }
-    }, "COLLISION")
-  }
 }
-
-export const COLLISION = new CollisionManager()

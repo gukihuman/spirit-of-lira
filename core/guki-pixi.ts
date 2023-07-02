@@ -17,8 +17,8 @@ class PixiGuki {
   /** Name is used to find priority in config, if exist. */
   tickerAdd(fn, name?: string) {
     if (!this.app) return
-    if (name && CONFIG.priority.toolsAndSystems[name])
-      this.app.ticker.add(fn, undefined, CONFIG.priority.toolsAndSystems[name])
+    if (name && CONFIG.priority.systemProcess[name])
+      this.app.ticker.add(fn, undefined, CONFIG.priority.systemProcess[name])
     else this.app.ticker.add(fn)
   }
 
@@ -91,10 +91,10 @@ class PixiGuki {
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
-    let json = STORE.jsons.get(name)
+    let json = IMPORTS.jsons.get(name)
 
     if (!json) {
-      LIB.logWarning(`no json for ${name} in STORE.jsons (GPIXI)`)
+      LIB.logWarning(`no json for ${name} in IMPORTS.jsons (GPIXI)`)
       return
     }
 
@@ -105,7 +105,7 @@ class PixiGuki {
     let spritesheet
 
     if (!PIXI.Cache.has(name)) {
-      if (!STORE.jsons.get(name)) return
+      if (!IMPORTS.jsons.get(name)) return
       texture = PIXI.Texture.from(json.meta.image)
       spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
       PIXI.Cache.set(name, [texture, spritesheet])

@@ -21,11 +21,10 @@ class Signal {
       SYSTEM_DATA.world.hero.target.attacked = true
       SYSTEM_DATA.world.hero.target.locked = true
 
-      const move = WORLD.systems.get("move")
-      if (move) move.startAttackMS = GPIXI.elapsedMS
+      SYSTEMS.move.startAttackMS = GPIXI.elapsedMS
     },
     mouseMoveOrAttack() {
-      WORLD.systems.get("move")?.mouseMove()
+      SYSTEMS.move.mouseMove()
 
       if (SYSTEM_DATA.world.hoverId) {
         SYSTEM_DATA.world.hero.target.id = SYSTEM_DATA.world.hoverId
@@ -36,13 +35,13 @@ class Signal {
       }
     },
     mouseMove() {
-      WORLD.systems.get("move")?.mouseMove()
+      SYSTEMS.move.mouseMove()
     },
     autoMouseMove() {
       SYSTEM_DATA.states.autoMouseMove = !SYSTEM_DATA.states.autoMouseMove
     },
     gamepadMove() {
-      WORLD.systems.get("move")?.gamepadMove()
+      SYSTEMS.move.gamepadMove()
     },
     inventory() {
       SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
@@ -70,13 +69,37 @@ class Signal {
       }
 
       // in case lock is used to lock a new target immidiately
-      if (WORLD.systems.get("target") && INPUT.lastActiveDevice !== "gamepad") {
+      // 📜 does checking target system existance is needed here?
+      if (SYSTEMS.target && INPUT.lastActiveDevice !== "gamepad") {
         if (!SYSTEM_DATA.world.hoverId) return
         hero.target.id = SYSTEM_DATA.world.hoverId
         hero.target.locked = true
       }
     },
-    sendInput() {},
+
+    // 📜 finish remote functionality
+    async sendInput() {
+      // REMOTE.pushNewMessages()
+      // REMOTE.clampData()
+      // console.log(
+      //   "⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value
+      // )
+      // SYSTEM_DATA.refs.input.value = ""
+      // SYSTEM_DATA.refs.output.value = ""
+      // let res = await REMOTE.queryOpenAI(REMOTE.data)
+      // REMOTE.data.messages.push(res.choices[0].message)
+      // console.log(
+      //   "⏬ " + LIB.timeNow() + " Lira: " + res.choices[0].message.content
+      // )
+      // const moodReq = _.cloneDeep(REMOTE.data)
+      // moodReq.messages.push({
+      //   role: "system",
+      //   content:
+      //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
+      // })
+      // let moodRes = await REMOTE.queryOpenAI(moodReq)
+      // console.log(moodRes.choices[0].message.content)
+    },
   }
   private runLogic() {
     this.active.forEach((signal) => {

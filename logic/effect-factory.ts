@@ -1,8 +1,8 @@
 class EffectFactory {
   //
-  async createEffect(name: string, targetEntityId: number, angle: number = 0) {
+  async create(name: string, targetEntityId: number, angle: number = 0) {
     //
-    const id = await ENTITY_FACTORY.createEntity(name, {
+    const id = await ENTITY_FACTORY.create(name, {
       visual: {
         fade: false, // disable soft dissapearence
         initial: {
@@ -23,7 +23,7 @@ class EffectFactory {
     const container = GPIXI.getMain(id)
     if (!container) return
 
-    const targetEntity = WORLD.entities.get(targetEntityId)
+    const targetEntity = ENTITIES.get(targetEntityId)
     container.x = 0
     container.y = -(targetEntity.size.height / 2)
 

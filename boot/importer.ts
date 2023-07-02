@@ -5,8 +5,8 @@ export const INPUT = new GukiInputController()
 import * as pixi from "pixi.js"
 export const PIXI = pixi
 
-import * as filters from "pixi-filters"
-export const PIXI_FILTERS = filters
+import * as pixiFilters from "pixi-filters"
+export const PIXI_FILTERS = pixiFilters
 
 import lodash from "lodash"
 export const _ = lodash
@@ -24,7 +24,7 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(match[1])}`
 
     const entity = await entities[path]()
-    STORE.entities.set(name, entity.default)
+    IMPORTS.entities.set(name, entity.default)
     entity.default.name = name
   }
 
@@ -37,16 +37,21 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(match[1])}`
 
     const component = await components[path]()
-    STORE.components.set(name, component.default)
+    IMPORTS.components.set(name, component.default)
   }
 
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
+    //
+    // name of the file
+    const match = path.match(/\/([^/]+)\.ts$/)
+    if (!match) return
+    const name = `${_.toLower(match[1])}`
 
     // here name is parsed from name of the class by using build-in name prop
-    const name = `${_.toLower(system.default.name)}`
-    STORE.systems.set(name, system.default)
+    // const name = `${_.toLower(system.default.name)}`
+    IMPORTS.systems.set(name, system.default)
   }
 
   const webps = import.meta.glob("@/assets/**/*.webp")
@@ -62,7 +67,7 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    STORE.webps.set(name, webp.default)
+    IMPORTS.webps.set(name, webp.default)
   }
 
   const jsons = import.meta.glob("@/assets/**/*.json")
@@ -77,8 +82,9 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
 
     // inject parsed path of webp file so vite packer understand it
-    if (STORE.webps.has(name)) json.default.meta.image = STORE.webps.get(name)
+    if (IMPORTS.webps.has(name))
+      json.default.meta.image = IMPORTS.webps.get(name)
 
-    STORE.jsons.set(name, json.default)
+    IMPORTS.jsons.set(name, json.default)
   }
 })

@@ -1,10 +1,10 @@
 export default {
   durationMS: Infinity, // self destruct after creation in this time
+  deathTimerStartMS: 0,
 
   // 🔧
   autoInject: true,
-  creationMS: 0,
-  init(entity, id, name, value) {
-    entity.time.creationMS = GPIXI.elapsedMS
+  inject(entity, id) {
+    entity.time.deathTimerStartMS = GPIXI.elapsedMS
   },
 }

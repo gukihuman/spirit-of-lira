@@ -1,24 +1,23 @@
 class Remote {
-  private systemMessage = new Hero().language.system
-  private clarification = new Hero().language.clarification
+  private systemMessage = SYSTEM_DATA.world.hero.language.system
+  private clarification = SYSTEM_DATA.world.hero.language.clarification
 
-  // huggingface
-  // private async queryOpenAssistant(data) {
-  //   const response = await fetch(
-  //     "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium",
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${useRuntimeConfig().HUGGINGFACE_TOKEN}`,
-  //       },
-  //       method: "POST",
-  //       body: "",
-  //     }
-  //   )
-  //   const result = await response.json()
-  //   return result
-  // }
+  async queryHuggingFace(data) {
+    const response = await fetch(
+      "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium",
+      {
+        headers: {
+          Authorization: `Bearer ${useRuntimeConfig().HUGGINGFACE_TOKEN}`,
+        },
+        method: "POST",
+        body: "",
+      }
+    )
+    const result = await response.json()
+    return result
+  }
 
-  private async queryOpenAI(data, cost: "free" | "api" = "free") {
+  async queryOpenAI(data, apiKey: "betterGPT" | "custom" = "betterGPT") {
     const controller = new AbortController()
 
     const request: { [index: string]: any } = {
@@ -31,7 +30,7 @@ class Remote {
       signal: controller.signal,
     }
     let endpoint = ""
-    if (cost === "free") {
+    if (apiKey === "betterGPT") {
       delete request.headers
       endpoint = "https://free.churchless.tech/v1/chat/completions"
     } else {
@@ -72,7 +71,7 @@ class Remote {
     }
   }
 
-  private data = {
+  data = {
     model: "gpt-3.5-turbo",
     messages: [
       {
@@ -80,10 +79,10 @@ class Remote {
         content: this.systemMessage,
       },
     ],
-    temperature: 1.3,
+    temperature: 1,
     stream: false,
   }
-  private pushNewMessages() {
+  pushNewMessages() {
     this.data.messages.push({
       role: "user",
       content: SYSTEM_DATA.refs.input.value,
@@ -93,36 +92,11 @@ class Remote {
       content: this.clarification,
     })
   }
-  private clampData() {
+  clampData() {
     if (this.data.messages.length > 10) {
       this.data.messages.splice(1, 3)
     }
   }
-
-  init() {
-    GPIXI.tickerAdd(async () => {
-      // if (gim.signals.sendInput) {
-      //   if (!SYSTEM_DATA.refs.input) return
-      //   this.pushNewMessages()
-      //   this.clampData()
-      //   console.log("⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value)
-      //   SYSTEM_DATA.refs.input.value = ""
-      //   USER_DATA.states.output = ""
-      //   let res = await this.queryOpenAI(this.data)
-      //   this.data.messages.push(res.choices[0].message)
-      //   console.log(
-      //     "⏬ " + LIB.timeNow() + " Lira: " + res.choices[0].message.content
-      //   )
-      // const moodReq = _.cloneDeep(this.data)
-      // moodReq.messages.push({
-      //   role: "system",
-      //   content:
-      //     "analyze previous conversation and make a decision how happy Lira is now, use numbers from 0 to 100 where 100 is the most positive and 0 is the most negative. respond only with that number",
-      // })
-      // let moodRes = await this.queryOpenAI(moodReq)
-      // console.log(moodRes.choices[0].message.content)
-      // }
-    }, "REMOTE")
-  }
 }
+
 export const REMOTE = new Remote()

@@ -1,8 +1,8 @@
-export default class attack {
+export default class {
   private initialAttack = true
 
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.move || !entity.size || !entity.target.id) {
         return
       }
@@ -10,7 +10,7 @@ export default class attack {
 
       this.updateAnimationSpeed(entity, id)
 
-      const targetEntity = WORLD.entities.get(entity.target.id)
+      const targetEntity = ENTITIES.get(entity.target.id)
       if (!targetEntity) {
         entity.state.main = "idle"
         return
@@ -32,7 +32,7 @@ export default class attack {
       ) {
         if (targetEntity.state.main !== "dead") {
           entity.state.main = "idle"
-          WORLD.systems.get("move").process()
+          SYSTEMS.move.process()
         }
 
         entity.state.main = "idle"
@@ -46,14 +46,14 @@ export default class attack {
         !entity.damageDone
       ) {
         // damage done here
-        WORLD.systems.get("damage").events.push({
+        SYSTEMS.damage.events.push({
           entityId: id,
           targetEntityId: entity.target.id,
         })
         entity.damageDone = true
       }
 
-      const lastEntity = CACHE.entities.get(id)
+      const lastEntity = SYSTEMS.lasttick.entities.get(id)
       if (
         entity.state.main !== "attack" &&
         lastEntity.state.main === "attack"

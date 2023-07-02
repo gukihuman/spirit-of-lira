@@ -1,11 +1,11 @@
-export default class flip {
+export default class {
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.move) return
       if (GPIXI.elapsedMS - entity.visual.flipMS < 200) return
 
-      if (!CACHE.entities.get(id)) return
-      const previousX = CACHE.entities.get(id).position.x
+      if (!SYSTEMS.lasttick.entities.get(id)) return
+      const previousX = SYSTEMS.lasttick.entities.get(id).position.x
       const container = GPIXI.getMain(id)
       if (!container) return
 
@@ -27,7 +27,7 @@ export default class flip {
 
       // attack target
       if (entity.target.id && entity.target.attacked) {
-        const targetEntity = WORLD.entities.get(entity.target.id)
+        const targetEntity = ENTITIES.get(entity.target.id)
         if (targetEntity.position.x < entity.position.x) {
           containers.forEach((container) => (container.scale.x = -1))
           entity.visual.flipMS = GPIXI.elapsedMS

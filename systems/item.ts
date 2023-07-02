@@ -1,4 +1,4 @@
-export default class Item {
+export default class {
   items = {
     // value is an array of states that goes in front
     "common-sword": ["attack"],

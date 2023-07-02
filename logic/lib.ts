@@ -55,8 +55,8 @@ class Lib {
   isWalkable(x: number, y: number) {
     const tileIndex = LIB.tileIndexFromCoordinates(x, y)
     return (
-      COLLISION.collisionArray[tileIndex] !== 2 &&
-      COLLISION.collisionArray[tileIndex] !== 3
+      SYSTEMS.collision.collisionArray[tileIndex] !== 2 &&
+      SYSTEMS.collision.collisionArray[tileIndex] !== 3
     )
   }
   generateRandomString(length) {
@@ -90,10 +90,10 @@ class Lib {
   }
 
   /**
-   * Wrapper for pinia STORE that optionally accepts one or more watchers.
+   * Wrapper for pinia IMPORTS that optionally accepts one or more watchers.
    * @param object - state object
    * @param args - watcher array that consist of a state property name and a handler function
-   * @returns a pinia STORE with watchers and random name
+   * @returns a pinia IMPORTS with watchers and random name
    */
   store(
     object: { [index: string]: any },

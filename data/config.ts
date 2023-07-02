@@ -14,12 +14,16 @@ class GukiConfig {
     })
   }
 
-  /** setup 0 priority for unmentioned components, it is important because Entity Factory uses the priority object to inject components
+  /** setup 0 priority for unmentioned values
    */
   init() {
-    STORE.components.forEach((value, name) => {
-      if (this.priority.components[name]) return
-      this.priority.components[name] = 0
+    IMPORTS.components.forEach((value, name) => {
+      if (this.priority.componentInject[name]) return
+      this.priority.componentInject[name] = 0
+    })
+    IMPORTS.systems.forEach((value, name) => {
+      if (this.priority.systemInit[name]) return
+      this.priority.systemInit[name] = 0
     })
   }
 
@@ -33,24 +37,25 @@ class GukiConfig {
   // higher values goes first, what is not setted here will be 0
   priority = {
     //
-    // order of injection in entity, nandled by Entity Factory
-    components: {
-      visual: 3,
-      container: 2,
+    componentInject: {
+      visual: 2,
       move: 1,
     },
-    // order of execute in ticker, handled by GPIXI
-    toolsAndSystems: {
-      state: 5,
-      visual: 4,
-      CACHE: 3,
-      INPUT: 2, // at least USER_DATA depends on it
 
-      EFFECT_FACTORY: -1,
-      SIGNAL: -2, // runs all logic for collected signals and empty itself
-      move: -3,
-      attack: -4,
-      flip: -5,
+    systemInit: {},
+
+    systemProcess: {
+      //
+      // 📜 make some uppercase-tools lowercase-systems, may be all
+      state: 4,
+      visual: 3,
+      lasttick: 2,
+      input: 1, // at least USER_DATA depends on it
+
+      SIGNAL: -1, // runs all logic for collected signals and empty itself
+      move: -2,
+      attack: -3,
+      flip: -4,
     },
   }
 }

@@ -2,7 +2,7 @@ export default {
   //
   // 🔧
   depend: ["visual", "size"],
-  init(entity, id, name, value) {
+  inject(entity, id) {
     //
     // draw shadow
     const shadow = new PIXI.Graphics()

@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   ref="background"
-  class="absolute bottom-[170px] left-[400px] rounded-3xl opacity-50 border-4 border-sand-700 bg-gradient-to-t from-sand-400 to-sand-200 transition"
+  class="absolute bottom-[150px] left-[400px] rounded-3xl opacity-50 border-4 border-sand-700 bg-gradient-to-t from-sand-400 to-sand-200 transition"
   :class="{ 'opacity-100': SYSTEM_DATA.states.inputFocus }"
   )
   textarea(
@@ -24,7 +24,9 @@ div(
 const background: any = ref(null)
 const input = ref(null)
 
-const sendInput = () => console.log("eo")
+const sendInput = () => {
+  SIGNAL.emit("sendInput")
+}
 
 const maxInputWidth = 1052
 

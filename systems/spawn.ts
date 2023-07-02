@@ -1,5 +1,5 @@
-export default class spawn {
-  private spawnedChunks: string[] = []
+export default class {
+  spawnedChunks: string[] = []
   private spawnPromises: Promise<void>[] = []
 
   private locationPopulation = {
@@ -9,22 +9,27 @@ export default class spawn {
   }
 
   async init() {
-    await this.spawnEntities()
+    await this.spawnENTITIES()
   }
 
   process() {
-    this.spawnEntities()
-    this.despawnEntities()
+    this.spawnENTITIES()
+    this.despawnENTITIES()
   }
 
-  private async spawnEntities() {
-    MAP.closeChunks.forEach((chunk) => {
+  private async spawnENTITIES() {
+    SYSTEMS.map.closeChunks.forEach((chunk) => {
       if (this.spawnedChunks.includes(chunk)) return
 
       _.forEach(this.locationPopulation, async (spawner, location) => {
         _.forEach(spawner, async (ratio, entity) => {
           this.spawnPromises.push(
-            this.createEntitiesOnChunk(chunk, MAP[location], entity, ratio)
+            this.createENTITIESOnChunk(
+              chunk,
+              SYSTEMS.map[location],
+              entity,
+              ratio
+            )
           )
         })
       })
@@ -33,18 +38,18 @@ export default class spawn {
     await this.spawnPromises.pop()
   }
 
-  private despawnEntities() {
+  private despawnENTITIES() {
     // despawn far chunks
     this.spawnedChunks.forEach((chunk) => {
-      if (MAP.closeChunks.includes(chunk)) return
+      if (SYSTEMS.map.closeChunks.includes(chunk)) return
 
-      WORLD.entities.forEach((entity, id) => {
+      ENTITIES.forEach((entity, id) => {
         const position = entity.position
         if (!position) return
 
         const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
-          WORLD.entities.delete(id)
+          ENTITIES.delete(id)
           let container = GPIXI.getMain(id)
           if (container) GPIXI.sortable.removeChild(container)
         }
@@ -54,7 +59,7 @@ export default class spawn {
     })
   }
 
-  private async createEntitiesOnChunk(
+  private async createENTITIESOnChunk(
     chunk: string,
     locationChunks: string[],
     entity: string,
@@ -69,7 +74,7 @@ export default class spawn {
         // stop loop if position not found, all tiles in chunks with collision
         if (!position) return
 
-        await ENTITY_FACTORY.createEntity(entity, { position })
+        await ENTITY_FACTORY.create(entity, { position })
         ratio -= 1
       }
     }
@@ -83,7 +88,7 @@ export default class spawn {
 
     const i = LIB.tileIndexFromCoordinates(x, y)
 
-    if (COLLISION.collisionArray[i] === 0) {
+    if (SYSTEMS.collision.collisionArray[i] === 0) {
       return { x, y }
     } else if (counter < 10) {
       counter++

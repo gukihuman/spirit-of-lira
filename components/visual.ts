@@ -14,7 +14,7 @@ export default {
   animationMS: 0,
 
   // 🔧
-  async init(entity, id, name, value) {
+  async inject(entity, id) {
     if (!GPIXI.app) return
 
     const container = new PIXI.Container() as gContainer

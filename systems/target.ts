@@ -1,4 +1,4 @@
-export default class target {
+export default class {
   //
   init() {
     //
@@ -42,8 +42,11 @@ export default class target {
     this.updateTargetEntity()
     this.undefinedTarget()
 
-    if (!SYSTEM_DATA.world.hero.target.id) SYSTEM_DATA.states.target = false
-    else SYSTEM_DATA.states.target = true
+    if (!SYSTEM_DATA.world.hero.target.id && !SYSTEM_DATA.states.inventory) {
+      SYSTEM_DATA.states.target = false
+    } else {
+      SYSTEM_DATA.states.target = true
+    }
 
     if (!SYSTEM_DATA.world.hero.target.locked)
       SYSTEM_DATA.states.targetLocked = false
@@ -57,7 +60,7 @@ export default class target {
   }
 
   private undefinedTarget() {
-    WORLD.entities.forEach((entity) => {
+    ENTITIES.forEach((entity) => {
       if (entity.target && !entity.target.id) {
         entity.target.locked = false
         entity.target.attacked = false
@@ -67,18 +70,18 @@ export default class target {
   }
 
   private updateTargetEntity() {
-    WORLD.entities.forEach((entity) => {
+    ENTITIES.forEach((entity) => {
       if (!entity.target) return
-      entity.target.entity = WORLD.entities.get(entity.target.id)
+      entity.target.entity = ENTITIES.get(entity.target.id)
     })
   }
 
   autoTarget() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.move) return
 
       if (entity.target.attacked) {
-        const targetEntity = WORLD.entities.get(entity.target.id)
+        const targetEntity = ENTITIES.get(entity.target.id)
         const distance = LIB.distance(entity.position, targetEntity.position)
 
         if (id !== SYSTEM_DATA.world.heroId && distance > 300) {
@@ -93,7 +96,7 @@ export default class target {
       if (entity.target.locked) return
       let minDistance = Infinity
 
-      WORLD.entities.forEach((otherEntity, otherId) => {
+      ENTITIES.forEach((otherEntity, otherId) => {
         if (id === otherId || !otherEntity.state) return
         if (otherEntity.state.main === "dead") return
         if (
@@ -149,7 +152,7 @@ export default class target {
     const correspondDistances: number[] = []
     const angleToGroup = 0.2 // about 12 degrees
 
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.move || id === SYSTEM_DATA.world.heroId) return
       if (entity.state.main === "dead") return
 
@@ -204,7 +207,7 @@ export default class target {
     const intersections: number[] = []
     let hoverEntityId = 0
 
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (id === SYSTEM_DATA.world.heroId || !entity.move || !entity.size)
         return
 
@@ -231,8 +234,8 @@ export default class target {
       let higherY = 0
 
       intersections.forEach((id) => {
-        if (WORLD.entities.get(id).position.y > higherY) {
-          higherY = WORLD.entities.get(id).position.y
+        if (ENTITIES.get(id).position.y > higherY) {
+          higherY = ENTITIES.get(id).position.y
         }
         hoverEntityId = id
       })
@@ -242,7 +245,7 @@ export default class target {
     }
 
     SYSTEM_DATA.world.hoverId = hoverEntityId
-    SYSTEM_DATA.world.hover = WORLD.entities.get(hoverEntityId)
+    SYSTEM_DATA.world.hover = ENTITIES.get(hoverEntityId)
   }
 
   lastContainer: Container | undefined
@@ -251,7 +254,7 @@ export default class target {
     if (this.lastContainer) this.lastContainer.filters = []
 
     const id = SYSTEM_DATA.world.hero.target.id
-    const entity = WORLD.entities.get(id)
+    const entity = ENTITIES.get(id)
     if (!id || !entity) return
 
     if (entity.attack.damageFilterStartMS + 100 > GPIXI.elapsedMS) return
@@ -280,12 +283,12 @@ export default class target {
   }
 
   targetUnlock() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.move) return
       if (!entity.target.id) entity.target.locked = false
     })
 
-    const targetEntity = WORLD.entities.get(SYSTEM_DATA.world.hero.target.id)
+    const targetEntity = ENTITIES.get(SYSTEM_DATA.world.hero.target.id)
     if (!targetEntity) return
     const distance = LIB.distance(
       SYSTEM_DATA.world.hero.position,

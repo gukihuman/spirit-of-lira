@@ -1,6 +1,6 @@
-export default class state {
+export default class {
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    ENTITIES.forEach((entity, id) => {
       if (!entity.state) return
 
       if (entity.state.dead) {

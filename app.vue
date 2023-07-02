@@ -12,10 +12,11 @@ fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justif
 
     div(class="absolute z-10 overflow-hidden w-full h-full")
       bars
-      transition(name="fast"): target(v-show="SYSTEM_DATA.states.target")
+      transition(name="fast"): target(v-show="SYSTEM_DATA.states.target && !SYSTEM_DATA.states.inventory")
 
-    div(class="z-10"): transition
-        input-area(v-show="SYSTEM_DATA.states.input")
+    div(class="absolute z-10 w-full h-full")
+      transition: input-area(v-show="SYSTEM_DATA.states.input")
+      transition: output-area(v-show="SYSTEM_DATA.states.output")
 
     //- output-area
 
