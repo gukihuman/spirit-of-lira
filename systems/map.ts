@@ -2,7 +2,7 @@ export default class {
   chunkSprites: Map<string, Sprite> = new Map()
   closeChunks: string[] = []
 
-  greenForestChunks: string[] = this.setLocationChunks(50, 54)
+  greenForestChunks: string[] = this.setLocationChunks(0, 4)
 
   /** @returns square of chunks, for example for 50 and 51 ["5050", "5051", "5150", "5151"]
    */
@@ -10,7 +10,11 @@ export default class {
     const chunks: string[] = []
     for (let y = start; y <= end; y++) {
       for (let x = start; x <= end; x++) {
-        chunks.push(`${y}${x}`)
+        let stringX = `${x}`
+        if (stringX.length === 1) stringX = `0${stringX}`
+        let stringY = `${y}`
+        if (stringY.length === 1) stringY = `0${stringY}`
+        chunks.push(`${stringY}${stringX}`)
       }
     }
     return chunks
@@ -47,7 +51,11 @@ export default class {
     const sprites: Promise<void>[] = []
     for (let y of _.range(startY, startY + 3)) {
       for (let x of _.range(startX, startX + 3)) {
-        const chunk = `${y}${x}`
+        let stringX = `${x}`
+        if (stringX.length === 1) stringX = `0${stringX}`
+        let stringY = `${y}`
+        if (stringY.length === 1) stringY = `0${stringY}`
+        const chunk = `${stringY}${stringX}`
         this.closeChunks.push(chunk)
         sprites.push(this.loadChunkSprite(chunk))
       }

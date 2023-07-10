@@ -27,7 +27,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // hero creation
     let heroId = await ENTITY_FACTORY.create("lira", {
-      position: { x: 51000, y: 54000 },
+      position: { x: 1000, y: 1000 },
     })
     if (!heroId) {
       LIB.logWarning("hero is not created (starter)")
