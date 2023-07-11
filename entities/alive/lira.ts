@@ -1,4 +1,6 @@
 export default {
+  // position: { x: 1550, y: 1650 },
+  position: { x: 2550, y: 2650 },
   size: {
     width: 60,
     height: 90,

@@ -26,9 +26,7 @@ export default defineNuxtPlugin(async (app) => {
     LOCAL.init() // local storage
 
     // hero creation
-    let heroId = await ENTITY_FACTORY.create("lira", {
-      position: { x: 1000, y: 1000 },
-    })
+    let heroId = await ENTITY_FACTORY.create("lira")
     if (!heroId) {
       LIB.logWarning("hero is not created (starter)")
       return
@@ -51,6 +49,12 @@ export default defineNuxtPlugin(async (app) => {
         if (entity.process) entity.process(entity, id)
       })
     }, "ENTITIES")
+
+    // 📜 move to static entity handler to remove and spawn depending
+    // on current loaded chunks
+    ENTITY_FACTORY.create("magic-tree")
+    ENTITY_FACTORY.create("bridge-fence")
+    ENTITY_FACTORY.create("bunny")
 
     // to make sure initial loading transition will work
     setTimeout(() => {

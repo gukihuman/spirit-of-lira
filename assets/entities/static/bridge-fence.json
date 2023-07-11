@@ -1,0 +1,31 @@
+{"frames": {
+
+"bridge-fence0000.png":
+{
+	"frame": {"x":1,"y":1,"w":611,"h":437},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":38,"w":611,"h":437},
+	"sourceSize": {"w":645,"h":945}
+},
+"bridge-fence0001.png":
+{
+	"frame": {"x":1,"y":1,"w":611,"h":437},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":38,"w":611,"h":437},
+	"sourceSize": {"w":645,"h":945}
+}},
+"animations": {
+	"bridge-fence": ["bridge-fence0000.png","bridge-fence0001.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bridge-fence.webp",
+	"format": "RGBA8888",
+	"size": {"w":613,"h":439},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3f0cd7f45984818df85e89ccaeff26b3:c317622dc08f2d9e4037e31d712b4100:5e8830a16dc4c399384f97078c7c1df4$"
+}
+}
