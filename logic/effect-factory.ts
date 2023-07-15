@@ -3,7 +3,7 @@ class EffectFactory {
   async create(name: string, targetEntityId: number, angle: number = 0) {
     //
     const id = await ENTITY_FACTORY.create(name, {
-      visual: {
+      sprite: {
         fade: false, // disable soft dissapearence
         initial: {
           randomFlip: false,

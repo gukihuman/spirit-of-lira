@@ -1,14 +1,14 @@
 <template lang="pug">
 
-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justify-center select-none")
+wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justify-center select-none")
 
   loading
 
   //- 1920 / 1080 centered game window
-  transition: game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
+  transition: wrap-game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
-    viewport
+    wrap-viewport
 
     div(class="absolute z-10 overflow-hidden w-full h-full")
       bars

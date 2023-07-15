@@ -3,7 +3,7 @@ export default {
     width: 70,
     height: 60,
   },
-  visual: {
+  sprite: {
     leaveAnimationConditions: {
       move: (entity, id) => {
         return GPIXI.getSprite(id, "move")?.currentFrame === 0

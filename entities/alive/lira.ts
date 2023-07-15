@@ -6,7 +6,7 @@ export default {
     height: 90,
   },
   move: {
-    speed: 10,
+    speed: 14,
   },
   attack: {
     distance: 60,
@@ -14,7 +14,7 @@ export default {
     delay: 0.24,
     damage: 28,
   },
-  visual: {
+  sprite: {
     firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
   },
   attributes: {

@@ -22,7 +22,7 @@ export default {
     container.id = id
     GPIXI.entities.set(id, container)
 
-    GPIXI[entity.visual.initial.parent].addChild(container)
+    GPIXI[entity.sprite.initial.parent].addChild(container)
 
     for (let name of ["back", "middle", "front", "effect"]) {
       const childContainer = new PIXI.Container()
@@ -30,7 +30,7 @@ export default {
       container.addChild(childContainer)
     }
 
-    if (entity.visual.initial.randomFlip) {
+    if (entity.sprite.initial.randomFlip) {
       //
       // exclude effect
       const back = GPIXI.getBack(id)
@@ -65,9 +65,9 @@ export default {
       const randomFrame = _.random(0, sprite.totalFrames - 1)
 
       // loop is true by default
-      if (!entity.visual.initial.loop || name === "death") sprite.loop = false
+      if (!entity.sprite.initial.loop || name === "death") sprite.loop = false
 
-      if (entity.visual.initial.randomFrame) sprite.gotoAndPlay(randomFrame)
+      if (entity.sprite.initial.randomFrame) sprite.gotoAndPlay(randomFrame)
       else sprite.gotoAndPlay(0)
     })
   },

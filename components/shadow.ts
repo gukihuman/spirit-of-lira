@@ -1,7 +1,7 @@
 export default {
   //
   // 🔧
-  depend: ["visual", "size"],
+  depend: ["sprite", "size"],
   inject(entity, id) {
     //
     // draw shadow

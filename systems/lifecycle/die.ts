@@ -17,7 +17,7 @@ export default class {
         const middle = GPIXI.getMiddle(id)
         const back = GPIXI.getBack(id)
         if (!middle || !back) return
-        if (entity.visual.fade) {
+        if (entity.sprite.fade) {
           const timeToRemove =
             entity.time.deathTimerStartMS +
             entity.time.durationMS -
@@ -25,7 +25,7 @@ export default class {
           middle.alpha = timeToRemove / 500
 
           if (timeToRemove < 500) {
-            // 📜 dont support higher fps
+            // 📜 add support for higher fps, this works only for 60
             entity.position.y += 0.5
           }
 

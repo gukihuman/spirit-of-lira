@@ -21,9 +21,9 @@ export default defineNuxtConfig({
     ],
   },
   components: {
-    dirs: ["@/UI"],
+    dirs: ["@/ui"],
   },
-  plugins: ["@/boot/importer.ts", "@/boot/starter.ts"],
+  plugins: ["@/boot/gimport.ts", "@/boot/start.ts"],
   css: ["@/tailwind.css"],
 
   // important for correct work of importer

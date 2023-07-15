@@ -2,7 +2,7 @@ export default class {
   process() {
     ENTITIES.forEach((entity, id) => {
       if (!entity.move) return
-      if (GPIXI.elapsedMS - entity.visual.flipMS < 200) return
+      if (GPIXI.elapsedMS - entity.sprite.flipMS < 200) return
 
       if (!SYSTEMS.lasttick.entities.get(id)) return
       const previousX = SYSTEMS.lasttick.entities.get(id).position.x
@@ -19,10 +19,10 @@ export default class {
       // move
       if (entity.position.x < previousX) {
         containers.forEach((container) => (container.scale.x = -1))
-        entity.visual.flipMS = GPIXI.elapsedMS
+        entity.sprite.flipMS = GPIXI.elapsedMS
       } else if (entity.position.x > previousX) {
         containers.forEach((container) => (container.scale.x = 1))
-        entity.visual.flipMS = GPIXI.elapsedMS
+        entity.sprite.flipMS = GPIXI.elapsedMS
       }
 
       // attack target
@@ -30,10 +30,10 @@ export default class {
         const targetEntity = ENTITIES.get(entity.target.id)
         if (targetEntity.position.x < entity.position.x) {
           containers.forEach((container) => (container.scale.x = -1))
-          entity.visual.flipMS = GPIXI.elapsedMS
+          entity.sprite.flipMS = GPIXI.elapsedMS
         } else if (targetEntity.position.x > entity.position.x) {
           containers.forEach((container) => (container.scale.x = 1))
-          entity.visual.flipMS = GPIXI.elapsedMS
+          entity.sprite.flipMS = GPIXI.elapsedMS
         }
       }
     })

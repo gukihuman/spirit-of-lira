@@ -1,6 +1,6 @@
 export default {
   position: {},
-  visual: { parent: "ground", initial: { randomFlip: false } },
+  sprite: { parent: "ground", initial: { randomFlip: false } },
 
   process(entity, id) {
     let position = entity.position

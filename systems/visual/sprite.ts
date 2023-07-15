@@ -6,7 +6,7 @@ export default class {
     if (!SYSTEM_DATA.world.hero) return
 
     ENTITIES.forEach((entity, id) => {
-      if (!entity.visual || !entity.position) return
+      if (!entity.sprite || !entity.position) return
 
       this.updateAnimation(entity, id)
 
@@ -20,7 +20,7 @@ export default class {
       // update visibility of animations
       if (entity.move) {
         GPIXI.getMiddle(id)?.children.forEach((child) => {
-          if (child.name === entity.visual.animation) child.visible = true
+          if (child.name === entity.sprite.animation) child.visible = true
           else child.visible = false
         })
       } else {
@@ -31,36 +31,34 @@ export default class {
       }
 
       // update animation frame on first animation tick
-      const firstFrames = entity.visual.firstFrames
+      const firstFrames = entity.sprite.firstFrames
       if (entity.move && firstFrames) {
         const lastEntity = SYSTEMS.lasttick.entities.get(id)
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, state: string) => {
           if (
-            entity.visual.animation === state &&
-            lastEntity.visual.animation !== state
+            entity.sprite.animation === state &&
+            lastEntity.sprite.animation !== state
           ) {
             GPIXI.getSprite(id, state)?.gotoAndPlay(frame)
           }
         })
       }
     })
-
-    this.synchronizeItems()
   }
 
   private updateAnimation(entity, id) {
     if (!entity.move) return
 
-    if (GPIXI.elapsedMS - entity.visual.animationMS < 200) return
+    if (GPIXI.elapsedMS - entity.sprite.animationMS < 200) return
 
     if (
-      entity.visual.leaveAnimationConditions &&
+      entity.sprite.leaveAnimationConditions &&
       entity.state.main !== "attack"
     ) {
       if (
-        entity.visual.animation === "move" &&
-        !entity.visual.leaveAnimationConditions.move(entity, id)
+        entity.sprite.animation === "move" &&
+        !entity.sprite.leaveAnimationConditions.move(entity, id)
       )
         return
     }
@@ -75,13 +73,13 @@ export default class {
     const lastEntity = SYSTEMS.lasttick.entities.get(id)
     if (!lastEntity) return
 
-    if (entity.visual.animation !== lastEntity.visual.animation) {
-      entity.visual.animationMS = GPIXI.elapsedMS
+    if (entity.sprite.animation !== lastEntity.sprite.animation) {
+      entity.sprite.animationMS = GPIXI.elapsedMS
     }
   }
 
   private checkDeath(entity, id) {
-    if (entity.state.main === "dead") entity.visual.animation = "death"
+    if (entity.state.main === "dead") entity.sprite.animation = "death"
   }
 
   private checkMove(entity, id) {
@@ -100,20 +98,20 @@ export default class {
     if (fps && fps / GPIXI.averageFPS < 0.3) return
 
     if (distance / speedPerTick < 0.1) {
-      entity.visual.animation = "idle"
+      entity.sprite.animation = "idle"
       return
     }
 
     if (GPIXI.getSprite(id, "walk")) {
       if (distance / speedPerTick < 0.8) {
-        entity.visual.animation = "walk"
+        entity.sprite.animation = "walk"
         return
       } else {
-        entity.visual.animation = "run"
+        entity.sprite.animation = "run"
         return
       }
     } else {
-      entity.visual.animation = "move"
+      entity.sprite.animation = "move"
       return
     }
   }
@@ -123,34 +121,9 @@ export default class {
     if (entity.state.main !== "attack") return
 
     if (id === SYSTEM_DATA.world.heroId) {
-      entity.visual.animation = "sword-attack"
+      entity.sprite.animation = "sword-attack"
     } else {
-      entity.visual.animation = "attack"
+      entity.sprite.animation = "attack"
     }
-  }
-
-  private synchronizeItems() {
-    const currentAnimation = SYSTEM_DATA.world.hero.visual.animation
-
-    const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
-      ?.children[0] as Container
-    const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
-      ?.children[2] as Container
-    if (!back || !front) return
-
-    back.children.forEach((child) => {
-      const itemContainer = child as Container
-      itemContainer.children.forEach((sprite) => {
-        if (
-          sprite.name === currentAnimation ||
-          (sprite.name === "idle" && currentAnimation === "run") ||
-          (sprite.name === "idle" && currentAnimation === "walk")
-        ) {
-          sprite.visible = true
-        } else {
-          sprite.visible = false
-        }
-      })
-    })
   }
 }

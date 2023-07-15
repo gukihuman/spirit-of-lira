@@ -9,22 +9,23 @@ export default class {
   }
 
   async init() {
-    await this.spawnENTITIES()
+    await this.spawnEntities()
   }
 
   process() {
-    this.spawnENTITIES()
-    this.despawnENTITIES()
+    this.spawnEntities()
+    this.despawnEntities()
   }
 
-  private async spawnENTITIES() {
-    SYSTEMS.map.closeChunks.forEach((chunk) => {
+  private async spawnEntities() {
+    if (!SYSTEMS.map) return
+    SYSTEMS.map.closeChunks?.forEach((chunk) => {
       if (this.spawnedChunks.includes(chunk)) return
 
       _.forEach(this.locationPopulation, async (spawner, location) => {
         _.forEach(spawner, async (ratio, entity) => {
           this.spawnPromises.push(
-            this.createENTITIESOnChunk(
+            this.createEntitiesOnChunk(
               chunk,
               SYSTEMS.map[location],
               entity,
@@ -38,7 +39,7 @@ export default class {
     await this.spawnPromises.pop()
   }
 
-  private despawnENTITIES() {
+  private despawnEntities() {
     // despawn far chunks
     this.spawnedChunks.forEach((chunk) => {
       if (SYSTEMS.map.closeChunks.includes(chunk)) return
@@ -59,7 +60,7 @@ export default class {
     })
   }
 
-  private async createENTITIESOnChunk(
+  private async createEntitiesOnChunk(
     chunk: string,
     locationChunks: string[],
     entity: string,

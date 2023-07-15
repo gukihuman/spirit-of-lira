@@ -38,7 +38,7 @@ class GukiConfig {
   priority = {
     //
     componentInject: {
-      visual: 2,
+      sprite: 2,
       move: 1,
     },
 
@@ -48,7 +48,7 @@ class GukiConfig {
       //
       // 📜 make some uppercase-tools lowercase-systems, may be all
       state: 4,
-      visual: 3,
+      sprite: 3,
       lasttick: 2,
       input: 1, // at least USER_DATA depends on it
 

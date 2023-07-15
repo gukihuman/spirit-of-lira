@@ -68,8 +68,8 @@ export default class {
           //
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
-          let sprite = GPIXI.getSprite(id, entity.visual.animation)
-          let startFrame = entity.visual.firstFrames[entity.visual.animation]
+          let sprite = GPIXI.getSprite(id, entity.sprite.animation)
+          let startFrame = entity.sprite.firstFrames[entity.sprite.animation]
           sprite?.gotoAndPlay(startFrame)
           this.initialAttack = true
         }

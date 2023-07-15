@@ -1,3 +1,3 @@
 ## Spirit of Lira
 
-[early dev build](spirit-of-lira.vercel.app)
+[early dev build](https://spirit-of-lira.vercel.app/)

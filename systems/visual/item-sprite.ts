@@ -8,14 +8,14 @@ export default class {
   process() {
     const heroSprite = GPIXI.getSprite(
       SYSTEM_DATA.world.heroId,
-      SYSTEM_DATA.world.hero.visual.animation
+      SYSTEM_DATA.world.hero.sprite.animation
     )
     if (!heroSprite) return
 
     if (
-      SYSTEM_DATA.world.hero.visual.animation.includes("attack") ||
-      (!SYSTEM_DATA.world.hero.visual.animation.includes("attack") &&
-        SYSTEM_DATA.world.lastHero.visual.animation.includes("attack"))
+      SYSTEM_DATA.world.hero.sprite.animation.includes("attack") ||
+      (!SYSTEM_DATA.world.hero.sprite.animation.includes("attack") &&
+        SYSTEM_DATA.world.lastHero.sprite.animation.includes("attack"))
     ) {
       this.itemSprites.forEach((sprite) => {
         //
@@ -26,6 +26,8 @@ export default class {
         sprite.gotoAndPlay(heroSprite.currentFrame)
       })
     }
+
+    this.updateVisibilityByState()
   }
 
   async init() {
@@ -74,5 +76,30 @@ export default class {
       )
     })
     await Promise.all(promises)
+  }
+  private updateVisibilityByState() {
+    const currentAnimation = SYSTEM_DATA.world.hero.sprite.animation
+
+    // 📜 move to class scope
+    const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+      ?.children[0] as Container
+    const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+      ?.children[2] as Container
+    if (!back || !front) return
+
+    back.children.forEach((child) => {
+      const itemContainer = child as Container
+      itemContainer.children.forEach((sprite) => {
+        if (
+          sprite.name === currentAnimation ||
+          (sprite.name === "idle" && currentAnimation === "run") ||
+          (sprite.name === "idle" && currentAnimation === "walk")
+        ) {
+          sprite.visible = true
+        } else {
+          sprite.visible = false
+        }
+      })
+    })
   }
 }
