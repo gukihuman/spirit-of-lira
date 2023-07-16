@@ -1,11 +1,11 @@
 import json from "@/assets/miscellaneous/collisionArray.json"
 
 export default class {
-  collisionArray: number[] = json
+  collisionArray: number[][] = json
   private collisionGrid: Graphics[][] = []
 
   init() {
-    this.drawCollisionGrid()
+    if (SYSTEM_DATA.states.devMode) this.drawCollisionGrid()
   }
 
   process() {
@@ -18,15 +18,15 @@ export default class {
     }
   }
   drawCollisionGrid() {
-    const height = 13
-    const width = 21
+    const height = 55
+    const width = 97
     for (let y of _.range(height)) {
       let row: Graphics[] = []
       for (let x of _.range(width)) {
         let square = new PIXI.Graphics()
         square.blendMode = PIXI.BLEND_MODES.MULTIPLY
-        square.beginFill(0xffffff, 0.65)
-        square.drawRect(x * 100, y * 100, 100, 100)
+        square.beginFill(0xffffff, 0.75)
+        square.drawRect(x * 20, y * 20, 20, 20)
         square.endFill()
         row.push(square)
         GPIXI.collision.addChild(square)
@@ -37,8 +37,8 @@ export default class {
       for (let x of _.range(width)) {
         let square = new PIXI.Graphics()
         square.blendMode = PIXI.BLEND_MODES.MULTIPLY
-        square.lineStyle(5, 0xe6e6e6)
-        square.drawRect(x * 100, y * 100, 100, 100)
+        square.lineStyle(4, 0xe6e6e6)
+        square.drawRect(x * 20, y * 20, 20, 20)
         GPIXI.collision.addChild(square)
       }
     }
@@ -54,19 +54,33 @@ export default class {
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
     GPIXI.collision.x =
-      1920 / 2 - LIB.coordinateOffsetInTile(heroPosition.x) + 50
+      CONFIG.viewport.width / 2 -
+      LIB.coordinateOffsetInTile(heroPosition.x) +
+      10
     GPIXI.collision.y =
-      1080 / 2 - LIB.coordinateOffsetInTile(heroPosition.y) + 50
+      CONFIG.viewport.height / 2 -
+      LIB.coordinateOffsetInTile(heroPosition.y) +
+      10
 
-    const startX = LIB.coordinateToTile(heroPosition.x) - 10
-    const startY = LIB.coordinateToTile(heroPosition.y) - 6
+    const startY = LIB.coordinateToTile(heroPosition.y) - 27
+    const startX = LIB.coordinateToTile(heroPosition.x) - 48
     this.collisionGrid.forEach((row, y) => {
       row.forEach((square, x) => {
-        const i = (startY + y) * 1000 + startX + x
-        if (this.collisionArray[i] === 0) square.tint = 0xffffff
-        else if (this.collisionArray[i] === 1) square.tint = 0x95d5b2
-        else if (this.collisionArray[i] === 2) square.tint = 0x7e7eff
-        else square.tint = 0x8f0005
+        let tileX = startX + x
+        let tileY = startY + y
+        if (this.collisionArray[tileY] === undefined) {
+          square.tint = 0x8f0005
+          return
+        }
+        if (this.collisionArray[tileY][tileX] === undefined) {
+          square.tint = 0x8f0005
+          return
+        }
+
+        if (this.collisionArray[tileY][tileX] === 0) square.tint = 0xffffff
+        else if (this.collisionArray[tileY][tileX] === 1) square.tint = 0x95d5b2
+        else if (this.collisionArray[tileY][tileX] === 2) square.tint = 0x7e7eff
+        else square.tint = 0x8f0005 // when tile is 3 or undefined
       })
     })
   }
@@ -75,13 +89,20 @@ export default class {
     if (!SYSTEM_DATA.world.heroId) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 
-    let i = LIB.tileIndexFromCoordinates(heroPosition.x, heroPosition.y)
+    let y = LIB.coordinateToTile(heroPosition.y)
+    let x = LIB.coordinateToTile(heroPosition.x)
 
-    if (INPUT.gamepad.pressed.includes("Y")) this.collisionArray[i] = 0
-    else if (INPUT.gamepad.pressed.includes("X")) this.collisionArray[i] = 1
-    else if (INPUT.gamepad.pressed.includes("B")) this.collisionArray[i] = 2
-    else if (INPUT.gamepad.pressed.includes("A")) this.collisionArray[i] = 3
-    else if (INPUT.gamepad.pressed.includes("RB"))
+    if (INPUT.gamepad.pressed.includes("Y")) this.collisionArray[y][x] = 0
+    else if (INPUT.gamepad.pressed.includes("X")) this.collisionArray[y][x] = 1
+    else if (INPUT.gamepad.pressed.includes("B")) this.collisionArray[y][x] = 2
+    else if (INPUT.gamepad.pressed.includes("A")) this.collisionArray[y][x] = 3
+    else if (INPUT.gamepad.pressed.includes("LB")) {
+      for (let brushY = y - 5; brushY < y + 5; brushY++) {
+        for (let brushX = x - 5; brushX < x + 5; brushX++) {
+          this.collisionArray[brushY][brushX] = 3
+        }
+      }
+    } else if (INPUT.gamepad.pressed.includes("RB"))
       this.downloadCollisionArrayDebounced()
   }
 

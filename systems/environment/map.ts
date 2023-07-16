@@ -44,13 +44,13 @@ export default class {
     if (!heroEntity) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 
-    const startY = LIB.coordinateToChunk(heroPosition.y) - 1
-    const startX = LIB.coordinateToChunk(heroPosition.x) - 1
+    const startY = LIB.coordinateToChunk(heroPosition.y) - 2
+    const startX = LIB.coordinateToChunk(heroPosition.x) - 2
 
     this.closeChunks = []
     const sprites: Promise<void>[] = []
-    for (let y of _.range(startY, startY + 3)) {
-      for (let x of _.range(startX, startX + 3)) {
+    for (let y of _.range(startY, startY + 5)) {
+      for (let x of _.range(startX, startX + 5)) {
         let stringX = `${x}`
         if (stringX.length === 1) stringX = `0${stringX}`
         let stringY = `${y}`

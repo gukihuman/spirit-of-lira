@@ -52,13 +52,6 @@ class Lib {
     })
     return clonedMap
   }
-  isWalkable(x: number, y: number) {
-    const tileIndex = LIB.tileIndexFromCoordinates(x, y)
-    return (
-      SYSTEMS.collision.collisionArray[tileIndex] !== 2 &&
-      SYSTEMS.collision.collisionArray[tileIndex] !== 3
-    )
-  }
   generateRandomString(length) {
     let result = ""
     for (let i = 0; i < length; i++) {
@@ -237,13 +230,19 @@ class Lib {
     return _.floor(_.toNumber(chunk) / 100) * 1000
   }
   coordinateToTile(coordinate: number) {
-    return _.floor(coordinate / 100)
+    return _.floor(coordinate / 20)
   }
   coordinateOffsetInTile(coordinate: number) {
-    return coordinate % 100
+    return coordinate % 20
   }
-  tileIndexFromCoordinates(x: number, y: number) {
-    return this.coordinateToTile(y) * 1000 + this.coordinateToTile(x)
+
+  isWalkable(x: number, y: number) {
+    let tileX = LIB.coordinateToTile(x)
+    let tileY = LIB.coordinateToTile(y)
+    return (
+      SYSTEMS.collision.collisionArray[tileY][tileX] !== 2 &&
+      SYSTEMS.collision.collisionArray[tileY][tileX] !== 3
+    )
   }
 }
 

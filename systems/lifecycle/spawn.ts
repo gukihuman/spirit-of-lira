@@ -4,7 +4,7 @@ export default class {
 
   private locationPopulation = {
     greenForestChunks: {
-      bunbo: 1,
+      bunbo: 0,
     },
   }
 
@@ -87,9 +87,10 @@ export default class {
     x += _.random(0, 999)
     y += _.random(0, 999)
 
-    const i = LIB.tileIndexFromCoordinates(x, y)
+    let tileX = LIB.coordinateToTile(x)
+    let tileY = LIB.coordinateToTile(y)
 
-    if (SYSTEMS.collision.collisionArray[i] === 0) {
+    if (SYSTEMS.collision.collisionArray[tileY][tileX] === 0) {
       return { x, y }
     } else if (counter < 10) {
       counter++
