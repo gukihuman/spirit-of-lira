@@ -13,12 +13,7 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: [
-      "boot/**/*.{js,ts}",
-      "core/**/*.{js,ts}",
-      "data/**/*.{js,ts}",
-      "logic/**/*.{js,ts}",
-    ],
+    dirs: ["boot/**/*.{js,ts}", "data/**/*.{js,ts}", "logic/**/*.{js,ts}"],
   },
   components: {
     dirs: ["@/ui"],
