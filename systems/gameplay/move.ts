@@ -105,7 +105,7 @@ export default class {
       const targetEntity = ENTITIES.get(entity.target.id)
       if (
         targetEntity &&
-        distance < targetEntity.size.width / 2 + entity.attack.distance
+        finaldistance < targetEntity.size.width / 2 + entity.attack.distance
       ) {
         return
       }

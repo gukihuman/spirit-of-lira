@@ -7,4 +7,7 @@ export default {
   follow: false,
   attack: false,
   dead: false,
+
+  // 🔧
+  startIdleTickCounter: 0,
 }

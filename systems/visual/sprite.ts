@@ -98,12 +98,16 @@ export default class {
     if (fps && fps / GPIXI.averageFPS < 0.3) return
 
     if (distance / speedPerTick < 0.1) {
-      entity.sprite.animation = "idle"
+      entity.state.startIdleTickCounter++
+      if (entity.state.startIdleTickCounter > 10) {
+        entity.sprite.animation = "idle"
+      }
       return
     }
+    entity.state.startIdleTickCounter = 0
 
     if (GPIXI.getSprite(id, "walk")) {
-      if (distance / speedPerTick < 0.8) {
+      if (distance / speedPerTick < 0.65) {
         entity.sprite.animation = "walk"
         return
       } else {

@@ -84,7 +84,8 @@ export default class {
         const targetEntity = ENTITIES.get(entity.target.id)
         const distance = LIB.distance(entity.position, targetEntity.position)
 
-        if (id !== SYSTEM_DATA.world.heroId && distance > 300) {
+        // follow distance is here
+        if (id !== SYSTEM_DATA.world.heroId && distance > 430) {
           entity.target.id = undefined
           entity.target.locked = false
           entity.target.attacked = false

@@ -1,9 +1,11 @@
-import { l } from "vitest/dist/index-40ebba2b"
+import { p } from "vitest/dist/index-40ebba2b"
 
 export default class {
   openList: any = []
   closedList: any = []
   clean = true
+
+  lastClosestTileFoundMS = 0
 
   grid = []
 
@@ -15,14 +17,11 @@ export default class {
     let executes: any = []
     ENTITIES.forEach((entity, id) => {
       executes.push(() => {
-        if (
-          _.round(GPIXI.elapsedMS / 100) % _.random(1, 5) !== 0 &&
-          id !== SYSTEM_DATA.world.heroId
-        ) {
-          return
-        }
         if (entity.move) {
-          // if (!entity.move.path || entity.move.path.length == 0) {
+          if (!entity.move.finaldestination) return
+          if (_.round(GPIXI.elapsedMS / 100) % _.random(1, 5) !== 0) {
+            return
+          }
           const startTile = {
             x: LIB.coordinateToTile(entity.position.x),
             y: LIB.coordinateToTile(entity.position.y),
@@ -32,13 +31,17 @@ export default class {
             y: LIB.coordinateToTile(entity.move.finaldestination.y),
           }
           entity.move.path = this.findPath(startTile, endTile, entity)
+          if (GPIXI.elapsedMS < this.lastClosestTileFoundMS + 100) return
 
           entity.move.destination = _.cloneDeep(entity.position)
-          if (entity.move.path.length > 1 && entity.move.destination) {
+          if (entity.move.path.length <= 1 && entity.move.destination) {
+            entity.move.destination.x = entity.move.finaldestination.x
+            entity.move.destination.y = entity.move.finaldestination.y
+          } else if (entity.move.path.length > 0 && entity.move.destination) {
             entity.move.destination.x =
-              LIB.tileToCoordinate(entity.move.path[1].x) + 10
+              LIB.tileToCoordinate(entity.move.path[0].x) + 10
             entity.move.destination.y =
-              LIB.tileToCoordinate(entity.move.path[1].y) + 10
+              LIB.tileToCoordinate(entity.move.path[0].y) + 10
           }
         }
       })
@@ -46,14 +49,13 @@ export default class {
     executes.forEach((func) => func())
   }
 
-  getNeighbors(node, collision) {
+  getNeighbors(node) {
     const neighbors: any = []
 
     // Add neighbor above
     if (
       this.grid[node.y - 1][node.x] === 0 ||
-      this.grid[node.y - 1][node.x] === 1 ||
-      collision === "collision"
+      this.grid[node.y - 1][node.x] === 1
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
     }
@@ -61,8 +63,7 @@ export default class {
     // Add neighbor below
     if (
       this.grid[node.y + 1][node.x] === 0 ||
-      this.grid[node.y + 1][node.x] === 1 ||
-      collision === "collision"
+      this.grid[node.y + 1][node.x] === 1
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
     }
@@ -70,8 +71,7 @@ export default class {
     // Add neighbor left
     if (
       this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y][node.x - 1] === 1
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
@@ -79,8 +79,7 @@ export default class {
     // Add neighbor right
     if (
       this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y][node.x + 1] === 1
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
@@ -88,8 +87,7 @@ export default class {
     // Top left
     if (
       this.grid[node.y - 1][node.x - 1] === 0 ||
-      this.grid[node.y - 1][node.x - 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y - 1][node.x - 1] === 1
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
     }
@@ -97,8 +95,7 @@ export default class {
     // Top right
     if (
       this.grid[node.y - 1][node.x + 1] === 0 ||
-      this.grid[node.y - 1][node.x + 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y - 1][node.x + 1] === 1
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
     }
@@ -106,8 +103,7 @@ export default class {
     // Bottom left
     if (
       this.grid[node.y + 1][node.x - 1] === 0 ||
-      this.grid[node.y + 1][node.x - 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y + 1][node.x - 1] === 1
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
     }
@@ -115,8 +111,7 @@ export default class {
     // Bottom right
     if (
       this.grid[node.y + 1][node.x + 1] === 0 ||
-      this.grid[node.y + 1][node.x + 1] === 1 ||
-      collision === "collision"
+      this.grid[node.y + 1][node.x + 1] === 1
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
     }
@@ -124,7 +119,7 @@ export default class {
     return neighbors
   }
 
-  findPath(startPos, endPos, entity, collision = "no") {
+  findPath(startPos, endPos, entity) {
     this.clean = true
     this.openList = []
     this.closedList = []
@@ -132,7 +127,7 @@ export default class {
 
     this.openList.push(startPos)
 
-    let maxSteps = 600
+    let maxSteps = 1000
 
     while (this.openList.length > 0) {
       maxSteps--
@@ -140,35 +135,38 @@ export default class {
       let current = this.getLowestF(this.openList)
 
       if (maxSteps < 0) {
-        console.warn("Reached max steps!")
-        if (this.clean) return [undefined, endPos]
-        //
-        // 📜 clean this - find closest
-        if (!LIB.isWalkable(endPos.x, endPos.y)) {
-          // if (tile) {
-          //   entity.move.finaldestination.x = LIB.tileToCoordinate(tile.x)
-          //   entity.move.finaldestination.y = LIB.tileToCoordinate(tile.y)
-          // }
+        if (this.clean) return [endPos]
+
+        if (
+          (this.grid[endPos.y][endPos.x] !== 0 ||
+            this.grid[endPos.y][endPos.x] !== 1) &&
+          GPIXI.elapsedMS > this.lastClosestTileFoundMS + 100
+        ) {
+          this.setFinalDestinationToWalkable(endPos, entity)
+          this.lastClosestTileFoundMS = GPIXI.elapsedMS
         }
-        return this.reconstructPath(current)
+        let path = this.reconstructPath(current, startPos)
+        return this.refinePath(path)
       }
 
       this.openList = this.openList.filter((p) => p !== current)
       this.closedList.push(current)
 
       if (current.x === endPos.x && current.y === endPos.y) {
-        if (this.clean && collision === "no") return [undefined, endPos]
-        return this.reconstructPath(current)
+        if (this.clean) return [endPos]
+        let path = this.reconstructPath(current, startPos)
+        return this.refinePath(path)
       }
 
-      let neighbors = this.getNeighbors(current, collision)
+      let neighbors = this.getNeighbors(current)
       if (neighbors.length < 8) this.clean = false
 
-      for (let neighbor of neighbors) {
+      neighbors.forEach((neighbor) => {
         if (
           this.closedList.find((p) => p.x === neighbor.x && p.y === neighbor.y)
-        )
-          continue
+        ) {
+          return
+        }
 
         let g = current.g + 1
         let h = this.heuristic(neighbor, endPos)
@@ -177,17 +175,57 @@ export default class {
         let inOpen = this.openList.find(
           (p) => p.x === neighbor.x && p.y === neighbor.y
         )
-        if (inOpen && inOpen.f < f) continue
+        if (inOpen && inOpen.f < f) return
 
         neighbor.g = g
         neighbor.f = f
         neighbor.parent = current
 
         if (!inOpen) this.openList.push(neighbor)
-      }
+      })
     }
 
     return []
+  }
+
+  setFinalDestinationToWalkable(endPos, entity) {
+    let closestTile
+    let minDist = Infinity
+
+    let filteredList = this.closedList.filter((p, i) => i % 10 === 0)
+
+    for (let tile of filteredList) {
+      if (this.grid[tile.y][tile.x] === 0 || this.grid[tile.y][tile.x] === 1) {
+        let dist = this.heuristic(tile, endPos)
+        if (dist < minDist) {
+          closestTile = tile
+          minDist = dist
+        }
+      }
+    }
+    if (closestTile) {
+      entity.move.finaldestination.x = LIB.tileToCoordinate(closestTile.x)
+      entity.move.finaldestination.y = LIB.tileToCoordinate(closestTile.y)
+    }
+  }
+
+  refinePath(path) {
+    const indexes: number[] = []
+    for (let i = 0; i < path.length; i++) {
+      let tile = path[i]
+      if (!tile) continue
+
+      let neighbors = this.getNeighbors(tile)
+
+      if (neighbors.length === 8) {
+        indexes.push(i)
+      }
+    }
+    // indexes.forEach((i) => {
+    //   path.splice(i, 1)
+    // })
+
+    return path
   }
 
   // Compute heuristic cost between current node and end node
@@ -211,14 +249,34 @@ export default class {
     }, openList[0])
   }
 
-  // Reconstruct path after reaching end node
-  reconstructPath(endNode) {
+  reconstructPath(endNode, startPos) {
     let path: number[] = []
     let current = endNode
-    while (current) {
+
+    let minG = Infinity
+    let minH = Infinity
+    let max = 300
+    while (current && max > 0) {
       path.unshift(current) // add to front
-      current = current.parent
+      const neighbors = this.getNeighbors(current)
+
+      let closest
+      neighbors.forEach((neighbor) => {
+        this.closedList.forEach((p) => {
+          if (p.x === neighbor.x && p.y === neighbor.y) {
+            let newH = this.heuristic(p, startPos)
+            if (p.g < minG || (p.g <= minG && newH < minH)) {
+              minG = p.g
+              minH = newH
+              closest = p
+            }
+          }
+        })
+      })
+      current = closest
+      max--
     }
+    path.shift()
     return path
   }
 }

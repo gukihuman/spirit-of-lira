@@ -2,7 +2,7 @@ export default {
   speed: 5,
   destination: undefined,
   finaldestination: undefined,
-  path: undefined,
+  path: [],
 
   randomDestinationMS: 0,
 

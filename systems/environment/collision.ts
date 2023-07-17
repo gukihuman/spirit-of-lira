@@ -83,6 +83,14 @@ export default class {
         else square.tint = 0x8f0005 // when tile is 3 or undefined
       })
     })
+
+    SYSTEM_DATA.world.hero.move.path.forEach((tile) => {
+      if (!tile) return
+      let row = tile.x - startX
+      let col = tile.y - startY
+      if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return
+      this.collisionGrid[col][row].tint = 0x414833
+    })
   }
 
   private updateCollisionArray() {
