@@ -22,7 +22,7 @@ export default class {
       }
 
       if (GPIXI.elapsedMS > this.startAttackMS + 1000) {
-        SYSTEM_DATA.world.hero.move.destination = undefined
+        SYSTEM_DATA.world.hero.move.finaldestination = undefined
         SYSTEM_DATA.world.hero.target.attacked = false
       }
       this.gamepadMoved = true
@@ -39,7 +39,7 @@ export default class {
     const distance = LIB.distance(LIB.centerPoint(), LIB.mousePoint())
 
     if (distance < 10) {
-      SYSTEM_DATA.world.hero.move.destination = undefined
+      SYSTEM_DATA.world.hero.move.finaldestination = undefined
       return
     }
 
@@ -48,7 +48,7 @@ export default class {
     const mousePosition = LIB.mousePoint()
     mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
     mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
-    SYSTEM_DATA.world.hero.move.destination = mousePosition
+    SYSTEM_DATA.world.hero.move.finaldestination = mousePosition
   }
 
   // move directly and set hero target position to undefined
@@ -71,7 +71,12 @@ export default class {
 
   move(entity: Entity, id) {
     if (id === SYSTEM_DATA.world.heroId && this.gamepadMoved) return
-    if (!entity.move || !entity.move.destination) return
+    if (
+      !entity.move ||
+      !entity.move.destination ||
+      !entity.move.finaldestination
+    )
+      return
     if (entity.state.main === "attack" || entity.state.main === "dead") return
 
     if (entity.state.main === "forcemove") this.forceMove = true
@@ -85,6 +90,11 @@ export default class {
       entity.position,
       entity.move.destination
     )
+    const finaldisplacement = LIB.vectorFromPoints(
+      entity.position,
+      entity.move.finaldestination
+    )
+    const finaldistance = finaldisplacement.distance
     const distance = displacement.distance
 
     if (distance < speedPerTick) {
@@ -101,7 +111,7 @@ export default class {
       }
     }
 
-    let ratio = _.clamp(distance / 200, 1)
+    let ratio = _.clamp(finaldistance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 

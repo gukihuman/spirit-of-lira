@@ -21,8 +21,15 @@ export default class {
     if (Math.random() > 0.08 * GPIXI.deltaSec) return
     let x = _.random(-500, 500)
     let y = _.random(-500, 500)
-    entity.move.destination.x = entity.position.x + x
-    entity.move.destination.y = entity.position.y + y
+    let grid = SYSTEMS.collision.collisionArray
+    let tileX = LIB.coordinateToTile(x)
+    let tileY = LIB.coordinateToTile(y)
+    if (!grid[tileY]) return
+    if (grid[tileY][tileX] === 2 || grid[tileY][tileX] === 3) {
+      return
+    }
+    entity.move.finaldestination.x = entity.position.x + x
+    entity.move.finaldestination.y = entity.position.y + y
     entity.move.randomDestinationMS = GPIXI.elapsedMS
   }
 }

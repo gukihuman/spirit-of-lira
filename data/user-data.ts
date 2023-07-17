@@ -19,7 +19,6 @@ class UserData {
         attack: "A",
         fullscreen: "Menu",
         inventory: "Start",
-        sendInput: "LB",
         lockTarget: "RT",
       },
     },

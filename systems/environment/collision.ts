@@ -91,6 +91,7 @@ export default class {
 
     let y = LIB.coordinateToTile(heroPosition.y)
     let x = LIB.coordinateToTile(heroPosition.x)
+    if (y < 0 || x < 0) return
 
     if (INPUT.gamepad.pressed.includes("Y")) this.collisionArray[y][x] = 0
     else if (INPUT.gamepad.pressed.includes("X")) this.collisionArray[y][x] = 1
@@ -99,6 +100,7 @@ export default class {
     else if (INPUT.gamepad.pressed.includes("LB")) {
       for (let brushY = y - 5; brushY < y + 5; brushY++) {
         for (let brushX = x - 5; brushX < x + 5; brushX++) {
+          if (brushX < 0 || brushY < 0) continue
           this.collisionArray[brushY][brushX] = 3
         }
       }

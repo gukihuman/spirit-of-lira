@@ -235,6 +235,9 @@ class Lib {
   coordinateOffsetInTile(coordinate: number) {
     return coordinate % 20
   }
+  tileToCoordinate(tile: number) {
+    return tile * 20
+  }
 
   isWalkable(x: number, y: number) {
     let tileX = LIB.coordinateToTile(x)

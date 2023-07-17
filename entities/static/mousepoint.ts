@@ -6,14 +6,14 @@ export default {
     let position = entity.position
     if (!position) return
 
-    const destination = SYSTEM_DATA.world.hero.move.destination
-    if (!destination) {
+    const finaldestination = SYSTEM_DATA.world.hero.move.finaldestination
+    if (!finaldestination) {
       position.x = 0
       position.y = 0
       return
     }
-    position.x = destination.x
-    position.y = destination.y
+    position.x = finaldestination.x
+    position.y = finaldestination.y
 
     const displacement = LIB.vectorFromPoints(
       position,
@@ -44,6 +44,9 @@ export default {
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       animationSprite.alpha = distance / 100
+
+      let y = LIB.coordinateToTile(position.y)
+      let x = LIB.coordinateToTile(position.x)
     }
   },
 }

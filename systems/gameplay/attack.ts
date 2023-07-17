@@ -19,7 +19,7 @@ export default class {
       const distance = LIB.distance(entity.position, targetEntity.position)
 
       if (entity.target.attacked) {
-        entity.move.destination = _.cloneDeep(targetEntity.position)
+        entity.move.finaldestination = _.cloneDeep(targetEntity.position)
       } else {
         return
       }

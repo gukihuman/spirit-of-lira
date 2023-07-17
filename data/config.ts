@@ -42,7 +42,10 @@ class GukiConfig {
       move: 1,
     },
 
-    systemInit: {},
+    systemInit: {
+      collision: 2,
+      astar: 1,
+    },
 
     systemProcess: {
       //
