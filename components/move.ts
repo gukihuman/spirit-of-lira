@@ -4,9 +4,10 @@ export default {
   finaldestination: undefined,
   path: [],
 
-  randomDestinationMS: 0,
-
   // 🔧
+  randomDestinationMS: 0,
+  lastClosestTileFoundMS: 0,
+
   depend: ["position"],
   trigger: ["target", "attributes", "shadow", "state"],
   inject(entity, id) {

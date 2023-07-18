@@ -7,6 +7,9 @@ export default class {
   private startAttackMS = 0
   private gamepadMoved = false
 
+  // 🔧
+  lastClosestTileFoundMS = 0
+
   process() {
     ENTITIES.forEach((entity, id) => {
       this.move(entity, id)

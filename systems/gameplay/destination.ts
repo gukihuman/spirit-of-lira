@@ -9,16 +9,18 @@ export default class {
         id !== SYSTEM_DATA.world.heroId &&
         entity.move &&
         entity.state.main === "idle" &&
-        GPIXI.elapsedMS > entity.move.randomDestinationMS + this.delayMS
+        GPIXI.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
+        Math.random() < 0.08 * GPIXI.deltaSec
       ) {
+        this.counter = 0
         this.setRandomDestination(entity, id)
       }
     })
   }
 
+  private counter = 0
   private setRandomDestination(entity: Entity, id: number) {
     //
-    if (Math.random() > 0.08 * GPIXI.deltaSec) return
     let x = _.random(-500, 500)
     let y = _.random(-500, 500)
     let grid = SYSTEMS.collision.collisionArray
@@ -26,6 +28,8 @@ export default class {
     let tileY = LIB.coordinateToTile(y)
     if (!grid[tileY]) return
     if (grid[tileY][tileX] === 2 || grid[tileY][tileX] === 3) {
+      this.counter++
+      if (this.counter < 10) this.setRandomDestination(entity, id)
       return
     }
     entity.move.finaldestination.x = entity.position.x + x

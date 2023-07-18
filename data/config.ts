@@ -58,8 +58,8 @@ class GukiConfig {
       SIGNAL: -1, // runs all logic for collected signals and empty itself
       move: -2,
       astar: -3,
-      attack: -3,
-      flip: -4,
+      attack: -4,
+      flip: -5,
     },
   }
 }

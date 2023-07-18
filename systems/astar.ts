@@ -5,8 +5,6 @@ export default class {
   closedList: any = []
   clean = true
 
-  lastClosestTileFoundMS = 0
-
   grid = []
 
   init() {
@@ -31,7 +29,7 @@ export default class {
             y: LIB.coordinateToTile(entity.move.finaldestination.y),
           }
           entity.move.path = this.findPath(startTile, endTile, entity)
-          if (GPIXI.elapsedMS < this.lastClosestTileFoundMS + 100) return
+          if (GPIXI.elapsedMS < entity.move.lastClosestTileFoundMS + 100) return
 
           entity.move.destination = _.cloneDeep(entity.position)
           if (entity.move.path.length <= 1 && entity.move.destination) {
@@ -49,9 +47,23 @@ export default class {
     executes.forEach((func) => func())
   }
 
-  getNeighbors(node) {
+  getAllNeighbors(node) {
     const neighbors: any = []
 
+    // Add neighbor left
+    if (
+      this.grid[node.y][node.x - 1] === 0 ||
+      this.grid[node.y][node.x - 1] === 1
+    ) {
+      neighbors.push({ x: node.x - 1, y: node.y })
+    }
+    // Add neighbor right
+    if (
+      this.grid[node.y][node.x + 1] === 0 ||
+      this.grid[node.y][node.x + 1] === 1
+    ) {
+      neighbors.push({ x: node.x + 1, y: node.y })
+    }
     // Add neighbor above
     if (
       this.grid[node.y - 1][node.x] === 0 ||
@@ -66,22 +78,6 @@ export default class {
       this.grid[node.y + 1][node.x] === 1
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
-    }
-
-    // Add neighbor left
-    if (
-      this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1
-    ) {
-      neighbors.push({ x: node.x - 1, y: node.y })
-    }
-
-    // Add neighbor right
-    if (
-      this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1
-    ) {
-      neighbors.push({ x: node.x + 1, y: node.y })
     }
 
     // Top left
@@ -118,6 +114,89 @@ export default class {
 
     return neighbors
   }
+  getCardinalNeighbors(node) {
+    const neighbors: any = []
+    // Add neighbor left
+    if (
+      this.grid[node.y][node.x - 1] === 0 ||
+      this.grid[node.y][node.x - 1] === 1
+    ) {
+      neighbors.push({ x: node.x - 1, y: node.y })
+    }
+    // Add neighbor right
+    if (
+      this.grid[node.y][node.x + 1] === 0 ||
+      this.grid[node.y][node.x + 1] === 1
+    ) {
+      neighbors.push({ x: node.x + 1, y: node.y })
+    }
+    // Add neighbor above
+    if (
+      this.grid[node.y - 1][node.x] === 0 ||
+      this.grid[node.y - 1][node.x] === 1
+    ) {
+      neighbors.push({ x: node.x, y: node.y - 1 })
+    }
+
+    // Add neighbor below
+    if (
+      this.grid[node.y + 1][node.x] === 0 ||
+      this.grid[node.y + 1][node.x] === 1
+    ) {
+      neighbors.push({ x: node.x, y: node.y + 1 })
+    }
+    return neighbors
+  }
+  getDiagonalNeighbors(node) {
+    const neighbors: any = []
+
+    // Top left
+    if (
+      this.grid[node.y - 1][node.x - 1] === 0 ||
+      this.grid[node.y - 1][node.x - 1] === 1
+    ) {
+      neighbors.push({ x: node.x - 1, y: node.y - 1 })
+    }
+
+    // Top right
+    if (
+      this.grid[node.y - 1][node.x + 1] === 0 ||
+      this.grid[node.y - 1][node.x + 1] === 1
+    ) {
+      neighbors.push({ x: node.x + 1, y: node.y - 1 })
+    }
+
+    // Bottom left
+    if (
+      this.grid[node.y + 1][node.x - 1] === 0 ||
+      this.grid[node.y + 1][node.x - 1] === 1
+    ) {
+      neighbors.push({ x: node.x - 1, y: node.y + 1 })
+    }
+
+    // Bottom right
+    if (
+      this.grid[node.y + 1][node.x + 1] === 0 ||
+      this.grid[node.y + 1][node.x + 1] === 1
+    ) {
+      neighbors.push({ x: node.x + 1, y: node.y + 1 })
+    }
+
+    return neighbors
+  }
+  isCardinal(current, neighbor) {
+    // Check if neighbor is strictly horizontal or vertical
+    if (current.x === neighbor.x || current.y === neighbor.y) {
+      return true
+    }
+
+    // If x and y both differ, it is diagonal
+    if (current.x !== neighbor.x && current.y !== neighbor.y) {
+      return false
+    }
+
+    return true
+  }
 
   findPath(startPos, endPos, entity) {
     this.clean = true
@@ -127,7 +206,7 @@ export default class {
 
     this.openList.push(startPos)
 
-    let maxSteps = 1000
+    let maxSteps = 2000
 
     while (this.openList.length > 0) {
       maxSteps--
@@ -140,10 +219,10 @@ export default class {
         if (
           (this.grid[endPos.y][endPos.x] !== 0 ||
             this.grid[endPos.y][endPos.x] !== 1) &&
-          GPIXI.elapsedMS > this.lastClosestTileFoundMS + 100
+          GPIXI.elapsedMS > entity.move.lastClosestTileFoundMS + 100
         ) {
           this.setFinalDestinationToWalkable(endPos, entity)
-          this.lastClosestTileFoundMS = GPIXI.elapsedMS
+          entity.move.lastClosestTileFoundMS = GPIXI.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
         return this.refinePath(path)
@@ -158,7 +237,7 @@ export default class {
         return this.refinePath(path)
       }
 
-      let neighbors = this.getNeighbors(current)
+      let neighbors = this.getAllNeighbors(current)
       if (neighbors.length < 8) this.clean = false
 
       neighbors.forEach((neighbor) => {
@@ -167,8 +246,17 @@ export default class {
         ) {
           return
         }
+        let secondNeighbors = this.getAllNeighbors(neighbor)
 
-        let g = current.g + 1
+        let g = current.g
+        if (
+          this.isCardinal(current, neighbor) ||
+          secondNeighbors.length === 8
+        ) {
+          g = current.g + 1
+        } else {
+          g = current.g + 2
+        }
         let h = this.heuristic(neighbor, endPos)
         let f = g + h
 
@@ -186,6 +274,33 @@ export default class {
     }
 
     return []
+  }
+
+  refinePath(path) {
+    const indexes: number[] = []
+    for (let i = 0; i < path.length; i++) {
+      let tile = path[i]
+      if (!tile) continue
+
+      let neighbors = this.getAllNeighbors(tile)
+
+      if (neighbors.length === 8) {
+        indexes.push(i)
+      }
+      // let diagonalNeighbors = this.getDiagonalNeighbors(tile)
+      // let cardinalNeighbors = this.getCardinalNeighbors(tile)
+      // if (diagonalNeighbors.length < 4 && cardinalNeighbors === 4) {
+      //   indexes.push(i)
+      // }
+    }
+    indexes.forEach((i) => {
+      if ((indexes.includes(i - 1) && indexes.includes(i + 1)) || i === 0) {
+        path[i] = undefined
+      }
+    })
+    let newPath = path.filter((p) => p !== undefined)
+
+    return newPath
   }
 
   setFinalDestinationToWalkable(endPos, entity) {
@@ -209,25 +324,6 @@ export default class {
     }
   }
 
-  refinePath(path) {
-    const indexes: number[] = []
-    for (let i = 0; i < path.length; i++) {
-      let tile = path[i]
-      if (!tile) continue
-
-      let neighbors = this.getNeighbors(tile)
-
-      if (neighbors.length === 8) {
-        indexes.push(i)
-      }
-    }
-    // indexes.forEach((i) => {
-    //   path.splice(i, 1)
-    // })
-
-    return path
-  }
-
   // Compute heuristic cost between current node and end node
 
   heuristic(current, end) {
@@ -235,8 +331,15 @@ export default class {
     if (!current || !end) {
       return 0
     }
-    // Simple Manhattan distance
-    return Math.abs(current.x - end.x) + Math.abs(current.y - end.y)
+    let xDiff = Math.abs(current.x - end.x)
+    let yDiff = Math.abs(current.y - end.y)
+
+    if (xDiff > 0 && yDiff > 0) {
+      // diagonal difference - add penalty
+      return (xDiff + yDiff) * 1.1
+    } else {
+      return xDiff + yDiff
+    }
   }
 
   // Get node in open list with lowest f cost
@@ -258,17 +361,21 @@ export default class {
     let max = 300
     while (current && max > 0) {
       path.unshift(current) // add to front
-      const neighbors = this.getNeighbors(current)
+      const neighbors = this.getAllNeighbors(current)
 
       let closest
+      _.reverse(neighbors)
       neighbors.forEach((neighbor) => {
+        let found = false
         this.closedList.forEach((p) => {
+          if (found) return
           if (p.x === neighbor.x && p.y === neighbor.y) {
             let newH = this.heuristic(p, startPos)
-            if (p.g < minG || (p.g <= minG && newH < minH)) {
+            if ((p.g <= minG && newH < minH) || p.g < minG) {
               minG = p.g
               minH = newH
               closest = p
+              found = true
             }
           }
         })

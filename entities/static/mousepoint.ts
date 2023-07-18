@@ -6,15 +6,37 @@ export default {
     let position = entity.position
     if (!position) return
 
+    // hold mouse point on cursor while walkable tile isn't found
+    // after not walkable tile is proceeded
     if (
-      SYSTEMS.astar &&
-      GPIXI.elapsedMS < SYSTEMS.astar.lastClosestTileFoundMS + 100
+      GPIXI.elapsedMS <
+      SYSTEM_DATA.world.hero.move.lastClosestTileFoundMS + 100
     ) {
       const mousePosition = LIB.mousePoint()
       mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
       mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
       position.x = mousePosition.x
       position.y = mousePosition.y
+      const container = GPIXI.getMain(id)
+      if (!container) return
+
+      // 📜 add to preload filters
+      // container.filters = [
+      //   new PIXI_FILTERS.AdjustmentFilter({
+      //     red: 1.4,
+      //     saturation: 0.9,
+      //     brightness: 0.7,
+      //   }),
+      // ]
+      // container.filters = [
+      //   new PIXI_FILTERS.HslAdjustmentFilter({
+      //     hue: 20,
+      //     lightness: 0.3,
+      //   }),
+      // ]
+      // setTimeout(() => {
+      //   container.filters = []
+      // }, 0)
       return
     }
 
@@ -60,7 +82,9 @@ export default {
       const animationSprite = GPIXI.getSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
-      animationSprite.alpha = distance / 100
+      setTimeout(() => {
+        animationSprite.alpha = distance / 100
+      })
     }
   },
 }
