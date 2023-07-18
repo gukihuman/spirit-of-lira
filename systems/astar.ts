@@ -24,12 +24,40 @@ export default class {
             x: LIB.coordinateToTile(entity.position.x),
             y: LIB.coordinateToTile(entity.position.y),
           }
-          const endTile = {
+          let endTile = {
             x: LIB.coordinateToTile(entity.move.finaldestination.x),
             y: LIB.coordinateToTile(entity.move.finaldestination.y),
           }
-          entity.move.path = this.findPath(startTile, endTile, entity)
-          if (GPIXI.elapsedMS < entity.move.lastClosestTileFoundMS + 100) return
+
+          const mousePosition = LIB.mousePoint()
+          mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
+          mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
+          const mouseTileX = LIB.coordinateToTile(mousePosition.x)
+          const mouseTileY = LIB.coordinateToTile(mousePosition.y)
+
+          // mouseMove signal on non-walkable tile
+          if (
+            INPUT.lastActiveDevice !== "gamepad" &&
+            SIGNAL.active.includes("mouseMove") &&
+            this.grid[mouseTileY][mouseTileX] !== 0 &&
+            this.grid[mouseTileY][mouseTileX] !== 1
+          ) {
+            entity.move.setMousePointOnWalkableMS = GPIXI.elapsedMS
+          }
+
+          if (
+            this.grid[endTile.y][endTile.x] !== 0 &&
+            this.grid[endTile.y][endTile.x] !== 1 &&
+            (GPIXI.elapsedMS < entity.move.setMousePointOnWalkableMS + 100 ||
+              INPUT.lastActiveDevice === "gamepad")
+          ) {
+            if (SYSTEM_DATA.states.collision) {
+              return
+            }
+          }
+
+          const possiblePath = this.findPath(startTile, endTile, entity)
+          if (possiblePath) entity.move.path = possiblePath
 
           entity.move.destination = _.cloneDeep(entity.position)
           if (entity.move.path.length <= 1 && entity.move.destination) {
@@ -49,25 +77,29 @@ export default class {
 
   getAllNeighbors(node) {
     const neighbors: any = []
+    const collision = SYSTEM_DATA.states.collision
 
     // Add neighbor left
     if (
       this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1
+      this.grid[node.y][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
     if (
       this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1
+      this.grid[node.y][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
     if (
       this.grid[node.y - 1][node.x] === 0 ||
-      this.grid[node.y - 1][node.x] === 1
+      this.grid[node.y - 1][node.x] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
     }
@@ -75,7 +107,8 @@ export default class {
     // Add neighbor below
     if (
       this.grid[node.y + 1][node.x] === 0 ||
-      this.grid[node.y + 1][node.x] === 1
+      this.grid[node.y + 1][node.x] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
     }
@@ -83,7 +116,8 @@ export default class {
     // Top left
     if (
       this.grid[node.y - 1][node.x - 1] === 0 ||
-      this.grid[node.y - 1][node.x - 1] === 1
+      this.grid[node.y - 1][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
     }
@@ -91,7 +125,8 @@ export default class {
     // Top right
     if (
       this.grid[node.y - 1][node.x + 1] === 0 ||
-      this.grid[node.y - 1][node.x + 1] === 1
+      this.grid[node.y - 1][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
     }
@@ -99,7 +134,8 @@ export default class {
     // Bottom left
     if (
       this.grid[node.y + 1][node.x - 1] === 0 ||
-      this.grid[node.y + 1][node.x - 1] === 1
+      this.grid[node.y + 1][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
     }
@@ -107,7 +143,8 @@ export default class {
     // Bottom right
     if (
       this.grid[node.y + 1][node.x + 1] === 0 ||
-      this.grid[node.y + 1][node.x + 1] === 1
+      this.grid[node.y + 1][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
     }
@@ -116,24 +153,29 @@ export default class {
   }
   getCardinalNeighbors(node) {
     const neighbors: any = []
+    const collision = SYSTEM_DATA.states.collision
+
     // Add neighbor left
     if (
       this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1
+      this.grid[node.y][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
     if (
       this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1
+      this.grid[node.y][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
     if (
       this.grid[node.y - 1][node.x] === 0 ||
-      this.grid[node.y - 1][node.x] === 1
+      this.grid[node.y - 1][node.x] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
     }
@@ -141,7 +183,8 @@ export default class {
     // Add neighbor below
     if (
       this.grid[node.y + 1][node.x] === 0 ||
-      this.grid[node.y + 1][node.x] === 1
+      this.grid[node.y + 1][node.x] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
     }
@@ -149,11 +192,13 @@ export default class {
   }
   getDiagonalNeighbors(node) {
     const neighbors: any = []
+    const collision = SYSTEM_DATA.states.collision
 
     // Top left
     if (
       this.grid[node.y - 1][node.x - 1] === 0 ||
-      this.grid[node.y - 1][node.x - 1] === 1
+      this.grid[node.y - 1][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
     }
@@ -161,7 +206,8 @@ export default class {
     // Top right
     if (
       this.grid[node.y - 1][node.x + 1] === 0 ||
-      this.grid[node.y - 1][node.x + 1] === 1
+      this.grid[node.y - 1][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
     }
@@ -169,7 +215,8 @@ export default class {
     // Bottom left
     if (
       this.grid[node.y + 1][node.x - 1] === 0 ||
-      this.grid[node.y + 1][node.x - 1] === 1
+      this.grid[node.y + 1][node.x - 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
     }
@@ -177,7 +224,8 @@ export default class {
     // Bottom right
     if (
       this.grid[node.y + 1][node.x + 1] === 0 ||
-      this.grid[node.y + 1][node.x + 1] === 1
+      this.grid[node.y + 1][node.x + 1] === 1 ||
+      !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
     }
@@ -199,6 +247,13 @@ export default class {
   }
 
   findPath(startPos, endPos, entity) {
+    let walkable = true
+    if (
+      this.grid[endPos.y][endPos.x] !== 0 &&
+      this.grid[endPos.y][endPos.x] !== 1
+    ) {
+      walkable = false
+    }
     this.clean = true
     this.openList = []
     this.closedList = []
@@ -216,13 +271,9 @@ export default class {
       if (maxSteps < 0) {
         if (this.clean) return [endPos]
 
-        if (
-          (this.grid[endPos.y][endPos.x] !== 0 ||
-            this.grid[endPos.y][endPos.x] !== 1) &&
-          GPIXI.elapsedMS > entity.move.lastClosestTileFoundMS + 100
-        ) {
+        if (!walkable) {
           this.setFinalDestinationToWalkable(endPos, entity)
-          entity.move.lastClosestTileFoundMS = GPIXI.elapsedMS
+          entity.move.setMousePointOnWalkableMS = GPIXI.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
         return this.refinePath(path)
@@ -307,7 +358,7 @@ export default class {
     let closestTile
     let minDist = Infinity
 
-    let filteredList = this.closedList.filter((p, i) => i % 10 === 0)
+    let filteredList = this.closedList.filter((p, i) => i % 15 === 0)
 
     for (let tile of filteredList) {
       if (this.grid[tile.y][tile.x] === 0 || this.grid[tile.y][tile.x] === 1) {

@@ -1,5 +1,5 @@
 class Signal {
-  private active: string[] = []
+  active: string[] = []
   logic: { [signal: string]: () => void } = {
     collision() {
       SYSTEM_DATA.states.collision = !SYSTEM_DATA.states.collision
@@ -21,7 +21,7 @@ class Signal {
       SYSTEM_DATA.world.hero.target.attacked = true
       SYSTEM_DATA.world.hero.target.locked = true
 
-      SYSTEMS.move.startAttackMS = GPIXI.elapsedMS
+      SYSTEMS.move.startMoveToAttackMS = GPIXI.elapsedMS
     },
     mouseMoveOrAttack() {
       SYSTEMS.move.mouseMove()

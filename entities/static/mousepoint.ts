@@ -6,11 +6,17 @@ export default {
     let position = entity.position
     if (!position) return
 
+    if (INPUT.lastActiveDevice === "gamepad") {
+      position.x = 0
+      position.y = 0
+      return
+    }
+
     // hold mouse point on cursor while walkable tile isn't found
     // after not walkable tile is proceeded
     if (
       GPIXI.elapsedMS <
-      SYSTEM_DATA.world.hero.move.lastClosestTileFoundMS + 100
+      SYSTEM_DATA.world.hero.move.setMousePointOnWalkableMS + 100
     ) {
       const mousePosition = LIB.mousePoint()
       mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960

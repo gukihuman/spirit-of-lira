@@ -19,6 +19,13 @@ export default class {
       const distance = LIB.distance(entity.position, targetEntity.position)
 
       if (entity.target.attacked) {
+        if (
+          SYSTEM_DATA.world.heroId === id &&
+          GPIXI.elapsedMS < SYSTEMS.move.startMoveToAttackMS + 1000 &&
+          SYSTEMS.move.gamepadMoved
+        ) {
+          return
+        }
         entity.move.finaldestination = _.cloneDeep(targetEntity.position)
       } else {
         return

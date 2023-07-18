@@ -84,8 +84,9 @@ export default class {
       })
     })
 
+    // draw path
     SYSTEM_DATA.world.hero.move.path.forEach((tile) => {
-      if (!tile) return
+      if (!tile || !SYSTEM_DATA.states.collision) return
       let row = tile.x - startX
       let col = tile.y - startY
       if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return

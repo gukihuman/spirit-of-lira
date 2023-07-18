@@ -100,6 +100,7 @@ export default class {
     if (distance / speedPerTick < 0.1) {
       entity.state.startIdleTickCounter++
       if (entity.state.startIdleTickCounter > 10) {
+        entity.state.startWalkTickCounter = 0
         entity.sprite.animation = "idle"
       }
       return
@@ -107,10 +108,14 @@ export default class {
     entity.state.startIdleTickCounter = 0
 
     if (GPIXI.getSprite(id, "walk")) {
-      if (distance / speedPerTick < 0.65) {
-        entity.sprite.animation = "walk"
+      if (distance / speedPerTick < 0.75) {
+        entity.state.startWalkTickCounter++
+        if (entity.state.startWalkTickCounter > 10) {
+          entity.sprite.animation = "walk"
+        }
         return
       } else {
+        entity.state.startIdleTickCounter = 0
         entity.sprite.animation = "run"
         return
       }

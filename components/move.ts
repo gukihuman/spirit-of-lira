@@ -6,7 +6,7 @@ export default {
 
   // 🔧
   randomDestinationMS: 0,
-  lastClosestTileFoundMS: 0,
+  setMousePointOnWalkableMS: 0,
 
   depend: ["position"],
   trigger: ["target", "attributes", "shadow", "state"],

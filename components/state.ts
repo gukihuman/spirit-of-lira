@@ -10,4 +10,5 @@ export default {
 
   // 🔧
   startIdleTickCounter: 0,
+  startWalkTickCounter: 0,
 }

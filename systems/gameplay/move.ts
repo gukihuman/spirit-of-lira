@@ -4,36 +4,17 @@ export default class {
   // and maybe there will be some cases for mobs too
   private forceMove = false
 
-  private startAttackMS = 0
-  private gamepadMoved = false
-
-  // 🔧
-  lastClosestTileFoundMS = 0
+  private startMoveToAttackMS = 0
+  gamepadMoved = false
 
   process() {
-    ENTITIES.forEach((entity, id) => {
-      this.move(entity, id)
+    ENTITIES.forEach((entity) => {
+      this.move(entity)
     })
 
     if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
-  private updateGamepadMoveInfo() {
-    if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
-      if (this.gamepadMoved === false) {
-        this.startAttackMS = GPIXI.elapsedMS
-      }
-
-      if (GPIXI.elapsedMS > this.startAttackMS + 1000) {
-        SYSTEM_DATA.world.hero.move.finaldestination = undefined
-        SYSTEM_DATA.world.hero.target.attacked = false
-      }
-      this.gamepadMoved = true
-    } else {
-      this.gamepadMoved = false
-    }
-  }
-
   // set hero target position to mouse position
   mouseMove() {
     if (!SYSTEM_DATA.world.hero) return
@@ -54,8 +35,33 @@ export default class {
     SYSTEM_DATA.world.hero.move.finaldestination = mousePosition
   }
 
-  // move directly and set hero target position to undefined
+  private updateGamepadMoveInfo() {
+    if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
+      //
+      if (GPIXI.elapsedMS > this.startMoveToAttackMS + 1000) {
+        SYSTEM_DATA.world.hero.target.attacked = false
+      }
+      this.gamepadMoved = true
+      //
+    } else {
+      // first time not moved
+      if (this.gamepadMoved && INPUT.lastActiveDevice === "gamepad") {
+        const hero = SYSTEM_DATA.world.hero
+        hero.move.finaldestination.x = hero.position.x
+        hero.move.finaldestination.y = hero.position.y
+      }
+      this.gamepadMoved = false
+    }
+  }
+
+  private tries = 0
+
   gamepadMove() {
+    this.tries = 0
+    this.internalGamepadMove()
+  }
+
+  private internalGamepadMove(otherRatio = 1) {
     if (!SYSTEM_DATA.world.hero) return
 
     const speedPerTick = LIB.speedPerTick(SYSTEM_DATA.world.hero)
@@ -65,15 +71,40 @@ export default class {
     let ratio = axesVector.distance
     ratio = _.clamp(ratio, 1)
 
-    const velocity = LIB.vectorFromAngle(angle, speedPerTick)
+    const vectorToFinalDestination = LIB.vectorFromAngle(
+      angle,
+      speedPerTick * GPIXI.averageFPS * 2
+    )
 
-    this.forceMove = true // gamepad always force
-    this.checkCollisionAndMove(SYSTEM_DATA.world.hero, velocity, ratio)
+    const hero = SYSTEM_DATA.world.hero
+    const possibleDestinationX =
+      hero.position.x + vectorToFinalDestination.x * ratio * otherRatio
+    const possibleDestinationY =
+      hero.position.y + vectorToFinalDestination.y * ratio * otherRatio
+
+    if (
+      !LIB.isWalkable(possibleDestinationX, possibleDestinationY) &&
+      SYSTEM_DATA.states.collision
+    ) {
+      this.tries++
+      if (this.tries > 100) return
+      if (this.tries > 3) {
+        this.internalGamepadMove(otherRatio - 0.1)
+      }
+      this.internalGamepadMove(otherRatio + 0.1)
+      return
+    }
+
+    hero.move.finaldestination.x = possibleDestinationX
+    hero.move.finaldestination.y = possibleDestinationY
+
+    SYSTEM_DATA.world.hero.state.main = "forcemove"
+    this.forceMove = true
     this.gamepadMoved = true
   }
 
-  move(entity: Entity, id) {
-    if (id === SYSTEM_DATA.world.heroId && this.gamepadMoved) return
+  move(entity: Entity) {
+    // if (id === SYSTEM_DATA.world.heroId && this.gamepadMoved) return
     if (
       !entity.move ||
       !entity.move.destination ||
@@ -131,7 +162,7 @@ export default class {
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
 
-    if (this.forceMove) entity.state.main = "forcemove"
+    if (this.forceMove && this.gamepadMoved) entity.state.main = "forcemove"
     else entity.state.main = "move"
 
     if (!SYSTEM_DATA.states.collision) {
