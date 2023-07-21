@@ -19,6 +19,7 @@ class World {
     elapsedMS: 0,
 
     // switched to precise getter on init
+    /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
     deltaSec: 1 / CONFIG.maxFPS,
 
     /** name is used to find priority in CONFIG.systemProcess, if exists */
@@ -72,7 +73,6 @@ class World {
 
     Object.defineProperty(this.loop, "deltaSec", {
       //
-      /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
       get: () => {
         if (!this.app) return 1 / 60
 
@@ -112,7 +112,7 @@ class World {
       return
     }
 
-    // lazy guard for an ISpritesheetData type of json
+    // lazy guard for an ISpritesheetData type of json from Texture Packer
     if (!json.animations || !json.frames || !json.meta) return
 
     let texture
