@@ -13,12 +13,12 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: ["boot/**/*.{js,ts}", "data/**/*.{js,ts}", "logic/**/*.{js,ts}"],
+    dirs: ["core/**/*.{js,ts}", "data/**/*.{js,ts}", "logic/**/*.{js,ts}"],
   },
   components: {
     dirs: ["@/ui"],
   },
-  plugins: ["@/boot/gimport.ts", "@/boot/start.ts"],
+  plugins: ["@/core/load.ts", "@/core/start.ts"],
   css: ["@/tailwind.css"],
 
   // important for correct work of importer
