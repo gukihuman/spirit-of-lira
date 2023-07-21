@@ -3,7 +3,7 @@ export default class {
   delayMS = 15_000
 
   process() {
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       //
       if (
         id !== SYSTEM_DATA.world.heroId &&
@@ -23,7 +23,7 @@ export default class {
     //
     let x = _.random(-500, 500)
     let y = _.random(-500, 500)
-    let grid = SYSTEMS.collision.collisionArray
+    let grid = WORLD.systems.collision.collisionArray
     let tileX = LIB.coordinateToTile(x)
     let tileY = LIB.coordinateToTile(y)
     if (!grid[tileY]) return

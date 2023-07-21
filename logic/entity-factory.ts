@@ -17,7 +17,7 @@ class EntityFactory {
     // inject / expand components from components folder
     await this.injectComponents(entity, id)
 
-    ENTITIES.set(id, entity)
+    WORLD.entities.set(id, entity)
     return id
   }
 

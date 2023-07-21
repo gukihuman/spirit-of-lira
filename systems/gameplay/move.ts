@@ -8,7 +8,7 @@ export default class {
   gamepadMoved = false
 
   process() {
-    ENTITIES.forEach((entity) => {
+    WORLD.entities.forEach((entity) => {
       this.move(entity)
     })
 
@@ -136,7 +136,7 @@ export default class {
     }
 
     if (entity.attack && entity.target.attacked) {
-      const targetEntity = ENTITIES.get(entity.target.id)
+      const targetEntity = WORLD.entities.get(entity.target.id)
       if (
         targetEntity &&
         finaldistance < targetEntity.size.width / 2 + entity.attack.distance

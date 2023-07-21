@@ -20,7 +20,7 @@ export default {
     const container = new PIXI.Container() as gContainer
     container.name = entity.name
     container.id = id
-    WORLD.entities.set(id, container)
+    WORLD.entityContainers.set(id, container)
 
     WORLD[entity.sprite.initial.parent].addChild(container)
 

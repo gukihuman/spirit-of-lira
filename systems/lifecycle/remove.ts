@@ -1,6 +1,6 @@
 export default class {
   process() {
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       //
       if (
         WORLD.elapsedMS >
@@ -11,8 +11,8 @@ export default class {
         if (!main) return
 
         main.parent.removeChild(main)
+        WORLD.entityContainers.delete(id)
         WORLD.entities.delete(id)
-        ENTITIES.delete(id)
       }
     })
   }

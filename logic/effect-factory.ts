@@ -23,7 +23,7 @@ class EffectFactory {
     const container = WORLD.getMain(id)
     if (!container) return
 
-    const targetEntity = ENTITIES.get(targetEntityId)
+    const targetEntity = WORLD.entities.get(targetEntityId)
     container.x = 0
     container.y = -(targetEntity.size.height / 2)
 

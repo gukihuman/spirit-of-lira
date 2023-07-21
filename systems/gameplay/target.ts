@@ -60,7 +60,7 @@ export default class {
   }
 
   private undefinedTarget() {
-    ENTITIES.forEach((entity) => {
+    WORLD.entities.forEach((entity) => {
       if (entity.target && !entity.target.id) {
         entity.target.locked = false
         entity.target.attacked = false
@@ -70,18 +70,18 @@ export default class {
   }
 
   private updateTargetEntity() {
-    ENTITIES.forEach((entity) => {
+    WORLD.entities.forEach((entity) => {
       if (!entity.target) return
-      entity.target.entity = ENTITIES.get(entity.target.id)
+      entity.target.entity = WORLD.entities.get(entity.target.id)
     })
   }
 
   autoTarget() {
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
 
       if (entity.target.attacked) {
-        const targetEntity = ENTITIES.get(entity.target.id)
+        const targetEntity = WORLD.entities.get(entity.target.id)
         const distance = LIB.distance(entity.position, targetEntity.position)
 
         // follow distance is here
@@ -97,7 +97,7 @@ export default class {
       if (entity.target.locked) return
       let minDistance = Infinity
 
-      ENTITIES.forEach((otherEntity, otherId) => {
+      WORLD.entities.forEach((otherEntity, otherId) => {
         if (id === otherId || !otherEntity.state) return
         if (otherEntity.state.main === "dead") return
         if (
@@ -153,7 +153,7 @@ export default class {
     const correspondDistances: number[] = []
     const angleToGroup = 0.2 // about 12 degrees
 
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.move || id === SYSTEM_DATA.world.heroId) return
       if (entity.state.main === "dead") return
 
@@ -208,7 +208,7 @@ export default class {
     const intersections: number[] = []
     let hoverEntityId = 0
 
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (id === SYSTEM_DATA.world.heroId || !entity.move || !entity.size)
         return
 
@@ -235,8 +235,8 @@ export default class {
       let higherY = 0
 
       intersections.forEach((id) => {
-        if (ENTITIES.get(id).position.y > higherY) {
-          higherY = ENTITIES.get(id).position.y
+        if (WORLD.entities.get(id).position.y > higherY) {
+          higherY = WORLD.entities.get(id).position.y
         }
         hoverEntityId = id
       })
@@ -246,7 +246,7 @@ export default class {
     }
 
     SYSTEM_DATA.world.hoverId = hoverEntityId
-    SYSTEM_DATA.world.hover = ENTITIES.get(hoverEntityId)
+    SYSTEM_DATA.world.hover = WORLD.entities.get(hoverEntityId)
   }
 
   lastContainer: Container | undefined
@@ -255,7 +255,7 @@ export default class {
     if (this.lastContainer) this.lastContainer.filters = []
 
     const id = SYSTEM_DATA.world.hero.target.id
-    const entity = ENTITIES.get(id)
+    const entity = WORLD.entities.get(id)
     if (!id || !entity) return
 
     if (entity.attack.damageFilterStartMS + 100 > WORLD.elapsedMS) return
@@ -284,12 +284,12 @@ export default class {
   }
 
   targetUnlock() {
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
       if (!entity.target.id) entity.target.locked = false
     })
 
-    const targetEntity = ENTITIES.get(SYSTEM_DATA.world.hero.target.id)
+    const targetEntity = WORLD.entities.get(SYSTEM_DATA.world.hero.target.id)
     if (!targetEntity) return
     const distance = LIB.distance(
       SYSTEM_DATA.world.hero.position,

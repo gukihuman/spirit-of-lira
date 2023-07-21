@@ -8,12 +8,12 @@ export default class {
   grid = []
 
   init() {
-    this.grid = SYSTEMS.collision.collisionArray
+    this.grid = WORLD.systems.collision.collisionArray
   }
 
   process() {
     let executes: any = []
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       executes.push(() => {
         if (entity.move) {
           if (!entity.move.finaldestination) return

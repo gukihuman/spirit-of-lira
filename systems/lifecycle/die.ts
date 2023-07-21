@@ -1,6 +1,6 @@
 export default class {
   process() {
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.attributes) return
       if (entity.attributes.health <= 0) {
         if (!entity.state.dead) {

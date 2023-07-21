@@ -40,7 +40,7 @@ export default class {
 
   private async loadCloseChunks() {
     if (!SYSTEM_DATA.world.heroId) return
-    const heroEntity = ENTITIES.get(SYSTEM_DATA.world.heroId)
+    const heroEntity = WORLD.entities.get(SYSTEM_DATA.world.heroId)
     if (!heroEntity) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 

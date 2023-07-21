@@ -6,8 +6,8 @@ export default class {
     this.events.forEach((event) => {
       const id = event.entityId
       const targetEntityId = event.targetEntityId
-      const entity = ENTITIES.get(id)
-      const targetEntity = ENTITIES.get(targetEntityId)
+      const entity = WORLD.entities.get(id)
+      const targetEntity = WORLD.entities.get(targetEntityId)
 
       // hit effect
       const displacement = LIB.vectorFromPoints(

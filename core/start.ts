@@ -31,7 +31,7 @@ export default defineNuxtPlugin(async (app) => {
       LIB.logWarning("hero is not created (starter)")
       return
     }
-    SYSTEM_DATA.world.hero = ENTITIES.get(heroId)
+    SYSTEM_DATA.world.hero = WORLD.entities.get(heroId)
     SYSTEM_DATA.world.heroId = heroId
 
     await ENTITY_FACTORY.create("mousepoint")
@@ -45,10 +45,10 @@ export default defineNuxtPlugin(async (app) => {
     await setupSystems()
 
     WORLD.tickerAdd(() => {
-      ENTITIES.forEach((entity, id) => {
+      WORLD.entities.forEach((entity, id) => {
         if (entity.process) entity.process(entity, id)
       })
-    }, "ENTITIES")
+    }, "WORLD.entities")
 
     // 📜 move to static entity handler to remove and spawn depending
     // on current loaded chunks
@@ -77,7 +77,7 @@ async function setupSystems() {
     const system = new systemClass()
     if (system.init) inits.push(system.init())
     processes[name] = () => system.process()
-    SYSTEMS[name] = system
+    WORLD.systems[name] = system
   })
   await Promise.all(inits)
 

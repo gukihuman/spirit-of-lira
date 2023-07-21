@@ -18,8 +18,8 @@ export default class {
   }
 
   private async spawnEntities() {
-    if (!SYSTEMS.map) return
-    SYSTEMS.map.closeChunks?.forEach((chunk) => {
+    if (!WORLD.systems.map) return
+    WORLD.systems.map.closeChunks?.forEach((chunk) => {
       if (this.spawnedChunks.includes(chunk)) return
 
       _.forEach(this.locationPopulation, async (spawner, location) => {
@@ -27,7 +27,7 @@ export default class {
           this.spawnPromises.push(
             this.createEntitiesOnChunk(
               chunk,
-              SYSTEMS.map[location],
+              WORLD.systems.map[location],
               entity,
               ratio
             )
@@ -42,15 +42,15 @@ export default class {
   private despawnEntities() {
     // despawn far chunks
     this.spawnedChunks.forEach((chunk) => {
-      if (SYSTEMS.map.closeChunks.includes(chunk)) return
+      if (WORLD.systems.map.closeChunks.includes(chunk)) return
 
-      ENTITIES.forEach((entity, id) => {
+      WORLD.entities.forEach((entity, id) => {
         const position = entity.position
         if (!position) return
 
         const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
-          ENTITIES.delete(id)
+          WORLD.entities.delete(id)
           let container = WORLD.getMain(id)
           if (container) WORLD.sortable.removeChild(container)
         }
@@ -90,7 +90,7 @@ export default class {
     let tileX = LIB.coordinateToTile(x)
     let tileY = LIB.coordinateToTile(y)
 
-    if (SYSTEMS.collision.collisionArray[tileY][tileX] === 0) {
+    if (WORLD.systems.collision.collisionArray[tileY][tileX] === 0) {
       return { x, y }
     } else if (counter < 10) {
       counter++

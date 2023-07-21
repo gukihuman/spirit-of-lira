@@ -2,6 +2,9 @@ class PixiGuki {
   //
   // app has to be initiated when window object exist
   app?: Application
+
+  loop = {}
+
   elapsedMS: number = 0
 
   lastTicksFPS: number[] = []
@@ -12,7 +15,10 @@ class PixiGuki {
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
-  entities: Map<number, gContainer> = new Map()
+  entities: Map<number, any> = new Map()
+  systems: { [name: string]: any } = {}
+
+  entityContainers: Map<number, gContainer> = new Map()
 
   /** Name is used to find priority in config, if exist. */
   tickerAdd(fn, name?: string) {
@@ -59,7 +65,7 @@ class PixiGuki {
   }
 
   getMain(id: number): gContainer | undefined {
-    return this.entities.get(id)
+    return this.entityContainers.get(id)
   }
 
   getBack(id: number): gContainer | undefined {

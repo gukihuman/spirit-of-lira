@@ -243,8 +243,8 @@ class Lib {
     let tileX = LIB.coordinateToTile(x)
     let tileY = LIB.coordinateToTile(y)
     return (
-      SYSTEMS.collision.collisionArray[tileY][tileX] !== 2 &&
-      SYSTEMS.collision.collisionArray[tileY][tileX] !== 3
+      WORLD.systems.collision.collisionArray[tileY][tileX] !== 2 &&
+      WORLD.systems.collision.collisionArray[tileY][tileX] !== 3
     )
   }
 }

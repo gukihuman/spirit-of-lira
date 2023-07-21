@@ -5,7 +5,7 @@ export default class {
     // it servers as a camera target
     if (!SYSTEM_DATA.world.hero) return
 
-    ENTITIES.forEach((entity, id) => {
+    WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
 
       this.updateAnimation(entity, id)
@@ -33,7 +33,7 @@ export default class {
       // update animation frame on first animation tick
       const firstFrames = entity.sprite.firstFrames
       if (entity.move && firstFrames) {
-        const lastEntity = SYSTEMS.lasttick.entities.get(id)
+        const lastEntity = WORLD.systems.lasttick.entities.get(id)
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, state: string) => {
           if (
@@ -70,7 +70,7 @@ export default class {
       this.checkAttack(entity, id)
     }
 
-    const lastEntity = SYSTEMS.lasttick.entities.get(id)
+    const lastEntity = WORLD.systems.lasttick.entities.get(id)
     if (!lastEntity) return
 
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
@@ -83,7 +83,7 @@ export default class {
   }
 
   private checkMove(entity, id) {
-    const lastEntity = SYSTEMS.lasttick.entities.get(id)
+    const lastEntity = WORLD.systems.lasttick.entities.get(id)
     if (!lastEntity) return
 
     const displacement = LIB.vectorFromPoints(
