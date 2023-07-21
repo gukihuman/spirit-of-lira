@@ -20,7 +20,7 @@ class EffectFactory {
     sprite.rotation = angle
     sprite.visible = true
 
-    const container = WORLD.getMain(id)
+    const container = WORLD.getContainer(id)
     if (!container) return
 
     const targetEntity = WORLD.entities.get(targetEntityId)
@@ -29,7 +29,7 @@ class EffectFactory {
 
     // change default container to the effect container of the entity
     WORLD.sortable.removeChild(container)
-    const parent = WORLD.getEffect(targetEntityId)
+    const parent = WORLD.getLayer(targetEntityId, "effect")
     if (!parent) return
     parent.addChild(container)
   }

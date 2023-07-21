@@ -3,7 +3,7 @@ export default class {
   init() {
     //
     // Preload filters to prevent lag
-    const container = WORLD.getMain(SYSTEM_DATA.world.heroId)
+    const container = WORLD.getContainer(SYSTEM_DATA.world.heroId)
 
     if (container) {
       container.filters = [
@@ -260,7 +260,7 @@ export default class {
 
     if (entity.attack.damageFilterStartMS + 100 > WORLD.loop.elapsedMS) return
 
-    const container = WORLD.getMiddle(id)
+    const container = WORLD.getLayer(id, "middle")
 
     if (container) {
       container.filters = [

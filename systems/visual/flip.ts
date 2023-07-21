@@ -6,13 +6,13 @@ export default class {
 
       if (!WORLD.systems.lasttick.entities.get(id)) return
       const previousX = WORLD.systems.lasttick.entities.get(id).position.x
-      const container = WORLD.getMain(id)
+      const container = WORLD.getContainer(id)
       if (!container) return
 
       // exclude effect
-      const back = WORLD.getBack(id)
-      const middle = WORLD.getMiddle(id)
-      const front = WORLD.getFront(id)
+      const back = WORLD.getLayer(id, "back")
+      const middle = WORLD.getLayer(id, "middle")
+      const front = WORLD.getLayer(id, "front")
       if (!back || !middle || !front) return
       const containers = [back, middle, front]
 

@@ -51,7 +51,7 @@ export default class {
         const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
           WORLD.entities.delete(id)
-          let container = WORLD.getMain(id)
+          let container = WORLD.getContainer(id)
           if (container) WORLD.sortable.removeChild(container)
         }
       })

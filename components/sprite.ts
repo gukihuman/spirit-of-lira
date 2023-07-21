@@ -17,9 +17,8 @@ export default {
   async inject(entity, id) {
     if (!WORLD.app) return
 
-    const container = new PIXI.Container() as gContainer
+    const container = new PIXI.Container()
     container.name = entity.name
-    container.id = id
     WORLD.entityContainers.set(id, container)
 
     WORLD[entity.sprite.initial.parent].addChild(container)
@@ -32,10 +31,10 @@ export default {
 
     if (entity.sprite.initial.randomFlip) {
       //
-      // exclude effect
-      const back = WORLD.getBack(id)
-      const middle = WORLD.getMiddle(id)
-      const front = WORLD.getFront(id)
+      // doesn"t flip effect container
+      const back = WORLD.getLayer(id, "back")
+      const middle = WORLD.getLayer(id, "middle")
+      const front = WORLD.getLayer(id, "front")
       if (!back || !middle || !front) return
       const containers = [back, middle, front]
 
@@ -47,16 +46,15 @@ export default {
     }
 
     const spritesheet = await WORLD.getSpritesheet(entity.name)
-    if (!spritesheet) return
-
-    const middle = WORLD.getMiddle(id) as gContainer
+    const middle = WORLD.getLayer(id, "middle")
+    if (!middle || !spritesheet) return
 
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
       const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
       sprite.name = name
       sprite.anchor.x = 0.5
       sprite.anchor.y = 0.5
-      sprite.animationSpeed = 1 / (CONFIG.fps / 10)
+      sprite.animationSpeed = 1 / (CONFIG.maxFPS / 10)
       sprite.visible = false
       sprite.cullable = true
       middle.addChild(sprite)

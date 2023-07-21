@@ -25,11 +25,8 @@ declare global {
   type Sprite = tempSprite
   type ISpritesheetData = tempISpriteSheetData
 
-  interface gContainer extends Container {
-    id: number
-  }
-
   // used to turn off lagging cache
+  // 📜 change name from g
   interface gSpritesheet extends Spritesheet {
     _frameKeys: any
     _frames: any
@@ -43,4 +40,5 @@ declare global {
   }
 
   type Entity = { [key: string]: any }
+  type EntityLayer = "back" | "middle" | "front" | "effect"
 }

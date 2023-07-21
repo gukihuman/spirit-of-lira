@@ -63,7 +63,7 @@ class Lib {
     return result
   }
   speedPerTick(entity: Entity) {
-    return entity.move.speed * 10 * WORLD.deltaSec
+    return entity.move.speed * 10 * WORLD.loop.deltaSec
   }
   deadZoneExceed(deadZone: number) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]

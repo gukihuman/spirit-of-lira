@@ -21,7 +21,7 @@ export default {
 
     shadow.filters = [blurFilter]
 
-    const container = WORLD.getMain(id)
+    const container = WORLD.getContainer(id)
     if (!container) return
     const back = container.children[0] as Container
     back.addChild(shadow)

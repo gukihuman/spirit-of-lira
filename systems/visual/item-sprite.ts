@@ -32,7 +32,7 @@ export default class {
 
   async init() {
     if (!WORLD.app || !SYSTEM_DATA.world.heroId) return
-    if (!WORLD.getMain(SYSTEM_DATA.world.heroId)) return
+    if (!WORLD.getContainer(SYSTEM_DATA.world.heroId)) return
 
     const promises: Promise<void>[] = []
 
@@ -42,15 +42,15 @@ export default class {
           const spritesheet = await WORLD.getSpritesheet(name)
           if (!spritesheet) return
 
-          const backItemContainer = new PIXI.Container() as gContainer
+          const backItemContainer = new PIXI.Container()
           backItemContainer.name = name
-          const back = WORLD.getMain(SYSTEM_DATA.world.heroId)
+          const back = WORLD.getContainer(SYSTEM_DATA.world.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
-          const frontItemContainer = new PIXI.Container() as gContainer
+          const frontItemContainer = new PIXI.Container()
           frontItemContainer.name = name
-          const front = WORLD.getMain(SYSTEM_DATA.world.heroId)
+          const front = WORLD.getContainer(SYSTEM_DATA.world.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 
@@ -81,9 +81,9 @@ export default class {
     const currentAnimation = SYSTEM_DATA.world.hero.sprite.animation
 
     // 📜 move to class scope
-    const back = WORLD.getMain(SYSTEM_DATA.world.heroId)
+    const back = WORLD.getContainer(SYSTEM_DATA.world.heroId)
       ?.children[0] as Container
-    const front = WORLD.getMain(SYSTEM_DATA.world.heroId)
+    const front = WORLD.getContainer(SYSTEM_DATA.world.heroId)
       ?.children[2] as Container
     if (!back || !front) return
 

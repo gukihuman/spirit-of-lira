@@ -14,8 +14,8 @@ export default class {
         entity.target.attacked = undefined
         entity.target.locked = undefined
 
-        const middle = WORLD.getMiddle(id)
-        const back = WORLD.getBack(id)
+        const middle = WORLD.getLayer(id, "middle")
+        const back = WORLD.getLayer(id, "back")
         if (!middle || !back) return
         if (entity.sprite.fade) {
           const timeToRemove =

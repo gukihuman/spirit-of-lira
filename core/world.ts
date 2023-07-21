@@ -12,11 +12,14 @@ class World {
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
-  entityContainers: Map<number, gContainer> = new Map()
+  entityContainers: Map<number, Container> = new Map()
 
   loop = {
     averageFPS: 0,
     elapsedMS: 0,
+
+    // switched to precise getter on init
+    deltaSec: 1 / CONFIG.maxFPS,
 
     /** name is used to find priority in CONFIG.systemProcess, if exists */
     add: (fn: () => void, name?: string) => {
@@ -37,6 +40,8 @@ class World {
     // app.view must be type of "any" for proper work with ts (pixiJS issue)
     viewport.appendChild(this.app.view as any)
 
+    this.loopSetup()
+
     // PIXI dev tools work with this constant
     globalThis.__PIXI_APP__ = this.app
 
@@ -49,7 +54,10 @@ class World {
     }
 
     this.loop.add(() => this.sortable.children.sort((a, b) => a.y - b.y))
+  }
 
+  private loopSetup() {
+    //
     const lastTicks: number[] = []
 
     this.loop.add(() => {
@@ -61,45 +69,38 @@ class World {
       this.loop.averageFPS = _.mean(lastTicks)
       this.loop.elapsedMS += this.app.ticker.deltaMS
     })
+
+    Object.defineProperty(this.loop, "deltaSec", {
+      //
+      /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
+      get: () => {
+        if (!this.app) return 1 / 60
+
+        return this.app.ticker.deltaMS / 16.66 / 60
+      },
+    })
+
+    if (!this.app) return
+
+    this.app.ticker.maxFPS = CONFIG.maxFPS
   }
 
-  /** Multiplier ratio of one tick iteration for values that suppose to represent one second. Knows current framerate and handles all inconsistancy in frames.
-   * @returns 1/60 for 60 fps, 1/144 for 144 fps
-   */
-  get deltaSec() {
-    if (!this.app) return 1 / 60
-    return this.app.ticker.deltaMS / 16.66 / 60
-  }
-
-  getMain(id: number): gContainer | undefined {
+  getContainer(id: number): Container | undefined {
+    //
     return this.entityContainers.get(id)
   }
 
-  getBack(id: number): gContainer | undefined {
-    const entityContainer = this.getMain(id)
-    return entityContainer?.getChildByName("back") as gContainer
-  }
-
-  getMiddle(id: number): gContainer | undefined {
-    const entityContainer = this.getMain(id)
-    return entityContainer?.getChildByName("middle") as gContainer
-  }
-
-  getFront(id: number): gContainer | undefined {
-    const entityContainer = this.getMain(id)
-    return entityContainer?.getChildByName("front") as gContainer
-  }
-
-  getEffect(id: number): gContainer | undefined {
-    const entityContainer = this.getMain(id)
-    return entityContainer?.getChildByName("effect") as gContainer
+  getLayer(id: number, layer: EntityLayer): Container | undefined {
+    //
+    const entityContainer = this.getContainer(id)
+    return entityContainer?.getChildByName(layer) as Container
   }
 
   getSprite(
     id: number,
     animation: string = "idle"
   ): AnimatedSprite | undefined {
-    const middleContainer = this.getMiddle(id) as gContainer
+    const middleContainer = this.getLayer(id, "middle") as Container
     return middleContainer.getChildByName(animation) as AnimatedSprite
   }
 

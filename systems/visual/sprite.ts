@@ -10,7 +10,7 @@ export default class {
 
       this.updateAnimation(entity, id)
 
-      const container = WORLD.getMain(id)
+      const container = WORLD.getContainer(id)
       if (!container) return
 
       // update container coordinates
@@ -19,12 +19,12 @@ export default class {
 
       // update visibility of animations
       if (entity.move) {
-        WORLD.getMiddle(id)?.children.forEach((child) => {
+        WORLD.getLayer(id, "middle")?.children.forEach((child) => {
           if (child.name === entity.sprite.animation) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = WORLD.getMiddle(id)
+        const animationContainer = WORLD.getLayer(id, "middle")
         if (animationContainer && animationContainer.children[0]) {
           animationContainer.children[0].visible = true
         }

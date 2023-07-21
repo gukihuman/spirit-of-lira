@@ -23,7 +23,7 @@ export default {
       mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
       position.x = mousePosition.x
       position.y = mousePosition.y
-      const container = WORLD.getMain(id)
+      const container = WORLD.getContainer(id)
       if (!container) return
 
       // 📜 add to preload filters
@@ -76,11 +76,11 @@ export default {
       return
     }
 
-    const main = WORLD.getMain(id)
-    const middle = WORLD.getMiddle(id)
+    const main = WORLD.getContainer(id)
+    const middle = WORLD.getLayer(id, "middle")
 
     if (main && middle) {
-      middle.angle += 80 * WORLD.deltaSec
+      middle.angle += 80 * WORLD.loop.deltaSec
       const scale = 1
       main.scale = { x: 1, y: 0.5 }
       main.scale.x *= scale

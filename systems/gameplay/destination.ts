@@ -10,7 +10,7 @@ export default class {
         entity.move &&
         entity.state.main === "idle" &&
         WORLD.loop.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
-        Math.random() < 0.08 * WORLD.deltaSec
+        Math.random() < 0.08 * WORLD.loop.deltaSec
       ) {
         this.counter = 0
         this.setRandomDestination(entity, id)
