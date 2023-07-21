@@ -17,11 +17,11 @@ class GukiConfig {
   /** setup 0 priority for unmentioned values
    */
   init() {
-    IMPORTS.components.forEach((value, name) => {
+    MODELS.components.forEach((value, name) => {
       if (this.priority.componentInject[name]) return
       this.priority.componentInject[name] = 0
     })
-    IMPORTS.systems.forEach((value, name) => {
+    MODELS.systems.forEach((value, name) => {
       if (this.priority.systemInit[name]) return
       this.priority.systemInit[name] = 0
     })

@@ -70,9 +70,9 @@ export default class {
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
 
-    let webp = IMPORTS.webps.get(index)
+    let webp = ASSETS.webps.get(index)
 
-    if (!webp) webp = IMPORTS.webps.get("map-not-found")
+    if (!webp) webp = ASSETS.webps.get("map-not-found")
     if (!webp) return
 
     const texture = await PIXI.Assets.load(webp)

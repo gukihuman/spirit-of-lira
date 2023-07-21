@@ -91,10 +91,10 @@ class PixiGuki {
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
-    let json = IMPORTS.jsons.get(name)
+    let json = ASSETS.jsons.get(name)
 
     if (!json) {
-      LIB.logWarning(`no json for ${name} in IMPORTS.jsons (WORLD)`)
+      LIB.logWarning(`no json for ${name} in ASSETS.jsons (WORLD)`)
       return
     }
 
@@ -105,7 +105,7 @@ class PixiGuki {
     let spritesheet
 
     if (!PIXI.Cache.has(name)) {
-      if (!IMPORTS.jsons.get(name)) return
+      if (!ASSETS.jsons.get(name)) return
       texture = PIXI.Texture.from(json.meta.image)
       spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
       PIXI.Cache.set(name, [texture, spritesheet])

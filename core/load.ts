@@ -24,7 +24,7 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(match[1])}`
 
     const entity = await entities[path]()
-    IMPORTS.entities.set(name, entity.default)
+    MODELS.entities.set(name, entity.default)
     entity.default.name = name
   }
 
@@ -37,7 +37,7 @@ export default defineNuxtPlugin(async () => {
     const name = `${_.toLower(match[1])}`
 
     const component = await components[path]()
-    IMPORTS.components.set(name, component.default)
+    MODELS.components.set(name, component.default)
   }
 
   const systems = import.meta.glob("@/systems/**")
@@ -51,7 +51,7 @@ export default defineNuxtPlugin(async () => {
 
     // here name is parsed from name of the class by using build-in name prop
     // const name = `${_.toLower(system.default.name)}`
-    IMPORTS.systems.set(name, system.default)
+    MODELS.systems.set(name, system.default)
   }
 
   const webps = import.meta.glob("@/assets/**/*.webp")
@@ -67,7 +67,7 @@ export default defineNuxtPlugin(async () => {
     }
     if (typeof name[0] !== typeof "") name[0] = name[0][0]
     name = name[0].toLowerCase()
-    IMPORTS.webps.set(name, webp.default)
+    ASSETS.webps.set(name, webp.default)
   }
 
   const jsons = import.meta.glob("@/assets/**/*.json")
@@ -82,9 +82,8 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
 
     // inject parsed path of webp file so vite packer understand it
-    if (IMPORTS.webps.has(name))
-      json.default.meta.image = IMPORTS.webps.get(name)
+    if (ASSETS.webps.has(name)) json.default.meta.image = ASSETS.webps.get(name)
 
-    IMPORTS.jsons.set(name, json.default)
+    ASSETS.jsons.set(name, json.default)
   }
 })

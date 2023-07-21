@@ -71,7 +71,7 @@ async function setupSystems() {
   const sortedPriority = LIB.sortedKeys(CONFIG.priority.systemInit)
 
   sortedPriority.forEach((name) => {
-    const systemClass = IMPORTS.systems.get(name)
+    const systemClass = MODELS.systems.get(name)
     if (!systemClass) return
 
     const system = new systemClass()
