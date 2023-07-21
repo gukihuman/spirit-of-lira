@@ -10,7 +10,7 @@ export default class {
 
       this.updateAnimation(entity, id)
 
-      const container = GPIXI.getMain(id)
+      const container = WORLD.getMain(id)
       if (!container) return
 
       // update container coordinates
@@ -19,12 +19,12 @@ export default class {
 
       // update visibility of animations
       if (entity.move) {
-        GPIXI.getMiddle(id)?.children.forEach((child) => {
+        WORLD.getMiddle(id)?.children.forEach((child) => {
           if (child.name === entity.sprite.animation) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = GPIXI.getMiddle(id)
+        const animationContainer = WORLD.getMiddle(id)
         if (animationContainer && animationContainer.children[0]) {
           animationContainer.children[0].visible = true
         }
@@ -40,7 +40,7 @@ export default class {
             entity.sprite.animation === state &&
             lastEntity.sprite.animation !== state
           ) {
-            GPIXI.getSprite(id, state)?.gotoAndPlay(frame)
+            WORLD.getSprite(id, state)?.gotoAndPlay(frame)
           }
         })
       }
@@ -50,7 +50,7 @@ export default class {
   private updateAnimation(entity, id) {
     if (!entity.move) return
 
-    if (GPIXI.elapsedMS - entity.sprite.animationMS < 200) return
+    if (WORLD.elapsedMS - entity.sprite.animationMS < 200) return
 
     if (
       entity.sprite.leaveAnimationConditions &&
@@ -74,7 +74,7 @@ export default class {
     if (!lastEntity) return
 
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
-      entity.sprite.animationMS = GPIXI.elapsedMS
+      entity.sprite.animationMS = WORLD.elapsedMS
     }
   }
 
@@ -94,8 +94,8 @@ export default class {
     const speedPerTick = LIB.speedPerTick(entity)
 
     // dont update animations on fps-dropping iterations
-    const fps = GPIXI.app?.ticker.FPS
-    if (fps && fps / GPIXI.averageFPS < 0.3) return
+    const fps = WORLD.app?.ticker.FPS
+    if (fps && fps / WORLD.averageFPS < 0.3) return
 
     if (distance / speedPerTick < 0.1) {
       entity.state.startIdleTickCounter++
@@ -107,7 +107,7 @@ export default class {
     }
     entity.state.startIdleTickCounter = 0
 
-    if (GPIXI.getSprite(id, "walk")) {
+    if (WORLD.getSprite(id, "walk")) {
       if (distance / speedPerTick < 0.75) {
         entity.state.startWalkTickCounter++
         if (entity.state.startWalkTickCounter > 10) {

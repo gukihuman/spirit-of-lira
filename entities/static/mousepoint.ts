@@ -15,7 +15,7 @@ export default {
     // hold mouse point on cursor while walkable tile isn't found
     // after not walkable tile is proceeded
     if (
-      GPIXI.elapsedMS <
+      WORLD.elapsedMS <
       SYSTEM_DATA.world.hero.move.setMousePointOnWalkableMS + 100
     ) {
       const mousePosition = LIB.mousePoint()
@@ -23,7 +23,7 @@ export default {
       mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
       position.x = mousePosition.x
       position.y = mousePosition.y
-      const container = GPIXI.getMain(id)
+      const container = WORLD.getMain(id)
       if (!container) return
 
       // 📜 add to preload filters
@@ -76,16 +76,16 @@ export default {
       return
     }
 
-    const main = GPIXI.getMain(id)
-    const middle = GPIXI.getMiddle(id)
+    const main = WORLD.getMain(id)
+    const middle = WORLD.getMiddle(id)
 
     if (main && middle) {
-      middle.angle += 80 * GPIXI.deltaSec
+      middle.angle += 80 * WORLD.deltaSec
       const scale = 1
       main.scale = { x: 1, y: 0.5 }
       main.scale.x *= scale
       main.scale.y *= scale
-      const animationSprite = GPIXI.getSprite(id, "idle")
+      const animationSprite = WORLD.getSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       setTimeout(() => {

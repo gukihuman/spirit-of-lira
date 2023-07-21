@@ -79,7 +79,7 @@ export default class {
 
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
-    GPIXI.map.addChild(sprite)
+    WORLD.map.addChild(sprite)
     this.chunkSprites.set(index, sprite)
   }
 }

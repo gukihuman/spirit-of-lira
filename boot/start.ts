@@ -13,14 +13,14 @@ export default defineNuxtPlugin(async (app) => {
     // first to init
     CONFIG.init()
 
-    // everything depend on GPIXI ticker, init it right after CONFIG
-    GPIXI.init(
+    // everything depend on WORLD ticker, init it right after CONFIG
+    WORLD.init(
       SYSTEM_DATA.refs.viewport,
       CONFIG.viewport.width,
       CONFIG.viewport.height
     )
 
-    // tools that are likely depend on GPIXI ticker
+    // tools that are likely depend on WORLD ticker
     SIGNAL.init()
     USER_DATA.init()
     LOCAL.init() // local storage
@@ -44,7 +44,7 @@ export default defineNuxtPlugin(async (app) => {
 
     await setupSystems()
 
-    GPIXI.tickerAdd(() => {
+    WORLD.tickerAdd(() => {
       ENTITIES.forEach((entity, id) => {
         if (entity.process) entity.process(entity, id)
       })
@@ -83,6 +83,6 @@ async function setupSystems() {
 
   // processes added later, may depend on init
   _.forEach(processes, (process, name) => {
-    GPIXI.tickerAdd(() => process(), name)
+    WORLD.tickerAdd(() => process(), name)
   })
 }

@@ -21,7 +21,7 @@ export default {
 
     shadow.filters = [blurFilter]
 
-    const container = GPIXI.getMain(id)
+    const container = WORLD.getMain(id)
     if (!container) return
     const back = container.children[0] as Container
     back.addChild(shadow)

@@ -3,7 +3,7 @@ export default class {
   init() {
     //
     // Preload filters to prevent lag
-    const container = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+    const container = WORLD.getMain(SYSTEM_DATA.world.heroId)
 
     if (container) {
       container.filters = [
@@ -258,9 +258,9 @@ export default class {
     const entity = ENTITIES.get(id)
     if (!id || !entity) return
 
-    if (entity.attack.damageFilterStartMS + 100 > GPIXI.elapsedMS) return
+    if (entity.attack.damageFilterStartMS + 100 > WORLD.elapsedMS) return
 
-    const container = GPIXI.getMiddle(id)
+    const container = WORLD.getMiddle(id)
 
     if (container) {
       container.filters = [

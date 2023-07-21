@@ -21,7 +21,7 @@ class Signal {
       SYSTEM_DATA.world.hero.target.attacked = true
       SYSTEM_DATA.world.hero.target.locked = true
 
-      SYSTEMS.move.startMoveToAttackMS = GPIXI.elapsedMS
+      SYSTEMS.move.startMoveToAttackMS = WORLD.elapsedMS
     },
     mouseMoveOrAttack() {
       SYSTEMS.move.mouseMove()
@@ -96,7 +96,7 @@ class Signal {
   }
 
   init() {
-    GPIXI.tickerAdd(() => {
+    WORLD.tickerAdd(() => {
       this.runLogic()
       this.active = []
     }, "SIGNAL")

@@ -6,7 +6,7 @@ export default {
   sprite: {
     leaveAnimationConditions: {
       move: (entity, id) => {
-        return GPIXI.getSprite(id, "move")?.currentFrame === 0
+        return WORLD.getSprite(id, "move")?.currentFrame === 0
       },
     },
     firstFrames: { attack: 18 },

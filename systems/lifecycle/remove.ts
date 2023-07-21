@@ -3,15 +3,15 @@ export default class {
     ENTITIES.forEach((entity, id) => {
       //
       if (
-        GPIXI.elapsedMS >
+        WORLD.elapsedMS >
         entity.time.deathTimerStartMS + entity.time.durationMS
       ) {
         //
-        const main = GPIXI.getMain(id)
+        const main = WORLD.getMain(id)
         if (!main) return
 
         main.parent.removeChild(main)
-        GPIXI.entities.delete(id)
+        WORLD.entities.delete(id)
         ENTITIES.delete(id)
       }
     })

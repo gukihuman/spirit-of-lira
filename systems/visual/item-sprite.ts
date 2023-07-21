@@ -6,7 +6,7 @@ export default class {
   itemSprites: AnimatedSprite[] = []
 
   process() {
-    const heroSprite = GPIXI.getSprite(
+    const heroSprite = WORLD.getSprite(
       SYSTEM_DATA.world.heroId,
       SYSTEM_DATA.world.hero.sprite.animation
     )
@@ -31,26 +31,26 @@ export default class {
   }
 
   async init() {
-    if (!GPIXI.app || !SYSTEM_DATA.world.heroId) return
-    if (!GPIXI.getMain(SYSTEM_DATA.world.heroId)) return
+    if (!WORLD.app || !SYSTEM_DATA.world.heroId) return
+    if (!WORLD.getMain(SYSTEM_DATA.world.heroId)) return
 
     const promises: Promise<void>[] = []
 
     _.forEach(this.items, (frontStates, name) => {
       promises.push(
         new Promise(async (resolve) => {
-          const spritesheet = await GPIXI.getSpritesheet(name)
+          const spritesheet = await WORLD.getSpritesheet(name)
           if (!spritesheet) return
 
           const backItemContainer = new PIXI.Container() as gContainer
           backItemContainer.name = name
-          const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+          const back = WORLD.getMain(SYSTEM_DATA.world.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container() as gContainer
           frontItemContainer.name = name
-          const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+          const front = WORLD.getMain(SYSTEM_DATA.world.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 
@@ -81,9 +81,9 @@ export default class {
     const currentAnimation = SYSTEM_DATA.world.hero.sprite.animation
 
     // 📜 move to class scope
-    const back = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+    const back = WORLD.getMain(SYSTEM_DATA.world.heroId)
       ?.children[0] as Container
-    const front = GPIXI.getMain(SYSTEM_DATA.world.heroId)
+    const front = WORLD.getMain(SYSTEM_DATA.world.heroId)
       ?.children[2] as Container
     if (!back || !front) return
 

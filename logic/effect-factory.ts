@@ -14,13 +14,13 @@ class EffectFactory {
     })
     if (!id) return
 
-    const sprite = GPIXI.getSprite(id) as AnimatedSprite
+    const sprite = WORLD.getSprite(id) as AnimatedSprite
     if (!sprite) return
 
     sprite.rotation = angle
     sprite.visible = true
 
-    const container = GPIXI.getMain(id)
+    const container = WORLD.getMain(id)
     if (!container) return
 
     const targetEntity = ENTITIES.get(targetEntityId)
@@ -28,8 +28,8 @@ class EffectFactory {
     container.y = -(targetEntity.size.height / 2)
 
     // change default container to the effect container of the entity
-    GPIXI.sortable.removeChild(container)
-    const parent = GPIXI.getEffect(targetEntityId)
+    WORLD.sortable.removeChild(container)
+    const parent = WORLD.getEffect(targetEntityId)
     if (!parent) return
     parent.addChild(container)
   }

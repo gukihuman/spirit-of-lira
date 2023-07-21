@@ -62,7 +62,7 @@ class UserData {
   }
 
   init() {
-    GPIXI.tickerAdd(() => {
+    WORLD.tickerAdd(() => {
       this.emitSignals()
     }, "USER_DATA")
   }

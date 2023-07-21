@@ -5,7 +5,7 @@ export default class {
       if (entity.attributes.health <= 0) {
         if (!entity.state.dead) {
           entity.time.durationMS = 1300
-          entity.time.deathTimerStartMS = GPIXI.elapsedMS
+          entity.time.deathTimerStartMS = WORLD.elapsedMS
         }
 
         entity.state.dead = true
@@ -14,14 +14,14 @@ export default class {
         entity.target.attacked = undefined
         entity.target.locked = undefined
 
-        const middle = GPIXI.getMiddle(id)
-        const back = GPIXI.getBack(id)
+        const middle = WORLD.getMiddle(id)
+        const back = WORLD.getBack(id)
         if (!middle || !back) return
         if (entity.sprite.fade) {
           const timeToRemove =
             entity.time.deathTimerStartMS +
             entity.time.durationMS -
-            GPIXI.elapsedMS
+            WORLD.elapsedMS
           middle.alpha = timeToRemove / 500
 
           if (timeToRemove < 500) {

@@ -51,8 +51,8 @@ export default class {
         const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
           ENTITIES.delete(id)
-          let container = GPIXI.getMain(id)
-          if (container) GPIXI.sortable.removeChild(container)
+          let container = WORLD.getMain(id)
+          if (container) WORLD.sortable.removeChild(container)
         }
       })
 

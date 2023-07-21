@@ -94,7 +94,7 @@ class PixiGuki {
     let json = IMPORTS.jsons.get(name)
 
     if (!json) {
-      LIB.logWarning(`no json for ${name} in IMPORTS.jsons (GPIXI)`)
+      LIB.logWarning(`no json for ${name} in IMPORTS.jsons (WORLD)`)
       return
     }
 
@@ -123,4 +123,4 @@ class PixiGuki {
   }
 }
 
-export const GPIXI = new PixiGuki()
+export const WORLD = new PixiGuki()

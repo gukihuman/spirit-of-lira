@@ -10,11 +10,11 @@ export default class {
 
   process() {
     if (SYSTEM_DATA.states.collisionEdit) {
-      GPIXI.collision.visible = true
+      WORLD.collision.visible = true
       this.updateCollisionArray()
       this.updateCollisionGrid()
     } else {
-      GPIXI.collision.visible = false
+      WORLD.collision.visible = false
     }
   }
   drawCollisionGrid() {
@@ -29,7 +29,7 @@ export default class {
         square.drawRect(x * 20, y * 20, 20, 20)
         square.endFill()
         row.push(square)
-        GPIXI.collision.addChild(square)
+        WORLD.collision.addChild(square)
       }
       this.collisionGrid.push(row)
     }
@@ -39,12 +39,12 @@ export default class {
         square.blendMode = PIXI.BLEND_MODES.MULTIPLY
         square.lineStyle(4, 0xe6e6e6)
         square.drawRect(x * 20, y * 20, 20, 20)
-        GPIXI.collision.addChild(square)
+        WORLD.collision.addChild(square)
       }
     }
-    GPIXI.collision.pivot.x = GPIXI.collision.width / 2
-    GPIXI.collision.pivot.y = GPIXI.collision.height / 2
-    GPIXI.collision.visible = false
+    WORLD.collision.pivot.x = WORLD.collision.width / 2
+    WORLD.collision.pivot.y = WORLD.collision.height / 2
+    WORLD.collision.visible = false
   }
 
   updateCollisionGrid() {
@@ -53,11 +53,11 @@ export default class {
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
-    GPIXI.collision.x =
+    WORLD.collision.x =
       CONFIG.viewport.width / 2 -
       LIB.coordinateOffsetInTile(heroPosition.x) +
       10
-    GPIXI.collision.y =
+    WORLD.collision.y =
       CONFIG.viewport.height / 2 -
       LIB.coordinateOffsetInTile(heroPosition.y) +
       10

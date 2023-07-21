@@ -21,7 +21,7 @@ export default class {
       if (entity.target.attacked) {
         if (
           SYSTEM_DATA.world.heroId === id &&
-          GPIXI.elapsedMS < SYSTEMS.move.startMoveToAttackMS + 1000 &&
+          WORLD.elapsedMS < SYSTEMS.move.startMoveToAttackMS + 1000 &&
           SYSTEMS.move.gamepadMoved
         ) {
           return
@@ -35,7 +35,7 @@ export default class {
 
       if (
         entity.state.main === "attack" &&
-        entity.attack.startMS + entity.attack.speed * 1000 <= GPIXI.elapsedMS
+        entity.attack.startMS + entity.attack.speed * 1000 <= WORLD.elapsedMS
       ) {
         if (targetEntity.state.main !== "dead") {
           entity.state.main = "idle"
@@ -49,7 +49,7 @@ export default class {
       if (
         entity.state.main === "attack" &&
         entity.attack.startMS - delay + entity.attack.speed * 1000 <=
-          GPIXI.elapsedMS &&
+          WORLD.elapsedMS &&
         !entity.damageDone
       ) {
         // damage done here
@@ -69,13 +69,13 @@ export default class {
 
         if (
           entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
-            GPIXI.elapsedMS &&
+            WORLD.elapsedMS &&
           id === SYSTEM_DATA.world.heroId
         ) {
           //
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
-          let sprite = GPIXI.getSprite(id, entity.sprite.animation)
+          let sprite = WORLD.getSprite(id, entity.sprite.animation)
           let startFrame = entity.sprite.firstFrames[entity.sprite.animation]
           sprite?.gotoAndPlay(startFrame)
           this.initialAttack = true
@@ -84,11 +84,11 @@ export default class {
 
       if (entity.state.main !== "attack" && entity.state.main !== "forcemove") {
         if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
-          entity.attack.startMS = GPIXI.elapsedMS
+          entity.attack.startMS = WORLD.elapsedMS
           entity.state.main = "attack"
 
           if (this.initialAttack) {
-            entity.attack.initialStartMS = GPIXI.elapsedMS
+            entity.attack.initialStartMS = WORLD.elapsedMS
           }
         }
       }
@@ -103,12 +103,12 @@ export default class {
     if (id === SYSTEM_DATA.world.heroId) {
       //
       // 📜 make attack animation dynamic depend on weapon or skill
-      const sprite = GPIXI.getSprite(id, "sword-attack")
+      const sprite = WORLD.getSprite(id, "sword-attack")
       if (!sprite) return
 
       sprite.animationSpeed = 1.2 / entity.attack.speed / 6
     } else {
-      const sprite = GPIXI.getSprite(id, "attack")
+      const sprite = WORLD.getSprite(id, "attack")
       if (!sprite) return
 
       sprite.animationSpeed = 1.2 / entity.attack.speed / 6

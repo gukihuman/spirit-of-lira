@@ -5,6 +5,6 @@ export default {
   // 🔧
   autoInject: true,
   inject(entity, id) {
-    entity.time.deathTimerStartMS = GPIXI.elapsedMS
+    entity.time.deathTimerStartMS = WORLD.elapsedMS
   },
 }

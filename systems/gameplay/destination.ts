@@ -9,8 +9,8 @@ export default class {
         id !== SYSTEM_DATA.world.heroId &&
         entity.move &&
         entity.state.main === "idle" &&
-        GPIXI.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
-        Math.random() < 0.08 * GPIXI.deltaSec
+        WORLD.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
+        Math.random() < 0.08 * WORLD.deltaSec
       ) {
         this.counter = 0
         this.setRandomDestination(entity, id)
@@ -34,6 +34,6 @@ export default class {
     }
     entity.move.finaldestination.x = entity.position.x + x
     entity.move.finaldestination.y = entity.position.y + y
-    entity.move.randomDestinationMS = GPIXI.elapsedMS
+    entity.move.randomDestinationMS = WORLD.elapsedMS
   }
 }

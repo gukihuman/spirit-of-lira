@@ -15,14 +15,14 @@ export default {
 
   // 🔧
   async inject(entity, id) {
-    if (!GPIXI.app) return
+    if (!WORLD.app) return
 
     const container = new PIXI.Container() as gContainer
     container.name = entity.name
     container.id = id
-    GPIXI.entities.set(id, container)
+    WORLD.entities.set(id, container)
 
-    GPIXI[entity.sprite.initial.parent].addChild(container)
+    WORLD[entity.sprite.initial.parent].addChild(container)
 
     for (let name of ["back", "middle", "front", "effect"]) {
       const childContainer = new PIXI.Container()
@@ -33,9 +33,9 @@ export default {
     if (entity.sprite.initial.randomFlip) {
       //
       // exclude effect
-      const back = GPIXI.getBack(id)
-      const middle = GPIXI.getMiddle(id)
-      const front = GPIXI.getFront(id)
+      const back = WORLD.getBack(id)
+      const middle = WORLD.getMiddle(id)
+      const front = WORLD.getFront(id)
       if (!back || !middle || !front) return
       const containers = [back, middle, front]
 
@@ -46,10 +46,10 @@ export default {
       }
     }
 
-    const spritesheet = await GPIXI.getSpritesheet(entity.name)
+    const spritesheet = await WORLD.getSpritesheet(entity.name)
     if (!spritesheet) return
 
-    const middle = GPIXI.getMiddle(id) as gContainer
+    const middle = WORLD.getMiddle(id) as gContainer
 
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
       const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
