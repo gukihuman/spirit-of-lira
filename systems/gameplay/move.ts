@@ -38,7 +38,7 @@ export default class {
   private updateGamepadMoveInfo() {
     if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       //
-      if (WORLD.elapsedMS > this.startMoveToAttackMS + 1000) {
+      if (WORLD.loop.elapsedMS > this.startMoveToAttackMS + 1000) {
         SYSTEM_DATA.world.hero.target.attacked = false
       }
       this.gamepadMoved = true
@@ -73,7 +73,7 @@ export default class {
 
     const vectorToFinalDestination = LIB.vectorFromAngle(
       angle,
-      speedPerTick * WORLD.averageFPS * 2
+      speedPerTick * WORLD.loop.averageFPS * 2
     )
 
     const hero = SYSTEM_DATA.world.hero

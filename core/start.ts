@@ -44,7 +44,7 @@ export default defineNuxtPlugin(async (app) => {
 
     await setupSystems()
 
-    WORLD.tickerAdd(() => {
+    WORLD.loop.add(() => {
       WORLD.entities.forEach((entity, id) => {
         if (entity.process) entity.process(entity, id)
       })
@@ -83,6 +83,6 @@ async function setupSystems() {
 
   // processes added later, may depend on init
   _.forEach(processes, (process, name) => {
-    WORLD.tickerAdd(() => process(), name)
+    WORLD.loop.add(() => process(), name)
   })
 }

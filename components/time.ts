@@ -5,6 +5,6 @@ export default {
   // 🔧
   autoInject: true,
   inject(entity, id) {
-    entity.time.deathTimerStartMS = WORLD.elapsedMS
+    entity.time.deathTimerStartMS = WORLD.loop.elapsedMS
   },
 }

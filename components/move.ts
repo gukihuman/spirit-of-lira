@@ -12,6 +12,6 @@ export default {
   trigger: ["target", "attributes", "shadow", "state"],
   inject(entity, id) {
     entity.move.finaldestination = _.cloneDeep(entity.position)
-    entity.move.randomDestinationMS = WORLD.elapsedMS - 10_000
+    entity.move.randomDestinationMS = WORLD.loop.elapsedMS - 10_000
   },
 }

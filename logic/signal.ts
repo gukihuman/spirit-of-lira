@@ -21,7 +21,7 @@ class Signal {
       SYSTEM_DATA.world.hero.target.attacked = true
       SYSTEM_DATA.world.hero.target.locked = true
 
-      WORLD.systems.move.startMoveToAttackMS = WORLD.elapsedMS
+      WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
     },
     mouseMoveOrAttack() {
       WORLD.systems.move.mouseMove()
@@ -96,7 +96,7 @@ class Signal {
   }
 
   init() {
-    WORLD.tickerAdd(() => {
+    WORLD.loop.add(() => {
       this.runLogic()
       this.active = []
     }, "SIGNAL")

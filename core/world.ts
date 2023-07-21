@@ -1,58 +1,65 @@
-class PixiGuki {
+class World {
   //
-  // app has to be initiated when window object exist
+  // has to be initiated when window DOM object exist
   app?: Application
 
-  loop = {}
+  entities: Map<number, any> = new Map()
+  systems: { [name: string]: any } = {}
 
-  elapsedMS: number = 0
-
-  lastTicksFPS: number[] = []
-  averageFPS: number = 0
-
+  // layers
   map = new PIXI.Container()
   ground = new PIXI.Container()
   collision = new PIXI.Container()
   sortable = new PIXI.Container()
 
-  entities: Map<number, any> = new Map()
-  systems: { [name: string]: any } = {}
-
   entityContainers: Map<number, gContainer> = new Map()
 
-  /** Name is used to find priority in config, if exist. */
-  tickerAdd(fn, name?: string) {
-    if (!this.app) return
-    if (name && CONFIG.priority.systemProcess[name])
-      this.app.ticker.add(fn, undefined, CONFIG.priority.systemProcess[name])
-    else this.app.ticker.add(fn)
+  loop = {
+    averageFPS: 0,
+    elapsedMS: 0,
+
+    /** name is used to find priority in CONFIG.systemProcess, if exists */
+    add: (fn: () => void, name?: string) => {
+      if (!this.app) return
+
+      if (name && CONFIG && CONFIG.priority.systemProcess[name]) {
+        this.app.ticker.add(fn, undefined, CONFIG.priority.systemProcess[name])
+        return
+      }
+      this.app.ticker.add(fn)
+    },
   }
 
-  /** Initializes the PIXI application, adds map, ground, collision, and sortable to the stage. Sets up sorting for the sortable container. Run the timer of elapsedMS. Sets up average FPS calculation.
-  @param viewport - HTML element to append the app.view to.
-  @param width - default is 1920.
-  @param height - default is 1080.
-  */
   init(viewport: HTMLElement, width: number = 1920, height: number = 1080) {
     //
     this.app = new PIXI.Application({ width, height })
-    viewport.appendChild(this.app.view as any) // any to fix pixi.js issue
+
+    // app.view must be type of "any" for proper work with ts (pixiJS issue)
+    viewport.appendChild(this.app.view as any)
+
+    // PIXI dev tools work with this constant
     globalThis.__PIXI_APP__ = this.app
 
     for (let name of ["map", "ground", "collision", "sortable"]) {
-      this[name].name = name
       this.app.stage.addChild(this[name])
+
+      // name attribute is used by PIXI dev tools
+      // to show containers with proper names
+      this[name].name = name
     }
 
-    this.tickerAdd(() => this.sortable.children.sort((a, b) => a.y - b.y))
+    this.loop.add(() => this.sortable.children.sort((a, b) => a.y - b.y))
 
-    this.tickerAdd(() => {
+    const lastTicks: number[] = []
+
+    this.loop.add(() => {
       if (!this.app) return
-      this.elapsedMS += this.app.ticker.deltaMS
 
-      if (this.lastTicksFPS.length > 100) this.lastTicksFPS.shift()
-      this.lastTicksFPS.push(this.app.ticker.FPS)
-      this.averageFPS = _.mean(this.lastTicksFPS)
+      lastTicks.push(this.app.ticker.FPS)
+      if (lastTicks.length > 100) lastTicks.shift()
+
+      this.loop.averageFPS = _.mean(lastTicks)
+      this.loop.elapsedMS += this.app.ticker.deltaMS
     })
   }
 
@@ -129,4 +136,4 @@ class PixiGuki {
   }
 }
 
-export const WORLD = new PixiGuki()
+export const WORLD = new World()

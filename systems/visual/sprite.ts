@@ -50,7 +50,7 @@ export default class {
   private updateAnimation(entity, id) {
     if (!entity.move) return
 
-    if (WORLD.elapsedMS - entity.sprite.animationMS < 200) return
+    if (WORLD.loop.elapsedMS - entity.sprite.animationMS < 200) return
 
     if (
       entity.sprite.leaveAnimationConditions &&
@@ -74,7 +74,7 @@ export default class {
     if (!lastEntity) return
 
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
-      entity.sprite.animationMS = WORLD.elapsedMS
+      entity.sprite.animationMS = WORLD.loop.elapsedMS
     }
   }
 
@@ -95,7 +95,7 @@ export default class {
 
     // dont update animations on fps-dropping iterations
     const fps = WORLD.app?.ticker.FPS
-    if (fps && fps / WORLD.averageFPS < 0.3) return
+    if (fps && fps / WORLD.loop.averageFPS < 0.3) return
 
     if (distance / speedPerTick < 0.1) {
       entity.state.startIdleTickCounter++

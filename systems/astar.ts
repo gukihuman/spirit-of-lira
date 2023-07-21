@@ -17,7 +17,7 @@ export default class {
       executes.push(() => {
         if (entity.move) {
           if (!entity.move.finaldestination) return
-          if (_.round(WORLD.elapsedMS / 100) % _.random(1, 5) !== 0) {
+          if (_.round(WORLD.loop.elapsedMS / 100) % _.random(1, 5) !== 0) {
             return
           }
           const startTile = {
@@ -42,13 +42,14 @@ export default class {
             this.grid[mouseTileY][mouseTileX] !== 0 &&
             this.grid[mouseTileY][mouseTileX] !== 1
           ) {
-            entity.move.setMousePointOnWalkableMS = WORLD.elapsedMS
+            entity.move.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
           }
 
           if (
             this.grid[endTile.y][endTile.x] !== 0 &&
             this.grid[endTile.y][endTile.x] !== 1 &&
-            (WORLD.elapsedMS < entity.move.setMousePointOnWalkableMS + 100 ||
+            (WORLD.loop.elapsedMS <
+              entity.move.setMousePointOnWalkableMS + 100 ||
               INPUT.lastActiveDevice === "gamepad")
           ) {
             if (SYSTEM_DATA.states.collision) {
@@ -273,7 +274,7 @@ export default class {
 
         if (!walkable) {
           this.setFinalDestinationToWalkable(endPos, entity)
-          entity.move.setMousePointOnWalkableMS = WORLD.elapsedMS
+          entity.move.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
         return this.refinePath(path)

@@ -5,7 +5,7 @@ export default class {
       if (entity.attributes.health <= 0) {
         if (!entity.state.dead) {
           entity.time.durationMS = 1300
-          entity.time.deathTimerStartMS = WORLD.elapsedMS
+          entity.time.deathTimerStartMS = WORLD.loop.elapsedMS
         }
 
         entity.state.dead = true
@@ -21,7 +21,7 @@ export default class {
           const timeToRemove =
             entity.time.deathTimerStartMS +
             entity.time.durationMS -
-            WORLD.elapsedMS
+            WORLD.loop.elapsedMS
           middle.alpha = timeToRemove / 500
 
           if (timeToRemove < 500) {

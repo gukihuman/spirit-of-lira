@@ -62,7 +62,7 @@ class UserData {
   }
 
   init() {
-    WORLD.tickerAdd(() => {
+    WORLD.loop.add(() => {
       this.emitSignals()
     }, "USER_DATA")
   }

@@ -3,7 +3,7 @@ export default class {
     WORLD.entities.forEach((entity, id) => {
       //
       if (
-        WORLD.elapsedMS >
+        WORLD.loop.elapsedMS >
         entity.time.deathTimerStartMS + entity.time.durationMS
       ) {
         //

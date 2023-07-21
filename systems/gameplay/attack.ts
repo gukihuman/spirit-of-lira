@@ -21,7 +21,8 @@ export default class {
       if (entity.target.attacked) {
         if (
           SYSTEM_DATA.world.heroId === id &&
-          WORLD.elapsedMS < WORLD.systems.move.startMoveToAttackMS + 1000 &&
+          WORLD.loop.elapsedMS <
+            WORLD.systems.move.startMoveToAttackMS + 1000 &&
           WORLD.systems.move.gamepadMoved
         ) {
           return
@@ -35,7 +36,8 @@ export default class {
 
       if (
         entity.state.main === "attack" &&
-        entity.attack.startMS + entity.attack.speed * 1000 <= WORLD.elapsedMS
+        entity.attack.startMS + entity.attack.speed * 1000 <=
+          WORLD.loop.elapsedMS
       ) {
         if (targetEntity.state.main !== "dead") {
           entity.state.main = "idle"
@@ -49,7 +51,7 @@ export default class {
       if (
         entity.state.main === "attack" &&
         entity.attack.startMS - delay + entity.attack.speed * 1000 <=
-          WORLD.elapsedMS &&
+          WORLD.loop.elapsedMS &&
         !entity.damageDone
       ) {
         // damage done here
@@ -69,7 +71,7 @@ export default class {
 
         if (
           entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
-            WORLD.elapsedMS &&
+            WORLD.loop.elapsedMS &&
           id === SYSTEM_DATA.world.heroId
         ) {
           //
@@ -84,11 +86,11 @@ export default class {
 
       if (entity.state.main !== "attack" && entity.state.main !== "forcemove") {
         if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
-          entity.attack.startMS = WORLD.elapsedMS
+          entity.attack.startMS = WORLD.loop.elapsedMS
           entity.state.main = "attack"
 
           if (this.initialAttack) {
-            entity.attack.initialStartMS = WORLD.elapsedMS
+            entity.attack.initialStartMS = WORLD.loop.elapsedMS
           }
         }
       }

@@ -258,7 +258,7 @@ export default class {
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
 
-    if (entity.attack.damageFilterStartMS + 100 > WORLD.elapsedMS) return
+    if (entity.attack.damageFilterStartMS + 100 > WORLD.loop.elapsedMS) return
 
     const container = WORLD.getMiddle(id)
 

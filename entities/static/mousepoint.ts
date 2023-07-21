@@ -15,7 +15,7 @@ export default {
     // hold mouse point on cursor while walkable tile isn't found
     // after not walkable tile is proceeded
     if (
-      WORLD.elapsedMS <
+      WORLD.loop.elapsedMS <
       SYSTEM_DATA.world.hero.move.setMousePointOnWalkableMS + 100
     ) {
       const mousePosition = LIB.mousePoint()
