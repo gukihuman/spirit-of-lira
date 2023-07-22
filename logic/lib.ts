@@ -88,19 +88,25 @@ class Lib {
    * @param args - watcher array that consist of a state property name and a handler function
    * @returns a pinia IMPORTS with watchers and random name
    */
-  store(
-    object: { [index: string]: any },
-    ...args: [string, (newValue?, oldValue?) => any][]
-  ) {
-    return defineStore(this.generateRandomString(10), () => {
-      const state = _.mapValues(object, (key) => ref(key))
+  store(object: { [index: string]: any }) {
+    const storeObject: { [index: string]: any } = {}
 
-      args.forEach((watcher) => {
-        watch(state[watcher[0]], watcher[1])
-      })
-
-      return state
+    storeObject.state = defineStore(this.generateRandomString(10), {
+      state: () => object,
     })
+
+    _.forEach(object, (value, key) => {
+      if (key === "state") return
+
+      Object.defineProperty(storeObject, key, {
+        get: () => storeObject.state()[key],
+        set: (value) => {
+          storeObject.state()[key] = value
+        },
+      })
+    })
+
+    return storeObject
   }
 
   /**

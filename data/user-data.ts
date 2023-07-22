@@ -1,7 +1,6 @@
 class UserData {
   //
-  private _settings = LIB.store({
-    //
+  settings = {
     inputSignals: {
       keyboard: {
         mouseMoveOrAttack: "o",
@@ -27,9 +26,10 @@ class UserData {
         deadZone: 0.15,
       },
     },
-  })
-  get settings() {
-    return this._settings()
+  }
+
+  constructor() {
+    LIB.store(this.settings)
   }
 
   emitSignals() {

@@ -1,16 +1,13 @@
 class systemData {
   //
-  private _refs = LIB.store({
+  refs: any = {
     fullscreen: undefined,
     viewport: undefined,
     input: undefined,
     output: undefined,
-  })
-  get refs() {
-    return this._refs()
   }
 
-  private _states = LIB.store({
+  states: any = {
     gameWindowScale: 1,
     fullscreen: false,
     loadingScreen: true,
@@ -26,21 +23,20 @@ class systemData {
     targetLocked: false,
     inventory: false,
     input: false,
-  })
-  get states() {
-    return this._states()
   }
-
-  private _world = LIB.store({
+  world: any = {
     hero: {},
     heroId: 0,
     lastHero: {}, // previous tick
     hover: {},
     hoverId: 0,
     targetHealth: 0,
-  })
-  get world() {
-    return this._world()
+  }
+
+  constructor() {
+    this.refs = LIB.store(this.refs)
+    this.states = LIB.store(this.states)
+    this.world = LIB.store(this.world)
   }
 }
 export const SYSTEM_DATA = new systemData()
