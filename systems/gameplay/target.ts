@@ -138,7 +138,7 @@ export default class {
   heroTargetByGamepad() {
     if (STATES.hero.target.locked) return
     if (INPUT.lastActiveDevice !== "gamepad") return
-    if (!LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
+    if (!LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
       return
     }
 

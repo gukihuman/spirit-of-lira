@@ -39,7 +39,7 @@ export default class {
   }
 
   private updateGamepadMoveInfo() {
-    if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
+    if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
       //
       if (WORLD.loop.elapsedMS > this.startMoveToAttackMS + 1000) {
         STATES.hero.target.attacked = false

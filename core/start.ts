@@ -18,7 +18,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // tools that are likely depend on WORLD ticker
     EVENTS.init()
-    USER_DATA.init()
+    SETTINGS.init()
     LOCAL.init() // local storage
 
     // hero creation
