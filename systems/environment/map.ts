@@ -33,8 +33,8 @@ export default class {
     // update coordinates
     this.chunkSprites.forEach((sprite, chunk) => {
       if (!heroPosition.x || !heroPosition.y) return
-      sprite.x = LIB.chunkToCoordinateX(chunk) + 960 - heroPosition.x
-      sprite.y = LIB.chunkToCoordinateY(chunk) + 540 - heroPosition.y
+      sprite.x = COORDINATES.chunkToCoordinateX(chunk) + 960 - heroPosition.x
+      sprite.y = COORDINATES.chunkToCoordinateY(chunk) + 540 - heroPosition.y
     })
   }
 
@@ -44,8 +44,8 @@ export default class {
     if (!heroEntity) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 
-    const startY = LIB.coordinateToChunk(heroPosition.y) - 2
-    const startX = LIB.coordinateToChunk(heroPosition.x) - 2
+    const startY = COORDINATES.coordinateToChunk(heroPosition.y) - 2
+    const startX = COORDINATES.coordinateToChunk(heroPosition.x) - 2
 
     this.closeChunks = []
     const sprites: Promise<void>[] = []

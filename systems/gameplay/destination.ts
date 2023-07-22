@@ -24,8 +24,8 @@ export default class {
     let x = _.random(-500, 500)
     let y = _.random(-500, 500)
     let grid = WORLD.systems.collision.collisionArray
-    let tileX = LIB.coordinateToTile(x)
-    let tileY = LIB.coordinateToTile(y)
+    let tileX = COORDINATES.coordinateToTile(x)
+    let tileY = COORDINATES.coordinateToTile(y)
     if (!grid[tileY]) return
     if (grid[tileY][tileX] === 2 || grid[tileY][tileX] === 3) {
       this.counter++

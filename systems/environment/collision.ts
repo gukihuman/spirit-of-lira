@@ -55,15 +55,15 @@ export default class {
     // 50 is the half of the tile size of 100
     WORLD.collision.x =
       CONFIG.viewport.width / 2 -
-      LIB.coordinateOffsetInTile(heroPosition.x) +
+      COORDINATES.coordinateOffsetInTile(heroPosition.x) +
       10
     WORLD.collision.y =
       CONFIG.viewport.height / 2 -
-      LIB.coordinateOffsetInTile(heroPosition.y) +
+      COORDINATES.coordinateOffsetInTile(heroPosition.y) +
       10
 
-    const startY = LIB.coordinateToTile(heroPosition.y) - 27
-    const startX = LIB.coordinateToTile(heroPosition.x) - 48
+    const startY = COORDINATES.coordinateToTile(heroPosition.y) - 27
+    const startX = COORDINATES.coordinateToTile(heroPosition.x) - 48
     this.collisionGrid.forEach((row, y) => {
       row.forEach((square, x) => {
         let tileX = startX + x
@@ -98,8 +98,8 @@ export default class {
     if (!SYSTEM_DATA.world.heroId) return
     const heroPosition = SYSTEM_DATA.world.hero.position
 
-    let y = LIB.coordinateToTile(heroPosition.y)
-    let x = LIB.coordinateToTile(heroPosition.x)
+    let y = COORDINATES.coordinateToTile(heroPosition.y)
+    let x = COORDINATES.coordinateToTile(heroPosition.x)
     if (y < 0 || x < 0) return
 
     if (INPUT.gamepad.pressed.includes("Y")) this.collisionArray[y][x] = 0

@@ -89,7 +89,7 @@ export default class {
       hero.position.y + vectorToFinalDestination.y * ratio * otherRatio
 
     if (
-      !LIB.isWalkable(possibleDestinationX, possibleDestinationY) &&
+      !COORDINATES.isWalkable(possibleDestinationX, possibleDestinationY) &&
       SYSTEM_DATA.states.collision
     ) {
       this.tries++
@@ -177,15 +177,15 @@ export default class {
       return
     }
 
-    if (LIB.isWalkable(nextX, nextY)) {
+    if (COORDINATES.isWalkable(nextX, nextY)) {
       position.x = nextX
       position.y = nextY
     } else {
-      if (LIB.isWalkable(nextX, position.y)) {
+      if (COORDINATES.isWalkable(nextX, position.y)) {
         position.x = nextX
         return
       }
-      if (LIB.isWalkable(position.x, nextY)) {
+      if (COORDINATES.isWalkable(position.x, nextY)) {
         position.y = nextY
         return
       }

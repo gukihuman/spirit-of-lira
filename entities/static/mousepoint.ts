@@ -18,9 +18,7 @@ export default {
       WORLD.loop.elapsedMS <
       SYSTEM_DATA.world.hero.move.setMousePointOnWalkableMS + 100
     ) {
-      const mousePosition = COORDINATES.mouseOfScreen()
-      mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
-      mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
+      const mousePosition = COORDINATES.mousePosition()
       position.x = mousePosition.x
       position.y = mousePosition.y
       const container = WORLD.getContainer(id)
@@ -55,7 +53,7 @@ export default {
     position.x = finaldestination.x
     position.y = finaldestination.y
 
-    if (!LIB.isWalkable(position.x, position.y)) {
+    if (!COORDINATES.isWalkable(position.x, position.y)) {
       position.x = 0
       position.y = 0
     }

@@ -21,19 +21,17 @@ export default class {
             return
           }
           const startTile = {
-            x: LIB.coordinateToTile(entity.position.x),
-            y: LIB.coordinateToTile(entity.position.y),
+            x: COORDINATES.coordinateToTile(entity.position.x),
+            y: COORDINATES.coordinateToTile(entity.position.y),
           }
           let endTile = {
-            x: LIB.coordinateToTile(entity.move.finaldestination.x),
-            y: LIB.coordinateToTile(entity.move.finaldestination.y),
+            x: COORDINATES.coordinateToTile(entity.move.finaldestination.x),
+            y: COORDINATES.coordinateToTile(entity.move.finaldestination.y),
           }
 
-          const mousePosition = COORDINATES.mouseOfScreen()
-          mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
-          mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
-          const mouseTileX = LIB.coordinateToTile(mousePosition.x)
-          const mouseTileY = LIB.coordinateToTile(mousePosition.y)
+          const mousePosition = COORDINATES.mousePosition()
+          const mouseTileX = COORDINATES.coordinateToTile(mousePosition.x)
+          const mouseTileY = COORDINATES.coordinateToTile(mousePosition.y)
 
           // mouseMove signal on non-walkable tile
           if (
@@ -66,9 +64,9 @@ export default class {
             entity.move.destination.y = entity.move.finaldestination.y
           } else if (entity.move.path.length > 0 && entity.move.destination) {
             entity.move.destination.x =
-              LIB.tileToCoordinate(entity.move.path[0].x) + 10
+              COORDINATES.tileToCoordinate(entity.move.path[0].x) + 10
             entity.move.destination.y =
-              LIB.tileToCoordinate(entity.move.path[0].y) + 10
+              COORDINATES.tileToCoordinate(entity.move.path[0].y) + 10
           }
         }
       })
@@ -371,8 +369,12 @@ export default class {
       }
     }
     if (closestTile) {
-      entity.move.finaldestination.x = LIB.tileToCoordinate(closestTile.x)
-      entity.move.finaldestination.y = LIB.tileToCoordinate(closestTile.y)
+      entity.move.finaldestination.x = COORDINATES.tileToCoordinate(
+        closestTile.x
+      )
+      entity.move.finaldestination.y = COORDINATES.tileToCoordinate(
+        closestTile.y
+      )
     }
   }
 

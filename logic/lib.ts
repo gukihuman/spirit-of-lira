@@ -93,7 +93,7 @@ class Lib {
   }
 
   /**
-   * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache is handled separatly with binding to entity name.
+   * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache in Spirit of Lira is handled separatly with binding to entity name.
    * @param spritesheet - instance of PIXI.Spritesheet
    */
   addParseWithoutCaching(spritesheet: gSpritesheet) {
@@ -174,40 +174,6 @@ class Lib {
         }
       })
     }
-  }
-
-  // coordinates
-  coordinateToChunk(coordinate: number) {
-    return _.floor(coordinate / 1000)
-  }
-  chunkFromCoordinates(x: number, y: number) {
-    const chunkX = this.coordinateToChunk(x)
-    const chunkY = this.coordinateToChunk(y)
-    return `${chunkY}${chunkX}`
-  }
-  chunkToCoordinateX(chunk: string) {
-    return (_.toNumber(chunk) % 100) * 1000
-  }
-  chunkToCoordinateY(chunk: string) {
-    return _.floor(_.toNumber(chunk) / 100) * 1000
-  }
-  coordinateToTile(coordinate: number) {
-    return _.floor(coordinate / 20)
-  }
-  coordinateOffsetInTile(coordinate: number) {
-    return coordinate % 20
-  }
-  tileToCoordinate(tile: number) {
-    return tile * 20
-  }
-
-  isWalkable(x: number, y: number) {
-    let tileX = LIB.coordinateToTile(x)
-    let tileY = LIB.coordinateToTile(y)
-    return (
-      WORLD.systems.collision.collisionArray[tileY][tileX] !== 2 &&
-      WORLD.systems.collision.collisionArray[tileY][tileX] !== 3
-    )
   }
 }
 

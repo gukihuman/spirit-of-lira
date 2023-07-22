@@ -48,7 +48,10 @@ export default class {
         const position = entity.position
         if (!position) return
 
-        const entityChunk = LIB.chunkFromCoordinates(position.x, position.y)
+        const entityChunk = COORDINATES.chunkFromCoordinates(
+          position.x,
+          position.y
+        )
         if (entityChunk === chunk) {
           WORLD.entities.delete(id)
           let container = WORLD.getContainer(id)
@@ -82,13 +85,13 @@ export default class {
   }
 
   private randomCoordinatesFromChunk(chunk: string, counter: number) {
-    let x = LIB.chunkToCoordinateX(chunk)
-    let y = LIB.chunkToCoordinateY(chunk)
+    let x = COORDINATES.chunkToCoordinateX(chunk)
+    let y = COORDINATES.chunkToCoordinateY(chunk)
     x += _.random(0, 999)
     y += _.random(0, 999)
 
-    let tileX = LIB.coordinateToTile(x)
-    let tileY = LIB.coordinateToTile(y)
+    let tileX = COORDINATES.coordinateToTile(x)
+    let tileY = COORDINATES.coordinateToTile(y)
 
     if (WORLD.systems.collision.collisionArray[tileY][tileX] === 0) {
       return { x, y }
