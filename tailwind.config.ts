@@ -19,7 +19,7 @@ module.exports = {
     },
   },
   content: [
-    "ui/**/*.{vue,js,ts}",
+    "interface/**/*.{vue,js,ts}",
     ".guki/vue/**/*.{vue,js,ts}",
     "layouts/**/*.vue",
     "pages/**/*.vue",

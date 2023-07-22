@@ -11,5 +11,31 @@
     "server": true,
     "_old": true
   },
-  "workspace.isHidden": true
+  "workspace.isHidden": true,
+  "folder-path-color.folders": [
+    {
+      "path": "systems",
+      "color": "blue"
+    },
+    {
+      "path": "components",
+      "color": "magenta"
+    },
+    {
+      "path": "data",
+      "color": "red"
+    },
+    {
+      "path": "logic",
+      "color": "cyan"
+    },
+    {
+      "path": "interface",
+      "color": "green"
+    },
+    {
+      "path": "entities",
+      "color": "yellow"
+    }
+  ]
 }
