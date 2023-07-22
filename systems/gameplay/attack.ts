@@ -16,7 +16,10 @@ export default class {
         return
       }
 
-      const distance = LIB.distance(entity.position, targetEntity.position)
+      const distance = COORDINATES.distance(
+        entity.position,
+        targetEntity.position
+      )
 
       if (entity.target.attacked) {
         if (

@@ -20,7 +20,10 @@ export default class {
     if (!SYSTEM_DATA.world.hero) return
     if (SYSTEM_DATA.states.inventory) return
 
-    const distance = LIB.distance(LIB.centerPoint(), LIB.mousePoint())
+    const distance = COORDINATES.distance(
+      COORDINATES.conterOfScreen(),
+      COORDINATES.mouseOfScreen()
+    )
 
     if (distance < 10) {
       SYSTEM_DATA.world.hero.move.finaldestination = undefined
@@ -29,7 +32,7 @@ export default class {
 
     SYSTEM_DATA.world.hero.state.main = "forcemove"
 
-    const mousePosition = LIB.mousePoint()
+    const mousePosition = COORDINATES.mouseOfScreen()
     mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
     mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
     SYSTEM_DATA.world.hero.move.finaldestination = mousePosition
@@ -66,12 +69,15 @@ export default class {
 
     const speedPerTick = LIB.speedPerTick(SYSTEM_DATA.world.hero)
 
-    const axesVector = LIB.vector(INPUT.gamepad.axes[0], INPUT.gamepad.axes[1])
+    const axesVector = COORDINATES.vector(
+      INPUT.gamepad.axes[0],
+      INPUT.gamepad.axes[1]
+    )
     const angle = axesVector.angle
     let ratio = axesVector.distance
     ratio = _.clamp(ratio, 1)
 
-    const vectorToFinalDestination = LIB.vectorFromAngle(
+    const vectorToFinalDestination = COORDINATES.vectorFromAngle(
       angle,
       speedPerTick * WORLD.loop.averageFPS * 2
     )
@@ -120,11 +126,11 @@ export default class {
 
     const speedPerTick = LIB.speedPerTick(entity)
 
-    const displacement = LIB.vectorFromPoints(
+    const displacement = COORDINATES.vectorFromPoints(
       entity.position,
       entity.move.destination
     )
-    const finaldisplacement = LIB.vectorFromPoints(
+    const finaldisplacement = COORDINATES.vectorFromPoints(
       entity.position,
       entity.move.finaldestination
     )
@@ -152,7 +158,7 @@ export default class {
     if (SYSTEM_DATA.world.hero.target.attacked) ratio = 1
 
     const angle = displacement.angle
-    const velocity = LIB.vectorFromAngle(angle, speedPerTick)
+    const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)
 
     this.checkCollisionAndMove(entity, velocity, ratio)
   }

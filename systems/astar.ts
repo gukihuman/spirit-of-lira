@@ -29,7 +29,7 @@ export default class {
             y: LIB.coordinateToTile(entity.move.finaldestination.y),
           }
 
-          const mousePosition = LIB.mousePoint()
+          const mousePosition = COORDINATES.mouseOfScreen()
           mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
           mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
           const mouseTileX = LIB.coordinateToTile(mousePosition.x)

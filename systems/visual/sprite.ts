@@ -86,7 +86,7 @@ export default class {
     const lastEntity = WORLD.systems.lasttick.entities.get(id)
     if (!lastEntity) return
 
-    const displacement = LIB.vectorFromPoints(
+    const displacement = COORDINATES.vectorFromPoints(
       entity.position,
       lastEntity.position
     )

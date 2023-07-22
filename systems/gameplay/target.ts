@@ -82,7 +82,10 @@ export default class {
 
       if (entity.target.attacked) {
         const targetEntity = WORLD.entities.get(entity.target.id)
-        const distance = LIB.distance(entity.position, targetEntity.position)
+        const distance = COORDINATES.distance(
+          entity.position,
+          targetEntity.position
+        )
 
         // follow distance is here
         if (id !== SYSTEM_DATA.world.heroId && distance > 430) {
@@ -112,7 +115,10 @@ export default class {
         )
           return
 
-        const distance = LIB.distance(entity.position, otherEntity.position)
+        const distance = COORDINATES.distance(
+          entity.position,
+          otherEntity.position
+        )
         if (distance < minDistance) {
           minDistance = distance
           entity.target.id = otherId
@@ -142,7 +148,10 @@ export default class {
       return
     }
 
-    const axesVector = LIB.vector(INPUT.gamepad.axes[0], INPUT.gamepad.axes[1])
+    const axesVector = COORDINATES.vector(
+      INPUT.gamepad.axes[0],
+      INPUT.gamepad.axes[1]
+    )
     const axesAngle = axesVector.angle
 
     let minAngle = Infinity
@@ -157,13 +166,13 @@ export default class {
       if (!entity.move || id === SYSTEM_DATA.world.heroId) return
       if (entity.state.main === "dead") return
 
-      const distance = LIB.distance(
+      const distance = COORDINATES.distance(
         SYSTEM_DATA.world.hero.position,
         entity.position
       )
       if (distance > 750) return
 
-      const entityAngle = LIB.angle(
+      const entityAngle = COORDINATES.angle(
         SYSTEM_DATA.world.hero.position,
         entity.position
       )
@@ -203,7 +212,7 @@ export default class {
   updateHoverEntity() {
     if (INPUT.lastActiveDevice === "gamepad") return
 
-    const point = LIB.mousePoint()
+    const point = COORDINATES.mouseOfScreen()
     const heroPosition = SYSTEM_DATA.world.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0
@@ -291,7 +300,7 @@ export default class {
 
     const targetEntity = WORLD.entities.get(SYSTEM_DATA.world.hero.target.id)
     if (!targetEntity) return
-    const distance = LIB.distance(
+    const distance = COORDINATES.distance(
       SYSTEM_DATA.world.hero.position,
       targetEntity.position
     )

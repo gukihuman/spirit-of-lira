@@ -10,7 +10,7 @@ export default class {
       const targetEntity = WORLD.entities.get(targetEntityId)
 
       // hit effect
-      const displacement = LIB.vectorFromPoints(
+      const displacement = COORDINATES.vectorFromPoints(
         entity.position,
         entity.move.finaldestination
       )
