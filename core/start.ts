@@ -21,7 +21,7 @@ export default defineNuxtPlugin(async (app) => {
     )
 
     // tools that are likely depend on WORLD ticker
-    SIGNAL.init()
+    EVENTS.init()
     USER_DATA.init()
     LOCAL.init() // local storage
 

@@ -36,7 +36,7 @@ export default class {
           // mouseMove signal on non-walkable tile
           if (
             INPUT.lastActiveDevice !== "gamepad" &&
-            SIGNAL.active.includes("mouseMove") &&
+            EVENTS.active.includes("mouseMove") &&
             this.grid[mouseTileY][mouseTileX] !== 0 &&
             this.grid[mouseTileY][mouseTileX] !== 1
           ) {

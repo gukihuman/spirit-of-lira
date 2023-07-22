@@ -34,7 +34,7 @@ class UserData {
 
   emitSignals() {
     if (LIB.deadZoneExceed(this.settings.inputOther.gamepad.deadZone)) {
-      SIGNAL.emit("gamepadMove")
+      EVENTS.emit("gamepadMove")
     }
 
     if (SYSTEM_DATA.states.inputFocus) return
@@ -42,7 +42,7 @@ class UserData {
     _.forEach(this.settings.inputSignals, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
         if (INPUT[device].justPressed.includes(button)) {
-          SIGNAL.emit(setting)
+          EVENTS.emit(setting)
         }
       })
     })
@@ -56,7 +56,7 @@ class UserData {
         this.settings.inputSignals.keyboard.mouseMoveOrAttack
       )
     ) {
-      SIGNAL.emit("mouseMove")
+      EVENTS.emit("mouseMove")
       SYSTEM_DATA.states.autoMouseMove = false
     }
   }

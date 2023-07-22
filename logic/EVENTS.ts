@@ -83,7 +83,7 @@ class Signal {
   private runLogic() {
     this.active.forEach((signal) => {
       if (!this.logic[signal]) {
-        LIB.logWarning(`Unknown signal: "${signal}" (SIGNAL)`)
+        LIB.logWarning(`Unknown signal: "${signal}" (EVENTS)`)
         return
       }
       this.logic[signal]()
@@ -99,8 +99,8 @@ class Signal {
     WORLD.loop.add(() => {
       this.runLogic()
       this.active = []
-    }, "SIGNAL")
+    }, "EVENTS")
   }
 }
 
-export const SIGNAL = new Signal()
+export const EVENTS = new Signal()

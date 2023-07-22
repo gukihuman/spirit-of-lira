@@ -12,7 +12,7 @@ export default class {
       this.move(entity)
     })
 
-    if (SYSTEM_DATA.states.autoMouseMove) SIGNAL.emit("mouseMove")
+    if (SYSTEM_DATA.states.autoMouseMove) EVENTS.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
   // set hero target position to mouse position
