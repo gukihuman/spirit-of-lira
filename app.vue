@@ -5,23 +5,23 @@ wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center j
   loading
 
   //- 1920 / 1080 centered game window
-  transition: wrap-game-window(v-show="!SYSTEM_DATA.states.loadingScreen")
+  transition: wrap-game-window(v-show="!STATES.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
     wrap-viewport
 
     div(class="absolute z-10 overflow-hidden w-full h-full")
       bars
-      transition(name="fast"): target(v-show="SYSTEM_DATA.states.target && !SYSTEM_DATA.states.inventory")
+      transition(name="fast"): target(v-show="STATES.target && !STATES.inventory")
 
     div(class="absolute z-10 w-full h-full")
-      transition: input-area(v-show="SYSTEM_DATA.states.input")
-      transition: output-area(v-show="SYSTEM_DATA.states.output")
+      transition: input-area(v-show="STATES.input")
+      transition: output-area(v-show="STATES.output")
 
     //- output-area
 
     div(class="z-30"): transition
-        inventory(v-show="SYSTEM_DATA.states.inventory")
+        inventory(v-show="STATES.inventory")
 
 </template>
 

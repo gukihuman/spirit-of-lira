@@ -5,8 +5,8 @@ class Remote {
 
   init() {
     //
-    this.systemMessage = SYSTEM_DATA.world.hero.language.system
-    this.clarification = SYSTEM_DATA.world.hero.language.clarification
+    this.systemMessage = STATES.hero.language.system
+    this.clarification = STATES.hero.language.clarification
     this.data = {
       model: "gpt-3.5-turbo",
       messages: [
@@ -24,11 +24,9 @@ class Remote {
   async sendInput() {
     this.pushNewMessages()
     this.clampData()
-    console.log(
-      "⏫ " + LIB.timeNow() + " Spirit: " + SYSTEM_DATA.refs.input.value
-    )
-    SYSTEM_DATA.refs.input.value = ""
-    SYSTEM_DATA.refs.output.value = ""
+    console.log("⏫ " + LIB.timeNow() + " Spirit: " + REFS.input.value)
+    REFS.input.value = ""
+    REFS.output.value = ""
     let res = await this.queryOpenAI(this.data)
     this.data.messages.push(res.choices[0].message)
     console.log(
@@ -92,8 +90,7 @@ class Remote {
           wrongResponse = true
           break
         }
-        SYSTEM_DATA.refs.output.value +=
-          JSON.parse(newText).choices[0].message.content
+        REFS.output.value += JSON.parse(newText).choices[0].message.content
         result += newText
       }
     }
@@ -109,7 +106,7 @@ class Remote {
   pushNewMessages() {
     this.data.messages.push({
       role: "user",
-      content: SYSTEM_DATA.refs.input.value,
+      content: REFS.input.value,
     })
     this.data.messages.push({
       role: "system",

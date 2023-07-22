@@ -1,24 +1,20 @@
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
-    if (!SYSTEM_DATA.refs.viewport) {
+    if (!REFS.viewport) {
       LIB.logWarning("viewport not found (starter)")
       return
     }
 
     // set devMode, set it first cuz some tools init may depend on it
     useCookie("name").value = useCookie("name").value || "default"
-    if (useCookie("name").value == "guki") SYSTEM_DATA.states.devMode = true
+    if (useCookie("name").value == "guki") STATES.devMode = true
 
     // first to init
     CONFIG.init()
 
     // everything depend on WORLD ticker, init it right after CONFIG
-    WORLD.init(
-      SYSTEM_DATA.refs.viewport,
-      CONFIG.viewport.width,
-      CONFIG.viewport.height
-    )
+    WORLD.init(REFS.viewport, CONFIG.viewport.width, CONFIG.viewport.height)
 
     // tools that are likely depend on WORLD ticker
     EVENTS.init()
@@ -31,8 +27,8 @@ export default defineNuxtPlugin(async (app) => {
       LIB.logWarning("hero is not created (starter)")
       return
     }
-    SYSTEM_DATA.world.hero = WORLD.entities.get(heroId)
-    SYSTEM_DATA.world.heroId = heroId
+    STATES.hero = WORLD.entities.get(heroId)
+    STATES.heroId = heroId
 
     await ENTITY_FACTORY.create("mousepoint")
 
@@ -58,7 +54,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // to make sure initial loading transition will work
     setTimeout(() => {
-      SYSTEM_DATA.states.loadingScreen = false
+      STATES.loadingScreen = false
     }, 0)
   }
 })

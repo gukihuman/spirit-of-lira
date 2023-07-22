@@ -16,7 +16,7 @@ export default {
     // after not walkable tile is proceeded
     if (
       WORLD.loop.elapsedMS <
-      SYSTEM_DATA.world.hero.move.setMousePointOnWalkableMS + 100
+      STATES.hero.move.setMousePointOnWalkableMS + 100
     ) {
       const mousePosition = COORDINATES.mousePosition()
       position.x = mousePosition.x
@@ -44,7 +44,7 @@ export default {
       return
     }
 
-    const finaldestination = SYSTEM_DATA.world.hero.move.finaldestination
+    const finaldestination = STATES.hero.move.finaldestination
     if (!finaldestination) {
       position.x = 0
       position.y = 0
@@ -60,15 +60,13 @@ export default {
 
     const displacement = COORDINATES.vectorFromPoints(
       position,
-      WORLD.entities.get(SYSTEM_DATA.world.heroId).position
+      WORLD.entities.get(STATES.heroId).position
     )
     const distance = displacement.distance
-    const speedPerTick = LIB.speedPerTick(
-      WORLD.entities.get(SYSTEM_DATA.world.heroId)
-    )
+    const speedPerTick = LIB.speedPerTick(WORLD.entities.get(STATES.heroId))
 
     // hide
-    if (distance < speedPerTick || SYSTEM_DATA.world.hero.target.attacked) {
+    if (distance < speedPerTick || STATES.hero.target.attacked) {
       position.x = 0
       position.y = 0
       return

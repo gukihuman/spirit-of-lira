@@ -12,13 +12,13 @@ export default class {
       this.move(entity)
     })
 
-    if (SYSTEM_DATA.states.autoMouseMove) EVENTS.emit("mouseMove")
+    if (STATES.autoMouseMove) EVENTS.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
   // set hero target position to mouse position
   mouseMove() {
-    if (!SYSTEM_DATA.world.hero) return
-    if (SYSTEM_DATA.states.inventory) return
+    if (!STATES.hero) return
+    if (STATES.inventory) return
 
     const distance = COORDINATES.distance(
       COORDINATES.conterOfScreen(),
@@ -26,30 +26,30 @@ export default class {
     )
 
     if (distance < 10) {
-      SYSTEM_DATA.world.hero.move.finaldestination = undefined
+      STATES.hero.move.finaldestination = undefined
       return
     }
 
-    SYSTEM_DATA.world.hero.state.main = "forcemove"
+    STATES.hero.state.main = "forcemove"
 
     const mousePosition = COORDINATES.mouseOfScreen()
-    mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960
-    mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540
-    SYSTEM_DATA.world.hero.move.finaldestination = mousePosition
+    mousePosition.x += STATES.hero.position.x - 960
+    mousePosition.y += STATES.hero.position.y - 540
+    STATES.hero.move.finaldestination = mousePosition
   }
 
   private updateGamepadMoveInfo() {
     if (LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       //
       if (WORLD.loop.elapsedMS > this.startMoveToAttackMS + 1000) {
-        SYSTEM_DATA.world.hero.target.attacked = false
+        STATES.hero.target.attacked = false
       }
       this.gamepadMoved = true
       //
     } else {
       // first time not moved
       if (this.gamepadMoved && INPUT.lastActiveDevice === "gamepad") {
-        const hero = SYSTEM_DATA.world.hero
+        const hero = STATES.hero
         hero.move.finaldestination.x = hero.position.x
         hero.move.finaldestination.y = hero.position.y
       }
@@ -65,9 +65,9 @@ export default class {
   }
 
   private internalGamepadMove(otherRatio = 1) {
-    if (!SYSTEM_DATA.world.hero) return
+    if (!STATES.hero) return
 
-    const speedPerTick = LIB.speedPerTick(SYSTEM_DATA.world.hero)
+    const speedPerTick = LIB.speedPerTick(STATES.hero)
 
     const axesVector = COORDINATES.vector(
       INPUT.gamepad.axes[0],
@@ -82,7 +82,7 @@ export default class {
       speedPerTick * WORLD.loop.averageFPS * 2
     )
 
-    const hero = SYSTEM_DATA.world.hero
+    const hero = STATES.hero
     const possibleDestinationX =
       hero.position.x + vectorToFinalDestination.x * ratio * otherRatio
     const possibleDestinationY =
@@ -90,7 +90,7 @@ export default class {
 
     if (
       !COORDINATES.isWalkable(possibleDestinationX, possibleDestinationY) &&
-      SYSTEM_DATA.states.collision
+      STATES.collision
     ) {
       this.tries++
       if (this.tries > 100) return
@@ -104,13 +104,13 @@ export default class {
     hero.move.finaldestination.x = possibleDestinationX
     hero.move.finaldestination.y = possibleDestinationY
 
-    SYSTEM_DATA.world.hero.state.main = "forcemove"
+    STATES.hero.state.main = "forcemove"
     this.forceMove = true
     this.gamepadMoved = true
   }
 
   move(entity: Entity) {
-    // if (id === SYSTEM_DATA.world.heroId && this.gamepadMoved) return
+    // if (id === STATES.heroId && this.gamepadMoved) return
     if (
       !entity.move ||
       !entity.move.destination ||
@@ -155,7 +155,7 @@ export default class {
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 
-    if (SYSTEM_DATA.world.hero.target.attacked) ratio = 1
+    if (STATES.hero.target.attacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)
@@ -171,7 +171,7 @@ export default class {
     if (this.forceMove && this.gamepadMoved) entity.state.main = "forcemove"
     else entity.state.main = "move"
 
-    if (!SYSTEM_DATA.states.collision) {
+    if (!STATES.collision) {
       position.x = nextX
       position.y = nextY
       return

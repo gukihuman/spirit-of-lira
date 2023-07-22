@@ -1,6 +1,6 @@
 export default class {
   process() {
-    if (SYSTEM_DATA.states.devMode) {
+    if (STATES.devMode) {
       if (INPUT.keyboard.justPressed.includes("z")) {
         EVENTS.emit("collisionEdit")
       }
@@ -8,10 +8,10 @@ export default class {
         EVENTS.emit("collision")
       }
       if (INPUT.keyboard.justPressed.includes("l")) {
-        console.log(SYSTEM_DATA.world.hover)
+        console.log(STATES.hover)
       }
       if (INPUT.keyboard.justPressed.includes("m")) {
-        SYSTEM_DATA.states.input = !SYSTEM_DATA.states.input
+        STATES.input = !STATES.input
       }
     }
   }

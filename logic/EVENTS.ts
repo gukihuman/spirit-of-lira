@@ -2,52 +2,52 @@ class Signal {
   active: string[] = []
   logic: { [signal: string]: () => void } = {
     collision() {
-      SYSTEM_DATA.states.collision = !SYSTEM_DATA.states.collision
+      STATES.collision = !STATES.collision
     },
     collisionEdit() {
-      SYSTEM_DATA.states.collisionEdit = !SYSTEM_DATA.states.collisionEdit
+      STATES.collisionEdit = !STATES.collisionEdit
     },
     fullscreen() {
-      SYSTEM_DATA.states.fullscreen = !SYSTEM_DATA.states.fullscreen
-      if (SYSTEM_DATA.refs.fullscreen && !document.fullscreenElement) {
-        SYSTEM_DATA.refs.fullscreen.requestFullscreen()
+      STATES.fullscreen = !STATES.fullscreen
+      if (REFS.fullscreen && !document.fullscreenElement) {
+        REFS.fullscreen.requestFullscreen()
       } else if (document.exitFullscreen) {
         document.exitFullscreen()
       }
     },
     attack() {
-      if (!SYSTEM_DATA.world.hero.target.id) return
+      if (!STATES.hero.target.id) return
 
-      SYSTEM_DATA.world.hero.target.attacked = true
-      SYSTEM_DATA.world.hero.target.locked = true
+      STATES.hero.target.attacked = true
+      STATES.hero.target.locked = true
 
       WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
     },
     mouseMoveOrAttack() {
       WORLD.systems.move.mouseMove()
 
-      if (SYSTEM_DATA.world.hoverId) {
-        SYSTEM_DATA.world.hero.target.id = SYSTEM_DATA.world.hoverId
-        SYSTEM_DATA.world.hero.target.attacked = true
-        SYSTEM_DATA.world.hero.target.locked = true
+      if (STATES.hoverId) {
+        STATES.hero.target.id = STATES.hoverId
+        STATES.hero.target.attacked = true
+        STATES.hero.target.locked = true
       } else {
-        SYSTEM_DATA.world.hero.target.attacked = false
+        STATES.hero.target.attacked = false
       }
     },
     mouseMove() {
       WORLD.systems.move.mouseMove()
     },
     autoMouseMove() {
-      SYSTEM_DATA.states.autoMouseMove = !SYSTEM_DATA.states.autoMouseMove
+      STATES.autoMouseMove = !STATES.autoMouseMove
     },
     gamepadMove() {
       WORLD.systems.move.gamepadMove()
     },
     inventory() {
-      SYSTEM_DATA.states.inventory = !SYSTEM_DATA.states.inventory
+      STATES.inventory = !STATES.inventory
     },
     lockTarget() {
-      const hero = SYSTEM_DATA.world.hero
+      const hero = STATES.hero
       if (!hero.target.id) return
 
       hero.target.locked = !hero.target.locked
@@ -71,8 +71,8 @@ class Signal {
       // in case lock is used to lock a new target immidiately
       // 📜 does checking target system existance is needed here?
       if (WORLD.systems.target && INPUT.lastActiveDevice !== "gamepad") {
-        if (!SYSTEM_DATA.world.hoverId) return
-        hero.target.id = SYSTEM_DATA.world.hoverId
+        if (!STATES.hoverId) return
+        hero.target.id = STATES.hoverId
         hero.target.locked = true
       }
     },

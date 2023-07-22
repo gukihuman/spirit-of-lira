@@ -3,6 +3,6 @@ export default class {
 
   process() {
     this.entities = LIB.cloneMapDeep(WORLD.entities)
-    SYSTEM_DATA.world.lastHero = this.entities.get(SYSTEM_DATA.world.heroId)
+    STATES.lastHero = this.entities.get(STATES.heroId)
   }
 }

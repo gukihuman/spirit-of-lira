@@ -3,7 +3,7 @@ export default class {
   init() {
     //
     // Preload filters to prevent lag
-    const container = WORLD.getContainer(SYSTEM_DATA.world.heroId)
+    const container = WORLD.getContainer(STATES.heroId)
 
     if (container) {
       container.filters = [
@@ -34,7 +34,7 @@ export default class {
 
     this.heroTargetByGamepad()
 
-    if (!SYSTEM_DATA.states.autoMouseMove) this.heroTargetByMouse()
+    if (!STATES.autoMouseMove) this.heroTargetByMouse()
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away
@@ -42,20 +42,18 @@ export default class {
     this.updateTargetEntity()
     this.undefinedTarget()
 
-    if (!SYSTEM_DATA.world.hero.target.id && !SYSTEM_DATA.states.inventory) {
-      SYSTEM_DATA.states.target = false
+    if (!STATES.hero.target.id && !STATES.inventory) {
+      STATES.target = false
     } else {
-      SYSTEM_DATA.states.target = true
+      STATES.target = true
     }
 
-    if (!SYSTEM_DATA.world.hero.target.locked)
-      SYSTEM_DATA.states.targetLocked = false
-    else SYSTEM_DATA.states.targetLocked = true
+    if (!STATES.hero.target.locked) STATES.targetLocked = false
+    else STATES.targetLocked = true
 
-    if (SYSTEM_DATA.world.hero.target.id) {
+    if (STATES.hero.target.id) {
       // 📜 change to percentage and handle ui states in some separate module
-      SYSTEM_DATA.world.targetHealth =
-        SYSTEM_DATA.world.hero.target.entity.attributes.health
+      STATES.targetHealth = STATES.hero.target.entity.attributes.health
     }
   }
 
@@ -88,7 +86,7 @@ export default class {
         )
 
         // follow distance is here
-        if (id !== SYSTEM_DATA.world.heroId && distance > 430) {
+        if (id !== STATES.heroId && distance > 430) {
           entity.target.id = undefined
           entity.target.locked = false
           entity.target.attacked = false
@@ -105,15 +103,11 @@ export default class {
         if (otherEntity.state.main === "dead") return
         if (
           entity.attributes.mood === otherEntity.attributes.mood &&
-          id !== SYSTEM_DATA.world.heroId
+          id !== STATES.heroId
         ) {
           return
         }
-        if (
-          id === SYSTEM_DATA.world.heroId &&
-          INPUT.lastActiveDevice !== "gamepad"
-        )
-          return
+        if (id === STATES.heroId && INPUT.lastActiveDevice !== "gamepad") return
 
         const distance = COORDINATES.distance(
           entity.position,
@@ -126,14 +120,14 @@ export default class {
 
         if (
           entity.attributes.mood !== otherEntity.attributes.mood &&
-          id !== SYSTEM_DATA.world.heroId
+          id !== STATES.heroId
         ) {
           entity.target.attacked = true
         }
       })
 
       let maxTargetDistance = 300
-      if (id === SYSTEM_DATA.world.heroId) maxTargetDistance = 540
+      if (id === STATES.heroId) maxTargetDistance = 540
 
       if (minDistance > maxTargetDistance) {
         entity.target.id = undefined
@@ -142,7 +136,7 @@ export default class {
   }
 
   heroTargetByGamepad() {
-    if (SYSTEM_DATA.world.hero.target.locked) return
+    if (STATES.hero.target.locked) return
     if (INPUT.lastActiveDevice !== "gamepad") return
     if (!LIB.deadZoneExceed(USER_DATA.settings.inputOther.gamepad.deadZone)) {
       return
@@ -163,17 +157,17 @@ export default class {
     const angleToGroup = 0.2 // about 12 degrees
 
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move || id === SYSTEM_DATA.world.heroId) return
+      if (!entity.move || id === STATES.heroId) return
       if (entity.state.main === "dead") return
 
       const distance = COORDINATES.distance(
-        SYSTEM_DATA.world.hero.position,
+        STATES.hero.position,
         entity.position
       )
       if (distance > 750) return
 
       const entityAngle = COORDINATES.angle(
-        SYSTEM_DATA.world.hero.position,
+        STATES.hero.position,
         entity.position
       )
       const angle = Math.abs(entityAngle - axesAngle)
@@ -201,25 +195,23 @@ export default class {
       })
     }
 
-    SYSTEM_DATA.world.hero.target.id = closestEntityId
+    STATES.hero.target.id = closestEntityId
   }
   heroTargetByMouse() {
-    if (SYSTEM_DATA.world.hero.target.locked || !SYSTEM_DATA.world.hoverId)
-      return
-    SYSTEM_DATA.world.hero.target.id = SYSTEM_DATA.world.hoverId
+    if (STATES.hero.target.locked || !STATES.hoverId) return
+    STATES.hero.target.id = STATES.hoverId
   }
 
   updateHoverEntity() {
     if (INPUT.lastActiveDevice === "gamepad") return
 
     const point = COORDINATES.mouseOfScreen()
-    const heroPosition = SYSTEM_DATA.world.hero.position
+    const heroPosition = STATES.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0
 
     WORLD.entities.forEach((entity, id) => {
-      if (id === SYSTEM_DATA.world.heroId || !entity.move || !entity.size)
-        return
+      if (id === STATES.heroId || !entity.move || !entity.size) return
 
       // how mutch height goes under the y coordinate
       let offset = entity.size.width / 4
@@ -254,8 +246,8 @@ export default class {
       //
     }
 
-    SYSTEM_DATA.world.hoverId = hoverEntityId
-    SYSTEM_DATA.world.hover = WORLD.entities.get(hoverEntityId)
+    STATES.hoverId = hoverEntityId
+    STATES.hover = WORLD.entities.get(hoverEntityId)
   }
 
   lastContainer: Container | undefined
@@ -263,7 +255,7 @@ export default class {
   updateHeroTargetFilter() {
     if (this.lastContainer) this.lastContainer.filters = []
 
-    const id = SYSTEM_DATA.world.hero.target.id
+    const id = STATES.hero.target.id
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
 
@@ -279,7 +271,7 @@ export default class {
           blur: 6,
         }),
       ]
-      if (SYSTEM_DATA.world.hero.target.attacked) {
+      if (STATES.hero.target.attacked) {
         container.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
@@ -298,13 +290,13 @@ export default class {
       if (!entity.target.id) entity.target.locked = false
     })
 
-    const targetEntity = WORLD.entities.get(SYSTEM_DATA.world.hero.target.id)
+    const targetEntity = WORLD.entities.get(STATES.hero.target.id)
     if (!targetEntity) return
     const distance = COORDINATES.distance(
-      SYSTEM_DATA.world.hero.position,
+      STATES.hero.position,
       targetEntity.position
     )
 
-    if (distance > 1000) SYSTEM_DATA.world.hero.target.locked = false
+    if (distance > 1000) STATES.hero.target.locked = false
   }
 }

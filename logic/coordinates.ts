@@ -42,11 +42,11 @@ class Coordinates {
   }
 
   mouseOfScreen() {
-    if (!SYSTEM_DATA.states.firstMouseMove) return this.conterOfScreen()
+    if (!STATES.firstMouseMove) return this.conterOfScreen()
 
     return COORDINATES.vector(
-      INPUT.mouse.x / SYSTEM_DATA.states.gameWindowScale,
-      INPUT.mouse.y / SYSTEM_DATA.states.gameWindowScale
+      INPUT.mouse.x / STATES.gameWindowScale,
+      INPUT.mouse.y / STATES.gameWindowScale
     )
   }
 
@@ -54,8 +54,8 @@ class Coordinates {
     const mousePosition = COORDINATES.mouseOfScreen()
 
     return this.vector(
-      (mousePosition.x += SYSTEM_DATA.world.hero.position.x - 960),
-      (mousePosition.y += SYSTEM_DATA.world.hero.position.y - 540)
+      (mousePosition.x += STATES.hero.position.x - 960),
+      (mousePosition.y += STATES.hero.position.y - 540)
     )
   }
 

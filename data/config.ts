@@ -55,8 +55,8 @@ class GukiConfig {
       lasttick: 2,
       input: 1, // at least USER_DATA depends on it
 
-      astar: -1, // check logic in SIGNAL before it is empty
-      SIGNAL: -2, // runs all logic for collected signals and empty itself
+      astar: -1, // check logic in EVENTS before it is empty
+      EVENTS: -2, // runs all logic for collected events and empty itself
       move: -3,
       attack: -4,
       flip: -5,

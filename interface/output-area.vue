@@ -13,7 +13,7 @@ const minWidth = 200
 const update = () => {
   //
   // the same output but taken as value of the ref
-  const output = SYSTEM_DATA.refs.output
+  const output = REFS.output
   if (!output) return
 
   // stylization
@@ -35,7 +35,7 @@ const update = () => {
 let updateInterval: any = null
 
 onMounted(() => {
-  SYSTEM_DATA.refs.output = outputArea
+  REFS.output = outputArea
   updateInterval = setInterval(() => update(), 50)
 })
 

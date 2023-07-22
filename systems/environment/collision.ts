@@ -5,11 +5,11 @@ export default class {
   private collisionGrid: Graphics[][] = []
 
   init() {
-    if (SYSTEM_DATA.states.devMode) this.drawCollisionGrid()
+    if (STATES.devMode) this.drawCollisionGrid()
   }
 
   process() {
-    if (SYSTEM_DATA.states.collisionEdit) {
+    if (STATES.collisionEdit) {
       WORLD.collision.visible = true
       this.updateCollisionArray()
       this.updateCollisionGrid()
@@ -48,8 +48,8 @@ export default class {
   }
 
   updateCollisionGrid() {
-    if (!SYSTEM_DATA.world.heroId) return
-    const heroPosition = SYSTEM_DATA.world.hero.position
+    if (!STATES.heroId) return
+    const heroPosition = STATES.hero.position
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
@@ -85,8 +85,8 @@ export default class {
     })
 
     // draw path
-    SYSTEM_DATA.world.hero.move.path.forEach((tile) => {
-      if (!tile || !SYSTEM_DATA.states.collision) return
+    STATES.hero.move.path.forEach((tile) => {
+      if (!tile || !STATES.collision) return
       let row = tile.x - startX
       let col = tile.y - startY
       if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return
@@ -95,8 +95,8 @@ export default class {
   }
 
   private updateCollisionArray() {
-    if (!SYSTEM_DATA.world.heroId) return
-    const heroPosition = SYSTEM_DATA.world.hero.position
+    if (!STATES.heroId) return
+    const heroPosition = STATES.hero.position
 
     let y = COORDINATES.coordinateToTile(heroPosition.y)
     let x = COORDINATES.coordinateToTile(heroPosition.x)
