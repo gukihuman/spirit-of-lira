@@ -58,7 +58,6 @@ export default class {
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
       //
       WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
-      entity.sprite.framesValidated = 0
     }
   }
   private updateAnimation(entity, id) {
@@ -97,7 +96,7 @@ export default class {
   }
 
   private checkMove(entity, id) {
-    if (!entity.move) return
+    if (!entity.move || entity.state.resolved === "attack") return
 
     // 📜 maybe do something like
     // dont update animations on fps-dropping iterations
@@ -151,6 +150,16 @@ export default class {
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
+    entity.sprite.animationToValidate = sprite
+
+    if (
+      lastEntity.sprite.animationToValidate !==
+      entity.sprite.animationToValidate
+    ) {
+      entity.sprite.framesValidated = 0
+      return
+    }
+
     if (
       lastEntity.sprite.framesValidated >= this.framesToValidate &&
       sprite === entity.sprite.animationToValidate
@@ -159,7 +168,6 @@ export default class {
       entity.sprite.animation = sprite
       return
     }
-    entity.sprite.animationToValidate = sprite
     entity.sprite.framesValidated++
   }
 }
