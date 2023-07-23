@@ -9,7 +9,6 @@ class World {
   // shortcuts for often used entities
   hero: AnyObject = {}
   heroId = 0
-  lastHero: AnyObject = {} // previous loop
   hover: AnyObject = {}
   hoverId = 0
 
@@ -29,12 +28,12 @@ class World {
     /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
     deltaSec: 1 / CONFIG.maxFPS,
 
-    /** name is used to find priority in CONFIG.systemProcess, if exists */
+    /** name is used to find priority in CONFIG.process, if exists */
     add: (fn: () => void, name?: string) => {
       if (!this.app) return
 
-      if (name && CONFIG && CONFIG.priority.systemProcess[name]) {
-        this.app.ticker.add(fn, undefined, CONFIG.priority.systemProcess[name])
+      if (name && CONFIG && CONFIG.priority.process[name]) {
+        this.app.ticker.add(fn, undefined, CONFIG.priority.process[name])
         return
       }
       this.app.ticker.add(fn)

@@ -9,6 +9,8 @@ export default {
   dead: false,
 
   // 🔧
+  lastChangeMS: 0,
+
   startIdleTickCounter: 0,
   startWalkTickCounter: 0,
 }

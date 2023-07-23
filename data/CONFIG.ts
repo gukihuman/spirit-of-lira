@@ -47,12 +47,11 @@ class GukiConfig {
       astar: 1,
     },
 
-    systemProcess: {
+    process: {
       //
-      // 📜 make some uppercase-tools lowercase-systems, may be all
       state: 4,
       sprite: 3,
-      lasttick: 2,
+      LAST_WORLD: 2,
       input: 1, // at least SETTINGS depends on it
 
       astar: -1, // check logic in EVENTS before it is empty

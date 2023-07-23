@@ -15,7 +15,7 @@ export default class {
     if (
       WORLD.hero.sprite.animation.includes("attack") ||
       (!WORLD.hero.sprite.animation.includes("attack") &&
-        WORLD.lastHero.sprite.animation.includes("attack"))
+        LAST_WORLD.hero.sprite.animation.includes("attack"))
     ) {
       this.itemSprites.forEach((sprite) => {
         //

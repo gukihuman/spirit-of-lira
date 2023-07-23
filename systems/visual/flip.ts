@@ -4,8 +4,8 @@ export default class {
       if (!entity.move) return
       if (WORLD.loop.elapsedMS - entity.sprite.flipMS < 200) return
 
-      if (!WORLD.systems.lasttick.entities.get(id)) return
-      const previousX = WORLD.systems.lasttick.entities.get(id).position.x
+      if (!LAST_WORLD.entities.get(id)) return
+      const previousX = LAST_WORLD.entities.get(id).position.x
       const container = WORLD.getContainer(id)
       if (!container) return
 

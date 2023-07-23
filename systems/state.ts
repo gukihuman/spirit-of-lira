@@ -1,4 +1,6 @@
+//
 export default class {
+  //
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.state) return
@@ -9,4 +11,6 @@ export default class {
       }
     })
   }
+
+  updateLastChangeMS() {}
 }

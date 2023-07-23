@@ -65,7 +65,7 @@ export default class {
         entity.damageDone = true
       }
 
-      const lastEntity = WORLD.systems.lasttick.entities.get(id)
+      const lastEntity = LAST_WORLD.entities.get(id)
       if (
         entity.state.main !== "attack" &&
         lastEntity.state.main === "attack"

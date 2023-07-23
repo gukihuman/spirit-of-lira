@@ -1,3 +1,5 @@
+import { LAST_WORLD } from "~~/data/LAST_WORLD"
+
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
@@ -18,6 +20,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // tools that are likely depend on WORLD ticker
     EVENTS.init()
+    LAST_WORLD.init()
     SETTINGS.init()
     LOCAL.init() // local storage
 

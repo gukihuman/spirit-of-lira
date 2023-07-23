@@ -33,7 +33,7 @@ export default class {
       // update animation frame on first animation tick
       const firstFrames = entity.sprite.firstFrames
       if (entity.move && firstFrames) {
-        const lastEntity = WORLD.systems.lasttick.entities.get(id)
+        const lastEntity = LAST_WORLD.entities.get(id)
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, state: string) => {
           if (
@@ -70,7 +70,7 @@ export default class {
       this.checkAttack(entity, id)
     }
 
-    const lastEntity = WORLD.systems.lasttick.entities.get(id)
+    const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
@@ -83,7 +83,7 @@ export default class {
   }
 
   private checkMove(entity, id) {
-    const lastEntity = WORLD.systems.lasttick.entities.get(id)
+    const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
     const displacement = COORDINATES.vectorFromPoints(
