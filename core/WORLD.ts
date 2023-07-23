@@ -4,13 +4,13 @@ class World {
   app?: Application
 
   entities: Map<number, any> = new Map()
-  systems: { [name: string]: any } = {}
+  systems: AnyObject = {}
 
   // shortcuts for often used entities
-  hero = {}
+  hero: AnyObject = {}
   heroId = 0
-  lastHero = {} // previous loop
-  hover = {}
+  lastHero: AnyObject = {} // previous loop
+  hover: AnyObject = {}
   hoverId = 0
 
   // layers

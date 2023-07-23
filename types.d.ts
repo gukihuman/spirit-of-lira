@@ -41,4 +41,6 @@ declare global {
 
   type Entity = { [key: string]: any }
   type EntityLayer = "back" | "middle" | "front" | "effect"
+  type Context = "world" | "scene" | "interface"
+  type AnyObject = { [key: string]: any }
 }

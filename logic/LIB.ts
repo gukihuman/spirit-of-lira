@@ -1,5 +1,5 @@
 class Lib {
-  addGetter(object: { [index: string]: any }, name: string, fn: () => any) {
+  addGetter(object: AnyObject, name: string, fn: () => any) {
     Object.defineProperty(object, name, {
       get: fn,
       enumerable: true,
@@ -71,8 +71,8 @@ class Lib {
    * @param args - watcher array that consist of a state property name and a handler function
    * @returns a pinia IMPORTS with watchers and random name
    */
-  store(object: { [index: string]: any }) {
-    const storeObject: { [index: string]: any } = {}
+  store(object: AnyObject) {
+    const storeObject: AnyObject = {}
 
     storeObject.state = defineStore(this.generateRandomString(10), {
       state: () => object,

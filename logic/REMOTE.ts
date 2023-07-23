@@ -52,7 +52,7 @@ class Remote {
   async queryOpenAI(data, apiKey: "betterGPT" | "custom" = "betterGPT") {
     const controller = new AbortController()
 
-    const request: { [index: string]: any } = {
+    const request: AnyObject = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${useRuntimeConfig().OPEN_AI_KEY}`,
