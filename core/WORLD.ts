@@ -21,7 +21,9 @@ class World {
   entityContainers: Map<number, Container> = new Map()
 
   loop = {
-    averageFPS: 0,
+    //
+    // precisely updated each loop
+    fps: CONFIG.maxFPS,
     elapsedMS: 0,
 
     // switched to precise getter on init
@@ -65,22 +67,22 @@ class World {
 
   private loopSetup() {
     //
-    const lastTicks: number[] = []
+    const holdFrames = 20
+    const lastFramesFPS: number[] = []
 
     this.loop.add(() => {
       if (!this.app) return
 
-      lastTicks.push(this.app.ticker.FPS)
-      if (lastTicks.length > 100) lastTicks.shift()
+      lastFramesFPS.push(this.app.ticker.FPS)
+      if (lastFramesFPS.length > holdFrames) lastFramesFPS.shift()
 
-      this.loop.averageFPS = _.mean(lastTicks)
+      this.loop.fps = _.mean(lastFramesFPS)
       this.loop.elapsedMS += this.app.ticker.deltaMS
     })
-
     Object.defineProperty(this.loop, "deltaSec", {
       //
       get: () => {
-        if (!this.app) return 1 / 60
+        if (!this.app) return
 
         return this.app.ticker.deltaMS / 16.66 / 60
       },

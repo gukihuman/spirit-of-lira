@@ -12,11 +12,15 @@ export default {
     loop: true,
   },
 
-  // 🔧
+  // how many frames meet conditions consecutively
+  framesValidated: 0,
+  animationToValidate: "idle",
+
   lastChangeMS: 0,
   flipMS: 0,
   animationMS: 0,
 
+  // 🔧
   async inject(entity, id) {
     if (!WORLD.app) return
 

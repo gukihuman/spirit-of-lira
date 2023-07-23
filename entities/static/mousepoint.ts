@@ -63,7 +63,9 @@ export default {
       WORLD.entities.get(WORLD.heroId).position
     )
     const distance = displacement.distance
-    const speedPerTick = LIB.speedPerTick(WORLD.entities.get(WORLD.heroId))
+    const speedPerTick = COORDINATES.speedPerTick(
+      WORLD.entities.get(WORLD.heroId)
+    )
 
     // hide
     if (distance < speedPerTick || WORLD.hero.target.attacked) {

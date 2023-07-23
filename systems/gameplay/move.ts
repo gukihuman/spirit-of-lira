@@ -13,34 +13,10 @@ export default class {
       if (!entity.move) return
 
       this.move(entity)
-
-      this.updateAverage(entity, id)
     })
 
     if (GLOBAL.autoMouseMove) EVENTS.emit("mouseMove")
     this.updateGamepadMoveInfo()
-  }
-  private updateAverage(entity, id) {
-    //
-    const lastEntity = LAST_WORLD.entities.get(id)
-    if (!lastEntity) return
-
-    const distance = COORDINATES.distance(entity.position, lastEntity.position)
-
-    entity.move.lastFramesDistance.push(distance)
-    entity.move.lastFramesSpeedPerTick.push(LIB.speedPerTick(entity))
-
-    if (entity.move.lastFramesDistance.length > 30) {
-      entity.move.lastFramesDistance.shift()
-    }
-    if (entity.move.lastFramesSpeedPerTick.length > 30) {
-      entity.move.lastFramesSpeedPerTick.shift()
-    }
-
-    entity.move.lastAverageDistance = _.mean(entity.move.lastFramesDistance)
-    entity.move.lastAverageSpeedPerTick = _.mean(
-      entity.move.lastFramesSpeedPerTick
-    )
   }
 
   // set hero target position to mouse position
@@ -95,7 +71,7 @@ export default class {
   private internalGamepadMove(otherRatio = 1) {
     if (!WORLD.hero) return
 
-    const speedPerTick = LIB.speedPerTick(WORLD.hero)
+    const speedPerTick = COORDINATES.speedPerTick(WORLD.hero)
 
     const axesVector = COORDINATES.vector(
       INPUT.gamepad.axes[0],
@@ -107,7 +83,7 @@ export default class {
 
     const vectorToFinalDestination = COORDINATES.vectorFromAngle(
       angle,
-      speedPerTick * WORLD.loop.averageFPS * 2
+      speedPerTick * WORLD.loop.fps * 2
     )
 
     const hero = WORLD.hero
@@ -152,7 +128,7 @@ export default class {
 
     entity.state.resolved = "idle"
 
-    const speedPerTick = LIB.speedPerTick(entity)
+    const speedPerTick = COORDINATES.speedPerTick(entity)
 
     const displacement = COORDINATES.vectorFromPoints(
       entity.position,

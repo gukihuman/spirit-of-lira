@@ -1,8 +1,7 @@
 //
 export default class {
   //
-  // delays sprite change after state change, prevents sprite flickering
-  spriteDelayMS = 100
+  framesToValidate = 5
 
   process() {
     // no point to update animations if hero for some reason is not chosen
@@ -57,7 +56,9 @@ export default class {
     if (!lastEntity) return
 
     if (entity.sprite.animation !== lastEntity.sprite.animation) {
+      //
       WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
+      entity.sprite.framesValidated = 0
     }
   }
   private updateAnimation(entity, id) {
@@ -101,57 +102,64 @@ export default class {
     // 📜 maybe do something like
     // dont update animations on fps-dropping iterations
     // const fps = WORLD.app?.ticker.FPS
-    // if (fps && fps / WORLD.loop.averageFPS < 0.3) return
+    // if (fps && fps / WORLD.loop.fps < 0.3) return
 
-    if (
-      entity.move.lastAverageDistance / entity.move.lastAverageSpeedPerTick <
-      0.1
-    ) {
+    const lastEntity = LAST_WORLD.entities.get(id)
+    if (!lastEntity) return
+
+    const distance = COORDINATES.distance(entity.position, lastEntity.position)
+    const speedPerTick = COORDINATES.speedPerTick(entity)
+
+    if (distance / speedPerTick < 0.1) {
       //
-      this.setSprite(entity, "idle")
+      this.setSprite(entity, id, "idle")
       return
     }
     if (WORLD.getSprite(id, "walk")) {
       //
-      if (
-        entity.move.lastAverageDistance / entity.move.lastAverageSpeedPerTick <
-        0.8
-      ) {
+      if (distance / speedPerTick < 0.8) {
         //
-        this.setSprite(entity, "walk")
+        this.setSprite(entity, id, "walk")
         return
         //
       } else {
         //
-        this.setSprite(entity, "run")
+        this.setSprite(entity, id, "run")
         return
       }
     } else {
       //
-      this.setSprite(entity, "move")
+      this.setSprite(entity, id, "move")
       return
     }
   }
   private checkAttack(entity, id) {
+    //
     if (!entity.move || !entity.attack) return
     if (entity.state.resolved !== "attack") return
 
     if (id === WORLD.heroId) {
-      this.setSprite(entity, "sword-attack")
+      this.setSprite(entity, id, "sword-attack")
     } else {
-      this.setSprite(entity, "attack")
+      this.setSprite(entity, id, "attack")
     }
   }
 
-  //** sets sprite if sprite delay is elapsed */
-  private setSprite(entity, sprite: string) {
+  //** sets sprite if enough frames are validated */
+  private setSprite(entity, id, sprite: string) {
     //
+    const lastEntity = LAST_WORLD.entities.get(id)
+    if (!lastEntity) return
+
     if (
-      WORLD.loop.elapsedMS >
-      entity.sprite.lastChangeMS + this.spriteDelayMS
+      lastEntity.sprite.framesValidated >= this.framesToValidate &&
+      sprite === entity.sprite.animationToValidate
     ) {
       //
       entity.sprite.animation = sprite
+      return
     }
+    entity.sprite.animationToValidate = sprite
+    entity.sprite.framesValidated++
   }
 }

@@ -6,15 +6,6 @@ export default {
   finaldestination: undefined,
   path: [],
 
-  // 📜 change name of speed per tick
-  // arrays hold 30 frames, used to precisely change walk / run
-  lastFramesDistance: [],
-  lastFramesSpeedPerTick: [],
-
-  // mean of corresponding arrays
-  lastAverageDistance: 0,
-  lastAverageSpeedPerTick: 0,
-
   randomDestinationMS: 0,
   setMousePointOnWalkableMS: 0,
 

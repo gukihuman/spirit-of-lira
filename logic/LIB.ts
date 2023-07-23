@@ -45,9 +45,6 @@ class Lib {
     }
     return result
   }
-  speedPerTick(entity: Entity) {
-    return entity.move.speed * 10 * WORLD.loop.deltaSec
-  }
   deadZoneExceed(deadZone: number) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]
     let moved = false
@@ -175,9 +172,9 @@ class Lib {
       })
     }
   }
-  logIfHero(id: number, message) {
+  logIfHero(id: number, ...args) {
     if (id === WORLD.heroId) {
-      console.log(message)
+      console.log(...args)
     }
   }
 }

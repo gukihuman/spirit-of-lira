@@ -36,7 +36,9 @@ class Coordinates {
   distance(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
   }
-
+  speedPerTick(entity: Entity) {
+    return entity.move.speed * 10 * WORLD.loop.deltaSec
+  }
   conterOfScreen() {
     return this.vector(960, 540)
   }
