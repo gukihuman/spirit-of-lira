@@ -8,7 +8,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // set devMode, set it first cuz some tools init may depend on it
     useCookie("name").value = useCookie("name").value || "default"
-    if (useCookie("name").value == "guki") STATES.devMode = true
+    if (useCookie("name").value == "guki") GLOBAL.devMode = true
 
     // first to init
     CONFIG.init()
@@ -54,7 +54,7 @@ export default defineNuxtPlugin(async (app) => {
 
     // to make sure initial loading transition will work
     setTimeout(() => {
-      STATES.loadingScreen = false
+      GLOBAL.loadingScreen = false
     }, 0)
   }
 })

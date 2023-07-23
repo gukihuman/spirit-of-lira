@@ -42,11 +42,11 @@ class Coordinates {
   }
 
   mouseOfScreen() {
-    if (!STATES.firstMouseMove) return this.conterOfScreen()
+    if (!GLOBAL.firstMouseMove) return this.conterOfScreen()
 
     return COORDINATES.vector(
-      INPUT.mouse.x / STATES.gameWindowScale,
-      INPUT.mouse.y / STATES.gameWindowScale
+      INPUT.mouse.x / GLOBAL.gameWindowScale,
+      INPUT.mouse.y / GLOBAL.gameWindowScale
     )
   }
 

@@ -50,7 +50,7 @@ export default class {
               entity.move.setMousePointOnWalkableMS + 100 ||
               INPUT.lastActiveDevice === "gamepad")
           ) {
-            if (STATES.collision) {
+            if (GLOBAL.collision) {
               return
             }
           }
@@ -76,7 +76,7 @@ export default class {
 
   getAllNeighbors(node) {
     const neighbors: any = []
-    const collision = STATES.collision
+    const collision = GLOBAL.collision
 
     // Add neighbor left
     if (
@@ -152,7 +152,7 @@ export default class {
   }
   getCardinalNeighbors(node) {
     const neighbors: any = []
-    const collision = STATES.collision
+    const collision = GLOBAL.collision
 
     // Add neighbor left
     if (
@@ -191,7 +191,7 @@ export default class {
   }
   getDiagonalNeighbors(node) {
     const neighbors: any = []
-    const collision = STATES.collision
+    const collision = GLOBAL.collision
 
     // Top left
     if (

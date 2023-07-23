@@ -34,7 +34,7 @@ export default class {
 
     this.heroTargetByGamepad()
 
-    if (!STATES.autoMouseMove) this.heroTargetByMouse()
+    if (!GLOBAL.autoMouseMove) this.heroTargetByMouse()
 
     this.updateHeroTargetFilter()
     this.targetUnlock() // work on all entities when target is far away

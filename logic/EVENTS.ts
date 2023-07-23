@@ -2,13 +2,13 @@ class Signal {
   active: string[] = []
   logic: { [signal: string]: () => void } = {
     collision() {
-      STATES.collision = !STATES.collision
+      GLOBAL.collision = !GLOBAL.collision
     },
     collisionEdit() {
-      STATES.collisionEdit = !STATES.collisionEdit
+      GLOBAL.collisionEdit = !GLOBAL.collisionEdit
     },
     fullscreen() {
-      STATES.fullscreen = !STATES.fullscreen
+      GLOBAL.fullscreen = !GLOBAL.fullscreen
       if (REFS.fullscreen && !document.fullscreenElement) {
         REFS.fullscreen.requestFullscreen()
       } else if (document.exitFullscreen) {
@@ -38,7 +38,7 @@ class Signal {
       WORLD.systems.move.mouseMove()
     },
     autoMouseMove() {
-      STATES.autoMouseMove = !STATES.autoMouseMove
+      GLOBAL.autoMouseMove = !GLOBAL.autoMouseMove
     },
     gamepadMove() {
       WORLD.systems.move.gamepadMove()

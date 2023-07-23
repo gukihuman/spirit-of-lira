@@ -55,7 +55,7 @@ class settings {
       )
     ) {
       EVENTS.emit("mouseMove")
-      STATES.autoMouseMove = false
+      GLOBAL.autoMouseMove = false
     }
   }
 

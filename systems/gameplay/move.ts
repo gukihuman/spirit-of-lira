@@ -12,7 +12,7 @@ export default class {
       this.move(entity)
     })
 
-    if (STATES.autoMouseMove) EVENTS.emit("mouseMove")
+    if (GLOBAL.autoMouseMove) EVENTS.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
   // set hero target position to mouse position
@@ -90,7 +90,7 @@ export default class {
 
     if (
       !COORDINATES.isWalkable(possibleDestinationX, possibleDestinationY) &&
-      STATES.collision
+      GLOBAL.collision
     ) {
       this.tries++
       if (this.tries > 100) return
@@ -171,7 +171,7 @@ export default class {
     if (this.forceMove && this.gamepadMoved) entity.state.main = "forcemove"
     else entity.state.main = "move"
 
-    if (!STATES.collision) {
+    if (!GLOBAL.collision) {
       position.x = nextX
       position.y = nextY
       return

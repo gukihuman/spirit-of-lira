@@ -1,5 +1,5 @@
 //
-// redeclare some types for STATES accessability
+// redeclare some types for GLOBAL accessability
 // nuxt issue, otherwise auto-import dont work,
 import {
   Graphics as tempGraphics,

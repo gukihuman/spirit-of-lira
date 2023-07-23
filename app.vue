@@ -5,7 +5,7 @@ wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center j
   loading
 
   //- 1920 / 1080 centered game window
-  transition: wrap-game-window(v-show="!STATES.loadingScreen")
+  transition: wrap-game-window(v-show="!GLOBAL.loadingScreen")
 
     //- 1920 / 1080 pixi viewport, where the actual game is
     wrap-viewport
@@ -16,7 +16,7 @@ wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center j
 
     div(class="absolute z-10 w-full h-full")
       transition: input-area(v-show="INTERFACE.input")
-      transition: output-area(v-show="STATES.output")
+      transition: output-area(v-show="GLOBAL.output")
 
     //- output-area
 

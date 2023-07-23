@@ -1,5 +1,5 @@
 //
-const states = {
+const global = {
   //
   gameWindowScale: 1,
   fullscreen: false,
@@ -11,4 +11,4 @@ const states = {
   autoMouseMove: false,
 }
 
-export const STATES = LIB.store(states)
+export const GLOBAL = LIB.store(global)

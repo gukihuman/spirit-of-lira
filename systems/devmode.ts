@@ -1,6 +1,6 @@
 export default class {
   process() {
-    if (STATES.devMode) {
+    if (GLOBAL.devMode) {
       if (INPUT.keyboard.justPressed.includes("z")) {
         EVENTS.emit("collisionEdit")
       }

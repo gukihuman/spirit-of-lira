@@ -5,11 +5,11 @@ export default class {
   private collisionGrid: Graphics[][] = []
 
   init() {
-    if (STATES.devMode) this.drawCollisionGrid()
+    if (GLOBAL.devMode) this.drawCollisionGrid()
   }
 
   process() {
-    if (STATES.collisionEdit) {
+    if (GLOBAL.collisionEdit) {
       WORLD.collision.visible = true
       this.updateCollisionArray()
       this.updateCollisionGrid()
@@ -86,7 +86,7 @@ export default class {
 
     // draw path
     WORLD.hero.move.path.forEach((tile) => {
-      if (!tile || !STATES.collision) return
+      if (!tile || !GLOBAL.collision) return
       let row = tile.x - startX
       let col = tile.y - startY
       if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return

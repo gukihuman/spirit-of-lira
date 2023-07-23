@@ -29,10 +29,10 @@ function setScale() {
   let [baseWidth, baseHeight] = [userWidth / 16, userHeight / 9]
   if (baseWidth > baseHeight) {
     scale.value = userHeight / height / devicePixelRatio
-    STATES.gameWindowScale = scale.value
+    GLOBAL.gameWindowScale = scale.value
   } else {
     scale.value = userWidth / width / devicePixelRatio
-    STATES.gameWindowScale = scale.value
+    GLOBAL.gameWindowScale = scale.value
   }
 }
 

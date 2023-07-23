@@ -6,6 +6,13 @@ class World {
   entities: Map<number, any> = new Map()
   systems: { [name: string]: any } = {}
 
+  // shortcuts for often used entities
+  hero = {}
+  heroId = 0
+  lastHero = {} // previous loop
+  hover = {}
+  hoverId = 0
+
   // layers
   map = new PIXI.Container()
   ground = new PIXI.Container()
@@ -33,13 +40,6 @@ class World {
       this.app.ticker.add(fn)
     },
   }
-
-  // shortcuts for often used entities
-  hero = {}
-  heroId = 0
-  lastHero = {} // previous loop
-  hover = {}
-  hoverId = 0
 
   init(viewport: HTMLElement, width: number = 1920, height: number = 1080) {
     //
