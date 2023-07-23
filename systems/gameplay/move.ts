@@ -8,13 +8,41 @@ export default class {
   gamepadMoved = false
 
   process() {
-    WORLD.entities.forEach((entity) => {
+    WORLD.entities.forEach((entity, id) => {
+      //
+      if (!entity.move) return
+
       this.move(entity)
+
+      this.updateAverage(entity, id)
     })
 
     if (GLOBAL.autoMouseMove) EVENTS.emit("mouseMove")
     this.updateGamepadMoveInfo()
   }
+  private updateAverage(entity, id) {
+    //
+    const lastEntity = LAST_WORLD.entities.get(id)
+    if (!lastEntity) return
+
+    const distance = COORDINATES.distance(entity.position, lastEntity.position)
+
+    entity.move.lastFramesDistance.push(distance)
+    entity.move.lastFramesSpeedPerTick.push(LIB.speedPerTick(entity))
+
+    if (entity.move.lastFramesDistance.length > 30) {
+      entity.move.lastFramesDistance.shift()
+    }
+    if (entity.move.lastFramesSpeedPerTick.length > 30) {
+      entity.move.lastFramesSpeedPerTick.shift()
+    }
+
+    entity.move.lastAverageDistance = _.mean(entity.move.lastFramesDistance)
+    entity.move.lastAverageSpeedPerTick = _.mean(
+      entity.move.lastFramesSpeedPerTick
+    )
+  }
+
   // set hero target position to mouse position
   mouseMove() {
     if (!WORLD.hero) return
@@ -30,7 +58,7 @@ export default class {
       return
     }
 
-    WORLD.hero.state.main = "forcemove"
+    WORLD.hero.state.resolved = "forcemove"
 
     const mousePosition = COORDINATES.mouseOfScreen()
     mousePosition.x += WORLD.hero.position.x - 960
@@ -104,25 +132,25 @@ export default class {
     hero.move.finaldestination.x = possibleDestinationX
     hero.move.finaldestination.y = possibleDestinationY
 
-    WORLD.hero.state.main = "forcemove"
+    WORLD.hero.state.resolved = "forcemove"
     this.forceMove = true
     this.gamepadMoved = true
   }
 
   move(entity: Entity) {
-    // if (id === WORLD.heroId && this.gamepadMoved) return
     if (
       !entity.move ||
       !entity.move.destination ||
       !entity.move.finaldestination
     )
       return
-    if (entity.state.main === "attack" || entity.state.main === "dead") return
+    if (entity.state.resolved === "attack" || entity.state.resolved === "dead")
+      return
 
-    if (entity.state.main === "forcemove") this.forceMove = true
+    if (entity.state.resolved === "forcemove") this.forceMove = true
     else this.forceMove = false
 
-    entity.state.main = "idle"
+    entity.state.resolved = "idle"
 
     const speedPerTick = LIB.speedPerTick(entity)
 
@@ -168,8 +196,8 @@ export default class {
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
 
-    if (this.forceMove && this.gamepadMoved) entity.state.main = "forcemove"
-    else entity.state.main = "move"
+    if (this.forceMove && this.gamepadMoved) entity.state.resolved = "forcemove"
+    else entity.state.resolved = "move"
 
     if (!GLOBAL.collision) {
       position.x = nextX
@@ -189,7 +217,7 @@ export default class {
         position.y = nextY
         return
       }
-      entity.state.main = "idle"
+      entity.state.resolved = "idle"
       return
     }
   }

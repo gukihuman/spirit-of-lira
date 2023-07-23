@@ -8,7 +8,7 @@ export default class {
       if (
         id !== WORLD.heroId &&
         entity.move &&
-        entity.state.main === "idle" &&
+        entity.state.resolved === "idle" &&
         WORLD.loop.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
         Math.random() < 0.08 * WORLD.loop.deltaSec
       ) {

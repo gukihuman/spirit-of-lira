@@ -175,6 +175,11 @@ class Lib {
       })
     }
   }
+  logIfHero(id: number, message) {
+    if (id === WORLD.heroId) {
+      console.log(message)
+    }
+  }
 }
 
 export const LIB = new Lib()

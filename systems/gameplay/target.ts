@@ -100,7 +100,7 @@ export default class {
 
       WORLD.entities.forEach((otherEntity, otherId) => {
         if (id === otherId || !otherEntity.state) return
-        if (otherEntity.state.main === "dead") return
+        if (otherEntity.state.resolved === "dead") return
         if (
           entity.attributes.mood === otherEntity.attributes.mood &&
           id !== WORLD.heroId
@@ -158,7 +158,7 @@ export default class {
 
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move || id === WORLD.heroId) return
-      if (entity.state.main === "dead") return
+      if (entity.state.resolved === "dead") return
 
       const distance = COORDINATES.distance(
         WORLD.hero.position,
@@ -227,7 +227,7 @@ export default class {
       const intersectX = point.x < rect.x + rect.width && point.x > rect.x
       const intersectY = point.y < rect.y + rect.height && point.y > rect.y
 
-      if (intersectX && intersectY && entity.state.main !== "dead")
+      if (intersectX && intersectY && entity.state.resolved !== "dead")
         intersections.push(id)
     })
 

@@ -61,7 +61,7 @@ class Signal {
         hero.target.entity.position.y === hero.move.finaldestination.y
       ) {
         hero.move.finaldestination = undefined
-        hero.state.main = "idle"
+        hero.state.resolved = "idle"
       }
       if (!hero.target.locked) {
         hero.target.id = undefined

@@ -21,10 +21,10 @@ export default class {
 
       // attack back
       if (
-        targetEntity.state.main !== "attack" &&
+        targetEntity.state.resolved !== "attack" &&
         targetEntityId !== WORLD.heroId
       ) {
-        targetEntity.state.main = "attack"
+        targetEntity.state.resolved = "attack"
         targetEntity.target.id = id
         targetEntity.target.attacked = true
         targetEntity.target.locked = true
@@ -38,7 +38,7 @@ export default class {
         entity.target.entity = undefined
         entity.move.finaldestination = _.cloneDeep(entity.position)
         setTimeout(() => {
-          entity.state.main = "idle"
+          entity.state.resolved = "idle"
           entity.damageDone = false
         }, 500)
       }

@@ -1,4 +1,6 @@
 export default {
+  //
+  // 📜 change animation term
   animation: "idle", // even for non-move
   firstFrames: { idle: 0, move: 0, attack: 0, death: 0 },
   fade: true, // death dissapear
@@ -10,10 +12,11 @@ export default {
     loop: true,
   },
 
+  // 🔧
+  lastChangeMS: 0,
   flipMS: 0,
   animationMS: 0,
 
-  // 🔧
   async inject(entity, id) {
     if (!WORLD.app) return
 

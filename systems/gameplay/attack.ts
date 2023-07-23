@@ -12,7 +12,7 @@ export default class {
 
       const targetEntity = WORLD.entities.get(entity.target.id)
       if (!targetEntity) {
-        entity.state.main = "idle"
+        entity.state.resolved = "idle"
         return
       }
 
@@ -38,21 +38,21 @@ export default class {
       const delay = entity.attack.delay * 1000
 
       if (
-        entity.state.main === "attack" &&
+        entity.state.resolved === "attack" &&
         entity.attack.startMS + entity.attack.speed * 1000 <=
           WORLD.loop.elapsedMS
       ) {
-        if (targetEntity.state.main !== "dead") {
-          entity.state.main = "idle"
+        if (targetEntity.state.resolved !== "dead") {
+          entity.state.resolved = "idle"
           WORLD.systems.move.process()
         }
 
-        entity.state.main = "idle"
+        entity.state.resolved = "idle"
         entity.damageDone = false
       }
 
       if (
-        entity.state.main === "attack" &&
+        entity.state.resolved === "attack" &&
         entity.attack.startMS - delay + entity.attack.speed * 1000 <=
           WORLD.loop.elapsedMS &&
         !entity.damageDone
@@ -67,8 +67,8 @@ export default class {
 
       const lastEntity = LAST_WORLD.entities.get(id)
       if (
-        entity.state.main !== "attack" &&
-        lastEntity.state.main === "attack"
+        entity.state.resolved !== "attack" &&
+        lastEntity.state.resolved === "attack"
       ) {
         this.initialAttack = false
 
@@ -87,10 +87,13 @@ export default class {
         }
       }
 
-      if (entity.state.main !== "attack" && entity.state.main !== "forcemove") {
+      if (
+        entity.state.resolved !== "attack" &&
+        entity.state.resolved !== "forcemove"
+      ) {
         if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
           entity.attack.startMS = WORLD.loop.elapsedMS
-          entity.state.main = "attack"
+          entity.state.resolved = "attack"
 
           if (this.initialAttack) {
             entity.attack.initialStartMS = WORLD.loop.elapsedMS

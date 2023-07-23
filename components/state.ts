@@ -1,5 +1,5 @@
 export default {
-  main: "idle",
+  resolved: "idle",
 
   idle: true,
   move: false,
@@ -10,7 +10,4 @@ export default {
 
   // 🔧
   lastChangeMS: 0,
-
-  startIdleTickCounter: 0,
-  startWalkTickCounter: 0,
 }
