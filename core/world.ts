@@ -34,6 +34,13 @@ class World {
     },
   }
 
+  // shortcuts for often used entities
+  hero = {}
+  heroId = 0
+  lastHero = {} // previous loop
+  hover = {}
+  hoverId = 0
+
   init(viewport: HTMLElement, width: number = 1920, height: number = 1080) {
     //
     this.app = new PIXI.Application({ width, height })

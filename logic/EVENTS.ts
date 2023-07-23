@@ -16,22 +16,22 @@ class Signal {
       }
     },
     attack() {
-      if (!STATES.hero.target.id) return
+      if (!WORLD.hero.target.id) return
 
-      STATES.hero.target.attacked = true
-      STATES.hero.target.locked = true
+      WORLD.hero.target.attacked = true
+      WORLD.hero.target.locked = true
 
       WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
     },
     mouseMoveOrAttack() {
       WORLD.systems.move.mouseMove()
 
-      if (STATES.hoverId) {
-        STATES.hero.target.id = STATES.hoverId
-        STATES.hero.target.attacked = true
-        STATES.hero.target.locked = true
+      if (WORLD.hoverId) {
+        WORLD.hero.target.id = WORLD.hoverId
+        WORLD.hero.target.attacked = true
+        WORLD.hero.target.locked = true
       } else {
-        STATES.hero.target.attacked = false
+        WORLD.hero.target.attacked = false
       }
     },
     mouseMove() {
@@ -44,10 +44,10 @@ class Signal {
       WORLD.systems.move.gamepadMove()
     },
     inventory() {
-      STATES.inventory = !STATES.inventory
+      INTERFACE.inventory = !INTERFACE.inventory
     },
     lockTarget() {
-      const hero = STATES.hero
+      const hero = WORLD.hero
       if (!hero.target.id) return
 
       hero.target.locked = !hero.target.locked
@@ -71,8 +71,8 @@ class Signal {
       // in case lock is used to lock a new target immidiately
       // 📜 does checking target system existance is needed here?
       if (WORLD.systems.target && INPUT.lastActiveDevice !== "gamepad") {
-        if (!STATES.hoverId) return
-        hero.target.id = STATES.hoverId
+        if (!WORLD.hoverId) return
+        hero.target.id = WORLD.hoverId
         hero.target.locked = true
       }
     },

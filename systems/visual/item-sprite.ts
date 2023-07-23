@@ -7,15 +7,15 @@ export default class {
 
   process() {
     const heroSprite = WORLD.getSprite(
-      STATES.heroId,
-      STATES.hero.sprite.animation
+      WORLD.heroId,
+      WORLD.hero.sprite.animation
     )
     if (!heroSprite) return
 
     if (
-      STATES.hero.sprite.animation.includes("attack") ||
-      (!STATES.hero.sprite.animation.includes("attack") &&
-        STATES.lastHero.sprite.animation.includes("attack"))
+      WORLD.hero.sprite.animation.includes("attack") ||
+      (!WORLD.hero.sprite.animation.includes("attack") &&
+        WORLD.lastHero.sprite.animation.includes("attack"))
     ) {
       this.itemSprites.forEach((sprite) => {
         //
@@ -31,8 +31,8 @@ export default class {
   }
 
   async init() {
-    if (!WORLD.app || !STATES.heroId) return
-    if (!WORLD.getContainer(STATES.heroId)) return
+    if (!WORLD.app || !WORLD.heroId) return
+    if (!WORLD.getContainer(WORLD.heroId)) return
 
     const promises: Promise<void>[] = []
 
@@ -44,13 +44,13 @@ export default class {
 
           const backItemContainer = new PIXI.Container()
           backItemContainer.name = name
-          const back = WORLD.getContainer(STATES.heroId)
+          const back = WORLD.getContainer(WORLD.heroId)
             ?.children[0] as Container
           back.addChild(backItemContainer)
 
           const frontItemContainer = new PIXI.Container()
           frontItemContainer.name = name
-          const front = WORLD.getContainer(STATES.heroId)
+          const front = WORLD.getContainer(WORLD.heroId)
             ?.children[2] as Container
           front.addChild(frontItemContainer)
 
@@ -78,11 +78,11 @@ export default class {
     await Promise.all(promises)
   }
   private updateVisibilityByState() {
-    const currentAnimation = STATES.hero.sprite.animation
+    const currentAnimation = WORLD.hero.sprite.animation
 
     // 📜 move to class scope
-    const back = WORLD.getContainer(STATES.heroId)?.children[0] as Container
-    const front = WORLD.getContainer(STATES.heroId)?.children[2] as Container
+    const back = WORLD.getContainer(WORLD.heroId)?.children[0] as Container
+    const front = WORLD.getContainer(WORLD.heroId)?.children[2] as Container
     if (!back || !front) return
 
     back.children.forEach((child) => {

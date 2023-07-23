@@ -3,7 +3,7 @@ export default class {
   init() {
     //
     // Preload filters to prevent lag
-    const container = WORLD.getContainer(STATES.heroId)
+    const container = WORLD.getContainer(WORLD.heroId)
 
     if (container) {
       container.filters = [
@@ -42,18 +42,18 @@ export default class {
     this.updateTargetEntity()
     this.undefinedTarget()
 
-    if (!STATES.hero.target.id && !STATES.inventory) {
-      STATES.target = false
+    if (!WORLD.hero.target.id && !INTERFACE.inventory) {
+      INTERFACE.target = false
     } else {
-      STATES.target = true
+      INTERFACE.target = true
     }
 
-    if (!STATES.hero.target.locked) STATES.targetLocked = false
-    else STATES.targetLocked = true
+    if (!WORLD.hero.target.locked) INTERFACE.targetLocked = false
+    else INTERFACE.targetLocked = true
 
-    if (STATES.hero.target.id) {
+    if (WORLD.hero.target.id) {
       // 📜 change to percentage and handle ui states in some separate module
-      STATES.targetHealth = STATES.hero.target.entity.attributes.health
+      INTERFACE.targetHealth = WORLD.hero.target.entity.attributes.health
     }
   }
 
@@ -86,7 +86,7 @@ export default class {
         )
 
         // follow distance is here
-        if (id !== STATES.heroId && distance > 430) {
+        if (id !== WORLD.heroId && distance > 430) {
           entity.target.id = undefined
           entity.target.locked = false
           entity.target.attacked = false
@@ -103,11 +103,11 @@ export default class {
         if (otherEntity.state.main === "dead") return
         if (
           entity.attributes.mood === otherEntity.attributes.mood &&
-          id !== STATES.heroId
+          id !== WORLD.heroId
         ) {
           return
         }
-        if (id === STATES.heroId && INPUT.lastActiveDevice !== "gamepad") return
+        if (id === WORLD.heroId && INPUT.lastActiveDevice !== "gamepad") return
 
         const distance = COORDINATES.distance(
           entity.position,
@@ -120,14 +120,14 @@ export default class {
 
         if (
           entity.attributes.mood !== otherEntity.attributes.mood &&
-          id !== STATES.heroId
+          id !== WORLD.heroId
         ) {
           entity.target.attacked = true
         }
       })
 
       let maxTargetDistance = 300
-      if (id === STATES.heroId) maxTargetDistance = 540
+      if (id === WORLD.heroId) maxTargetDistance = 540
 
       if (minDistance > maxTargetDistance) {
         entity.target.id = undefined
@@ -136,7 +136,7 @@ export default class {
   }
 
   heroTargetByGamepad() {
-    if (STATES.hero.target.locked) return
+    if (WORLD.hero.target.locked) return
     if (INPUT.lastActiveDevice !== "gamepad") return
     if (!LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
       return
@@ -157,17 +157,17 @@ export default class {
     const angleToGroup = 0.2 // about 12 degrees
 
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move || id === STATES.heroId) return
+      if (!entity.move || id === WORLD.heroId) return
       if (entity.state.main === "dead") return
 
       const distance = COORDINATES.distance(
-        STATES.hero.position,
+        WORLD.hero.position,
         entity.position
       )
       if (distance > 750) return
 
       const entityAngle = COORDINATES.angle(
-        STATES.hero.position,
+        WORLD.hero.position,
         entity.position
       )
       const angle = Math.abs(entityAngle - axesAngle)
@@ -195,23 +195,23 @@ export default class {
       })
     }
 
-    STATES.hero.target.id = closestEntityId
+    WORLD.hero.target.id = closestEntityId
   }
   heroTargetByMouse() {
-    if (STATES.hero.target.locked || !STATES.hoverId) return
-    STATES.hero.target.id = STATES.hoverId
+    if (WORLD.hero.target.locked || !WORLD.hoverId) return
+    WORLD.hero.target.id = WORLD.hoverId
   }
 
   updateHoverEntity() {
     if (INPUT.lastActiveDevice === "gamepad") return
 
     const point = COORDINATES.mouseOfScreen()
-    const heroPosition = STATES.hero.position
+    const heroPosition = WORLD.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0
 
     WORLD.entities.forEach((entity, id) => {
-      if (id === STATES.heroId || !entity.move || !entity.size) return
+      if (id === WORLD.heroId || !entity.move || !entity.size) return
 
       // how mutch height goes under the y coordinate
       let offset = entity.size.width / 4
@@ -246,8 +246,8 @@ export default class {
       //
     }
 
-    STATES.hoverId = hoverEntityId
-    STATES.hover = WORLD.entities.get(hoverEntityId)
+    WORLD.hoverId = hoverEntityId
+    WORLD.hover = WORLD.entities.get(hoverEntityId)
   }
 
   lastContainer: Container | undefined
@@ -255,7 +255,7 @@ export default class {
   updateHeroTargetFilter() {
     if (this.lastContainer) this.lastContainer.filters = []
 
-    const id = STATES.hero.target.id
+    const id = WORLD.hero.target.id
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
 
@@ -271,7 +271,7 @@ export default class {
           blur: 6,
         }),
       ]
-      if (STATES.hero.target.attacked) {
+      if (WORLD.hero.target.attacked) {
         container.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
@@ -290,13 +290,13 @@ export default class {
       if (!entity.target.id) entity.target.locked = false
     })
 
-    const targetEntity = WORLD.entities.get(STATES.hero.target.id)
+    const targetEntity = WORLD.entities.get(WORLD.hero.target.id)
     if (!targetEntity) return
     const distance = COORDINATES.distance(
-      STATES.hero.position,
+      WORLD.hero.position,
       targetEntity.position
     )
 
-    if (distance > 1000) STATES.hero.target.locked = false
+    if (distance > 1000) WORLD.hero.target.locked = false
   }
 }

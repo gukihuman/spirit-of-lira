@@ -27,7 +27,7 @@ export default class {
   process() {
     this.loadCloseChunks()
 
-    const heroPosition = STATES.hero.position
+    const heroPosition = WORLD.hero.position
     if (!heroPosition) return
 
     // update coordinates
@@ -39,10 +39,10 @@ export default class {
   }
 
   private async loadCloseChunks() {
-    if (!STATES.heroId) return
-    const heroEntity = WORLD.entities.get(STATES.heroId)
+    if (!WORLD.heroId) return
+    const heroEntity = WORLD.entities.get(WORLD.heroId)
     if (!heroEntity) return
-    const heroPosition = STATES.hero.position
+    const heroPosition = WORLD.hero.position
 
     const startY = COORDINATES.coordinateToChunk(heroPosition.y) - 2
     const startX = COORDINATES.coordinateToChunk(heroPosition.x) - 2

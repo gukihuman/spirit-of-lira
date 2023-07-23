@@ -10,7 +10,7 @@ div(class="absolute relative top-[-20px] left-[757px]")
     :style="health"
   )
   transition(name="fast")
-    img(src="@/assets/inventory/target-lock.webp" class="absolute" draggable="false" v-show="STATES.targetLocked")
+    img(src="@/assets/inventory/target-lock.webp" class="absolute" draggable="false" v-show="INTERFACE.targetLocked")
 
   div(class="absolute top-[56px] left-[80px] w-[205px] h-[40px] pl-[30px] flex justify-center")
     p(class="text-sand-100 text-2xl font-semibold mb-4") Bunbo
@@ -22,7 +22,7 @@ div(class="absolute relative top-[-20px] left-[757px]")
 
 const health = computed(() => {
   return {
-    width: STATES.targetHealth * 4 + "px",
+    width: INTERFACE.targetHealth * 4 + "px",
   }
 })
 

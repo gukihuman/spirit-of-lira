@@ -6,7 +6,7 @@ export default class {
     WORLD.entities.forEach((entity, id) => {
       //
       if (
-        id !== STATES.heroId &&
+        id !== WORLD.heroId &&
         entity.move &&
         entity.state.main === "idle" &&
         WORLD.loop.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&

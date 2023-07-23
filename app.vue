@@ -12,16 +12,16 @@ wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center j
 
     div(class="absolute z-10 overflow-hidden w-full h-full")
       bars
-      transition(name="fast"): target(v-show="STATES.target && !STATES.inventory")
+      transition(name="fast"): target(v-show="INTERFACE.target && !INTERFACE.inventory")
 
     div(class="absolute z-10 w-full h-full")
-      transition: input-area(v-show="STATES.input")
+      transition: input-area(v-show="INTERFACE.input")
       transition: output-area(v-show="STATES.output")
 
     //- output-area
 
     div(class="z-30"): transition
-        inventory(v-show="STATES.inventory")
+        inventory(v-show="INTERFACE.inventory")
 
 </template>
 

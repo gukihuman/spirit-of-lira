@@ -17,8 +17,8 @@ export default class {
   }
   // set hero target position to mouse position
   mouseMove() {
-    if (!STATES.hero) return
-    if (STATES.inventory) return
+    if (!WORLD.hero) return
+    if (INTERFACE.inventory) return
 
     const distance = COORDINATES.distance(
       COORDINATES.conterOfScreen(),
@@ -26,30 +26,30 @@ export default class {
     )
 
     if (distance < 10) {
-      STATES.hero.move.finaldestination = undefined
+      WORLD.hero.move.finaldestination = undefined
       return
     }
 
-    STATES.hero.state.main = "forcemove"
+    WORLD.hero.state.main = "forcemove"
 
     const mousePosition = COORDINATES.mouseOfScreen()
-    mousePosition.x += STATES.hero.position.x - 960
-    mousePosition.y += STATES.hero.position.y - 540
-    STATES.hero.move.finaldestination = mousePosition
+    mousePosition.x += WORLD.hero.position.x - 960
+    mousePosition.y += WORLD.hero.position.y - 540
+    WORLD.hero.move.finaldestination = mousePosition
   }
 
   private updateGamepadMoveInfo() {
     if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
       //
       if (WORLD.loop.elapsedMS > this.startMoveToAttackMS + 1000) {
-        STATES.hero.target.attacked = false
+        WORLD.hero.target.attacked = false
       }
       this.gamepadMoved = true
       //
     } else {
       // first time not moved
       if (this.gamepadMoved && INPUT.lastActiveDevice === "gamepad") {
-        const hero = STATES.hero
+        const hero = WORLD.hero
         hero.move.finaldestination.x = hero.position.x
         hero.move.finaldestination.y = hero.position.y
       }
@@ -65,9 +65,9 @@ export default class {
   }
 
   private internalGamepadMove(otherRatio = 1) {
-    if (!STATES.hero) return
+    if (!WORLD.hero) return
 
-    const speedPerTick = LIB.speedPerTick(STATES.hero)
+    const speedPerTick = LIB.speedPerTick(WORLD.hero)
 
     const axesVector = COORDINATES.vector(
       INPUT.gamepad.axes[0],
@@ -82,7 +82,7 @@ export default class {
       speedPerTick * WORLD.loop.averageFPS * 2
     )
 
-    const hero = STATES.hero
+    const hero = WORLD.hero
     const possibleDestinationX =
       hero.position.x + vectorToFinalDestination.x * ratio * otherRatio
     const possibleDestinationY =
@@ -104,13 +104,13 @@ export default class {
     hero.move.finaldestination.x = possibleDestinationX
     hero.move.finaldestination.y = possibleDestinationY
 
-    STATES.hero.state.main = "forcemove"
+    WORLD.hero.state.main = "forcemove"
     this.forceMove = true
     this.gamepadMoved = true
   }
 
   move(entity: Entity) {
-    // if (id === STATES.heroId && this.gamepadMoved) return
+    // if (id === WORLD.heroId && this.gamepadMoved) return
     if (
       !entity.move ||
       !entity.move.destination ||
@@ -155,7 +155,7 @@ export default class {
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
 
-    if (STATES.hero.target.attacked) ratio = 1
+    if (WORLD.hero.target.attacked) ratio = 1
 
     const angle = displacement.angle
     const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)

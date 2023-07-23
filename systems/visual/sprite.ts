@@ -3,7 +3,7 @@ export default class {
   process() {
     // no point to update animations if hero for some reason is not chosen
     // it servers as a camera target
-    if (!STATES.hero) return
+    if (!WORLD.hero) return
 
     WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
@@ -14,8 +14,8 @@ export default class {
       if (!container) return
 
       // update container coordinates
-      container.x = entity.position.x - STATES.hero.position.x + 960
-      container.y = entity.position.y - STATES.hero.position.y + 540
+      container.x = entity.position.x - WORLD.hero.position.x + 960
+      container.y = entity.position.y - WORLD.hero.position.y + 540
 
       // update visibility of animations
       if (entity.move) {
@@ -129,7 +129,7 @@ export default class {
     if (!entity.move || !entity.attack) return
     if (entity.state.main !== "attack") return
 
-    if (id === STATES.heroId) {
+    if (id === WORLD.heroId) {
       entity.sprite.animation = "sword-attack"
     } else {
       entity.sprite.animation = "attack"

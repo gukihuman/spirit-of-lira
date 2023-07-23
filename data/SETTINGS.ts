@@ -37,7 +37,7 @@ class settings {
       EVENTS.emit("gamepadMove")
     }
 
-    if (STATES.inputFocus) return
+    if (INTERFACE.inputFocus) return
 
     _.forEach(this.inputEvents, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {

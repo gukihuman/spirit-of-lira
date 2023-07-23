@@ -54,8 +54,8 @@ class Coordinates {
     const mousePosition = COORDINATES.mouseOfScreen()
 
     return this.vector(
-      (mousePosition.x += STATES.hero.position.x - 960),
-      (mousePosition.y += STATES.hero.position.y - 540)
+      (mousePosition.x += WORLD.hero.position.x - 960),
+      (mousePosition.y += WORLD.hero.position.y - 540)
     )
   }
 

@@ -5,8 +5,8 @@ class Remote {
 
   init() {
     //
-    this.systemMessage = STATES.hero.language.system
-    this.clarification = STATES.hero.language.clarification
+    this.systemMessage = WORLD.hero.language.system
+    this.clarification = WORLD.hero.language.clarification
     this.data = {
       model: "gpt-3.5-turbo",
       messages: [

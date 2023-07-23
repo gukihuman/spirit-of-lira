@@ -27,8 +27,8 @@ export default defineNuxtPlugin(async (app) => {
       LIB.logWarning("hero is not created (starter)")
       return
     }
-    STATES.hero = WORLD.entities.get(heroId)
-    STATES.heroId = heroId
+    WORLD.hero = WORLD.entities.get(heroId)
+    WORLD.heroId = heroId
 
     await ENTITY_FACTORY.create("mousepoint")
 

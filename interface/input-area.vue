@@ -2,13 +2,13 @@
 div(
   ref="background"
   class="absolute bottom-[150px] left-[400px] rounded-3xl opacity-50 border-4 border-sand-700 bg-gradient-to-t from-sand-400 to-sand-200 transition"
-  :class="{ 'opacity-100': STATES.inputFocus }"
+  :class="{ 'opacity-100': INTERFACE.inputFocus }"
   )
   textarea(
     ref="inputArea"
     @input="updateInputSize()"
-    @focus="STATES.inputFocus = true"
-    @blur="STATES.inputFocus = false"
+    @focus="INTERFACE.inputFocus = true"
+    @blur="INTERFACE.inputFocus = false"
     placeholder="..."
     class="text-[26px] bg-sand-100 rounded-3xl focus:outline-none border-[6px] border-sand-300 px-[16px] pb-[16px] pt-[8px] resize-none time-100 ease-in-out text-bottom selected-text text-sand-700 leading-[1.2] font-semibold mt-[6px] mb-[2px] mx-[10px] shadow-md placeholder:text-sand-500 selection:bg-sand-700 selection:text-sand-100"
   )

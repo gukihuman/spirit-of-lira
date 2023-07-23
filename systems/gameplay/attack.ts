@@ -23,7 +23,7 @@ export default class {
 
       if (entity.target.attacked) {
         if (
-          STATES.heroId === id &&
+          WORLD.heroId === id &&
           WORLD.loop.elapsedMS <
             WORLD.systems.move.startMoveToAttackMS + 1000 &&
           WORLD.systems.move.gamepadMoved
@@ -75,7 +75,7 @@ export default class {
         if (
           entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
             WORLD.loop.elapsedMS &&
-          id === STATES.heroId
+          id === WORLD.heroId
         ) {
           //
           // get animation instead of declare cuz it should already
@@ -105,7 +105,7 @@ export default class {
     // set up animation speed
     if (!entity.attack) return
 
-    if (id === STATES.heroId) {
+    if (id === WORLD.heroId) {
       //
       // 📜 make attack animation dynamic depend on weapon or skill
       const sprite = WORLD.getSprite(id, "sword-attack")

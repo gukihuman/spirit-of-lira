@@ -8,10 +8,10 @@ export default class {
         EVENTS.emit("collision")
       }
       if (INPUT.keyboard.justPressed.includes("l")) {
-        console.log(STATES.hover)
+        console.log(WORLD.hover)
       }
       if (INPUT.keyboard.justPressed.includes("m")) {
-        STATES.input = !STATES.input
+        INTERFACE.input = !INTERFACE.input
       }
     }
   }

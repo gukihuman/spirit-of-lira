@@ -3,7 +3,7 @@
 div(
   ref="viewport"
   class="absolute transition time-200"
-  :class="{ 'blur': STATES.inventory }"
+  :class="{ 'blur': INTERFACE.inventory }"
 )
 
 </template>

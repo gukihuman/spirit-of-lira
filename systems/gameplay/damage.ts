@@ -15,14 +15,14 @@ export default class {
         entity.move.finaldestination
       )
       let angle = displacement.angle
-      if (id === STATES.heroId) {
+      if (id === WORLD.heroId) {
         EFFECT_FACTORY.create("sword-hit", targetEntityId, angle)
       }
 
       // attack back
       if (
         targetEntity.state.main !== "attack" &&
-        targetEntityId !== STATES.heroId
+        targetEntityId !== WORLD.heroId
       ) {
         targetEntity.state.main = "attack"
         targetEntity.target.id = id
