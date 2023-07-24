@@ -4,10 +4,7 @@ export default class {
   framesToValidate = 5
 
   process() {
-    // no point to update animations if hero for some reason is not chosen
-    // it servers as a camera target
-    if (!WORLD.hero) return
-
+    //
     WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
 
@@ -24,7 +21,7 @@ export default class {
       // update visibility of animations
       if (entity.move) {
         WORLD.getLayer(id, "middle")?.children.forEach((child) => {
-          if (child.name === entity.sprite.resolved) child.visible = true
+          if (child.name === entity.sprite.active) child.visible = true
           else child.visible = false
         })
       } else {
@@ -41,8 +38,8 @@ export default class {
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, sprite: string) => {
           if (
-            entity.sprite.resolved === sprite &&
-            lastEntity.sprite.resolved !== sprite
+            entity.sprite.active === sprite &&
+            lastEntity.sprite.active !== sprite
           ) {
             WORLD.getSprite(id, sprite)?.gotoAndPlay(frame)
           }
@@ -55,7 +52,7 @@ export default class {
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
-    if (entity.sprite.resolved !== lastEntity.sprite.resolved) {
+    if (entity.sprite.active !== lastEntity.sprite.active) {
       //
       WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
     }
@@ -65,10 +62,10 @@ export default class {
 
     if (
       entity.sprite.leaveAnimationConditions &&
-      entity.state.resolved !== "attack"
+      entity.state.active !== "attack"
     ) {
       if (
-        entity.sprite.resolved === "move" &&
+        entity.sprite.active === "move" &&
         !entity.sprite.leaveAnimationConditions.move(entity, id)
       )
         return
@@ -76,23 +73,16 @@ export default class {
 
     this.checkDeath(entity, id)
 
-    if (entity.state.resolved !== "dead") {
+    if (entity.state.active !== "dead") {
       this.checkMove(entity, id)
       this.checkAttack(entity, id)
     }
   }
-
   private checkDeath(entity, id) {
-    if (entity.state.resolved === "dead") entity.sprite.resolved = "death"
+    if (entity.state.active === "dead") entity.sprite.active = "death"
   }
-
   private checkMove(entity, id) {
-    if (!entity.move || entity.state.resolved === "attack") return
-
-    // 📜 maybe do something like
-    // dont update animations on fps-dropping iterations
-    // const fps = WORLD.app?.ticker.FPS
-    // if (fps && fps / WORLD.loop.fps < 0.3) return
+    if (!entity.move || entity.state.active === "attack") return
 
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
@@ -126,7 +116,7 @@ export default class {
   private checkAttack(entity, id) {
     //
     if (!entity.move || !entity.attack) return
-    if (entity.state.resolved !== "attack") return
+    if (entity.state.active !== "attack") return
 
     if (id === WORLD.heroId) {
       this.setSprite(entity, id, "sword-attack")
@@ -141,16 +131,15 @@ export default class {
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
-    entity.sprite.onValidating = sprite
+    entity.sprite.onValidation = sprite
 
-    if (lastEntity.sprite.onValidating !== entity.sprite.onValidating) {
+    if (lastEntity.sprite.onValidation !== entity.sprite.onValidation) {
       entity.sprite.framesValidated = 0
       return
     }
-
     if (lastEntity.sprite.framesValidated >= this.framesToValidate) {
       //
-      entity.sprite.resolved = sprite
+      entity.sprite.active = sprite
       return
     }
     entity.sprite.framesValidated++

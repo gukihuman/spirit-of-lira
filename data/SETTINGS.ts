@@ -34,7 +34,7 @@ class settings {
 
   emitEvents() {
     if (LIB.deadZoneExceed(this.inputOther.gamepad.deadZone)) {
-      EVENTS.emit("gamepadMove")
+      EVENTS.emitSingle("gamepadMove")
     }
 
     if (INTERFACE.inputFocus) return
@@ -42,7 +42,7 @@ class settings {
     _.forEach(this.inputEvents, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
         if (INPUT[device].justPressed.includes(button)) {
-          EVENTS.emit(setting)
+          EVENTS.emitSingle(setting)
         }
       })
     })
@@ -54,7 +54,7 @@ class settings {
         this.inputEvents.keyboard.mouseMoveOrAttack
       )
     ) {
-      EVENTS.emit("mouseMove")
+      EVENTS.emitSingle("mouseMove")
       GLOBAL.autoMouseMove = false
     }
   }

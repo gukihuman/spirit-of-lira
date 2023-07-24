@@ -15,7 +15,7 @@ export default class {
       this.move(entity)
     })
 
-    if (GLOBAL.autoMouseMove) EVENTS.emit("mouseMove")
+    if (GLOBAL.autoMouseMove) EVENTS.emitSingle("mouseMove")
     this.updateGamepadMoveInfo()
   }
 
@@ -34,7 +34,7 @@ export default class {
       return
     }
 
-    WORLD.hero.state.resolved = "forcemove"
+    WORLD.hero.state.forcemove = true
 
     const mousePosition = COORDINATES.mouseOfScreen()
     mousePosition.x += WORLD.hero.position.x - 960
@@ -108,7 +108,7 @@ export default class {
     hero.move.finaldestination.x = possibleDestinationX
     hero.move.finaldestination.y = possibleDestinationY
 
-    WORLD.hero.state.resolved = "forcemove"
+    WORLD.hero.state.active = "forcemove"
     this.forceMove = true
     this.gamepadMoved = true
   }
@@ -120,13 +120,13 @@ export default class {
       !entity.move.finaldestination
     )
       return
-    if (entity.state.resolved === "attack" || entity.state.resolved === "dead")
+    if (entity.state.active === "attack" || entity.state.active === "dead")
       return
 
-    if (entity.state.resolved === "forcemove") this.forceMove = true
+    if (entity.state.active === "forcemove") this.forceMove = true
     else this.forceMove = false
 
-    entity.state.resolved = "idle"
+    entity.state.active = "idle"
 
     const speedPerTick = COORDINATES.speedPerTick(entity)
 
@@ -172,8 +172,8 @@ export default class {
     const nextX = position.x + velocity.x * ratio
     const nextY = position.y + velocity.y * ratio
 
-    if (this.forceMove && this.gamepadMoved) entity.state.resolved = "forcemove"
-    else entity.state.resolved = "move"
+    if (this.forceMove && this.gamepadMoved) entity.state.active = "forcemove"
+    else entity.state.active = "move"
 
     if (!GLOBAL.collision) {
       position.x = nextX
@@ -193,7 +193,7 @@ export default class {
         position.y = nextY
         return
       }
-      entity.state.resolved = "idle"
+      entity.state.active = "idle"
       return
     }
   }

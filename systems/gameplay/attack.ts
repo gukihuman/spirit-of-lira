@@ -12,7 +12,7 @@ export default class {
 
       const targetEntity = WORLD.entities.get(entity.target.id)
       if (!targetEntity) {
-        entity.state.resolved = "idle"
+        entity.state.active = "idle"
         return
       }
 
@@ -38,21 +38,21 @@ export default class {
       const delay = entity.attack.delay * 1000
 
       if (
-        entity.state.resolved === "attack" &&
+        entity.state.active === "attack" &&
         entity.attack.startMS + entity.attack.speed * 1000 <=
           WORLD.loop.elapsedMS
       ) {
-        if (targetEntity.state.resolved !== "dead") {
-          entity.state.resolved = "idle"
+        if (targetEntity.state.active !== "dead") {
+          entity.state.active = "idle"
           WORLD.systems.move.process()
         }
 
-        entity.state.resolved = "idle"
+        entity.state.active = "idle"
         entity.damageDone = false
       }
 
       if (
-        entity.state.resolved === "attack" &&
+        entity.state.active === "attack" &&
         entity.attack.startMS - delay + entity.attack.speed * 1000 <=
           WORLD.loop.elapsedMS &&
         !entity.damageDone
@@ -67,8 +67,8 @@ export default class {
 
       const lastEntity = LAST_WORLD.entities.get(id)
       if (
-        entity.state.resolved !== "attack" &&
-        lastEntity.state.resolved === "attack"
+        entity.state.active !== "attack" &&
+        lastEntity.state.active === "attack"
       ) {
         this.initialAttack = false
 
@@ -80,20 +80,20 @@ export default class {
           //
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
-          let sprite = WORLD.getSprite(id, entity.sprite.resolved)
-          let startFrame = entity.sprite.firstFrames[entity.sprite.resolved]
+          let sprite = WORLD.getSprite(id, entity.sprite.active)
+          let startFrame = entity.sprite.firstFrames[entity.sprite.active]
           sprite?.gotoAndPlay(startFrame)
           this.initialAttack = true
         }
       }
 
       if (
-        entity.state.resolved !== "attack" &&
-        entity.state.resolved !== "forcemove"
+        entity.state.active !== "attack" &&
+        entity.state.active !== "forcemove"
       ) {
         if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
           entity.attack.startMS = WORLD.loop.elapsedMS
-          entity.state.resolved = "attack"
+          entity.state.active = "attack"
 
           if (this.initialAttack) {
             entity.attack.initialStartMS = WORLD.loop.elapsedMS

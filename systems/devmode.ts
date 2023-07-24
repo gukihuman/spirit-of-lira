@@ -2,10 +2,10 @@ export default class {
   process() {
     if (GLOBAL.devMode) {
       if (INPUT.keyboard.justPressed.includes("z")) {
-        EVENTS.emit("collisionEdit")
+        EVENTS.emitSingle("collisionEdit")
       }
       if (INPUT.keyboard.justPressed.includes("k")) {
-        EVENTS.emit("collision")
+        EVENTS.emitSingle("collision")
       }
       if (INPUT.keyboard.justPressed.includes("l")) {
         console.log(WORLD.hover)

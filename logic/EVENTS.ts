@@ -1,6 +1,59 @@
-class Signal {
-  active: string[] = []
-  logic: { [signal: string]: () => void } = {
+//
+class Events {
+  //
+  active: [string, AnyObject][] = []
+  activeSingle: string[] = []
+
+  add(event: string, fn: (options: AnyObject) => void) {
+    //
+    this.list[event] = fn
+  }
+  addSingle(event: string, fn: () => void) {
+    //
+    this.listOfSingle[event] = fn
+  }
+  emit(event: string, options: AnyObject) {
+    //
+    this.active.push([event, options])
+  }
+  emitSingle(event: string) {
+    //
+    if (this.activeSingle.includes(event)) return
+
+    this.activeSingle.push(event)
+  }
+  init() {
+    //
+    WORLD.loop.add(() => {
+      //
+      this.executeEvents()
+      this.active = []
+      this.activeSingle = []
+      //
+    }, "EVENTS")
+  }
+  private executeEvents() {
+    this.active.forEach((eventTuple) => {
+      //
+      const event = eventTuple[0]
+      const options = eventTuple[1]
+
+      if (!this.list[event]) {
+        LIB.logWarning(`Unknown event: "${event}" (EVENTS)`)
+        return
+      }
+      this.list[event](options)
+    })
+    this.activeSingle.forEach((event) => {
+      if (!this.listOfSingle[event]) {
+        LIB.logWarning(`Unknown event: "${event}" (EVENTS)`)
+        return
+      }
+      this.listOfSingle[event]()
+    })
+  }
+  list: { [event: string]: (AnyObject) => void } = {}
+  listOfSingle: { [event: string]: () => void } = {
     collision() {
       GLOBAL.collision = !GLOBAL.collision
     },
@@ -61,7 +114,7 @@ class Signal {
         hero.target.entity.position.y === hero.move.finaldestination.y
       ) {
         hero.move.finaldestination = undefined
-        hero.state.resolved = "idle"
+        hero.state.activeSingle = "idle"
       }
       if (!hero.target.locked) {
         hero.target.id = undefined
@@ -80,27 +133,6 @@ class Signal {
       REMOTE.sendInput()
     },
   }
-  private runLogic() {
-    this.active.forEach((signal) => {
-      if (!this.logic[signal]) {
-        LIB.logWarning(`Unknown signal: "${signal}" (EVENTS)`)
-        return
-      }
-      this.logic[signal]()
-    })
-  }
-
-  emit(signal: string) {
-    if (this.active.includes(signal)) return
-    this.active.push(signal)
-  }
-
-  init() {
-    WORLD.loop.add(() => {
-      this.runLogic()
-      this.active = []
-    }, "EVENTS")
-  }
 }
 
-export const EVENTS = new Signal()
+export const EVENTS = new Events()

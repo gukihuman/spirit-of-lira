@@ -1,5 +1,5 @@
 export default {
-  resolved: "idle",
+  active: "idle",
 
   idle: true,
   move: false,
@@ -8,6 +8,5 @@ export default {
   attack: false,
   dead: false,
 
-  // 🔧
   lastChangeMS: 0,
 }

@@ -25,7 +25,7 @@ const background: any = ref(null)
 const inputArea = ref(null)
 
 const sendInput = () => {
-  EVENTS.emit("sendInput")
+  EVENTS.emitSingle("sendInput")
 }
 
 const maxInputWidth = 1052
