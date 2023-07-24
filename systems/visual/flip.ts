@@ -2,7 +2,7 @@ export default class {
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
-      if (WORLD.loop.elapsedMS - entity.sprite.flipMS < 200) return
+      if (WORLD.loop.elapsedMS - entity.sprite.lastFlipMS < 200) return
 
       if (!LAST_WORLD.entities.get(id)) return
       const previousX = LAST_WORLD.entities.get(id).position.x
@@ -19,10 +19,10 @@ export default class {
       // move
       if (entity.position.x < previousX) {
         containers.forEach((container) => (container.scale.x = -1))
-        entity.sprite.flipMS = WORLD.loop.elapsedMS
+        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
       } else if (entity.position.x > previousX) {
         containers.forEach((container) => (container.scale.x = 1))
-        entity.sprite.flipMS = WORLD.loop.elapsedMS
+        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
       }
 
       // attack target
@@ -30,10 +30,10 @@ export default class {
         const targetEntity = WORLD.entities.get(entity.target.id)
         if (targetEntity.position.x < entity.position.x) {
           containers.forEach((container) => (container.scale.x = -1))
-          entity.sprite.flipMS = WORLD.loop.elapsedMS
+          entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
         } else if (targetEntity.position.x > entity.position.x) {
           containers.forEach((container) => (container.scale.x = 1))
-          entity.sprite.flipMS = WORLD.loop.elapsedMS
+          entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
         }
       }
     })

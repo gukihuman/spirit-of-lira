@@ -6,16 +6,13 @@ export default class {
   itemSprites: AnimatedSprite[] = []
 
   process() {
-    const heroSprite = WORLD.getSprite(
-      WORLD.heroId,
-      WORLD.hero.sprite.animation
-    )
+    const heroSprite = WORLD.getSprite(WORLD.heroId, WORLD.hero.sprite.resolved)
     if (!heroSprite) return
 
     if (
-      WORLD.hero.sprite.animation.includes("attack") ||
-      (!WORLD.hero.sprite.animation.includes("attack") &&
-        LAST_WORLD.hero.sprite.animation.includes("attack"))
+      WORLD.hero.sprite.resolved.includes("attack") ||
+      (!WORLD.hero.sprite.resolved.includes("attack") &&
+        LAST_WORLD.hero.sprite.resolved.includes("attack"))
     ) {
       this.itemSprites.forEach((sprite) => {
         //
@@ -78,7 +75,7 @@ export default class {
     await Promise.all(promises)
   }
   private updateVisibilityByState() {
-    const currentAnimation = WORLD.hero.sprite.animation
+    const currentAnimation = WORLD.hero.sprite.resolved
 
     // 📜 move to class scope
     const back = WORLD.getContainer(WORLD.heroId)?.children[0] as Container

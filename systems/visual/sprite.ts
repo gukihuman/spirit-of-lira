@@ -24,7 +24,7 @@ export default class {
       // update visibility of animations
       if (entity.move) {
         WORLD.getLayer(id, "middle")?.children.forEach((child) => {
-          if (child.name === entity.sprite.animation) child.visible = true
+          if (child.name === entity.sprite.resolved) child.visible = true
           else child.visible = false
         })
       } else {
@@ -41,8 +41,8 @@ export default class {
         if (!lastEntity) return
         _.forEach(firstFrames, (frame: number, sprite: string) => {
           if (
-            entity.sprite.animation === sprite &&
-            lastEntity.sprite.animation !== sprite
+            entity.sprite.resolved === sprite &&
+            lastEntity.sprite.resolved !== sprite
           ) {
             WORLD.getSprite(id, sprite)?.gotoAndPlay(frame)
           }
@@ -55,7 +55,7 @@ export default class {
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
-    if (entity.sprite.animation !== lastEntity.sprite.animation) {
+    if (entity.sprite.resolved !== lastEntity.sprite.resolved) {
       //
       WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
     }
@@ -63,14 +63,12 @@ export default class {
   private updateAnimation(entity, id) {
     if (!entity.move) return
 
-    if (WORLD.loop.elapsedMS - entity.sprite.animationMS < 200) return
-
     if (
       entity.sprite.leaveAnimationConditions &&
       entity.state.resolved !== "attack"
     ) {
       if (
-        entity.sprite.animation === "move" &&
+        entity.sprite.resolved === "move" &&
         !entity.sprite.leaveAnimationConditions.move(entity, id)
       )
         return
@@ -82,17 +80,10 @@ export default class {
       this.checkMove(entity, id)
       this.checkAttack(entity, id)
     }
-
-    const lastEntity = LAST_WORLD.entities.get(id)
-    if (!lastEntity) return
-
-    if (entity.sprite.animation !== lastEntity.sprite.animation) {
-      entity.sprite.animationMS = WORLD.loop.elapsedMS
-    }
   }
 
   private checkDeath(entity, id) {
-    if (entity.state.resolved === "dead") entity.sprite.animation = "death"
+    if (entity.state.resolved === "dead") entity.sprite.resolved = "death"
   }
 
   private checkMove(entity, id) {
@@ -144,28 +135,22 @@ export default class {
     }
   }
 
-  //** sets sprite if enough frames are validated */
+  /** sets sprite if enough frames are validated */
   private setSprite(entity, id, sprite: string) {
     //
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
 
-    entity.sprite.animationToValidate = sprite
+    entity.sprite.onValidating = sprite
 
-    if (
-      lastEntity.sprite.animationToValidate !==
-      entity.sprite.animationToValidate
-    ) {
+    if (lastEntity.sprite.onValidating !== entity.sprite.onValidating) {
       entity.sprite.framesValidated = 0
       return
     }
 
-    if (
-      lastEntity.sprite.framesValidated >= this.framesToValidate &&
-      sprite === entity.sprite.animationToValidate
-    ) {
+    if (lastEntity.sprite.framesValidated >= this.framesToValidate) {
       //
-      entity.sprite.animation = sprite
+      entity.sprite.resolved = sprite
       return
     }
     entity.sprite.framesValidated++
