@@ -14,6 +14,8 @@ export default class {
         entity.state.active = "forcemove"
       }
 
+      // 📜 finish state system
+
       this.resetStateConditions(entity)
       this.updateLastChangeMS(entity, id)
     })
@@ -24,7 +26,6 @@ export default class {
     entity.state.forcemove = false
     entity.state.follow = false
     entity.state.attack = false
-    entity.state.dead = false
   }
   private updateLastChangeMS(entity, id) {
     //

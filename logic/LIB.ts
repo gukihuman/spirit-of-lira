@@ -35,16 +35,6 @@ class Lib {
     })
     return clonedMap
   }
-  generateRandomString(length) {
-    let result = ""
-    for (let i = 0; i < length; i++) {
-      // Generate a random number between 0 and 9
-      const randomNumber = _.random(0, 9)
-      // Convert the number to a string and add it to the result
-      result += randomNumber.toString()
-    }
-    return result
-  }
   deadZoneExceed(deadZone: number) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]
     let moved = false
@@ -61,14 +51,23 @@ class Lib {
   sortedKeys(object) {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
+  generateRandomString(length) {
+    let result = ""
+    for (let i = 0; i < length; i++) {
+      // Generate a random number between 0 and 9
+      const randomNumber = _.random(0, 9)
+      // Convert the number to a string and add it to the result
+      result += randomNumber.toString()
+    }
+    return result
+  }
 
-  /**
-   * Wrapper for pinia IMPORTS that optionally accepts one or more watchers.
-   * @param object - state object
-   * @param args - watcher array that consist of a state property name and a handler function
-   * @returns a pinia IMPORTS with watchers and random name
-   */
+  /** transform an object into reactive pinia store, ignores but saves init */
   store(object: AnyObject) {
+    //
+    const init = object.init
+    delete object.init
+
     const storeObject: AnyObject = {}
 
     storeObject.state = defineStore(this.generateRandomString(10), {
@@ -76,8 +75,7 @@ class Lib {
     })
 
     _.forEach(object, (value, key) => {
-      if (key === "state") return
-
+      //
       Object.defineProperty(storeObject, key, {
         get: () => storeObject.state()[key],
         set: (value) => {
@@ -85,6 +83,8 @@ class Lib {
         },
       })
     })
+
+    if (init) storeObject.init = init
 
     return storeObject
   }

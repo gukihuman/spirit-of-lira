@@ -7,7 +7,14 @@ export default class {
   init() {
     if (GLOBAL.devMode) this.drawCollisionGrid()
   }
-
+  singleEvents = {
+    collision() {
+      GLOBAL.collision = !GLOBAL.collision
+    },
+    collisionEdit() {
+      GLOBAL.collisionEdit = !GLOBAL.collisionEdit
+    },
+  }
   process() {
     if (GLOBAL.collisionEdit) {
       WORLD.collision.visible = true

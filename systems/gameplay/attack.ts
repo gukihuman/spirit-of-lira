@@ -1,5 +1,18 @@
+//
 export default class {
+  //
   private initialAttack = true
+
+  singleEvents = {
+    attack() {
+      if (!WORLD.hero.target.id) return
+
+      WORLD.hero.target.attacked = true
+      WORLD.hero.target.locked = true
+
+      WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
+    },
+  }
 
   process() {
     WORLD.entities.forEach((entity, id) => {

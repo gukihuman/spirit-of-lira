@@ -7,6 +7,29 @@ export default class {
   private startMoveToAttackMS = 0
   gamepadMoved = false
 
+  singleEvents = {
+    mouseMoveOrAttack() {
+      WORLD.systems.move.mouseMove()
+
+      if (WORLD.hoverId) {
+        WORLD.hero.target.id = WORLD.hoverId
+        WORLD.hero.target.attacked = true
+        WORLD.hero.target.locked = true
+      } else {
+        WORLD.hero.target.attacked = false
+      }
+    },
+    mouseMove() {
+      WORLD.systems.move.mouseMove()
+    },
+    autoMouseMove() {
+      GLOBAL.autoMouseMove = !GLOBAL.autoMouseMove
+    },
+    gamepadMove() {
+      WORLD.systems.move.gamepadMove()
+    },
+  }
+
   process() {
     WORLD.entities.forEach((entity, id) => {
       //

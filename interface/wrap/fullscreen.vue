@@ -7,7 +7,19 @@ div(ref="fullscreen")
 <script setup lang="ts">
 //
 const fullscreen = ref(null)
+
 onMounted(() => {
+  //
   REFS.fullscreen = fullscreen
+
+  EVENTS.addSingle("fullscreen", () => {
+    //
+    GLOBAL.fullscreen = !GLOBAL.fullscreen
+    if (REFS.fullscreen && !document.fullscreenElement) {
+      REFS.fullscreen.requestFullscreen()
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen()
+    }
+  })
 })
 </script>

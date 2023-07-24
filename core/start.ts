@@ -23,6 +23,7 @@ export default defineNuxtPlugin(async (app) => {
     LAST_WORLD.init()
     SETTINGS.init()
     LOCAL.init() // local storage
+    INTERFACE.init()
 
     // hero creation
     let heroId = await ENTITY_FACTORY.create("lira")
@@ -62,9 +63,8 @@ export default defineNuxtPlugin(async (app) => {
   }
 })
 
-// 📜 implement dynamic system process, allowing adding and removing systems
-// now its just init everything at the start
 async function setupSystems() {
+  //
   const inits: Promise<void>[] = []
   const processes: { [name: string]: () => void } = {}
   const sortedPriority = LIB.sortedKeys(CONFIG.priority.systemInit)
@@ -74,9 +74,24 @@ async function setupSystems() {
     if (!systemClass) return
 
     const system = new systemClass()
+
     if (system.init) inits.push(system.init())
+
     processes[name] = () => system.process()
     WORLD.systems[name] = system
+
+    if (system.singleEvents) {
+      //
+      _.forEach(system.singleEvents, (fn, key) => {
+        EVENTS.addSingle(key, fn)
+      })
+    }
+    if (system.events) {
+      //
+      _.forEach(system.events, (fn, key) => {
+        EVENTS.add(key, fn)
+      })
+    }
   })
   await Promise.all(inits)
 

@@ -18,6 +18,8 @@ class Remote {
       temperature: 1,
       stream: false,
     }
+
+    EVENTS.addSingle("sendInput", () => REMOTE.sendInput())
   }
 
   // 📜 clean up remote functionality

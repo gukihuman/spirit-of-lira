@@ -57,6 +57,39 @@ export default class {
     }
   }
 
+  singleEvents = {
+    lockTarget() {
+      const hero = WORLD.hero
+      if (!hero.target.id) return
+
+      hero.target.locked = !hero.target.locked
+
+      // reset finaldestination if it is on the target
+      // it might be undefined with gamepad so first check if it exists
+      if (
+        hero.move.finaldestination &&
+        !hero.target.locked &&
+        hero.target.entity.position.x === hero.move.finaldestination.x &&
+        hero.target.entity.position.y === hero.move.finaldestination.y
+      ) {
+        hero.move.finaldestination = undefined
+        hero.state.activeSingle = "idle"
+      }
+      if (!hero.target.locked) {
+        hero.target.id = undefined
+        hero.target.attacked = false
+      }
+
+      // in case lock is used to lock a new target immidiately
+      // 📜 does checking target system existance is needed here?
+      if (WORLD.systems.target && INPUT.lastActiveDevice !== "gamepad") {
+        if (!WORLD.hoverId) return
+        hero.target.id = WORLD.hoverId
+        hero.target.locked = true
+      }
+    },
+  }
+
   private undefinedTarget() {
     WORLD.entities.forEach((entity) => {
       if (entity.target && !entity.target.id) {
