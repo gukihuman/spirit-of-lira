@@ -79,19 +79,6 @@ async function setupSystems() {
 
     processes[name] = () => system.process()
     WORLD.systems[name] = system
-
-    if (system.singleEvents) {
-      //
-      _.forEach(system.singleEvents, (fn, key) => {
-        EVENTS.addSingle(key, fn)
-      })
-    }
-    if (system.events) {
-      //
-      _.forEach(system.events, (fn, key) => {
-        EVENTS.add(key, fn)
-      })
-    }
   })
   await Promise.all(inits)
 

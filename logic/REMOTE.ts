@@ -19,7 +19,7 @@ class Remote {
       stream: false,
     }
 
-    EVENTS.addSingle("sendInput", () => REMOTE.sendInput())
+    EVENTS.onSingle("sendInput", () => REMOTE.sendInput())
   }
 
   // 📜 clean up remote functionality

@@ -1,17 +1,18 @@
 //
 export default class {
   //
-  private initialAttack = true
+  private firstAttack = true
 
-  singleEvents = {
-    attack() {
+  init() {
+    EVENTS.onSingle("attack", () => {
+      //
       if (!WORLD.hero.target.id) return
 
       WORLD.hero.target.attacked = true
       WORLD.hero.target.locked = true
 
       WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
-    },
+    })
   }
 
   process() {
@@ -19,7 +20,7 @@ export default class {
       if (!entity.move || !entity.size || !entity.target.id) {
         return
       }
-      this.initialAttack = true
+      this.firstAttack = true
 
       this.updateAnimationSpeed(entity, id)
 
@@ -83,7 +84,7 @@ export default class {
         entity.state.active !== "attack" &&
         lastEntity.state.active === "attack"
       ) {
-        this.initialAttack = false
+        this.firstAttack = false
 
         if (
           entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
@@ -96,7 +97,7 @@ export default class {
           let sprite = WORLD.getSprite(id, entity.sprite.active)
           let startFrame = entity.sprite.firstFrames[entity.sprite.active]
           sprite?.gotoAndPlay(startFrame)
-          this.initialAttack = true
+          this.firstAttack = true
         }
       }
 
@@ -108,7 +109,7 @@ export default class {
           entity.attack.startMS = WORLD.loop.elapsedMS
           entity.state.active = "attack"
 
-          if (this.initialAttack) {
+          if (this.firstAttack) {
             entity.attack.initialStartMS = WORLD.loop.elapsedMS
           }
         }

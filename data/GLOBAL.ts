@@ -5,7 +5,7 @@ const global = {
   fullscreen: false,
   loadingScreen: true,
   devMode: false,
-  collisionEdit: false,
+  editMode: false,
   collision: true,
   firstMouseMove: false,
   autoMouseMove: false,

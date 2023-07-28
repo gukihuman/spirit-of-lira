@@ -7,8 +7,8 @@ export default class {
   private startMoveToAttackMS = 0
   gamepadMoved = false
 
-  singleEvents = {
-    mouseMoveOrAttack() {
+  init() {
+    EVENTS.onSingle("mouseMoveOrAttack", () => {
       WORLD.systems.move.mouseMove()
 
       if (WORLD.hoverId) {
@@ -18,16 +18,16 @@ export default class {
       } else {
         WORLD.hero.target.attacked = false
       }
-    },
-    mouseMove() {
+    })
+    EVENTS.onSingle("mouseMove", () => {
       WORLD.systems.move.mouseMove()
-    },
-    autoMouseMove() {
+    })
+    EVENTS.onSingle("autoMouseMove", () => {
       GLOBAL.autoMouseMove = !GLOBAL.autoMouseMove
-    },
-    gamepadMove() {
+    })
+    EVENTS.onSingle("gamepadMove", () => {
       WORLD.systems.move.gamepadMove()
-    },
+    })
   }
 
   process() {

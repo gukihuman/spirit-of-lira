@@ -7,4 +7,5 @@ export default {
 
   // replace with attack delay state
   damageDone: true,
+  startDelayMS: 0,
 }

@@ -9,7 +9,7 @@ const inter = {
   targetHealth: 0,
 
   init() {
-    EVENTS.addSingle("inventory", () => {
+    EVENTS.onSingle("toggleInventory", () => {
       this.inventory = !this.inventory
     })
   },

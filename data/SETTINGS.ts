@@ -4,7 +4,7 @@ class settings {
     keyboard: {
       mouseMoveOrAttack: "o",
       autoMouseMove: "e",
-      inventory: "i",
+      toggleInventory: "i",
       fullscreen: "f",
       sendInput: "Enter",
       lockTarget: "u",
@@ -16,7 +16,7 @@ class settings {
     gamepad: {
       attack: "A",
       fullscreen: "Menu",
-      inventory: "Start",
+      toggleInventory: "Start",
       lockTarget: "RT",
     },
   }

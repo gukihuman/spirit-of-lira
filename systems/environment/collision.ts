@@ -6,17 +6,16 @@ export default class {
 
   init() {
     if (GLOBAL.devMode) this.drawCollisionGrid()
-  }
-  singleEvents = {
-    collision() {
+
+    EVENTS.onSingle("toggleCollision", () => {
       GLOBAL.collision = !GLOBAL.collision
-    },
-    collisionEdit() {
-      GLOBAL.collisionEdit = !GLOBAL.collisionEdit
-    },
+    })
+    EVENTS.onSingle("toggleEditMode", () => {
+      GLOBAL.editMode = !GLOBAL.editMode
+    })
   }
   process() {
-    if (GLOBAL.collisionEdit) {
+    if (GLOBAL.editMode) {
       WORLD.collision.visible = true
       this.updateCollisionArray()
       this.updateCollisionGrid()
