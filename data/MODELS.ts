@@ -1,8 +1,8 @@
 class Models {
   //
   // auto-imported from corresponding folders with the same names
-  entities: Map<string, AnyObject> = new Map()
-  components: Map<string, AnyObject> = new Map()
-  systems: Map<string, any> = new Map() // classes
+  entities: AnyObject = {}
+  components: AnyObject = {}
+  systems: AnyObject = {} // values are classes
 }
 export const MODELS = new Models()

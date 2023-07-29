@@ -3,7 +3,7 @@ class EntityFactory {
 
   /**  @returns promise of entity id or undefined */
   async create(name: string, components?: { [key: string]: any }) {
-    const entity = _.cloneDeep(MODELS.entities.get(name))
+    const entity = _.cloneDeep(MODELS.entities[name])
     if (!entity) {
       LIB.logWarning(`"${name}" not found (ENTITY_FACTORY)`)
       return
@@ -30,7 +30,7 @@ class EntityFactory {
 
     const promises: Promise<void>[] = []
     sortedPriority.forEach((name) => {
-      const value = MODELS.components.get(name)
+      const value = MODELS.components[name]
       if (!value) return
 
       // entity model has this component or component is auto injected
@@ -59,7 +59,7 @@ class EntityFactory {
       value.depend.forEach((dependName) => {
         if (entity[dependName]) return
 
-        const dependValue = MODELS.components.get(dependName)
+        const dependValue = MODELS.components[dependName]
         if (!dependValue) {
           LIB.logWarning(
             `"${dependName}" as a "${name}" dependency is not found (ENTITY_FACTORY)`
@@ -81,7 +81,7 @@ class EntityFactory {
       value.trigger.forEach((triggerName) => {
         if (entity[triggerName]) return
 
-        const triggerValue = MODELS.components.get(triggerName)
+        const triggerValue = MODELS.components[triggerName]
         if (!triggerValue) {
           LIB.logWarning(
             `"${triggerName}" as a "${name}" trigger is not found (ENTITY_FACTORY)`

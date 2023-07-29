@@ -9,7 +9,7 @@ export default {
         return WORLD.getSprite(id, "move")?.currentFrame === 0
       },
     },
-    firstFrames: { attack: 18 },
+    startFrames: { attack: 18 },
   },
   move: {
     speed: 8,

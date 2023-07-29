@@ -95,7 +95,9 @@ export default class {
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
           let sprite = WORLD.getSprite(id, entity.sprite.active)
-          let startFrame = entity.sprite.firstFrames[entity.sprite.active]
+          let startFrame = entity.sprite.startFrames[entity.sprite.active]
+          // console.log(startFrame)
+          // if (!startFrame) startFrame = 0
           sprite?.gotoAndPlay(startFrame)
           this.firstAttack = true
         }

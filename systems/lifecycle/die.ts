@@ -17,21 +17,21 @@ export default class {
         const middle = WORLD.getLayer(id, "middle")
         const back = WORLD.getLayer(id, "back")
         if (!middle || !back) return
-        if (entity.sprite.fade) {
-          const timeToRemove =
-            entity.time.deathTimerStartMS +
-            entity.time.durationMS -
-            WORLD.loop.elapsedMS
-          middle.alpha = timeToRemove / 500
 
-          if (timeToRemove < 500) {
-            // 📜 add support for higher fps, this works only for 60
-            entity.position.y += 0.5
-          }
+        // fade
+        const timeToRemove =
+          entity.time.deathTimerStartMS +
+          entity.time.durationMS -
+          WORLD.loop.elapsedMS
+        middle.alpha = timeToRemove / 500
 
-          // shadow  handler, 0.08 is defaul
-          back.alpha = (timeToRemove / 500) * 0.08
+        if (timeToRemove < 500) {
+          // 📜 add support for higher fps, this works only for 60
+          entity.position.y += 0.5
         }
+
+        // shadow  handler, 0.08 is defaul
+        back.alpha = (timeToRemove / 500) * 0.08
       }
     })
   }

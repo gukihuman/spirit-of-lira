@@ -1,6 +1,11 @@
 export default {
   position: {},
-  sprite: { parent: "ground", initial: { randomFlip: false } },
+  sprite: {
+    initial: {
+      parent: "ground",
+      randomFlip: false,
+    },
+  },
 
   process(entity, id) {
     let position = entity.position
@@ -24,23 +29,6 @@ export default {
       const container = WORLD.getContainer(id)
       if (!container) return
 
-      // 📜 add to preload filters
-      // container.filters = [
-      //   new PIXI_FILTERS.AdjustmentFilter({
-      //     red: 1.4,
-      //     saturation: 0.9,
-      //     brightness: 0.7,
-      //   }),
-      // ]
-      // container.filters = [
-      //   new PIXI_FILTERS.HslAdjustmentFilter({
-      //     hue: 20,
-      //     lightness: 0.3,
-      //   }),
-      // ]
-      // setTimeout(() => {
-      //   container.filters = []
-      // }, 0)
       return
     }
 

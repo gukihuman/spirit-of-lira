@@ -4,7 +4,7 @@ export default class {
 
   private locationPopulation = {
     greenForestChunks: {
-      bunbo: 1,
+      bunbo: 3,
     },
   }
 

@@ -15,7 +15,7 @@ export default {
     damage: 28,
   },
   sprite: {
-    firstFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
+    startFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
   },
   attributes: {
     health: 100,

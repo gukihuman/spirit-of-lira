@@ -11,6 +11,11 @@ export const PIXI_FILTERS = pixiFilters
 import lodash from "lodash"
 export const _ = lodash
 
+function getFileName(path) {
+  const match = path.match(/\/([^/]+)\.ts$/)
+  if (!match) return
+  return `${_.toLower(match[1])}`
+}
 // fill storage with data from entities/components/systems folders
 // as well as webp and json from assets folder
 export default defineNuxtPlugin(async () => {
@@ -18,42 +23,34 @@ export default defineNuxtPlugin(async () => {
   const entities = import.meta.glob("@/entities/**")
   for (const path in entities) {
     //
-    // name of the file
-    const match = path.match(/\/([^/]+)\.ts$/)
-    if (!match) return
-    const name = `${_.toLower(match[1])}`
+    const name = getFileName(path)
+    if (!name) return
 
     const entity = await entities[path]()
-    MODELS.entities.set(name, entity.default)
+    MODELS.entities[name] = entity.default
     entity.default.name = name
   }
-
   const components = import.meta.glob("@/components/**")
   for (const path in components) {
     //
-    // name of the file
-    const match = path.match(/\/([^/]+)\.ts$/)
-    if (!match) return
-    const name = `${_.toLower(match[1])}`
+    const name = getFileName(path)
+    if (!name) return
 
     const component = await components[path]()
-    MODELS.components.set(name, component.default)
+    MODELS.components[name] = component.default
   }
-
   const systems = import.meta.glob("@/systems/**")
   for (const path in systems) {
     const system = await systems[path]()
     //
-    // name of the file
     const match = path.match(/\/([^/]+)\.ts$/)
     if (!match) return
     const name = `${_.toLower(match[1])}`
 
     // here name is parsed from name of the class by using build-in name prop
     // const name = `${_.toLower(system.default.name)}`
-    MODELS.systems.set(name, system.default)
+    MODELS.systems[name] = system.default
   }
-
   const webps = import.meta.glob("@/assets/**/*.webp")
   for (const path in webps) {
     const webp = await webps[path]()
@@ -69,7 +66,6 @@ export default defineNuxtPlugin(async () => {
     name = name[0].toLowerCase()
     ASSETS.webps.set(name, webp.default)
   }
-
   const jsons = import.meta.glob("@/assets/**/*.json")
   for (const path in jsons) {
     if (path.includes("miscellaneous")) continue
@@ -85,5 +81,24 @@ export default defineNuxtPlugin(async () => {
     if (ASSETS.webps.has(name)) json.default.meta.image = ASSETS.webps.get(name)
 
     ASSETS.jsons.set(name, json.default)
+  }
+  // items
+  const weapons = import.meta.glob("@/data/items/weapons/**")
+  for (const path in weapons) {
+    //
+    const name = getFileName(path)
+    if (!name) return
+
+    const item = await weapons[path]()
+    ITEMS.weapons[name] = item.default
+  }
+  const clothes = import.meta.glob("@/data/items/weapons/**")
+  for (const path in clothes) {
+    //
+    const name = getFileName(path)
+    if (!name) return
+
+    const cloth = await clothes[path]()
+    ITEMS.clothes[name] = cloth.default
   }
 })
