@@ -5,7 +5,7 @@ class settings {
       mouseMoveOrAttack: "o",
       autoMouseMove: "e",
       toggleInventory: "i",
-      fullscreen: "f",
+      toggleFullscreen: "f",
       sendInput: "Enter",
       lockTarget: "u",
     },
@@ -15,7 +15,7 @@ class settings {
     },
     gamepad: {
       attack: "A",
-      fullscreen: "Menu",
+      toggleFullscreen: "Menu",
       toggleInventory: "Start",
       lockTarget: "RT",
     },

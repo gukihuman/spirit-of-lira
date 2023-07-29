@@ -1,8 +1,9 @@
 //
 class Events {
   //
-  list: { [event: string]: ((AnyObject) => void) | undefined } = {
-    damage: undefined,
+  list: { [event: string]: Array<(AnyObject) => void> } = {
+    damage: [],
+    entityCreated: [],
   }
   listOfSingle: { [event: string]: Array<() => void> } = {
     toggleInventory: [],
@@ -31,14 +32,16 @@ class Events {
       //
     }, "EVENTS")
   }
-  /** Declare logic of event once. Function must have options argument. If options not required, use onSingle instead. */
-  on(event: string, fn: (options: AnyObject) => void) {
+  /** Add logic to an event. Function must have data argument. If data not required, use onSingle instead. */
+  on(event: string, fn: (data: AnyObject) => void) {
     //
-    if (this.list[event]) {
-      LIB.logWarning(`Event logic already declared: "${event}" (EVENTS)`)
+    const eventFunctions = this.list[event]
+
+    if (!eventFunctions) {
+      LIB.logWarning(`Unknown event: "${event}" (EVENTS)`)
       return
     }
-    this.list[event] = fn
+    eventFunctions.push(fn)
   }
   /** Adds logic to an event. Single events execute only ones per loop no matter how many times emitted. Logic function must have no arguments. */
   onSingle(event: string, fn: () => void) {
@@ -49,11 +52,11 @@ class Events {
     }
     this.listOfSingle[event].push(fn)
   }
-  emit(event: string, options: AnyObject) {
+  emit(event: string, data: AnyObject) {
     //
-    this.active.push([event, options])
+    this.active.push([event, data])
   }
-  /** Executes only ones per loop no matter how many times emitted. */
+  /** Executes only once per loop no matter how many times emitted. */
   emitSingle(event: string) {
     //
     if (this.activeSingle.includes(event)) return
@@ -64,17 +67,17 @@ class Events {
     this.active.forEach((eventTuple) => {
       //
       const event = eventTuple[0]
-      const options = eventTuple[1]
+      const data = eventTuple[1]
 
-      const eventFn = this.list[event]
+      const eventFunctions = this.list[event]
 
-      if (!eventFn) {
+      if (!eventFunctions) {
         LIB.logWarning(
           `Unknown event or logic is not defined: "${event}" (EVENTS)`
         )
         return
       }
-      eventFn(options)
+      eventFunctions.forEach((fn) => fn(data))
     })
     this.activeSingle.forEach((event) => {
       //

@@ -18,6 +18,7 @@ class EntityFactory {
     await this.injectComponents(entity, id)
 
     WORLD.entities.set(id, entity)
+    EVENTS.emit("entityCreated", { entity, id })
     return id
   }
 

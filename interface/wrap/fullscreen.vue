@@ -12,7 +12,7 @@ onMounted(() => {
   //
   REFS.fullscreen = fullscreen
 
-  EVENTS.onSingle("fullscreen", () => {
+  EVENTS.onSingle("toggleFullscreen", () => {
     //
     GLOBAL.fullscreen = !GLOBAL.fullscreen
     if (REFS.fullscreen && !document.fullscreenElement) {
