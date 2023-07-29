@@ -15,8 +15,8 @@ class World {
   // layers
   map = new PIXI.Container()
   ground = new PIXI.Container()
-  collision = new PIXI.Container()
   sortable = new PIXI.Container()
+  collision = new PIXI.Container()
 
   entityContainers: Map<number, Container> = new Map()
 
@@ -54,7 +54,7 @@ class World {
     // PIXI dev tools work with this constant
     globalThis.__PIXI_APP__ = this.app
 
-    for (let name of ["map", "ground", "collision", "sortable"]) {
+    for (let name of ["map", "ground", "sortable", "collision"]) {
       this.app.stage.addChild(this[name])
 
       // name attribute is used by PIXI dev tools

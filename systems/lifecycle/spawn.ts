@@ -90,10 +90,7 @@ export default class {
     x += _.random(0, 999)
     y += _.random(0, 999)
 
-    let tileX = COORDINATES.coordinateToTile(x)
-    let tileY = COORDINATES.coordinateToTile(y)
-
-    if (WORLD.systems.collision.collisionArray[tileY][tileX] === 0) {
+    if (COORDINATES.isWalkable(x, y)) {
       return { x, y }
     } else if (counter < 10) {
       counter++

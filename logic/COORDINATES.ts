@@ -99,6 +99,9 @@ class Coordinates {
       WORLD.systems.collision.collisionArray[tileY][tileX] !== 3
     )
   }
+  isGreenTile(tile: { x: number; y: number }) {
+    return WORLD.systems.collision.collisionArray[tile.y][tile.x] === 1
+  }
 }
 
 export const COORDINATES = new Coordinates()

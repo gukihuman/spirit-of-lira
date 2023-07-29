@@ -5,6 +5,8 @@ export default class {
   closedList: any = []
   clean = true
 
+  maxSteps = 2000
+
   grid = []
 
   init() {
@@ -36,7 +38,7 @@ export default class {
           // mouseMove signal on non-walkable tile
           if (
             INPUT.lastActiveDevice !== "gamepad" &&
-            EVENTS.active.includes("mouseMove") &&
+            EVENTS.activeSingle.includes("mouseMove") &&
             this.grid[mouseTileY][mouseTileX] !== 0 &&
             this.grid[mouseTileY][mouseTileX] !== 1
           ) {
@@ -260,7 +262,7 @@ export default class {
 
     this.openList.push(startPos)
 
-    let maxSteps = 2000
+    let maxSteps = this.maxSteps
 
     while (this.openList.length > 0) {
       maxSteps--
@@ -307,6 +309,9 @@ export default class {
         } else {
           g = current.g + 2
         }
+        if (COORDINATES.isGreenTile(neighbor)) {
+          g = current.g + 0.1
+        }
         let h = this.heuristic(neighbor, endPos)
         let f = g + h
 
@@ -327,27 +332,59 @@ export default class {
   }
 
   refinePath(path) {
+    //
     const indexes: number[] = []
+
+    let firstGreenFound = false
+
     for (let i = 0; i < path.length; i++) {
       let tile = path[i]
       if (!tile) continue
 
       let neighbors = this.getAllNeighbors(tile)
 
+      // all neighbors are walkable
       if (neighbors.length === 8) {
         indexes.push(i)
       }
-      // let diagonalNeighbors = this.getDiagonalNeighbors(tile)
-      // let cardinalNeighbors = this.getCardinalNeighbors(tile)
-      // if (diagonalNeighbors.length < 4 && cardinalNeighbors === 4) {
-      //   indexes.push(i)
-      // }
     }
+
+    // remove walkable only if before and after are walkable too
+    // not green tiles
     indexes.forEach((i) => {
-      if ((indexes.includes(i - 1) && indexes.includes(i + 1)) || i === 0) {
-        path[i] = undefined
+      //
+      if (!COORDINATES.isGreenTile(path[i])) {
+        //
+        if (indexes.includes(i - 1) && indexes.includes(i + 1)) {
+          //
+          path[i] = undefined
+        }
       }
     })
+    indexes.forEach((i) => {
+      //
+      // already removed
+      if (!path[i]) return
+
+      if (COORDINATES.isGreenTile(path[i])) {
+        //
+        //
+        if (!path[i + 1]) {
+          //
+          return
+        }
+
+        // remove green tile only if after are green too
+        if (COORDINATES.isGreenTile(path[i + 1]) && firstGreenFound) {
+          //
+          path[i] = undefined
+        }
+
+        firstGreenFound = true
+      }
+    })
+    if (indexes.includes(0)) path[0] = undefined
+
     let newPath = path.filter((p) => p !== undefined)
 
     return newPath
