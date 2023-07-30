@@ -13,7 +13,7 @@ class EffectFactory {
     })
     if (!id) return
 
-    const sprite = WORLD.getSprite(id) as AnimatedSprite
+    const sprite = WORLD.getAnimation(id) as AnimatedSprite
     if (!sprite) return
 
     sprite.rotation = angle

@@ -9,7 +9,9 @@ export default class {
       const container = WORLD.getContainer(id)
       if (!container) return
 
-      const layerNames = ["backWeapon", "main", "clothes", "frontWeapon"]
+      let before = 1
+
+      const layerNames = ["backWeapon", "animation", "clothes", "frontWeapon"]
       const layersToFlip: any[] = []
 
       layerNames.forEach((layerName) => {
@@ -17,18 +19,20 @@ export default class {
         const layer = WORLD.getLayer(id, layerName)
         if (!layer) return
         layersToFlip.push(layer)
+
+        // take before from "animation" because all entities have it
+        // other layers like "backWeapon" is the always the same
+        if (layerName === "animation") before = layer.scale.x
       })
 
       // move
       if (entity.position.x < previousX) {
         //
         layersToFlip.forEach((layer) => (layer.scale.x = -1))
-        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
         //
       } else if (entity.position.x > previousX) {
         //
         layersToFlip.forEach((layer) => (layer.scale.x = 1))
-        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
       }
 
       // attack target
@@ -39,13 +43,16 @@ export default class {
         if (targetEntity.position.x < entity.position.x) {
           //
           layersToFlip.forEach((container) => (container.scale.x = -1))
-          entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
           //
         } else if (targetEntity.position.x > entity.position.x) {
           //
           layersToFlip.forEach((container) => (container.scale.x = 1))
-          entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
         }
+      }
+
+      if (WORLD.getLayer(id, "animation")?.scale.x !== before) {
+        //
+        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
       }
     })
   }

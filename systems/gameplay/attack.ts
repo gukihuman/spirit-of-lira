@@ -94,7 +94,7 @@ export default class {
           //
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
-          let sprite = WORLD.getSprite(id, entity.sprite.active)
+          let sprite = WORLD.getAnimation(id, entity.sprite.active)
           let startFrame = entity.sprite.startFrames[entity.sprite.active]
           if (!startFrame) startFrame = 0
           sprite?.gotoAndPlay(startFrame)
@@ -126,12 +126,12 @@ export default class {
     if (id === WORLD.heroId) {
       //
       // 📜 make attack animation dynamic depend on weapon or skill
-      const sprite = WORLD.getSprite(id, "sword-attack")
+      const sprite = WORLD.getAnimation(id, "sword-attack")
       if (!sprite) return
 
       sprite.animationSpeed = 1.2 / entity.attack.speed / 6
     } else {
-      const sprite = WORLD.getSprite(id, "attack")
+      const sprite = WORLD.getAnimation(id, "attack")
       if (!sprite) return
 
       sprite.animationSpeed = 1.2 / entity.attack.speed / 6

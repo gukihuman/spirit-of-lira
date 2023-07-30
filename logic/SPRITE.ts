@@ -1,6 +1,44 @@
 //
 class Spr {
   //
+  init() {
+    //
+    EVENTS.on("entityCreated", (data) => {
+      //
+      if (data.entity.name === "lira") {
+        //
+        SPRITE.createEntitySprite(data.entity, data.id, {
+          //
+          randomFlip: false,
+          layers: [
+            "shadow",
+            "backEffect",
+            "backWeapon",
+            "animation",
+            "clothes",
+            "frontWeapon",
+            "frontEffect",
+          ],
+        })
+
+        return
+      }
+
+      // static or npc
+      if (!data.entity.move) {
+        //
+        SPRITE.createEntitySprite(data.entity, data.id, {
+          //
+          randomFlip: false,
+        })
+
+        return
+      }
+
+      SPRITE.createEntitySprite(data.entity, data.id)
+    })
+  }
+
   async createEntitySprite(
     entity: AnyObject,
     id: number,
@@ -14,7 +52,7 @@ class Spr {
     const layers = options.layers ?? [
       "shadow",
       "backEffect",
-      "main",
+      "animation",
       "frontEffect",
     ]
 
@@ -33,15 +71,15 @@ class Spr {
 
     if (randomFlip) {
       //
-      const main = WORLD.getLayer(id, "main")
-      if (!main) return
+      const animation = WORLD.getLayer(id, "animation")
+      if (!animation) return
 
-      if (_.random() > 0.5) main.scale.x = -1
+      if (_.random() > 0.5) animation.scale.x = -1
     }
 
     const spritesheet = await WORLD.getSpritesheet(entity.name)
-    const main = WORLD.getLayer(id, "main")
-    if (!main || !spritesheet) return
+    const animation = WORLD.getLayer(id, "animation")
+    if (!animation || !spritesheet) return
 
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
       const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
@@ -51,7 +89,7 @@ class Spr {
       sprite.animationSpeed = 1 / (CONFIG.maxFPS / 10)
       sprite.visible = false
       sprite.cullable = true
-      main.addChild(sprite)
+      animation.addChild(sprite)
 
       // prevent synchronized mobs
       const randomFrame = _.random(0, sprite.totalFrames - 1)

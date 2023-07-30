@@ -17,13 +17,6 @@ export default defineNuxtPlugin(async (app) => {
     // everything depend on WORLD ticker, init it right after CONFIG
     WORLD.init(REFS.viewport, CONFIG.viewport.width, CONFIG.viewport.height)
 
-    // tools that are likely depend on WORLD ticker
-    EVENTS.init()
-    LAST_WORLD.init()
-    SETTINGS.init()
-    LOCAL.init() // local storage
-    INTERFACE.init()
-
     // hero creation
     let heroId = await ENTITY_FACTORY.create("lira")
     if (!heroId) {
@@ -33,10 +26,18 @@ export default defineNuxtPlugin(async (app) => {
     WORLD.hero = WORLD.entities.get(heroId)
     WORLD.heroId = heroId
 
-    await ENTITY_FACTORY.create("mousepoint")
+    // likely depend on WORLD and/or hero
+    EVENTS.init()
+    LAST_WORLD.init()
+    SETTINGS.init()
+    LOCAL.init() // local storage
+    INVENTORY.init()
+    SPRITE.init()
 
     // 📜 change dependency of hero
     REMOTE.init() // uses hero for now
+
+    await ENTITY_FACTORY.create("mousepoint")
 
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())

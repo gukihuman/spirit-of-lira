@@ -7,10 +7,10 @@ export default class {
         entity.time.deathTimerStartMS + entity.time.durationMS
       ) {
         //
-        const main = WORLD.getContainer(id)
-        if (!main) return
+        const container = WORLD.getContainer(id)
+        if (!container) return
 
-        main.parent.removeChild(main)
+        container.parent.removeChild(container)
         WORLD.entityContainers.delete(id)
         WORLD.entities.delete(id)
       }

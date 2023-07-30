@@ -26,7 +26,10 @@ class World {
     fps: CONFIG.maxFPS,
     elapsedMS: 0,
 
-    // switched to precise getter on init
+    // switched to getter
+    elapsedSec: 0,
+
+    // switched to precise getter on init that includes delta fluctuations
     /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
     deltaSec: 1 / CONFIG.maxFPS,
 
@@ -88,6 +91,14 @@ class World {
         return this.app.ticker.deltaMS / 16.66 / 60
       },
     })
+    Object.defineProperty(this.loop, "elapsedSec", {
+      //
+      get: () => {
+        if (!this.app) return
+
+        return Math.floor(this.loop.elapsedMS / 1000)
+      },
+    })
 
     if (!this.app) return
 
@@ -106,14 +117,14 @@ class World {
     return entityContainer?.getChildByName(layer) as Container
   }
 
-  getSprite(
+  getAnimation(
     id: number,
-    animation: string = "idle"
+    spriteName: string = "idle"
   ): AnimatedSprite | undefined {
     //
-    const main = this.getLayer(id, "main") as Container
+    const animation = this.getLayer(id, "animation") as Container
 
-    return main.getChildByName(animation) as AnimatedSprite
+    return animation.getChildByName(spriteName) as AnimatedSprite
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {

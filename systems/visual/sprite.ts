@@ -3,43 +3,6 @@ export default class {
   //
   framesToValidate = 3
 
-  init() {
-    //
-    EVENTS.on("entityCreated", (data) => {
-      //
-      if (data.entity.name === "lira") {
-        //
-        SPRITE.createEntitySprite(data.entity, data.id, {
-          //
-          randomFlip: false,
-          layers: [
-            "shadow",
-            "backEffect",
-            "backWeapon",
-            "main",
-            "clothes",
-            "frontWeapon",
-            "frontEffect",
-          ],
-        })
-
-        return
-      }
-
-      if (!data.entity.move) {
-        //
-        SPRITE.createEntitySprite(data.entity, data.id, {
-          //
-          randomFlip: false,
-        })
-
-        return
-      }
-
-      SPRITE.createEntitySprite(data.entity, data.id)
-    })
-  }
-
   process() {
     //
     WORLD.entities.forEach((entity, id) => {
@@ -57,16 +20,16 @@ export default class {
 
       // update visibility of animations
       if (entity.move) {
-        WORLD.getLayer(id, "main")?.children.forEach((child) => {
+        WORLD.getLayer(id, "animation")?.children.forEach((child) => {
           //
           if (child.name === entity.sprite.active) child.visible = true
           else child.visible = false
         })
       } else {
         //
-        const main = WORLD.getLayer(id, "main")
-        if (main && main.children[0]) {
-          main.children[0].visible = true
+        const animation = WORLD.getLayer(id, "animation")
+        if (animation && animation.children[0]) {
+          animation.children[0].visible = true
         }
       }
       // update animation frame on first animation tick
@@ -75,7 +38,7 @@ export default class {
         const lastEntity = LAST_WORLD.entities.get(id)
         if (!lastEntity) return
 
-        WORLD.getLayer(id, "main")?.children.forEach((animation) => {
+        WORLD.getLayer(id, "animation")?.children.forEach((animation) => {
           if (
             entity.sprite.active === animation.name &&
             lastEntity.sprite.active !== animation.name
@@ -83,9 +46,9 @@ export default class {
             const frame = entity.sprite.startFrames[animation.name]
 
             if (frame) {
-              WORLD.getSprite(id, animation.name)?.gotoAndPlay(frame)
+              WORLD.getAnimation(id, animation.name)?.gotoAndPlay(frame)
             } else {
-              WORLD.getSprite(id, animation.name)?.gotoAndPlay(0)
+              WORLD.getAnimation(id, animation.name)?.gotoAndPlay(0)
             }
           }
         })
@@ -140,7 +103,7 @@ export default class {
       this.setSprite(entity, id, "idle")
       return
     }
-    if (WORLD.getSprite(id, "walk")) {
+    if (WORLD.getAnimation(id, "walk")) {
       //
       if (distance / speedPerTick < 0.8) {
         //

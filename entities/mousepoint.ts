@@ -58,15 +58,15 @@ export default {
     }
 
     const container = WORLD.getContainer(id)
-    const main = WORLD.getLayer(id, "main")
+    const animation = WORLD.getLayer(id, "animation")
 
-    if (container && main) {
-      main.angle += 80 * WORLD.loop.deltaSec
+    if (container && animation) {
+      animation.angle += 80 * WORLD.loop.deltaSec
       const scale = 1
       container.scale = { x: 1, y: 0.5 }
       container.scale.x *= scale
       container.scale.y *= scale
-      const animationSprite = WORLD.getSprite(id, "idle")
+      const animationSprite = WORLD.getAnimation(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       setTimeout(() => {

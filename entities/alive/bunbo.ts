@@ -6,7 +6,7 @@ export default {
   sprite: {
     leaveAnimationConditions: {
       move: (entity, id) => {
-        return WORLD.getSprite(id, "move")?.currentFrame === 0
+        return WORLD.getAnimation(id, "move")?.currentFrame === 0
       },
     },
     startFrames: { attack: 18 },

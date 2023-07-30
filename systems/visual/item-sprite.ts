@@ -6,7 +6,10 @@ export default class {
   itemSprites: AnimatedSprite[] = []
 
   process() {
-    const heroSprite = WORLD.getSprite(WORLD.heroId, WORLD.hero.sprite.active)
+    const heroSprite = WORLD.getAnimation(
+      WORLD.heroId,
+      WORLD.hero.sprite.active
+    )
     if (!heroSprite) return
 
     if (
