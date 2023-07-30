@@ -3,7 +3,7 @@ export default class {
   init() {
     //
     // Preload filters to prevent lag
-    const container = WORLD.getContainer(WORLD.heroId)
+    const container = SPRITE.getContainer(WORLD.heroId)
 
     if (container) {
       container.filters = [
@@ -292,7 +292,7 @@ export default class {
 
     if (entity.attack.damageFilterStartMS + 100 > WORLD.loop.elapsedMS) return
 
-    const animation = WORLD.getLayer(id, "animation")
+    const animation = SPRITE.getLayer(id, "animation")
 
     if (animation) {
       animation.filters = [

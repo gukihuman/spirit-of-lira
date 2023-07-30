@@ -18,7 +18,32 @@ class EntityFactory {
     await this.injectComponents(entity, id)
 
     WORLD.entities.set(id, entity)
-    EVENTS.emit("entityCreated", { entity, id })
+
+    if (name === "lira") {
+      //
+      await SPRITE.createEntitySprite(entity, id, {
+        //
+        randomFlip: false,
+        layers: [
+          "shadow",
+          "backEffect",
+          "backWeapon",
+          "animation",
+          "cloth",
+          "frontWeapon",
+          "frontEffect",
+        ],
+      })
+    } else if (!entity.move) {
+      //
+      await SPRITE.createEntitySprite(entity, id, {
+        //
+        randomFlip: false,
+      })
+    } else {
+      await SPRITE.createEntitySprite(entity, id)
+    }
+
     return id
   }
 

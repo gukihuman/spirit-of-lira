@@ -54,7 +54,7 @@ export default class {
         )
         if (entityChunk === chunk) {
           WORLD.entities.delete(id)
-          let container = WORLD.getContainer(id)
+          let container = SPRITE.getContainer(id)
           if (container) WORLD.sortable.removeChild(container)
         }
       })

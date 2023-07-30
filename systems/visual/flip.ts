@@ -6,17 +6,17 @@ export default class {
 
       if (!LAST_WORLD.entities.get(id)) return
       const previousX = LAST_WORLD.entities.get(id).position.x
-      const container = WORLD.getContainer(id)
+      const container = SPRITE.getContainer(id)
       if (!container) return
 
       let before = 1
 
-      const layerNames = ["backWeapon", "animation", "clothes", "frontWeapon"]
+      const layerNames = ["backWeapon", "animation", "cloth", "frontWeapon"]
       const layersToFlip: any[] = []
 
       layerNames.forEach((layerName) => {
         //
-        const layer = WORLD.getLayer(id, layerName)
+        const layer = SPRITE.getLayer(id, layerName)
         if (!layer) return
         layersToFlip.push(layer)
 
@@ -50,7 +50,7 @@ export default class {
         }
       }
 
-      if (WORLD.getLayer(id, "animation")?.scale.x !== before) {
+      if (SPRITE.getLayer(id, "animation")?.scale.x !== before) {
         //
         entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
       }

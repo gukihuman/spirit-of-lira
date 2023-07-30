@@ -3,7 +3,8 @@ class Events {
   //
   list: { [event: string]: Array<(AnyObject) => void> } = {
     damage: [],
-    entityCreated: [],
+    equip: [],
+    unequip: [],
   }
   listOfSingle: { [event: string]: Array<() => void> } = {
     toggleInventory: [],

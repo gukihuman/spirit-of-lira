@@ -21,8 +21,9 @@ class Local {
   }
   update() {
     //
-    this.inventory.list = INVENTORY.list
-    this.inventory.eqipped = INVENTORY.eqipped
+    this.inventory.bag = INVENTORY.bag
+    this.inventory.equipped = INVENTORY.equipped
+
     this.heroPosition = WORLD.hero.position
 
     this.add("heroPosition", this.heroPosition)

@@ -21,7 +21,7 @@ export default {
       const mousePosition = COORDINATES.mousePosition()
       position.x = mousePosition.x
       position.y = mousePosition.y
-      const container = WORLD.getContainer(id)
+      const container = SPRITE.getContainer(id)
       if (!container) return
 
       return
@@ -57,8 +57,8 @@ export default {
       return
     }
 
-    const container = WORLD.getContainer(id)
-    const animation = WORLD.getLayer(id, "animation")
+    const container = SPRITE.getContainer(id)
+    const animation = SPRITE.getLayer(id, "animation")
 
     if (container && animation) {
       animation.angle += 80 * WORLD.loop.deltaSec
@@ -66,7 +66,7 @@ export default {
       container.scale = { x: 1, y: 0.5 }
       container.scale.x *= scale
       container.scale.y *= scale
-      const animationSprite = WORLD.getAnimation(id, "idle")
+      const animationSprite = SPRITE.getAnimation(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
       setTimeout(() => {

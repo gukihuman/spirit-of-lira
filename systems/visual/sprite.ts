@@ -11,7 +11,7 @@ export default class {
       this.updateAnimation(entity, id)
       this.updateLastChangeMS(entity, id)
 
-      const container = WORLD.getContainer(id)
+      const container = SPRITE.getContainer(id)
       if (!container) return
 
       // update container coordinates
@@ -20,14 +20,14 @@ export default class {
 
       // update visibility of animations
       if (entity.move) {
-        WORLD.getLayer(id, "animation")?.children.forEach((child) => {
+        SPRITE.getLayer(id, "animation")?.children.forEach((child) => {
           //
           if (child.name === entity.sprite.active) child.visible = true
           else child.visible = false
         })
       } else {
         //
-        const animation = WORLD.getLayer(id, "animation")
+        const animation = SPRITE.getLayer(id, "animation")
         if (animation && animation.children[0]) {
           animation.children[0].visible = true
         }
@@ -38,7 +38,7 @@ export default class {
         const lastEntity = LAST_WORLD.entities.get(id)
         if (!lastEntity) return
 
-        WORLD.getLayer(id, "animation")?.children.forEach((animation) => {
+        SPRITE.getLayer(id, "animation")?.children.forEach((animation) => {
           if (
             entity.sprite.active === animation.name &&
             lastEntity.sprite.active !== animation.name
@@ -46,9 +46,9 @@ export default class {
             const frame = entity.sprite.startFrames[animation.name]
 
             if (frame) {
-              WORLD.getAnimation(id, animation.name)?.gotoAndPlay(frame)
+              SPRITE.getAnimation(id, animation.name)?.gotoAndPlay(frame)
             } else {
-              WORLD.getAnimation(id, animation.name)?.gotoAndPlay(0)
+              SPRITE.getAnimation(id, animation.name)?.gotoAndPlay(0)
             }
           }
         })
@@ -103,7 +103,7 @@ export default class {
       this.setSprite(entity, id, "idle")
       return
     }
-    if (WORLD.getAnimation(id, "walk")) {
+    if (SPRITE.getAnimation(id, "walk")) {
       //
       if (distance / speedPerTick < 0.8) {
         //

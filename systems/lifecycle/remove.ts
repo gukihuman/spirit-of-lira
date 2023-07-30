@@ -7,11 +7,11 @@ export default class {
         entity.time.deathTimerStartMS + entity.time.durationMS
       ) {
         //
-        const container = WORLD.getContainer(id)
+        const container = SPRITE.getContainer(id)
         if (!container) return
 
         container.parent.removeChild(container)
-        WORLD.entityContainers.delete(id)
+        SPRITE.entityContainers.delete(id)
         WORLD.entities.delete(id)
       }
     })

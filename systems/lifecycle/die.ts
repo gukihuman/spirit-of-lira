@@ -14,8 +14,8 @@ export default class {
         entity.target.attacked = undefined
         entity.target.locked = undefined
 
-        const animation = WORLD.getLayer(id, "animation")
-        const shadow = WORLD.getLayer(id, "shadow")
+        const animation = SPRITE.getLayer(id, "animation")
+        const shadow = SPRITE.getLayer(id, "shadow")
         if (!animation || !shadow) return
 
         // fade

@@ -18,8 +18,6 @@ class World {
   sortable = new PIXI.Container()
   collision = new PIXI.Container()
 
-  entityContainers: Map<number, Container> = new Map()
-
   loop = {
     //
     // precisely updated each loop
@@ -103,61 +101,6 @@ class World {
     if (!this.app) return
 
     this.app.ticker.maxFPS = CONFIG.maxFPS
-  }
-
-  getContainer(id: number): Container | undefined {
-    //
-    return this.entityContainers.get(id)
-  }
-
-  getLayer(id: number, layer: string): Container | undefined {
-    //
-    const entityContainer = this.getContainer(id)
-
-    return entityContainer?.getChildByName(layer) as Container
-  }
-
-  getAnimation(
-    id: number,
-    spriteName: string = "idle"
-  ): AnimatedSprite | undefined {
-    //
-    const animation = this.getLayer(id, "animation") as Container
-
-    return animation.getChildByName(spriteName) as AnimatedSprite
-  }
-
-  async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
-    //
-    let json = ASSETS.jsons.get(name)
-
-    if (!json) {
-      LIB.logWarning(`no json for ${name} in ASSETS.jsons (WORLD)`)
-      return
-    }
-
-    // lazy guard for an ISpritesheetData type of json from Texture Packer
-    if (!json.animations || !json.frames || !json.meta) return
-
-    let texture
-    let spritesheet
-
-    if (!PIXI.Cache.has(name)) {
-      if (!ASSETS.jsons.get(name)) return
-      texture = PIXI.Texture.from(json.meta.image)
-      spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
-      PIXI.Cache.set(name, [texture, spritesheet])
-    } else {
-      texture = PIXI.Cache.get(name)[0]
-      spritesheet = PIXI.Cache.get(name)[1]
-    }
-
-    // adds gParse function as a non-cache alternative to parse
-    LIB.addParseWithoutCaching(spritesheet)
-
-    await spritesheet.gParse()
-
-    return spritesheet
   }
 }
 

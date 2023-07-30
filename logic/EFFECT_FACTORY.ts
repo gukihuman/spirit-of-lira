@@ -13,13 +13,13 @@ class EffectFactory {
     })
     if (!id) return
 
-    const sprite = WORLD.getAnimation(id) as AnimatedSprite
+    const sprite = SPRITE.getAnimation(id) as AnimatedSprite
     if (!sprite) return
 
     sprite.rotation = angle
     sprite.visible = true
 
-    const container = WORLD.getContainer(id)
+    const container = SPRITE.getContainer(id)
     if (!container) return
 
     const targetEntity = WORLD.entities.get(targetEntityId)
@@ -28,7 +28,7 @@ class EffectFactory {
 
     // change default container to the effect container of the entity
     WORLD.sortable.removeChild(container)
-    const parent = WORLD.getLayer(targetEntityId, "frontEffect")
+    const parent = SPRITE.getLayer(targetEntityId, "frontEffect")
     if (!parent) return
     parent.addChild(container)
   }

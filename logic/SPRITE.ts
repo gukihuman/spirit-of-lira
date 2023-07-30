@@ -1,43 +1,8 @@
 //
 class Spr {
   //
-  init() {
-    //
-    EVENTS.on("entityCreated", (data) => {
-      //
-      if (data.entity.name === "lira") {
-        //
-        SPRITE.createEntitySprite(data.entity, data.id, {
-          //
-          randomFlip: false,
-          layers: [
-            "shadow",
-            "backEffect",
-            "backWeapon",
-            "animation",
-            "clothes",
-            "frontWeapon",
-            "frontEffect",
-          ],
-        })
-
-        return
-      }
-
-      // static or npc
-      if (!data.entity.move) {
-        //
-        SPRITE.createEntitySprite(data.entity, data.id, {
-          //
-          randomFlip: false,
-        })
-
-        return
-      }
-
-      SPRITE.createEntitySprite(data.entity, data.id)
-    })
-  }
+  entityContainers: Map<number, Container> = new Map()
+  itemSprites: AnimatedSprite[] = []
 
   async createEntitySprite(
     entity: AnyObject,
@@ -58,7 +23,7 @@ class Spr {
 
     const container = new PIXI.Container()
     container.name = entity.name
-    WORLD.entityContainers.set(id, container)
+    this.entityContainers.set(id, container)
 
     WORLD[parent].addChild(container)
 
@@ -71,14 +36,14 @@ class Spr {
 
     if (randomFlip) {
       //
-      const animation = WORLD.getLayer(id, "animation")
+      const animation = this.getLayer(id, "animation")
       if (!animation) return
 
       if (_.random() > 0.5) animation.scale.x = -1
     }
 
-    const spritesheet = await WORLD.getSpritesheet(entity.name)
-    const animation = WORLD.getLayer(id, "animation")
+    const spritesheet = await this.getSpritesheet(entity.name)
+    const animation = this.getLayer(id, "animation")
     if (!animation || !spritesheet) return
 
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
@@ -100,6 +65,107 @@ class Spr {
       if (randomStartFrame) sprite.gotoAndPlay(randomFrame)
       else sprite.gotoAndPlay(0)
     })
+  }
+  async createItemSprite(name: string, type: "weapon" | "cloth") {
+    //
+    if (!WORLD.app || !WORLD.heroId || !this.getContainer(WORLD.heroId)) return
+
+    const spritesheet = await this.getSpritesheet(name)
+    if (!spritesheet) return
+
+    let backWeapon
+    let frontWeapon
+    let cloth
+
+    if (type === "cloth") {
+      cloth = this.getLayer(WORLD.heroId, "cloth") as Container
+    }
+    if (type === "weapon") {
+      backWeapon = this.getLayer(WORLD.heroId, "backWeapon") as Container
+      frontWeapon = this.getLayer(WORLD.heroId, "frontWeapon") as Container
+    }
+
+    _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {
+      const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
+      animatedSprite.name = stateName
+      animatedSprite.anchor.x = 0.5
+      animatedSprite.anchor.y = 0.5
+      animatedSprite.animationSpeed = 1 / 6
+      animatedSprite.visible = false
+      animatedSprite.cullable = true
+      animatedSprite.play()
+      this.itemSprites.push(animatedSprite)
+
+      if (type === "cloth") cloth.addChild(animatedSprite)
+
+      if (type === "weapon") {
+        //
+        if (stateName.includes("attack")) frontWeapon.addChild(animatedSprite)
+        //
+        else backWeapon.addChild(animatedSprite)
+      }
+    })
+  }
+  emptyWeaponLayers() {
+    const backWeapon = this.getLayer(WORLD.heroId, "backWeapon") as Container
+    const frontWeapon = this.getLayer(WORLD.heroId, "frontWeapon") as Container
+    backWeapon.removeChildren()
+    frontWeapon.removeChildren()
+  }
+  emptyClothLayer() {
+    const cloth = this.getLayer(WORLD.heroId, "cloth") as Container
+    cloth.removeChildren()
+  }
+  getContainer(id: number): Container | undefined {
+    //
+    return this.entityContainers.get(id)
+  }
+  getLayer(id: number, layer: string): Container | undefined {
+    //
+    const entityContainer = this.getContainer(id)
+
+    return entityContainer?.getChildByName(layer) as Container
+  }
+  getAnimation(
+    id: number,
+    spriteName: string = "idle"
+  ): AnimatedSprite | undefined {
+    //
+    const animation = this.getLayer(id, "animation") as Container
+
+    return animation.getChildByName(spriteName) as AnimatedSprite
+  }
+  async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
+    //
+    let json = ASSETS.jsons.get(name)
+
+    if (!json) {
+      LIB.logWarning(`no json for ${name} in ASSETS.jsons (SPRITE)`)
+      return
+    }
+
+    // lazy guard for an ISpritesheetData type of json from Texture Packer
+    if (!json.animations || !json.frames || !json.meta) return
+
+    let texture
+    let spritesheet
+
+    if (!PIXI.Cache.has(name)) {
+      if (!ASSETS.jsons.get(name)) return
+      texture = PIXI.Texture.from(json.meta.image)
+      spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
+      PIXI.Cache.set(name, [texture, spritesheet])
+    } else {
+      texture = PIXI.Cache.get(name)[0]
+      spritesheet = PIXI.Cache.get(name)[1]
+    }
+
+    // adds gParse function as a non-cache alternative to parse
+    LIB.addParseWithoutCaching(spritesheet)
+
+    await spritesheet.gParse()
+
+    return spritesheet
   }
 }
 export const SPRITE = new Spr()
