@@ -14,16 +14,16 @@ export default class {
         entity.target.attacked = undefined
         entity.target.locked = undefined
 
-        const middle = WORLD.getLayer(id, "middle")
-        const back = WORLD.getLayer(id, "back")
-        if (!middle || !back) return
+        const main = WORLD.getLayer(id, "main")
+        const shadow = WORLD.getLayer(id, "shadow")
+        if (!main || !shadow) return
 
         // fade
         const timeToRemove =
           entity.time.deathTimerStartMS +
           entity.time.durationMS -
           WORLD.loop.elapsedMS
-        middle.alpha = timeToRemove / 500
+        main.alpha = timeToRemove / 500
 
         if (timeToRemove < 500) {
           // 📜 add support for higher fps, this works only for 60
@@ -31,7 +31,7 @@ export default class {
         }
 
         // shadow  handler, 0.08 is defaul
-        back.alpha = (timeToRemove / 500) * 0.08
+        shadow.alpha = (timeToRemove / 500) * 0.08
       }
     })
   }

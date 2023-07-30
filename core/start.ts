@@ -1,5 +1,4 @@
-import { LAST_WORLD } from "~~/data/LAST_WORLD"
-
+//
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
@@ -52,9 +51,9 @@ export default defineNuxtPlugin(async (app) => {
 
     // 📜 move to static entity handler to remove and spawn depending
     // on current loaded chunks
-    ENTITY_FACTORY.create("magic-tree")
-    ENTITY_FACTORY.create("bridge-fence")
-    ENTITY_FACTORY.create("bunny")
+    ENTITY_FACTORY.create("magic-tree", { sprite: {} })
+    ENTITY_FACTORY.create("bridge-fence", { sprite: {} })
+    ENTITY_FACTORY.create("bunny", { sprite: {} })
 
     // to make sure initial loading transition will work
     setTimeout(() => {

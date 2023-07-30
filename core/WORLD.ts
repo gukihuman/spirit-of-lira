@@ -54,11 +54,12 @@ class World {
     // PIXI dev tools work with this constant
     globalThis.__PIXI_APP__ = this.app
 
-    for (let name of ["map", "ground", "sortable", "collision"]) {
+    const layers = ["map", "ground", "sortable", "collision"]
+
+    for (let name of layers) {
       this.app.stage.addChild(this[name])
 
-      // name attribute is used by PIXI dev tools
-      // to show containers with proper names
+      // name attribute is used by PIXI dev tools to show containers with proper names
       this[name].name = name
     }
 
@@ -98,9 +99,10 @@ class World {
     return this.entityContainers.get(id)
   }
 
-  getLayer(id: number, layer: EntityLayer): Container | undefined {
+  getLayer(id: number, layer: string): Container | undefined {
     //
     const entityContainer = this.getContainer(id)
+
     return entityContainer?.getChildByName(layer) as Container
   }
 
@@ -108,11 +110,14 @@ class World {
     id: number,
     animation: string = "idle"
   ): AnimatedSprite | undefined {
-    const middleContainer = this.getLayer(id, "middle") as Container
-    return middleContainer.getChildByName(animation) as AnimatedSprite
+    //
+    const main = this.getLayer(id, "main") as Container
+
+    return main.getChildByName(animation) as AnimatedSprite
   }
 
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
+    //
     let json = ASSETS.jsons.get(name)
 
     if (!json) {

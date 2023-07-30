@@ -28,7 +28,7 @@ class EffectFactory {
 
     // change default container to the effect container of the entity
     WORLD.sortable.removeChild(container)
-    const parent = WORLD.getLayer(targetEntityId, "effect")
+    const parent = WORLD.getLayer(targetEntityId, "frontEffect")
     if (!parent) return
     parent.addChild(container)
   }

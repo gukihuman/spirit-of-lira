@@ -1,10 +1,41 @@
 //
 export default class {
   //
-  framesToValidate = 5
+  framesToValidate = 3
 
   init() {
+    //
     EVENTS.on("entityCreated", (data) => {
+      //
+      if (data.entity.name === "lira") {
+        //
+        SPRITE.createEntitySprite(data.entity, data.id, {
+          //
+          randomFlip: false,
+          layers: [
+            "shadow",
+            "backEffect",
+            "backWeapon",
+            "main",
+            "clothes",
+            "frontWeapon",
+            "frontEffect",
+          ],
+        })
+
+        return
+      }
+
+      if (!data.entity.move) {
+        //
+        SPRITE.createEntitySprite(data.entity, data.id, {
+          //
+          randomFlip: false,
+        })
+
+        return
+      }
+
       SPRITE.createEntitySprite(data.entity, data.id)
     })
   }
@@ -26,28 +57,36 @@ export default class {
 
       // update visibility of animations
       if (entity.move) {
-        WORLD.getLayer(id, "middle")?.children.forEach((child) => {
+        WORLD.getLayer(id, "main")?.children.forEach((child) => {
+          //
           if (child.name === entity.sprite.active) child.visible = true
           else child.visible = false
         })
       } else {
-        const animationContainer = WORLD.getLayer(id, "middle")
-        if (animationContainer && animationContainer.children[0]) {
-          animationContainer.children[0].visible = true
+        //
+        const main = WORLD.getLayer(id, "main")
+        if (main && main.children[0]) {
+          main.children[0].visible = true
         }
       }
-
       // update animation frame on first animation tick
-      const startFrames = entity.sprite.startFrames
-      if (entity.move && startFrames) {
+      if (entity.move) {
+        //
         const lastEntity = LAST_WORLD.entities.get(id)
         if (!lastEntity) return
-        _.forEach(startFrames, (frame: number, sprite: string) => {
+
+        WORLD.getLayer(id, "main")?.children.forEach((animation) => {
           if (
-            entity.sprite.active === sprite &&
-            lastEntity.sprite.active !== sprite
+            entity.sprite.active === animation.name &&
+            lastEntity.sprite.active !== animation.name
           ) {
-            WORLD.getSprite(id, sprite)?.gotoAndPlay(frame)
+            const frame = entity.sprite.startFrames[animation.name]
+
+            if (frame) {
+              WORLD.getSprite(id, animation.name)?.gotoAndPlay(frame)
+            } else {
+              WORLD.getSprite(id, animation.name)?.gotoAndPlay(0)
+            }
           }
         })
       }

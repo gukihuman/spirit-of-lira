@@ -1,39 +1,47 @@
 //
 class Spr {
   //
-  async createEntitySprite(entity: AnyObject, id: number) {
+  async createEntitySprite(
+    entity: AnyObject,
+    id: number,
+    options: AnyObject = {}
+  ) {
     //
+    const parent = options.parent ?? "sortable"
+    const randomFlip = options.randomFlip ?? true
+    const randomStartFrame = options.randomStartFrame ?? true
+    const loop = options.loop ?? true
+    const layers = options.layers ?? [
+      "shadow",
+      "backEffect",
+      "main",
+      "frontEffect",
+    ]
+
     const container = new PIXI.Container()
     container.name = entity.name
     WORLD.entityContainers.set(id, container)
 
-    WORLD[entity.sprite.initial.parent].addChild(container)
+    WORLD[parent].addChild(container)
 
-    for (let name of ["back", "middle", "front", "effect"]) {
-      const childContainer = new PIXI.Container()
-      childContainer.name = name
-      container.addChild(childContainer)
+    for (let name of layers) {
+      //
+      const layer = new PIXI.Container()
+      layer.name = name
+      container.addChild(layer)
     }
 
-    if (entity.sprite.initial.randomFlip) {
+    if (randomFlip) {
       //
-      // doesn"t flip effect container
-      const back = WORLD.getLayer(id, "back")
-      const middle = WORLD.getLayer(id, "middle")
-      const front = WORLD.getLayer(id, "front")
-      if (!back || !middle || !front) return
-      const containers = [back, middle, front]
+      const main = WORLD.getLayer(id, "main")
+      if (!main) return
 
-      if (_.random() > 0.5) {
-        containers.forEach((container) => {
-          container.scale.x = -1
-        })
-      }
+      if (_.random() > 0.5) main.scale.x = -1
     }
 
     const spritesheet = await WORLD.getSpritesheet(entity.name)
-    const middle = WORLD.getLayer(id, "middle")
-    if (!middle || !spritesheet) return
+    const main = WORLD.getLayer(id, "main")
+    if (!main || !spritesheet) return
 
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
       const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
@@ -43,15 +51,15 @@ class Spr {
       sprite.animationSpeed = 1 / (CONFIG.maxFPS / 10)
       sprite.visible = false
       sprite.cullable = true
-      middle.addChild(sprite)
+      main.addChild(sprite)
 
-      // to prevent synchronize mobs, looks poor
+      // prevent synchronized mobs
       const randomFrame = _.random(0, sprite.totalFrames - 1)
 
-      // loop is true by default
-      if (!entity.sprite.initial.loop || name === "death") sprite.loop = false
+      // PIXI sprite loops by default, "else" is no needed
+      if (!loop || name === "death") sprite.loop = false
 
-      if (entity.sprite.initial.randomFrame) sprite.gotoAndPlay(randomFrame)
+      if (randomStartFrame) sprite.gotoAndPlay(randomFrame)
       else sprite.gotoAndPlay(0)
     })
   }

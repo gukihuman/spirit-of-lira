@@ -292,10 +292,10 @@ export default class {
 
     if (entity.attack.damageFilterStartMS + 100 > WORLD.loop.elapsedMS) return
 
-    const container = WORLD.getLayer(id, "middle")
+    const main = WORLD.getLayer(id, "main")
 
-    if (container) {
-      container.filters = [
+    if (main) {
+      main.filters = [
         new PIXI_FILTERS.AdvancedBloomFilter({
           quality: 2,
           bloomScale: 0.23,
@@ -303,7 +303,7 @@ export default class {
         }),
       ]
       if (WORLD.hero.target.attacked) {
-        container.filters.push(
+        main.filters.push(
           new PIXI_FILTERS.AdjustmentFilter({
             red: 1.4,
             saturation: 0.9,
@@ -312,7 +312,7 @@ export default class {
         )
       }
     }
-    this.lastContainer = container
+    this.lastContainer = main
   }
 
   targetUnlock() {

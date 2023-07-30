@@ -1,11 +1,6 @@
 export default {
   position: {},
-  sprite: {
-    initial: {
-      parent: "ground",
-      randomFlip: false,
-    },
-  },
+  sprite: {},
 
   process(entity, id) {
     let position = entity.position
@@ -62,15 +57,15 @@ export default {
       return
     }
 
-    const main = WORLD.getContainer(id)
-    const middle = WORLD.getLayer(id, "middle")
+    const container = WORLD.getContainer(id)
+    const main = WORLD.getLayer(id, "main")
 
-    if (main && middle) {
-      middle.angle += 80 * WORLD.loop.deltaSec
+    if (container && main) {
+      main.angle += 80 * WORLD.loop.deltaSec
       const scale = 1
-      main.scale = { x: 1, y: 0.5 }
-      main.scale.x *= scale
-      main.scale.y *= scale
+      container.scale = { x: 1, y: 0.5 }
+      container.scale.x *= scale
+      container.scale.y *= scale
       const animationSprite = WORLD.getSprite(id, "idle")
       if (!animationSprite) return
       animationSprite.blendMode = PIXI.BLEND_MODES.OVERLAY
