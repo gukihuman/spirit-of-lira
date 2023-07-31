@@ -1,7 +1,5 @@
-import json from "@/assets/miscellaneous/collisionArray.json"
-
 export default class {
-  collisionArray: number[][] = json
+  collisionArray: number[][] = ASSETS.jsons.collision as number[][]
   private collisionGrid: Graphics[][] = []
 
   init() {

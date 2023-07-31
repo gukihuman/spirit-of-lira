@@ -1,32 +1,22 @@
-//
 export default class {
-  //
   framesToValidate = 3
-
   process() {
-    //
     WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
-
       this.updateAnimation(entity, id)
       this.updateLastChangeMS(entity, id)
-
       const container = SPRITE.getContainer(id)
       if (!container) return
-
       // update container coordinates
       container.x = entity.position.x - WORLD.hero.position.x + 960
       container.y = entity.position.y - WORLD.hero.position.y + 540
-
       // update visibility of animations
       if (entity.move) {
         SPRITE.getLayer(id, "animation")?.children.forEach((child) => {
-          //
           if (child.name === entity.sprite.active) child.visible = true
           else child.visible = false
         })
       } else {
-        //
         const animation = SPRITE.getLayer(id, "animation")
         if (animation && animation.children[0]) {
           animation.children[0].visible = true
@@ -34,17 +24,14 @@ export default class {
       }
       // update animation frame on first animation tick
       if (entity.move) {
-        //
         const lastEntity = LAST_WORLD.entities.get(id)
         if (!lastEntity) return
-
         SPRITE.getLayer(id, "animation")?.children.forEach((animation) => {
           if (
             entity.sprite.active === animation.name &&
             lastEntity.sprite.active !== animation.name
           ) {
             const frame = entity.sprite.startFrames[animation.name]
-
             if (frame) {
               SPRITE.getAnimation(id, animation.name)?.gotoAndPlay(frame)
             } else {
@@ -54,6 +41,29 @@ export default class {
         })
       }
     })
+    this.updateItemSprite()
+  }
+  private updateItemSprite() {
+    const heroAnimation = SPRITE.getAnimation(
+      WORLD.heroId,
+      WORLD.hero.sprite.active
+    )
+    const frontWeapon = SPRITE.getLayer(WORLD.heroId, "frontWeapon")
+    const backWeapon = SPRITE.getLayer(WORLD.heroId, "backWeapon")
+    if (!heroAnimation || !frontWeapon || !backWeapon) return
+    // syncronize all weapon sprites in attack state
+    // turn visibility on for attack and off for non-attack
+    if (WORLD.hero.sprite.active.includes("attack")) {
+      frontWeapon.children.forEach((child) => {
+        const sprite = child as AnimatedSprite
+        sprite.gotoAndPlay(heroAnimation.currentFrame)
+      })
+      frontWeapon.visible = true
+      backWeapon.visible = false
+    } else {
+      backWeapon.visible = true
+      frontWeapon.visible = false
+    }
   }
   private updateLastChangeMS(entity, id) {
     //
@@ -66,7 +76,7 @@ export default class {
     }
   }
   private updateAnimation(entity, id) {
-    if (!entity.move) return
+    if (!entity.state) return
 
     if (
       entity.sprite.leaveAnimationConditions &&

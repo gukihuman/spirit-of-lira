@@ -1,32 +1,5 @@
 class Spr {
   entityContainers: Map<number, Container> = new Map()
-  init() {
-    WORLD.loop.add(() => {
-      this.process()
-    }, "SPRITE")
-  }
-  process() {
-    const heroAnimation = this.getAnimation(
-      WORLD.heroId,
-      WORLD.hero.sprite.active
-    )
-    const frontWeapon = SPRITE.getLayer(WORLD.heroId, "frontWeapon")
-    const backWeapon = SPRITE.getLayer(WORLD.heroId, "backWeapon")
-    if (!heroAnimation || !frontWeapon || !backWeapon) return
-    // syncronize all weapon sprites in attack state
-    // turn visibility on for attack and off for non-attack
-    if (WORLD.hero.sprite.active.includes("attack")) {
-      frontWeapon.children.forEach((child) => {
-        const sprite = child as AnimatedSprite
-        sprite.gotoAndPlay(heroAnimation.currentFrame)
-      })
-      frontWeapon.visible = true
-      backWeapon.visible = false
-    } else {
-      backWeapon.visible = true
-      frontWeapon.visible = false
-    }
-  }
   async createEntitySprite(
     entity: AnyObject,
     id: number,
@@ -95,7 +68,6 @@ class Spr {
       animatedSprite.anchor.x = 0.5
       animatedSprite.anchor.y = 0.5
       animatedSprite.animationSpeed = 1 / 6
-      animatedSprite.visible = true
       animatedSprite.cullable = true
       animatedSprite.play()
       if (type === "cloth") cloth.addChild(animatedSprite)
@@ -132,7 +104,7 @@ class Spr {
     return animation.getChildByName(spriteName) as AnimatedSprite
   }
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
-    let json = ASSETS.jsons.get(name)
+    let json = ASSETS.jsons[name]
     if (!json) {
       LIB.logWarning(`no json for ${name} in ASSETS.jsons (SPRITE)`)
       return
@@ -142,7 +114,7 @@ class Spr {
     let texture
     let spritesheet
     if (!PIXI.Cache.has(name)) {
-      if (!ASSETS.jsons.get(name)) return
+      if (!ASSETS.jsons[name]) return
       texture = PIXI.Texture.from(json.meta.image)
       spritesheet = new PIXI.Spritesheet(texture, json as ISpritesheetData)
       PIXI.Cache.set(name, [texture, spritesheet])

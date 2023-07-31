@@ -32,7 +32,6 @@ export default defineNuxtPlugin(async (app) => {
     SETTINGS.init()
     LOCAL.init() // local storage
     INVENTORY.init()
-    SPRITE.init()
 
     // 📜 change dependency of hero
     REMOTE.init() // uses hero for now
