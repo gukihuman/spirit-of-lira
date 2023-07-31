@@ -2,7 +2,7 @@ class settings {
   //
   inputEvents = {
     keyboard: {
-      mouseMoveOrAttack: "o",
+      moveOrCast: "o",
       autoMouseMove: "e",
       toggleInventory: "i",
       toggleFullscreen: "f",
@@ -10,11 +10,11 @@ class settings {
       lockTarget: "u",
     },
     mouse: {
-      mouseMoveOrAttack: 0,
+      moveOrCast: 0,
       lockTarget: 2,
     },
     gamepad: {
-      attack: "A",
+      cast: "A",
       toggleFullscreen: "Menu",
       toggleInventory: "Start",
       lockTarget: "RT",
@@ -49,16 +49,14 @@ class settings {
 
     // overwrite default
     if (
-      INPUT.mouse.pressed.includes(this.inputEvents.mouse.mouseMoveOrAttack) ||
-      INPUT.keyboard.pressed.includes(
-        this.inputEvents.keyboard.mouseMoveOrAttack
-      )
+      INPUT.mouse.pressed.includes(this.inputEvents.mouse.moveOrCast) ||
+      INPUT.keyboard.pressed.includes(this.inputEvents.keyboard.moveOrCast)
     ) {
       EVENTS.emitSingle("mouseMove")
       GLOBAL.autoMouseMove = false
     }
-    if (INPUT.gamepad.pressed.includes(this.inputEvents.gamepad.attack)) {
-      EVENTS.emitSingle("attack")
+    if (INPUT.gamepad.pressed.includes(this.inputEvents.gamepad.cast)) {
+      EVENTS.emitSingle("cast")
     }
   }
 

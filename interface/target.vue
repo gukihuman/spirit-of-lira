@@ -22,7 +22,7 @@ div(class="absolute relative top-[-20px] left-[757px]")
 
 const health = computed(() => {
   return {
-    width: INTERFACE.targetHealth * 4 + "px",
+    width: (INTERFACE.targetHealth / INTERFACE.targetMaxHealth) * 400 + "px",
   }
 })
 

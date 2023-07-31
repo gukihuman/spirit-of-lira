@@ -1,11 +1,11 @@
-//
 const inter = {
-  //
   target: false,
   targetLocked: false,
   inventory: false,
+  targetHealth: 0,
+  targetMaxHealth: 0,
+  // 📜 need it?
   input: false,
   inputFocus: false,
-  targetHealth: 0,
 }
 export const INTERFACE = LIB.store(inter)

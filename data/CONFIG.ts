@@ -57,7 +57,7 @@ class GukiConfig {
       astar: -1, // check logic in EVENTS before it is empty
       EVENTS: -2, // runs all logic for collected events and empty itself
       move: -3,
-      attack: -4,
+      cast: -4,
       flip: -5,
     },
   }

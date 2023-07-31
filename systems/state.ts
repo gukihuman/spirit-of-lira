@@ -25,7 +25,7 @@ export default class {
     entity.state.move = false
     entity.state.forcemove = false
     entity.state.follow = false
-    entity.state.attack = false
+    entity.state.cast = false
   }
   private updateLastChangeMS(entity, id) {
     //

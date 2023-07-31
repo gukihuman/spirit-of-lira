@@ -7,7 +7,7 @@ const inventory: AnyObject = {
   },
   bag: {
     clothes: [],
-    weapons: ["common-sword"],
+    weapons: [],
   },
 
   init() {

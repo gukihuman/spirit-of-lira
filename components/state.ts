@@ -1,12 +1,10 @@
 export default {
   active: "idle",
-
   idle: true,
   move: false,
-  forcemove: false,
   follow: false,
-  attack: false,
+  cast: false,
   dead: false,
-
   lastChangeMS: 0,
+  deadTimeMS: 1000,
 }

@@ -43,7 +43,7 @@ class Spr {
       // prevent synchronized mobs
       const randomFrame = _.random(0, sprite.totalFrames - 1)
       // PIXI sprite loops by default, "else" is no needed
-      if (!loop || name === "death") sprite.loop = false
+      if (!loop || name === "dead") sprite.loop = false
       if (randomStartFrame) sprite.gotoAndPlay(randomFrame)
       else sprite.gotoAndPlay(0)
     })
