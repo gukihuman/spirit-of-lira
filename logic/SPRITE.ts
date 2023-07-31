@@ -56,11 +56,11 @@ class Spr {
     let frontWeapon
     let cloth
     if (type === "cloth") {
-      cloth = this.getLayer(WORLD.heroId, "cloth") as Container
+      cloth = this.getLayer(WORLD.heroId, "cloth")
     }
     if (type === "weapon") {
-      backWeapon = this.getLayer(WORLD.heroId, "backWeapon") as Container
-      frontWeapon = this.getLayer(WORLD.heroId, "frontWeapon") as Container
+      backWeapon = this.getLayer(WORLD.heroId, "backWeapon")
+      frontWeapon = this.getLayer(WORLD.heroId, "frontWeapon")
     }
     _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {
       const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)

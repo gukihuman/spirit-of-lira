@@ -57,6 +57,9 @@ class settings {
       EVENTS.emitSingle("mouseMove")
       GLOBAL.autoMouseMove = false
     }
+    if (INPUT.gamepad.pressed.includes(this.inputEvents.gamepad.attack)) {
+      EVENTS.emitSingle("attack")
+    }
   }
 
   init() {

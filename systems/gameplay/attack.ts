@@ -7,6 +7,13 @@ export default class {
     EVENTS.onSingle("attack", () => {
       //
       if (!WORLD.hero.target.id) return
+      const targetEntity = WORLD.entities.get(WORLD.hero.target.id)
+      if (targetEntity.state.active === "dead") {
+        WORLD.hero.target.attacked = false
+        WORLD.hero.target.locked = false
+        WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+        return
+      }
 
       WORLD.hero.target.attacked = true
       WORLD.hero.target.locked = true
@@ -72,6 +79,9 @@ export default class {
         !entity.damageDone
       ) {
         // damage done here
+        EVENTS.emit("damage", { entity, targetEntity })
+
+        // 📜 rework this
         WORLD.systems.damage.events.push({
           entityId: id,
           targetEntityId: entity.target.id,
@@ -91,7 +101,6 @@ export default class {
             WORLD.loop.elapsedMS &&
           id === WORLD.heroId
         ) {
-          //
           // get animation instead of declare cuz it should already
           // be the correct one like "sword" or "bow"
           let sprite = SPRITE.getAnimation(id, entity.sprite.active)

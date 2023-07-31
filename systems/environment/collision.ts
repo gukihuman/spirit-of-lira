@@ -1,7 +1,6 @@
 export default class {
-  collisionArray: number[][] = ASSETS.jsons.collision as number[][]
+  collisionArray: number[][] = ASSETS.jsons.collision
   private collisionGrid: Graphics[][] = []
-
   init() {
     if (GLOBAL.devMode) this.drawCollisionGrid()
 
@@ -131,7 +130,7 @@ export default class {
     const link = document.createElement("a")
     link.style.display = "none"
     link.href = url
-    link.download = "collisionArray.json"
+    link.download = "collisionarray.json"
 
     // Add the link element to the document
     document.body.appendChild(link)

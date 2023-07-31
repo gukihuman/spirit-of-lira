@@ -94,6 +94,12 @@ class Coordinates {
   isWalkable(x: number, y: number) {
     let tileX = this.coordinateToTile(x)
     let tileY = this.coordinateToTile(y)
+    if (
+      WORLD.systems.collision.collisionArray[tileY] === undefined ||
+      !WORLD.systems.collision.collisionArray[tileY][tileX] === undefined
+    ) {
+      return
+    }
     return (
       WORLD.systems.collision.collisionArray[tileY][tileX] !== 2 &&
       WORLD.systems.collision.collisionArray[tileY][tileX] !== 3
