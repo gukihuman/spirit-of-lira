@@ -1,4 +1,4 @@
-class settings {
+class Settings {
   //
   inputEvents = {
     keyboard: {
@@ -52,12 +52,13 @@ class settings {
       INPUT.mouse.pressed.includes(this.inputEvents.mouse.moveOrCast) ||
       INPUT.keyboard.pressed.includes(this.inputEvents.keyboard.moveOrCast)
     ) {
-      EVENTS.emitSingle("mouseMove")
+      EVENTS.emitSingle("moveOrCast")
       GLOBAL.autoMouseMove = false
     }
     if (INPUT.gamepad.pressed.includes(this.inputEvents.gamepad.cast)) {
       EVENTS.emitSingle("cast")
     }
+    if (INPUT.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
   }
 
   init() {
@@ -67,4 +68,4 @@ class settings {
   }
 }
 
-export const SETTINGS = new settings()
+export const SETTINGS = new Settings()

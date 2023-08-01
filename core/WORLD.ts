@@ -64,7 +64,12 @@ class World {
       this[name].name = name
     }
 
-    this.loop.add(() => this.sortable.children.sort((a, b) => a.y - b.y))
+    this.loop.add(() => {
+      this.sortable.children.sort((a, b) => a.y - b.y)
+      this.entities.forEach((entity, id) => {
+        if (entity.process) entity.process(entity, id)
+      })
+    }, "WORLD")
   }
 
   private loopSetup() {

@@ -2,9 +2,18 @@
 export default class {
   //
   init() {
+    EVENTS.on("cast", ({ entity, targetEntity }) => {
+      entity.state.track = true
+      entity.target.locked = true
+    })
+
     EVENTS.onSingle("cast", () => {
+      if (!WORLD.hero.target.id) return
+      EVENTS.emit("cast", {
+        entity: WORLD.hero,
+        targetEntity: WORLD.hero.target.entity,
+      })
       // //
-      // if (!WORLD.hero.target.id) return
       // const targetEntity = WORLD.entities.get(WORLD.hero.target.id)
       // if (targetEntity.state.active === "dead") {
       //   WORLD.hero.target.locked = false

@@ -1,6 +1,8 @@
 export default class {
+  heroAutoTargetDistance = 500
+  mobsAutoTargetDistance = 300
   heroMaxTargetDistance = 1000
-  mobsMaxTargetDistance = 430
+  mobsMaxTargetDistance = 430 // stop track
   init() {
     EVENTS.onSingle("lockTarget", () => {
       const hero = WORLD.hero
@@ -28,15 +30,30 @@ export default class {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
       this.checkTargetDistance(entity, id)
-      if (entity.state.active !== "track" || !entity.target.locked) {
+      if (entity.state.active !== "track" && !entity.target.locked) {
         if (LIB.hero(id) && INPUT.lastActiveDevice !== "gamepad") return
         // work on all entities and hero with gamepad
         this.autoTarget(entity, id)
       }
     })
-    if (!GLOBAL.autoMouseMove) this.targetByMouse()
-    // overwrites autoTarget for hero with gamepad axes
-    this.targetByGamepadAxes()
+    if (
+      INPUT.lastActiveDevice === "gamepad" &&
+      LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone) &&
+      !WORLD.hero.target.locked
+    ) {
+      // overwrites autoTarget for hero with gamepad axes
+      this.targetByGamepadAxes()
+    }
+    if (
+      INPUT.lastActiveDevice !== "gamepad" &&
+      !GLOBAL.autoMouseMove &&
+      !WORLD.hero.target.locked
+    ) {
+      this.targetByMouse()
+    }
+  }
+  targetByMouse() {
+    WORLD.hero.target.id = WORLD.hoverId
   }
   private checkTargetDistance(entity, id) {
     if (!entity.target.id) return
@@ -52,12 +69,9 @@ export default class {
   autoTarget(entity, id) {
     let minDistance = Infinity
     WORLD.entities.forEach((otherEntity, otherId) => {
-      if (id === otherId || !otherEntity.state) return
+      if (id === otherId || !otherEntity.move) return
       if (otherEntity.state.active === "dead") return
-      if (
-        entity.attributes.mood === otherEntity.attributes.mood &&
-        id !== WORLD.heroId
-      ) {
+      if (!LIB.hero(id) && entity.attributes.mood === "peaceful") {
         return
       }
       const distance = COORDINATES.distance(
@@ -68,28 +82,14 @@ export default class {
         minDistance = distance
         entity.target.id = otherId
       }
-      if (
-        entity.attributes.mood !== otherEntity.attributes.mood &&
-        id !== WORLD.heroId
-      ) {
-      }
     })
-    let maxTargetDistance = 300
-    if (id === WORLD.heroId) maxTargetDistance = 540
-    if (minDistance > maxTargetDistance) {
+    let autoTargetDistance = this.mobsAutoTargetDistance
+    if (LIB.hero(id)) autoTargetDistance = this.heroAutoTargetDistance
+    if (minDistance > autoTargetDistance) {
       entity.target.id = undefined
     }
   }
-  targetByMouse() {
-    if (WORLD.hero.target.locked) return
-    WORLD.hero.target.id = WORLD.hoverId
-  }
   targetByGamepadAxes() {
-    if (WORLD.hero.target.locked) return
-    if (INPUT.lastActiveDevice !== "gamepad") return
-    if (!LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
-      return
-    }
     const axesVector = COORDINATES.vector(
       INPUT.gamepad.axes[0],
       INPUT.gamepad.axes[1]

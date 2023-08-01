@@ -44,19 +44,13 @@ export default defineNuxtPlugin(async (app) => {
 
     await setupSystems()
 
-    WORLD.loop.add(() => {
-      WORLD.entities.forEach((entity, id) => {
-        if (entity.process) entity.process(entity, id)
-      })
-    }, "WORLD.entities")
-
     // 📜 move to static entity handler to remove and spawn depending
     // on current loaded chunks
     ENTITY_FACTORY.create("magic-tree", { sprite: {} })
     ENTITY_FACTORY.create("bridge-fence", { sprite: {} })
     ENTITY_FACTORY.create("bunny", { sprite: {} })
 
-    // to make sure initial loading transition will work
+    // timeout to make sure initial loading transition will work
     setTimeout(() => {
       GLOBAL.loadingScreen = false
     }, 0)

@@ -1,25 +1,15 @@
 export default class {
-  private starttrackMS = 0
-  gamepadMoved = false
+  private preventGamepadMoveMS = 1000 // disable axes after start track
+  private gamepadAxesMoved = false
   init() {
     EVENTS.onSingle("moveOrCast", () => {
-      WORLD.systems.move.mouseMove()
-      if (WORLD.hoverId) {
-        WORLD.hero.target.id = WORLD.hoverId
-        WORLD.hero.target.tracked = true
-        WORLD.hero.target.locked = true
-      } else {
-        WORLD.hero.target.tracked = false
-      }
+      if (WORLD.hoverId) EVENTS.emitSingle("cast")
+      else this.mouseMove()
     })
-    EVENTS.onSingle("mouseMove", () => {
-      WORLD.systems.move.mouseMove()
-    })
+    EVENTS.onSingle("mouseMove", () => this.mouseMove())
+    EVENTS.onSingle("gamepadMove", () => this.gamepadMove())
     EVENTS.onSingle("autoMouseMove", () => {
       GLOBAL.autoMouseMove = !GLOBAL.autoMouseMove
-    })
-    EVENTS.onSingle("gamepadMove", () => {
-      WORLD.systems.move.gamepadMove()
     })
   }
   process() {
@@ -28,12 +18,21 @@ export default class {
       this.move(entity)
     })
     if (GLOBAL.autoMouseMove) EVENTS.emitSingle("mouseMove")
-    this.updateGamepadMoveInfo()
+    this.checkGamepadAxes()
   }
-  // set hero target position to mouse position
+  private checkGamepadAxes() {
+    if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
+      this.gamepadAxesMoved = true
+    } else {
+      // first time not moved
+      if (this.gamepadAxesMoved && INPUT.lastActiveDevice === "gamepad") {
+        WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+      }
+      this.gamepadAxesMoved = false
+    }
+  }
   mouseMove() {
-    if (!WORLD.hero) return
-    if (INTERFACE.inventory) return
+    if (GLOBAL.context !== "world") return
     const distance = COORDINATES.distance(
       COORDINATES.conterOfScreen(),
       COORDINATES.mouseOfScreen()
@@ -42,34 +41,22 @@ export default class {
       WORLD.hero.move.finaldestination = undefined
       return
     }
-    WORLD.hero.state.forcemove = true
-    const mousePosition = COORDINATES.mouseOfScreen()
-    mousePosition.x += WORLD.hero.position.x - 960
-    mousePosition.y += WORLD.hero.position.y - 540
-    WORLD.hero.move.finaldestination = mousePosition
+    WORLD.hero.state.move = true
+    WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
   }
-  private updateGamepadMoveInfo() {
-    if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
-      if (WORLD.loop.elapsedMS > this.starttrackMS + 1000) {
-        WORLD.hero.target.tracked = false
-      }
-      this.gamepadMoved = true
-    } else {
-      // first time not moved
-      if (this.gamepadMoved && INPUT.lastActiveDevice === "gamepad") {
-        const hero = WORLD.hero
-        hero.move.finaldestination.x = hero.position.x
-        hero.move.finaldestination.y = hero.position.y
-      }
-      this.gamepadMoved = false
-    }
-  }
-  private tries = 0
+  private gamepadMoveTries = 0
   gamepadMove() {
-    this.tries = 0
-    this.internalGamepadMove()
+    if (
+      WORLD.hero.state.active === "track" &&
+      WORLD.loop.elapsedMS <
+        WORLD.hero.state.lastChangeMS + this.preventGamepadMoveMS
+    ) {
+      return
+    }
+    this.gamepadMoveTries = 0
+    this.gamepadMoveLogic()
   }
-  private internalGamepadMove(otherRatio = 1) {
+  private gamepadMoveLogic(otherRatio = 1) {
     if (!WORLD.hero) return
     const speedPerTick = COORDINATES.speedPerTick(WORLD.hero)
     const axesVector = COORDINATES.vector(
@@ -92,18 +79,17 @@ export default class {
       !COORDINATES.isWalkable(possibleDestinationX, possibleDestinationY) &&
       GLOBAL.collision
     ) {
-      this.tries++
-      if (this.tries > 100) return
-      if (this.tries > 3) {
-        this.internalGamepadMove(otherRatio - 0.1)
+      this.gamepadMoveTries++
+      if (this.gamepadMoveTries > 100) return
+      if (this.gamepadMoveTries > 3) {
+        this.gamepadMoveLogic(otherRatio - 0.1)
       }
-      this.internalGamepadMove(otherRatio + 0.1)
+      this.gamepadMoveLogic(otherRatio + 0.1)
       return
     }
     hero.move.finaldestination.x = possibleDestinationX
     hero.move.finaldestination.y = possibleDestinationY
-    WORLD.hero.state.active = "forcemove"
-    this.gamepadMoved = true
+    this.gamepadAxesMoved = true
   }
   move(entity: Entity) {
     if (
@@ -114,7 +100,6 @@ export default class {
       return
     if (entity.state.active === "attack" || entity.state.active === "dead")
       return
-    entity.state.active = "idle"
     const speedPerTick = COORDINATES.speedPerTick(entity)
     const displacement = COORDINATES.vectorFromPoints(
       entity.position,

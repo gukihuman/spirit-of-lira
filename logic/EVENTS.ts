@@ -1,9 +1,9 @@
-//
 class Events {
   list: { [event: string]: Array<(AnyObject) => void> } = {
     damage: [],
     equip: [],
     unequip: [],
+    cast: [],
   }
   listOfSingle: { [event: string]: Array<() => void> } = {
     toggleInventory: [],
@@ -20,39 +20,60 @@ class Events {
   }
   active: [string, AnyObject][] = []
   activeSingle: string[] = []
-  init() {
-    WORLD.loop.add(() => {
-      this.executeEvents()
-      this.active = []
-      this.activeSingle = []
-    }, "EVENTS")
-  }
   /** Add logic to an event. Function must have data argument. If data not required, use onSingle instead. */
   on(event: string, fn: (data: AnyObject) => void) {
     const eventFunctions = this.list[event]
     if (!eventFunctions) {
-      LIB.logWarning(`Unknown event: "${event}" (EVENTS)`)
+      LIB.logWarning(`Unknown event on: "${event}" (EVENTS)`)
       return
     }
     eventFunctions.push(fn)
   }
   /** Adds logic to an event. Single events execute only ones per loop no matter how many times emitted. Logic function must have no arguments. */
   onSingle(event: string, fn: () => void) {
-    if (!this.listOfSingle[event]) {
-      LIB.logWarning(`Unknown event: "${event}" (EVENTS)`)
+    const eventFunctions = this.listOfSingle[event]
+    if (!eventFunctions) {
+      LIB.logWarning(`Unknown single event on: "${event}" (EVENTS)`)
       return
     }
-    this.listOfSingle[event].push(fn)
+    eventFunctions.push(fn)
   }
   emit(event: string, data: AnyObject) {
+    if (!this.list[event]) {
+      LIB.logWarning(`Unknown event on emit: "${event}" (EVENTS)`)
+      return
+    }
     this.active.push([event, data])
   }
   /** Executes only once per loop no matter how many times emitted. */
   emitSingle(event: string) {
+    if (!this.listOfSingle[event]) {
+      LIB.logWarning(`Unknown single event emit: "${event}" (EVENTS)`)
+      return
+    }
     if (this.activeSingle.includes(event)) return
     this.activeSingle.push(event)
   }
+  init() {
+    WORLD.loop.add(() => {
+      this.executeEventsTries = 0
+      this.executeEvents()
+      this.active = []
+      this.activeSingle = []
+    }, "EVENTS")
+  }
+  private executeEventsTries = 0
+  private limit = 10
+  private activeLength = 0
+  private activeSingleLength = 0
   private executeEvents() {
+    this.executeEventsTries++
+    if (this.executeEventsTries > this.limit) {
+      LIB.logWarning(`Chain of emitted events exceeds ${this.limit} (EVENTS)`)
+      return
+    }
+    this.activeLength = this.active.length
+    this.activeSingleLength = this.activeSingle.length
     this.active.forEach((eventTuple) => {
       const event = eventTuple[0]
       const data = eventTuple[1]
@@ -72,6 +93,14 @@ class Events {
       }
       this.listOfSingle[event].forEach((fn) => fn())
     })
+    if (
+      this.activeLength !== this.active.length ||
+      this.activeSingleLength !== this.activeSingle.length
+    ) {
+      this.active.splice(0, this.activeLength)
+      this.activeSingle.splice(0, this.activeSingleLength)
+      this.executeEvents()
+    }
   }
 }
 
