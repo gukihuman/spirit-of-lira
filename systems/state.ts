@@ -24,7 +24,7 @@ export default class {
     entity.state.idle = true
     entity.state.move = false
     entity.state.forcemove = false
-    entity.state.follow = false
+    entity.state.track = false
     entity.state.cast = false
   }
   private updateLastChangeMS(entity, id) {

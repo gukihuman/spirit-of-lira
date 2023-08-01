@@ -88,6 +88,10 @@ class Lib {
 
     return storeObject
   }
+  hero(id: number) {
+    if (id === WORLD.heroId) return true
+    return false
+  }
 
   /**
    * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache in Spirit of Lira is handled separatly with binding to entity name.

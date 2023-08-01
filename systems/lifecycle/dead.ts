@@ -6,7 +6,6 @@ export default class {
         entity.state.dead = true
         // 📜 make entity and locked be connected to id, to make undefined only
         entity.target.id = undefined
-        entity.target.entity = undefined
         entity.target.locked = undefined
         const animation = SPRITE.getLayer(id, "animation")
         const shadow = SPRITE.getLayer(id, "shadow")

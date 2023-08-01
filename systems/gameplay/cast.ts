@@ -31,7 +31,7 @@ export default class {
     //   entity.position,
     //   targetEntity.position
     // )
-    // if (entity.target.attacked) {
+    // if (entity.target.tracked) {
     //   if (
     //     WORLD.heroId === id &&
     //     WORLD.loop.elapsedMS <

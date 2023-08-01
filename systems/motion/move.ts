@@ -1,15 +1,15 @@
 export default class {
-  private startFollowMS = 0
+  private starttrackMS = 0
   gamepadMoved = false
   init() {
     EVENTS.onSingle("moveOrCast", () => {
       WORLD.systems.move.mouseMove()
       if (WORLD.hoverId) {
         WORLD.hero.target.id = WORLD.hoverId
-        WORLD.hero.target.attacked = true
+        WORLD.hero.target.tracked = true
         WORLD.hero.target.locked = true
       } else {
-        WORLD.hero.target.attacked = false
+        WORLD.hero.target.tracked = false
       }
     })
     EVENTS.onSingle("mouseMove", () => {
@@ -50,8 +50,8 @@ export default class {
   }
   private updateGamepadMoveInfo() {
     if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
-      if (WORLD.loop.elapsedMS > this.startFollowMS + 1000) {
-        WORLD.hero.target.attacked = false
+      if (WORLD.loop.elapsedMS > this.starttrackMS + 1000) {
+        WORLD.hero.target.tracked = false
       }
       this.gamepadMoved = true
     } else {
@@ -129,7 +129,7 @@ export default class {
     if (distance < speedPerTick) {
       return
     }
-    if (entity.attack && entity.target.attacked) {
+    if (entity.attack && entity.target.tracked) {
       const targetEntity = WORLD.entities.get(entity.target.id)
       if (
         targetEntity &&
@@ -141,7 +141,7 @@ export default class {
     let ratio = _.clamp(finaldistance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
-    if (WORLD.hero.target.attacked) ratio = 1
+    if (WORLD.hero.target.tracked) ratio = 1
     const angle = displacement.angle
     const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)
     entity.position.x += velocity.x * ratio

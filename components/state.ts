@@ -2,7 +2,7 @@ export default {
   active: "idle",
   idle: true,
   move: false,
-  follow: false,
+  track: false,
   cast: false,
   dead: false,
   lastChangeMS: 0,

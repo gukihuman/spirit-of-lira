@@ -29,14 +29,14 @@ export default class {
     //     ) {
     //       targetEntity.state.active = "attack"
     //       targetEntity.target.id = id
-    //       targetEntity.target.attacked = true
+    //       targetEntity.target.tracked = true
     //       targetEntity.target.locked = true
     //     }
     //     targetEntity.attributes.health -= entity.attack.damage
     //     if (targetEntity.attributes.health <= 0) {
     //       entity.target.id = undefined
     //       entity.target.locked = false
-    //       entity.target.attacked = false
+    //       entity.target.tracked = false
     //       entity.target.entity = undefined
     //       entity.move.finaldestination = _.cloneDeep(entity.position)
     //       setTimeout(() => {

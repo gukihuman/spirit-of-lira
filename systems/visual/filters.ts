@@ -4,8 +4,8 @@ export default class {
     bloomScale: 0.23,
     blur: 6,
   })
-  // it is offensive follow
-  followed = new PIXI_FILTERS.AdjustmentFilter({
+  // it is offensive track
+  tracked = new PIXI_FILTERS.AdjustmentFilter({
     red: 1.4,
     saturation: 0.9,
     brightness: 0.7,
@@ -20,8 +20,8 @@ export default class {
     if (animation) {
       animation.filters = [this.hover]
       // 📜 here cast is always offensive, when other cast added, think how to change that
-      if (WORLD.hero.state.follow || WORLD.hero.state.cast) {
-        animation.filters.push(this.followed)
+      if (WORLD.hero.state.track || WORLD.hero.state.cast) {
+        animation.filters.push(this.tracked)
       }
     }
     this.lastContainer = animation
@@ -30,7 +30,7 @@ export default class {
     // Preload filters to prevent lag
     const container = SPRITE.getContainer(WORLD.heroId)
     if (container) {
-      container.filters = [this.hover, this.followed]
+      container.filters = [this.hover, this.tracked]
       setTimeout(() => (container.filters = []), 0)
     }
   }

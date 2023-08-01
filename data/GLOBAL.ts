@@ -1,6 +1,5 @@
-//
 const global = {
-  //
+  context: "world",
   gameWindowScale: 1,
   fullscreen: false,
   loadingScreen: true,

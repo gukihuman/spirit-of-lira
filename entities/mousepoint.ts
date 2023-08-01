@@ -51,8 +51,8 @@ export default {
     )
 
     // hide
-    // 📜 change attacked to follow state, implement follow state
-    if (distance < speedPerTick || WORLD.hero.target.attacked) {
+    // 📜 change tracked to track state, implement track state
+    if (distance < speedPerTick || WORLD.hero.target.tracked) {
       position.x = 0
       position.y = 0
       return

@@ -25,7 +25,7 @@ export default class {
         layersToFlip.forEach((layer) => (layer.scale.x = 1))
       }
       // attack target
-      if (entity.target.id && entity.target.attacked) {
+      if (entity.target.id && entity.target.tracked) {
         const targetEntity = WORLD.entities.get(entity.target.id)
         if (targetEntity.position.x < entity.position.x) {
           layersToFlip.forEach((container) => (container.scale.x = -1))

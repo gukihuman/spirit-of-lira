@@ -1,123 +1,90 @@
 export default class {
+  heroMaxTargetDistance = 1000
+  mobsMaxTargetDistance = 430
   init() {
     EVENTS.onSingle("lockTarget", () => {
       const hero = WORLD.hero
       if (!hero.target.id) return
-
       hero.target.locked = !hero.target.locked
-
       // reset finaldestination if it is on the target
-      // it might be undefined with gamepad so first check if it exists
       if (
         hero.move.finaldestination &&
         !hero.target.locked &&
+        // 📜 change that to cloneDeep for clean code and check how it works
         hero.target.entity.position.x === hero.move.finaldestination.x &&
         hero.target.entity.position.y === hero.move.finaldestination.y
       ) {
         hero.move.finaldestination = undefined
-        hero.state.activeSingle = "idle"
       }
-      if (!hero.target.locked) {
-        hero.target.id = undefined
-      }
-
-      // in case lock is used to lock a new target immidiately
-      // 📜 does checking target system existance is needed here?
-      if (WORLD.systems.target && INPUT.lastActiveDevice !== "gamepad") {
+      // when lock is used to lock a new target immidiately
+      if (INPUT.lastActiveDevice !== "gamepad") {
         if (!WORLD.hoverId) return
         hero.target.id = WORLD.hoverId
         hero.target.locked = true
       }
     })
   }
-
   process() {
-    this.autoTarget() // work on all entities and hero with gamepad
-    this.heroTargetByGamepad()
-    if (!GLOBAL.autoMouseMove) this.heroTargetByMouse()
-    this.targetUnlock() // work on all entities when target is far away
-    this.updateTargetEntity()
-    this.undefinedTarget()
-    if (!WORLD.hero.target.id && !INTERFACE.inventory) {
-      INTERFACE.target = false
-    } else {
-      INTERFACE.target = true
-    }
-    if (!WORLD.hero.target.locked) INTERFACE.targetLocked = false
-    else INTERFACE.targetLocked = true
-    if (WORLD.hero.target.id) {
-      INTERFACE.targetHealth = WORLD.hero.target.entity.attributes.health
-      INTERFACE.targetMaxHealth =
-        MODELS.entities[WORLD.hero.target.entity.name].attributes.health
-    }
-  }
-  private undefinedTarget() {
-    WORLD.entities.forEach((entity) => {
-      if (entity.target && !entity.target.id) {
-        entity.target.locked = false
-        entity.target.attacked = false
-        entity.target.entity = undefined
-      }
-    })
-  }
-  private updateTargetEntity() {
-    WORLD.entities.forEach((entity) => {
-      if (!entity.target) return
-      entity.target.entity = WORLD.entities.get(entity.target.id)
-    })
-  }
-  autoTarget() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
-      // if (entity.target.attacked) {
-      //   const targetEntity = WORLD.entities.get(entity.target.id)
-      //   const distance = COORDINATES.distance(
-      //     entity.position,
-      //     targetEntity.position
-      //   )
-      //   // follow distance is here
-      //   if (id !== WORLD.heroId && distance > 430) {
-      //     entity.target.id = undefined
-      //     entity.target.locked = false
-      //     entity.target.attacked = false
-      //   } else {
-      //     return
-      //   }
-      // }
-      if (entity.target.locked) return
-      let minDistance = Infinity
-      WORLD.entities.forEach((otherEntity, otherId) => {
-        if (id === otherId || !otherEntity.state) return
-        if (otherEntity.state.active === "dead") return
-        if (
-          entity.attributes.mood === otherEntity.attributes.mood &&
-          id !== WORLD.heroId
-        ) {
-          return
-        }
-        if (id === WORLD.heroId && INPUT.lastActiveDevice !== "gamepad") return
-        const distance = COORDINATES.distance(
-          entity.position,
-          otherEntity.position
-        )
-        if (distance < minDistance) {
-          minDistance = distance
-          entity.target.id = otherId
-        }
-        if (
-          entity.attributes.mood !== otherEntity.attributes.mood &&
-          id !== WORLD.heroId
-        ) {
-        }
-      })
-      let maxTargetDistance = 300
-      if (id === WORLD.heroId) maxTargetDistance = 540
-      if (minDistance > maxTargetDistance) {
-        entity.target.id = undefined
+      this.checkTargetDistance(entity, id)
+      if (entity.state.active !== "track" || !entity.target.locked) {
+        if (LIB.hero(id) && INPUT.lastActiveDevice !== "gamepad") return
+        // work on all entities and hero with gamepad
+        this.autoTarget(entity, id)
       }
     })
+    if (!GLOBAL.autoMouseMove) this.targetByMouse()
+    // overwrites autoTarget for hero with gamepad axes
+    this.targetByGamepadAxes()
   }
-  heroTargetByGamepad() {
+  private checkTargetDistance(entity, id) {
+    if (!entity.target.id) return
+    const distance = COORDINATES.distance(
+      entity.position,
+      entity.target.entity.position
+    )
+    let maxDistance = 0
+    if (LIB.hero(id)) maxDistance = this.heroMaxTargetDistance
+    else maxDistance = this.mobsMaxTargetDistance
+    if (distance > maxDistance) entity.target.id = undefined
+  }
+  autoTarget(entity, id) {
+    let minDistance = Infinity
+    WORLD.entities.forEach((otherEntity, otherId) => {
+      if (id === otherId || !otherEntity.state) return
+      if (otherEntity.state.active === "dead") return
+      if (
+        entity.attributes.mood === otherEntity.attributes.mood &&
+        id !== WORLD.heroId
+      ) {
+        return
+      }
+      const distance = COORDINATES.distance(
+        entity.position,
+        otherEntity.position
+      )
+      if (distance < minDistance) {
+        minDistance = distance
+        entity.target.id = otherId
+      }
+      if (
+        entity.attributes.mood !== otherEntity.attributes.mood &&
+        id !== WORLD.heroId
+      ) {
+      }
+    })
+    let maxTargetDistance = 300
+    if (id === WORLD.heroId) maxTargetDistance = 540
+    if (minDistance > maxTargetDistance) {
+      entity.target.id = undefined
+    }
+  }
+  targetByMouse() {
+    if (WORLD.hero.target.locked) return
+    WORLD.hero.target.id = WORLD.hoverId
+  }
+  targetByGamepadAxes() {
     if (WORLD.hero.target.locked) return
     if (INPUT.lastActiveDevice !== "gamepad") return
     if (!LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone)) {
@@ -168,24 +135,5 @@ export default class {
       })
     }
     WORLD.hero.target.id = closestEntityId
-  }
-  heroTargetByMouse() {
-    if (WORLD.hero.target.locked || !WORLD.hoverId) return
-    WORLD.hero.target.id = WORLD.hoverId
-  }
-  targetUnlock() {
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.move) return
-      if (!entity.target.id) entity.target.locked = false
-    })
-
-    const targetEntity = WORLD.entities.get(WORLD.hero.target.id)
-    if (!targetEntity) return
-    const distance = COORDINATES.distance(
-      WORLD.hero.position,
-      targetEntity.position
-    )
-
-    if (distance > 1000) WORLD.hero.target.locked = false
   }
 }
