@@ -14,17 +14,19 @@ export default {
   move: {
     speed: 8,
   },
-  skill: {
-    attack: {
-      damage: 2,
-      castTimeMS: 2400,
-      firstCastMS: 1800,
+  skills: {
+    modify: {
+      attack: {
+        damage: 2,
+        castMS: 2200,
+        firstCastMS: 1400,
+      },
     },
   },
   attributes: {
     health: 10,
   },
   state: {
-    deadTimeMS: 1300,
+    deadDelayMS: 1300,
   },
 }

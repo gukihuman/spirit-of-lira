@@ -49,17 +49,26 @@ export default class {
       }
     }
   }
+  private getHeroCastSprite(entity, id) {
+    // 📜 add sprite handling for other skills than attack
+    // now weapon sprite option controls cast sprite
+    // but it should be skill first by adding offensive or nutral options
+    if (LIB.hero(id)) {
+      return ITEMS.weapons[INVENTORY.equipped.weapon].sprite
+    } else {
+      return entity.skills.active
+    }
+  }
   private updateItems() {
-    const heroAnimation = SPRITE.getAnimation(
-      WORLD.heroId,
-      WORLD.hero.sprite.active
-    )
+    const heroSpriteName = this.getHeroCastSprite(WORLD.hero, WORLD.heroId)
+    const heroAnimation = SPRITE.getAnimation(WORLD.heroId, heroSpriteName)
     const frontWeapon = SPRITE.getLayer(WORLD.heroId, "frontWeapon")
     const backWeapon = SPRITE.getLayer(WORLD.heroId, "backWeapon")
     if (!heroAnimation || !frontWeapon || !backWeapon) return
     // syncronize all weapon sprites in cast state
     // turn visibility on for cast and off for non-attack
-    if (WORLD.hero.sprite.active.includes("cast")) {
+    // 📜 check if skill is neutral to not update and leave weapon idle
+    if (WORLD.hero.sprite.active === heroSpriteName) {
       frontWeapon.children.forEach((child) => {
         const sprite = child as AnimatedSprite
         sprite.gotoAndPlay(heroAnimation.currentFrame)
@@ -95,16 +104,13 @@ export default class {
         return
     }
 
-    this.checkDead(entity, id)
-
-    if (entity.state.active !== "dead") {
-      this.checkMove(entity, id)
-      this.checkAttack(entity, id)
+    if (entity.state.active === "dead") {
+      entity.sprite.active = "dead"
+      return
     }
-  }
-  private checkDead(entity, id) {
-    // set directly instead of setWithValidation()
-    if (entity.state.active === "dead") entity.sprite.active = "dead"
+
+    this.checkMove(entity, id)
+    this.checkCast(entity, id)
   }
   private checkMove(entity, id) {
     if (!entity.move || entity.state.active === "cast") return
@@ -138,15 +144,15 @@ export default class {
       return
     }
   }
-  private checkAttack(entity, id) {
+  private checkCast(entity, id) {
     //
-    if (!entity.move || !entity.skill) return
-    if (entity.state.active !== "attack") return
+    if (!entity.move || !entity.skills) return
+    if (entity.state.active !== "cast") return
 
     if (id === WORLD.heroId) {
-      entity.sprite.active = "sword-attack"
+      entity.sprite.active = this.getHeroCastSprite(WORLD.hero, WORLD.heroId)
     } else {
-      entity.sprite.active = "sword-attack"
+      entity.sprite.active = "attack"
     }
   }
   /** sets sprite if enough frames are validated */

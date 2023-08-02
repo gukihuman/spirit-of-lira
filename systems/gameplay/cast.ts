@@ -1,120 +1,87 @@
-//
 export default class {
-  //
+  private cast(slot = "slot1") {
+    if (GLOBAL.context !== "world") return
+    EVENTS.emit("cast", {
+      entity: WORLD.hero,
+      slot: slot,
+    })
+  }
   init() {
-    EVENTS.on("cast", ({ entity, targetEntity }) => {
+    EVENTS.onSingle("cast1", () => this.cast("slot1"))
+    EVENTS.onSingle("cast2", () => this.cast("slot2"))
+    EVENTS.onSingle("cast3", () => this.cast("slot3"))
+    EVENTS.onSingle("cast4", () => this.cast("slot4"))
+    EVENTS.on("cast", ({ entity, slot }) => {
+      entity.skills.active = entity.skills[slot]
       entity.state.track = true
       entity.target.locked = true
     })
-
-    EVENTS.onSingle("cast", () => {
-      if (!WORLD.hero.target.id) return
-      EVENTS.emit("cast", {
-        entity: WORLD.hero,
-        targetEntity: WORLD.hero.target.entity,
-      })
-      // //
-      // const targetEntity = WORLD.entities.get(WORLD.hero.target.id)
-      // if (targetEntity.state.active === "dead") {
-      //   WORLD.hero.target.locked = false
-      //   WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
-      //   return
-      // }
-      // WORLD.hero.target.locked = true
-      // WORLD.systems.move.startMoveToAttackMS = WORLD.loop.elapsedMS
+  }
+  private castLogic(entity, id, skill) {
+    skill.logic(entity, id)
+    entity.skills.lastDoneMS = WORLD.loop.elapsedMS + skill.delayMS
+    entity.skills.delayedLogicDone = false
+  }
+  private delayedLogic(entity, id, skill) {
+    if (
+      !WORLD.systems.track.checkDistance(
+        entity,
+        entity.target.entity,
+        skill.distance
+      )
+    ) {
+      entity.state.cast = false
+      entity.skills.lastDoneMS = Infinity
+    }
+    entity.skills.delayedLogicDone = true
+  }
+  private reset(entity, id) {
+    entity.skills.lastFirstStartMS = Infinity
+    entity.skills.lastDoneMS = Infinity
+    entity.skills.delayedLogicDone = true
+  }
+  process() {
+    WORLD.entities.forEach((entity, id) => {
+      if (!entity.state || !entity.skills) return
+      if (!entity.state.cast) {
+        this.reset(entity, id)
+        return
+      }
+      const lastEntity = LAST_WORLD.entities.get(id)
+      if (!lastEntity) return
+      if (entity.state.cast && !lastEntity.state.cast) {
+        entity.skills.lastFirstStartMS = WORLD.loop.elapsedMS
+      }
+      // if target is dead
+      if (
+        !entity.target.id &&
+        WORLD.loop.elapsedMS > entity.skills.lastDoneMS + entity.skills.delayMS
+      ) {
+        entity.state.cast = false
+        return
+      }
+      const skill = entity.skills.data[entity.skills.active]
+      // first in a sequence
+      if (
+        WORLD.loop.elapsedMS >
+        entity.skills.lastFirstStartMS + skill.firstCastMS
+      ) {
+        this.castLogic(entity, id, skill)
+        entity.skills.lastFirstStartMS = Infinity
+      }
+      if (WORLD.loop.elapsedMS > entity.skills.lastDoneMS + skill.castMS) {
+        this.castLogic(entity, id, skill)
+      }
+      if (
+        !entity.skills.delayedLogicDone &&
+        WORLD.loop.elapsedMS > entity.skills.lastDoneMS
+      ) {
+        this.delayedLogic(entity, id, skill)
+      }
     })
   }
 
-  process() {
-    // WORLD.entities.forEach((entity, id) => {
-    // if (!entity.move || !entity.size || !entity.target.id) {
-    //   return
-    // }
-    // this.updateAnimationSpeed(entity, id)
-    // const targetEntity = WORLD.entities.get(entity.target.id)
-    // if (!targetEntity) {
-    //   entity.state.active = "idle"
-    //   return
-    // }
-    // const distance = COORDINATES.distance(
-    //   entity.position,
-    //   targetEntity.position
-    // )
-    // if (entity.target.tracked) {
-    //   if (
-    //     WORLD.heroId === id &&
-    //     WORLD.loop.elapsedMS <
-    //       WORLD.systems.move.startMoveToAttackMS + 1000 &&
-    //     WORLD.systems.move.gamepadMoved
-    //   ) {
-    //     return
-    //   }
-    //   entity.move.finaldestination = _.cloneDeep(targetEntity.position)
-    // } else {
-    //   return
-    // }
-    // const delay = entity.attack.delay * 1000
-    // if (
-    //   entity.state.active === "attack" &&
-    //   entity.attack.startMS + entity.attack.speed * 1000 <=
-    //     WORLD.loop.elapsedMS
-    // ) {
-    //   if (targetEntity.state.active !== "dead") {
-    //     entity.state.active = "idle"
-    //     WORLD.systems.move.process()
-    //   }
-    //   entity.state.active = "idle"
-    //   entity.damageDone = false
-    // }
-    // if (
-    //   entity.state.active === "attack" &&
-    //   entity.attack.startMS - delay + entity.attack.speed * 1000 <=
-    //     WORLD.loop.elapsedMS &&
-    //   !entity.damageDone
-    // ) {
-    //   // damage done here
-    //   EVENTS.emit("damage", { entity, targetEntity })
-    //   // 📜 rework this
-    //   WORLD.systems.damage.events.push({
-    //     entityId: id,
-    //     targetEntityId: entity.target.id,
-    //   })
-    //   entity.damageDone = true
-    // }
-    //   const lastEntity = LAST_WORLD.entities.get(id)
-    //   if (
-    //     entity.state.active !== "attack" &&
-    //     lastEntity.state.active === "attack"
-    //   ) {
-    //     if (
-    //       entity.attack.initialStartMS + entity.attack.speed * 2 * 1000 <=
-    //         WORLD.loop.elapsedMS &&
-    //       id === WORLD.heroId
-    //     ) {
-    //       // get animation instead of declare cuz it should already
-    //       // be the correct one like "sword" or "bow"
-    //       let sprite = SPRITE.getAnimation(id, entity.sprite.active)
-    //       let startFrame = entity.sprite.startFrames[entity.sprite.active]
-    //       if (!startFrame) startFrame = 0
-    //       sprite?.gotoAndPlay(startFrame)
-    //       this.firstAttack = true
-    //     }
-    //   }
-    //   if (
-    //     entity.state.active !== "attack" &&
-    //     entity.state.active !== "forcemove"
-    //   ) {
-    //     if (distance < targetEntity.size.width / 2 + entity.attack.distance) {
-    //       entity.attack.startMS = WORLD.loop.elapsedMS
-    //       entity.state.active = "attack"
-    //       if (this.firstAttack) {
-    //         entity.attack.initialStartMS = WORLD.loop.elapsedMS
-    //       }
-    //     }
-    //   }
-    // })
-  }
-
+  // 📜 make animation sync
   // private updateAnimationSpeed(entity, id) {
   //   //
   //   // set up animation speed

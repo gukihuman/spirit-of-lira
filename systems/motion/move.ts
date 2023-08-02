@@ -2,9 +2,11 @@ export default class {
   private preventGamepadMoveMS = 1000 // disable axes after start track
   private gamepadAxesMoved = false
   init() {
-    EVENTS.onSingle("moveOrCast", () => {
-      if (WORLD.hoverId) EVENTS.emitSingle("cast")
-      else this.mouseMove()
+    EVENTS.onSingle("moveOrCast1", () => {
+      if (WORLD.hoverId) {
+        EVENTS.emitSingle("cast1")
+        EVENTS.emitSingle("lockTarget")
+      } else this.mouseMove()
     })
     EVENTS.onSingle("mouseMove", () => this.mouseMove())
     EVENTS.onSingle("gamepadMove", () => this.gamepadMove())
@@ -33,6 +35,9 @@ export default class {
   }
   mouseMove() {
     if (GLOBAL.context !== "world") return
+    WORLD.hero.state.track = false
+    WORLD.hero.state.cast = false
+    WORLD.hero
     const distance = COORDINATES.distance(
       COORDINATES.conterOfScreen(),
       COORDINATES.mouseOfScreen()
@@ -41,7 +46,6 @@ export default class {
       WORLD.hero.move.finaldestination = undefined
       return
     }
-    WORLD.hero.state.move = true
     WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
   }
   private gamepadMoveTries = 0
@@ -53,6 +57,8 @@ export default class {
     ) {
       return
     }
+    WORLD.hero.state.track = false
+    WORLD.hero.state.cast = false
     this.gamepadMoveTries = 0
     this.gamepadMoveLogic()
   }
@@ -95,7 +101,8 @@ export default class {
     if (
       !entity.move ||
       !entity.move.destination ||
-      !entity.move.finaldestination
+      !entity.move.finaldestination ||
+      entity.state.active === "cast"
     )
       return
     if (entity.state.active === "attack" || entity.state.active === "dead")

@@ -1,10 +1,9 @@
 export default {
   active: "idle",
-  idle: true,
-  move: false,
+  still: true,
   track: false,
   cast: false,
-  dead: false,
   lastChangeMS: 0,
-  deadTimeMS: 1000,
+  deadTimeMS: Infinity,
+  deadDelayMS: 1000,
 }

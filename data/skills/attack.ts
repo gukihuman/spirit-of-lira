@@ -1,18 +1,31 @@
 export default {
-  damage: 0,
+  damage: 1,
   manacost: 0,
   distance: 50,
-  castTimeMS: 1000,
+  castMS: 1000,
   firstCastMS: 1000,
   delayMS: 200,
-  logic(entity, targetEntity) {
-    if (entity.name === "lira") {
+  logic(entity, id) {
+    if (!entity.target.id) return
+    // 📜 move to any offensive skill
+    EVENTS.emit("revenge", {
+      entity: entity.target.entity,
+      id: entity.target.id,
+      offender: entity,
+      offenderId: id,
+    })
+    if (LIB.hero(id)) {
       let weaponDamage = 0
       const weapon = INVENTORY.equipped.weapon
       if (weapon) weaponDamage = ITEMS.weapons[weapon].damage
-      targetEntity.attributes.health -= weaponDamage
-      return
+      entity.target.entity.attributes.health -= weaponDamage
+    } else {
+      entity.target.entity.attributes.health -= entity.skills.data.attack.damage
+      console.log(entity.target.entity.attributes.health)
     }
-    targetEntity.attributes.health -= entity.skill.attack.damage
+    if (entity.target.entity.attributes.health <= 0) {
+      entity.target.id = undefined
+      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+    }
   },
 }

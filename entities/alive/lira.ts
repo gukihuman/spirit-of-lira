@@ -8,12 +8,18 @@ export default {
   move: {
     speed: 14,
   },
-  skill: {},
+  skills: {
+    modify: {
+      attack: {
+        firstCastMS: 800,
+      },
+    },
+  },
   sprite: {
     startFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
   },
   attributes: {
-    health: 15,
+    health: 1500,
   },
   language: {
     system: `fantasy world {

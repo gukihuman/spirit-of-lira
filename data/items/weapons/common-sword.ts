@@ -1,5 +1,5 @@
 export default {
-  type: "sword",
+  sprite: "sword-attack",
   hitEffect: "sword-hit",
   damage: 3,
 }

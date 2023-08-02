@@ -5,7 +5,7 @@ export default class {
         entity.state &&
         entity.state.active === "dead" &&
         WORLD.loop.elapsedMS >
-          entity.state.lastChangeMS + entity.state.deadTimeMS
+          entity.state.deadTimeMS + entity.state.deadDelayMS
       ) {
         const container = SPRITE.getContainer(id)
         if (!container) return

@@ -2,39 +2,31 @@ export default class {
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.state) return
+      // controlled by dead system
+      if (entity.state.active === "dead") return
       // LIB.logIfHero(id, entity.state.active)
-      this.checkIdle(entity, id)
-      if (entity.state.dead) {
-        entity.state.active = "dead"
+      this.checkStill(entity, id)
+      if (entity.state.cast) {
+        entity.state.active = "cast"
       } else if (entity.state.track) {
         entity.state.active = "track"
-      } else if (entity.state.move) {
+      } else if (!entity.state.still) {
         entity.state.active = "move"
-      } else if (entity.state.idle) {
+      } else {
         entity.state.active = "idle"
       }
-      // 📜 finish state system
-      this.resetStateConditions(entity)
       this.updateLastChangeMS(entity, id)
     })
   }
-  private checkIdle(entity, id) {
+  private checkStill(entity, id) {
     const lastEntity = LAST_WORLD.entities.get(id)
     if (!lastEntity) return
     if (
       entity.position.x === lastEntity.position.x &&
       entity.position.y === lastEntity.position.y
     ) {
-      entity.state.idle = true
-    }
-  }
-  private resetStateConditions(entity) {
-    entity.state.idle = false
-    entity.state.move = false
-    entity.state.forcemove = false
-    entity.state.track = false
-    entity.state.cast = false
-    // exclude only dead
+      entity.state.still = true
+    } else entity.state.still = false
   }
   private updateLastChangeMS(entity, id) {
     const lastEntity = LAST_WORLD.entities.get(id)
