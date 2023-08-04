@@ -4,7 +4,7 @@ class Local {
   updatePeriodMS = 3000
   lastUpdateMS = 0
   init() {
-    const heroPosition = this.get("heroPosition")
+    const heroPosition = this.parse("heroPosition")
     WORLD.hero.position = heroPosition ?? WORLD.hero.position
     WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
     WORLD.loop.add(() => {
@@ -25,11 +25,9 @@ class Local {
     }
   }
   add(key: string, data) {
-    //
     localStorage.setItem(key, JSON.stringify(data))
   }
-  get(key: string) {
-    //
+  parse(key: string) {
     const data = localStorage.getItem(key)
     if (!data) return
     return JSON.parse(data)

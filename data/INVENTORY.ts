@@ -1,6 +1,4 @@
-//
 const inventory: AnyObject = {
-  //
   equipped: {
     cloth: undefined,
     weapon: "common-sword",
@@ -9,15 +7,11 @@ const inventory: AnyObject = {
     clothes: [],
     weapons: [],
   },
-
   init() {
-    //
     initEvents()
-
-    let { equipped, bag } = LOCAL.get("inventory")
+    let { equipped, bag } = LOCAL.parse("inventory")
     this.equipped = equipped ?? this.equipped
     this.bag = bag ?? this.bag
-
     if (this.equipped.cloth) {
       SPRITE.createItemSprite(this.equipped.cloth, "cloth")
     }
