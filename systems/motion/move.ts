@@ -1,5 +1,7 @@
 export default class {
-  private preventGamepadMoveMS = 1000 // disable axes after start track
+  private preventGamepadMoveMS = 500 // disable axes after start track
+  // used to not prevent gamepad move after kill, updates on mobs killed by hero
+  lastMobKilledMS = 0
   private gamepadAxesMoved = false
   init() {
     EVENTS.onSingle("moveOrCast1", () => {
@@ -50,10 +52,11 @@ export default class {
   }
   private gamepadMoveTries = 0
   gamepadMove() {
+    const elapsedMS = WORLD.loop.elapsedMS
     if (
       WORLD.hero.state.active === "track" &&
-      WORLD.loop.elapsedMS <
-        WORLD.hero.state.lastChangeMS + this.preventGamepadMoveMS
+      elapsedMS < WORLD.hero.state.lastChangeMS + this.preventGamepadMoveMS &&
+      elapsedMS > this.lastMobKilledMS + this.preventGamepadMoveMS
     ) {
       return
     }
@@ -133,7 +136,7 @@ export default class {
     let ratio = _.clamp(finaldistance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
-    if (WORLD.hero.target.tracked) ratio = 1
+    if (WORLD.hero.state.track) ratio = 1
     const angle = displacement.angle
     const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)
     entity.position.x += velocity.x * ratio

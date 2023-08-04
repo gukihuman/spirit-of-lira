@@ -1,9 +1,8 @@
 class Settings {
-  //
   inputEvents = {
     keyboard: {
       moveOrCast1: "o",
-      cast1: "",
+      cast1: "g",
       cast2: "",
       cast3: "",
       cast4: "",
@@ -27,11 +26,15 @@ class Settings {
       lockTarget: "RT",
     },
   }
-
   inputOther = {
     gamepad: {
       deadZone: 0.15,
     },
+  }
+  gameplay = {
+    // turn on auto target for mouse and continue attack after kill for both mouse and gamepad
+    easyFight: true,
+    attackBack: true,
   }
 
   constructor() {

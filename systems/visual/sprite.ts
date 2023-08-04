@@ -1,5 +1,6 @@
 export default class {
-  framesToValidate = 3
+  private framesToValidate = 3
+  private walkRunRatio = 0.9
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
@@ -130,7 +131,7 @@ export default class {
     }
     if (SPRITE.getAnimation(id, "walk")) {
       //
-      if (distance / speedPerTick < 0.8) {
+      if (distance / speedPerTick < this.walkRunRatio) {
         //
         this.setWithValidation(entity, id, "walk")
         return

@@ -8,12 +8,12 @@ export default class {
       }
       entity.move.finaldestination = _.cloneDeep(entity.target.entity.position)
       const skill = entity.skills.data[entity.skills.active]
-      if (this.checkDistance(entity, entity.target.entity, skill.distance)) {
+      if (this.inRange(entity, entity.target.entity, skill.distance)) {
         entity.state.cast = true
       }
     })
   }
-  private checkDistance(entity, targetEntity, skillDistance) {
+  private inRange(entity, targetEntity, skillDistance) {
     if (!targetEntity) return
     const distance = COORDINATES.distance(
       entity.position,

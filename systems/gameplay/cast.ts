@@ -17,19 +17,51 @@ export default class {
       entity.target.locked = true
     })
   }
+  private targetDiesLogic(entity, id) {
+    entity.target.id = undefined
+    entity.target.locked = false
+    if (LIB.hero(id)) {
+      if (!SETTINGS.gameplay.easyFight) entity.state.track = false
+      entity.move.finaldestination = _.cloneDeep(entity.position)
+      WORLD.systems.move.lastMobKilledMS = WORLD.loop.elapsedMS
+    }
+  }
+  private revengeLogic(entity, id, skill) {
+    EVENTS.emit("revenge", {
+      entity: entity.target.entity,
+      id: entity.target.id,
+      offender: entity,
+      offenderId: id,
+    })
+  }
+  private dealDamage(entity, id, skill) {
+    if (LIB.hero(id)) {
+      let weaponDamage = 0
+      const weapon = INVENTORY.equipped.weapon
+      if (weapon) weaponDamage = ITEMS.weapons[weapon].damage
+      entity.target.entity.attributes.health -= weaponDamage
+    } else {
+      entity.target.entity.attributes.health -= skill.damage
+    }
+  }
+  private firstCastLogic(entity, id, skill) {
+    this.castLogic(entity, id, skill)
+    entity.skills.lastFirstStartMS = Infinity
+  }
   private castLogic(entity, id, skill) {
-    skill.logic(entity, id)
+    if (!entity.target.id) return
+    if (skill.offensive) this.dealDamage(entity, id, skill)
+    if (skill.revenge) this.revengeLogic(entity, id, skill)
+    const targetHealth = entity.target.entity.attributes.health
+    if (targetHealth <= 0) this.targetDiesLogic(entity, id)
+    if (skill.logic) skill.logic(entity, id)
     entity.skills.lastDoneMS = WORLD.loop.elapsedMS + skill.delayMS
     entity.skills.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
-    if (
-      !WORLD.systems.track.checkDistance(
-        entity,
-        entity.target.entity,
-        skill.distance
-      )
-    ) {
+    const inRange = WORLD.systems.track.inRange
+    const targetEntity = entity.target.entity
+    if (!inRange(entity, targetEntity, skill.distance)) {
       entity.state.cast = false
       entity.skills.lastDoneMS = Infinity
     }
@@ -52,36 +84,30 @@ export default class {
       if (entity.state.cast && !lastEntity.state.cast) {
         entity.skills.lastFirstStartMS = WORLD.loop.elapsedMS
       }
+      const skill = entity.skills.data[entity.skills.active]
+      const elapsedMS = WORLD.loop.elapsedMS
+      const delayMS = entity.skills.delayMS
       // if target is dead
-      if (
-        !entity.target.id &&
-        WORLD.loop.elapsedMS > entity.skills.lastDoneMS + entity.skills.delayMS
-      ) {
+      if (!entity.target.id && elapsedMS > entity.skills.lastDoneMS + delayMS) {
         entity.state.cast = false
         return
       }
-      const skill = entity.skills.data[entity.skills.active]
-      // first in a sequence
-      if (
-        WORLD.loop.elapsedMS >
-        entity.skills.lastFirstStartMS + skill.firstCastMS
-      ) {
-        this.castLogic(entity, id, skill)
-        entity.skills.lastFirstStartMS = Infinity
+      if (elapsedMS > entity.skills.lastFirstStartMS + skill.firstCastMS) {
+        this.firstCastLogic(entity, id, skill)
       }
-      if (WORLD.loop.elapsedMS > entity.skills.lastDoneMS + skill.castMS) {
+      if (elapsedMS > entity.skills.lastDoneMS + skill.castMS) {
         this.castLogic(entity, id, skill)
       }
       if (
         !entity.skills.delayedLogicDone &&
-        WORLD.loop.elapsedMS > entity.skills.lastDoneMS
+        elapsedMS > entity.skills.lastDoneMS
       ) {
         this.delayedLogic(entity, id, skill)
       }
     })
   }
 
-  // 📜 make animation sync
+  // 📜 make animation sync after adding effects for convinience
   // private updateAnimationSpeed(entity, id) {
   //   //
   //   // set up animation speed

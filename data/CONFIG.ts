@@ -58,7 +58,8 @@ class GukiConfig {
       EVENTS: -2, // runs all logic for collected events and empty itself
       move: -3,
       cast: -4,
-      flip: -5,
+      target: -5,
+      flip: -6,
     },
   }
 }

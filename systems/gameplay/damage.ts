@@ -1,13 +1,6 @@
 export default class {
-  init() {
-    // EVENTS.on("damage", (data) => {
-    //   const { entity, targetEntity } = data
-    //   // hit effect
-    //   COORDINATES.angle(entity.position, targetEntity.position)
-    // })
-  }
   process() {
-    //   // rework this
+    // 📜 transition effects to a different place then delete this system
     //   this.events.forEach((event) => {
     //     const id = event.entityId
     //     const targetEntityId = event.targetEntityId

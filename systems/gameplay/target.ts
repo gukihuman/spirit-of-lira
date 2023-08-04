@@ -34,7 +34,9 @@ export default class {
       if (!entity.move) return
       this.checkTargetDistance(entity, id)
       if (entity.state.active !== "track" && !entity.target.locked) {
-        if (LIB.hero(id) && INPUT.lastActiveDevice !== "gamepad") return
+        if (!SETTINGS.gameplay.easyFight) {
+          if (LIB.hero(id) && INPUT.lastActiveDevice !== "gamepad") return
+        }
         // work on all entities and hero with gamepad
         this.autoTarget(entity, id)
       }
@@ -56,6 +58,7 @@ export default class {
     }
   }
   targetByMouse() {
+    if (SETTINGS.gameplay.easyFight && !WORLD.hoverId) return
     WORLD.hero.target.id = WORLD.hoverId
   }
   private checkTargetDistance(entity, id) {
