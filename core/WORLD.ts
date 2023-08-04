@@ -43,7 +43,11 @@ class World {
     },
   }
 
-  init(viewport: HTMLElement, width: number = 1920, height: number = 1080) {
+  init(
+    viewport: HTMLElement,
+    width: number = CONFIG.viewport.width,
+    height: number = CONFIG.viewport.height
+  ) {
     //
     this.app = new PIXI.Application({ width, height })
 

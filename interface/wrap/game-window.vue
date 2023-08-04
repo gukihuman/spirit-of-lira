@@ -9,8 +9,8 @@ div(class="absolute bg-gray-700 absolute overflow-hidden" :style="style")
 <script setup lang="ts">
 //
 //
-const width = 1920
-const height = 1080
+const width = CONFIG.viewport.width
+const height = CONFIG.viewport.height
 let scale = ref(0)
 
 const style = computed(() => {

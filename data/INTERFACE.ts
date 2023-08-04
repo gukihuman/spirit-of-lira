@@ -13,7 +13,7 @@ const inter = {
       if (this.inventory) GLOBAL.context = "interface"
       else GLOBAL.context = "world"
       if (GLOBAL.context === "world") {
-        if (WORLD.hero.target.id) {
+        if (WORLD.hero.target.id && WORLD.hero.target.entity) {
           INTERFACE.target = true
           INTERFACE.targetHealth = WORLD.hero.target.entity.attributes.health
           INTERFACE.targetMaxHealth =

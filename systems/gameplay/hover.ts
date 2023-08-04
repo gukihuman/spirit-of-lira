@@ -11,8 +11,17 @@ export default class {
       let offset = entity.size.width / 4
       const position = entity.position
       const rect = {
-        x: position.x - heroPosition.x + 960 - entity.size.width / 2,
-        y: position.y - heroPosition.y + 540 - entity.size.height + offset,
+        x:
+          position.x -
+          heroPosition.x +
+          CONFIG.viewport.width / 2 -
+          entity.size.width / 2,
+        y:
+          position.y -
+          heroPosition.y +
+          CONFIG.viewport.height / 2 -
+          entity.size.height +
+          offset,
         width: entity.size.width,
         height: entity.size.height,
       }

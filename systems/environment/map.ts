@@ -26,15 +26,19 @@ export default class {
 
   process() {
     this.loadCloseChunks()
-
     const heroPosition = WORLD.hero.position
     if (!heroPosition) return
-
     // update coordinates
     this.chunkSprites.forEach((sprite, chunk) => {
       if (!heroPosition.x || !heroPosition.y) return
-      sprite.x = COORDINATES.chunkToCoordinateX(chunk) + 960 - heroPosition.x
-      sprite.y = COORDINATES.chunkToCoordinateY(chunk) + 540 - heroPosition.y
+      sprite.x =
+        COORDINATES.chunkToCoordinateX(chunk) +
+        CONFIG.viewport.width / 2 -
+        heroPosition.x
+      sprite.y =
+        COORDINATES.chunkToCoordinateY(chunk) +
+        CONFIG.viewport.height / 2 -
+        heroPosition.y
     })
   }
 

@@ -40,7 +40,7 @@ class Coordinates {
     return entity.move.speed * 10 * WORLD.loop.deltaSec
   }
   conterOfScreen() {
-    return this.vector(960, 540)
+    return this.vector(CONFIG.viewport.width / 2, CONFIG.viewport.height / 2)
   }
 
   mouseOfScreen() {
@@ -54,10 +54,9 @@ class Coordinates {
 
   mousePosition() {
     const mousePosition = COORDINATES.mouseOfScreen()
-
     return this.vector(
-      (mousePosition.x += WORLD.hero.position.x - 960),
-      (mousePosition.y += WORLD.hero.position.y - 540)
+      (mousePosition.x += WORLD.hero.position.x - CONFIG.viewport.width / 2),
+      (mousePosition.y += WORLD.hero.position.y - CONFIG.viewport.height / 2)
     )
   }
 

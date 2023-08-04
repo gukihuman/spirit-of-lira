@@ -33,8 +33,10 @@ export default class {
     }
   }
   private updateCoordinates(entity, container) {
-    container.x = entity.position.x - WORLD.hero.position.x + 960
-    container.y = entity.position.y - WORLD.hero.position.y + 540
+    container.x =
+      entity.position.x - WORLD.hero.position.x + CONFIG.viewport.width / 2
+    container.y =
+      entity.position.y - WORLD.hero.position.y + CONFIG.viewport.height / 2
   }
   private updateVisibility(entity, id) {
     if (entity.move) {

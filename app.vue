@@ -4,10 +4,10 @@ wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center j
 
   loading
 
-  //- 1920 / 1080 centered game window
+  //- centered game window
   transition: wrap-game-window(v-show="!GLOBAL.loadingScreen")
 
-    //- 1920 / 1080 pixi viewport, where the actual game is
+    //- pixi viewport, where the actual game is
     wrap-viewport
 
     div(class="absolute z-10 overflow-hidden w-full h-full")

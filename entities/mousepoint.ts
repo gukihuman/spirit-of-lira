@@ -52,7 +52,7 @@ export default {
 
     // hide
     // 📜 change tracked to track state, implement track state
-    if (distance < speedPerTick || WORLD.hero.target.tracked) {
+    if (distance < speedPerTick || WORLD.hero.state.track) {
       position.x = 0
       position.y = 0
       return
