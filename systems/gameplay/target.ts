@@ -15,11 +15,11 @@ export default class {
         hero.target.entity.position.x === hero.move.finaldestination.x &&
         hero.target.entity.position.y === hero.move.finaldestination.y
       ) {
-        hero.move.finaldestination = undefined
+        hero.move.finaldestination = _.cloneDeep(hero.position)
       }
       if (INPUT.lastActiveDevice !== "gamepad" && hero.state.cast) {
         hero.state.cast = false
-        hero.move.finaldestination = undefined
+        hero.move.finaldestination = _.cloneDeep(hero.position)
       }
       // when lock is used to lock a new target immidiately
       if (INPUT.lastActiveDevice !== "gamepad") {

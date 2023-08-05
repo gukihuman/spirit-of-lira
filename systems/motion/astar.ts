@@ -1,5 +1,3 @@
-import { p } from "vitest/dist/index-40ebba2b"
-
 export default class {
   openList: any = []
   closedList: any = []

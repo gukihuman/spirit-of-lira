@@ -1,6 +1,5 @@
 export default {
-  // position: { x: 1550, y: 1650 },
-  position: { x: 2550, y: 2650 },
+  position: { x: 1550, y: 1650 },
   size: {
     width: 60,
     height: 90,
@@ -11,7 +10,7 @@ export default {
   skills: {
     modify: {
       attack: {
-        firstCastMS: 800,
+        firstCastMS: 900,
       },
     },
   },

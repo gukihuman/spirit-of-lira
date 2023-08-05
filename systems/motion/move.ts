@@ -45,7 +45,7 @@ export default class {
       COORDINATES.mouseOfScreen()
     )
     if (distance < 10) {
-      WORLD.hero.move.finaldestination = undefined
+      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
       return
     }
     WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
@@ -105,11 +105,11 @@ export default class {
       !entity.move ||
       !entity.move.destination ||
       !entity.move.finaldestination ||
-      entity.state.active === "cast"
-    )
+      entity.state.active === "cast" ||
+      entity.state.active === "dead"
+    ) {
       return
-    if (entity.state.active === "attack" || entity.state.active === "dead")
-      return
+    }
     const speedPerTick = COORDINATES.speedPerTick(entity)
     const displacement = COORDINATES.vectorFromPoints(
       entity.position,
