@@ -17,14 +17,20 @@ export default class {
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
     const animation = SPRITE.getLayer(id, "animation")
+    this.lastContainer = animation
     if (animation) {
       animation.filters = [this.hover]
       // 📜 here cast is always offensive, when other cast added, think how to change that
-      if (WORLD.hero.state.track || WORLD.hero.state.cast) {
-        animation.filters.push(this.tracked)
+      if (!WORLD.hero.state.track) return
+      if (
+        INPUT.lastActiveDevice !== "gamepad" &&
+        WORLD.hoverId !== id &&
+        !WORLD.hero.state.track
+      ) {
+        return
       }
+      animation.filters.push(this.tracked)
     }
-    this.lastContainer = animation
   }
   init() {
     // Preload filters to prevent lag
