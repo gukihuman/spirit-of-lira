@@ -83,16 +83,6 @@ export default class {
       frontWeapon.visible = false
     }
   }
-  private updateLastChangeMS(entity, id) {
-    //
-    const lastEntity = LAST_WORLD.entities.get(id)
-    if (!lastEntity) return
-
-    if (entity.sprite.active !== lastEntity.sprite.active) {
-      //
-      WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
-    }
-  }
   private updateAnimation(entity, id) {
     if (!entity.state) return
 
@@ -176,5 +166,12 @@ export default class {
       return
     }
     entity.sprite.framesValidated++
+  }
+  private updateLastChangeMS(entity, id) {
+    const lastEntity = LAST_WORLD.entities.get(id)
+    if (!lastEntity) return
+    if (entity.sprite.active !== lastEntity.sprite.active) {
+      WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
+    }
   }
 }

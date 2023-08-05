@@ -9,7 +9,7 @@ export default class {
       ) {
         const container = SPRITE.getContainer(id)
         if (!container) return
-        container.parent.removeChild(container)
+        container.destroy()
         SPRITE.entityContainers.delete(id)
         WORLD.entities.delete(id)
       }

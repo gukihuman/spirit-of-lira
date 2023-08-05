@@ -17,6 +17,8 @@ export default {
   },
   sprite: {
     startFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
+    effectHeightRatio: 0.45,
+    effectWidthRatio: 0.25,
   },
   attributes: {
     health: 1500,

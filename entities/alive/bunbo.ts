@@ -17,6 +17,7 @@ export default {
   skills: {
     modify: {
       attack: {
+        distance: 40,
         damage: 2,
         castMS: 2200,
         firstCastMS: 1400,

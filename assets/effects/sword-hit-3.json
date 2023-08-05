@@ -2,42 +2,42 @@
 
 "sword-hit-30000.png":
 {
-	"frame": {"x":27,"y":1,"w":24,"h":111},
-	"rotated": false,
+	"frame": {"x":1,"y":16,"w":15,"h":94},
+	"rotated": true,
 	"trimmed": true,
-	"spriteSourceSize": {"x":79,"y":8,"w":24,"h":111},
+	"spriteSourceSize": {"x":76,"y":34,"w":15,"h":94},
 	"sourceSize": {"w":161,"h":163}
 },
 "sword-hit-30001.png":
 {
-	"frame": {"x":1,"y":1,"w":24,"h":115},
-	"rotated": false,
+	"frame": {"x":1,"y":50,"w":16,"h":96},
+	"rotated": true,
 	"trimmed": true,
-	"spriteSourceSize": {"x":85,"y":7,"w":24,"h":115},
+	"spriteSourceSize": {"x":81,"y":34,"w":16,"h":96},
 	"sourceSize": {"w":161,"h":163}
 },
 "sword-hit-30002.png":
 {
-	"frame": {"x":70,"y":1,"w":18,"h":108},
-	"rotated": false,
+	"frame": {"x":1,"y":68,"w":16,"h":91},
+	"rotated": true,
 	"trimmed": true,
-	"spriteSourceSize": {"x":95,"y":9,"w":18,"h":108},
+	"spriteSourceSize": {"x":87,"y":35,"w":16,"h":91},
 	"sourceSize": {"w":161,"h":163}
 },
 "sword-hit-30003.png":
 {
-	"frame": {"x":90,"y":1,"w":17,"h":105},
-	"rotated": false,
+	"frame": {"x":1,"y":33,"w":15,"h":87},
+	"rotated": true,
 	"trimmed": true,
-	"spriteSourceSize": {"x":101,"y":14,"w":17,"h":105},
+	"spriteSourceSize": {"x":91,"y":41,"w":15,"h":87},
 	"sourceSize": {"w":161,"h":163}
 },
 "sword-hit-30004.png":
 {
-	"frame": {"x":53,"y":1,"w":15,"h":110},
-	"rotated": false,
+	"frame": {"x":1,"y":1,"w":13,"h":91},
+	"rotated": true,
 	"trimmed": true,
-	"spriteSourceSize": {"x":108,"y":13,"w":15,"h":110},
+	"spriteSourceSize": {"x":99,"y":41,"w":13,"h":91},
 	"sourceSize": {"w":161,"h":163}
 }},
 "animations": {
@@ -48,8 +48,8 @@
 	"version": "1.0",
 	"image": "sword-hit-3.webp",
 	"format": "RGBA8888",
-	"size": {"w":108,"h":117},
+	"size": {"w":98,"h":85},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:da2a2bb4b068929374d48988d4c8ea13:7b06597005c4042c65ae7822c47baf99:4b3a7b5fb8bbcfd47d66bffa72c855c9$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a73f2c48e9a44bf709e63b2075377cf9:c43637e5791b6a8ec3219bbe09813caa:4b3a7b5fb8bbcfd47d66bffa72c855c9$"
 }
 }

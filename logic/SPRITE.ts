@@ -1,10 +1,7 @@
 class Spr {
   entityContainers: Map<number, Container> = new Map()
-  async createEntitySprite(
-    entity: AnyObject,
-    id: number,
-    options: AnyObject = {}
-  ) {
+  effectContainers: Map<number, Container> = new Map()
+  async entity(entity: AnyObject, id: number, options: AnyObject = {}) {
     const parent = options.parent ?? "sortable"
     const randomFlip = options.randomFlip ?? true
     const randomStartFrame = options.randomStartFrame ?? true
@@ -48,7 +45,60 @@ class Spr {
       else sprite.gotoAndPlay(0)
     })
   }
-  async createItemSprite(name: string, type: "weapon" | "cloth") {
+  async effect(entity: AnyObject, name: string, targetEntity: AnyObject) {
+    if (!entity.target.id) return
+    let parentLayerName, durationMS
+    if (EFFECTS.front[name]) {
+      parentLayerName = "frontEffect"
+      durationMS = EFFECTS.front[name]
+    } else {
+      parentLayerName = "backEffect"
+      durationMS = EFFECTS.back[name]
+    }
+    if (!durationMS) {
+      LIB.logWarning(`effect ${name} not found (SPRITE)`)
+      return
+    }
+    const container = new PIXI.Container()
+    const parentLayer = this.getLayer(entity.target.id, parentLayerName)
+    if (!parentLayer) return
+    parentLayer.addChild(container)
+    this.offsetEffectContainer(container, entity, targetEntity)
+    const expireMS = _.round(WORLD.loop.elapsedMS + durationMS)
+    this.effectContainers.set(expireMS, container)
+    const possibleSprites: string[] = []
+    _.forEach(ASSETS.jsons, (json, key) => {
+      if (key.includes(name)) possibleSprites.push(key)
+    })
+    const finalSpriteName = _.sample(possibleSprites)
+    if (!finalSpriteName) return
+    const spritesheet = await this.getSpritesheet(finalSpriteName)
+    if (!spritesheet) return
+    _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
+      const sprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
+      sprite.name = name
+      sprite.anchor.x = 0.5
+      sprite.anchor.y = 0.5
+      sprite.animationSpeed = 1 / (CONFIG.maxFPS / 10)
+      sprite.cullable = true
+      sprite.loop = false
+      sprite.play()
+      container.addChild(sprite)
+    })
+  }
+  private offsetEffectContainer(container, entity, targetEntity) {
+    let effectHeightRatio = targetEntity.sprite.effectHeightRatio
+    let effectWidthRatio = targetEntity.sprite.effectWidthRatio
+    container.position.x = -targetEntity.size.width * effectWidthRatio
+    if (targetEntity.position.x < entity.position.x) {
+      container.position.x = -container.position.x
+    }
+    container.position.y = -targetEntity.size.height * effectHeightRatio
+    const angle = COORDINATES.angle(entity.position, targetEntity.position)
+    container.rotation = angle
+  }
+
+  async item(name: string, type: "weapon" | "cloth") {
     if (!WORLD.app || !WORLD.heroId || !this.getContainer(WORLD.heroId)) return
     const spritesheet = await this.getSpritesheet(name)
     if (!spritesheet) return

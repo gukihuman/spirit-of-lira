@@ -13,10 +13,10 @@ const inventory: AnyObject = {
     this.equipped = equipped ?? this.equipped
     this.bag = bag ?? this.bag
     if (this.equipped.cloth) {
-      SPRITE.createItemSprite(this.equipped.cloth, "cloth")
+      SPRITE.item(this.equipped.cloth, "cloth")
     }
     if (this.equipped.weapon) {
-      SPRITE.createItemSprite(this.equipped.weapon, "weapon")
+      SPRITE.item(this.equipped.weapon, "weapon")
     }
   },
 }
@@ -43,7 +43,7 @@ function initEvents() {
     if (singular === "weapon") SPRITE.emptyWeaponLayers()
     if (singular === "cloth") SPRITE.emptyClothLayer()
 
-    SPRITE.createItemSprite(data.name, singular)
+    SPRITE.item(data.name, singular)
 
     LOCAL.update()
   })

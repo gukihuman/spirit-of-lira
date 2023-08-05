@@ -6,4 +6,6 @@ export default {
   onValidation: "idle",
   lastChangeMS: 0,
   lastFlipMS: 0,
+  effectHeightRatio: 0.1,
+  effectWidthRatio: 0.15, // became negative depending on source
 }

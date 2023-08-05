@@ -48,8 +48,14 @@ export default class {
     this.castLogic(entity, id, skill)
     entity.skills.lastFirstStartMS = Infinity
   }
+  private chooseEffectSprite(entity, id) {
+    const targetEntity = entity.target.entity
+    if (LIB.hero(id)) SPRITE.effect(entity, "sword-hit", targetEntity)
+    else SPRITE.effect(entity, "bunbo-bite", targetEntity)
+  }
   private castLogic(entity, id, skill) {
     if (!entity.target.id) return
+    this.chooseEffectSprite(entity, id)
     if (skill.offensive) this.dealDamage(entity, id, skill)
     if (skill.revenge) this.revengeLogic(entity, id, skill)
     const targetHealth = entity.target.entity.attributes.health
@@ -61,7 +67,7 @@ export default class {
   private delayedLogic(entity, id, skill) {
     const inRange = WORLD.systems.track.inRange
     const targetEntity = entity.target.entity
-    if (!inRange(entity, targetEntity, skill.distance)) {
+    if (!inRange(entity, id, targetEntity, skill.distance)) {
       entity.state.cast = false
       entity.skills.lastDoneMS = Infinity
     }

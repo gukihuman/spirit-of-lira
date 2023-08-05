@@ -21,7 +21,7 @@ class EntityFactory {
 
     if (name === "lira") {
       //
-      await SPRITE.createEntitySprite(entity, id, {
+      await SPRITE.entity(entity, id, {
         //
         randomFlip: false,
         layers: [
@@ -36,12 +36,12 @@ class EntityFactory {
       })
     } else if (!entity.move) {
       //
-      await SPRITE.createEntitySprite(entity, id, {
+      await SPRITE.entity(entity, id, {
         //
         randomFlip: false,
       })
     } else {
-      await SPRITE.createEntitySprite(entity, id)
+      await SPRITE.entity(entity, id)
     }
 
     return id

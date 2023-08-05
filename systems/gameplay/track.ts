@@ -8,17 +8,22 @@ export default class {
       }
       entity.move.finaldestination = _.cloneDeep(entity.target.entity.position)
       const skill = entity.skills.data[entity.skills.active]
-      if (this.inRange(entity, entity.target.entity, skill.distance)) {
+      if (this.inRange(entity, id, entity.target.entity, skill.distance)) {
         entity.state.cast = true
       }
     })
   }
-  private inRange(entity, targetEntity, skillDistance) {
+  private inRange(entity, id, targetEntity, skillDistance) {
     if (!targetEntity) return
+    const weapon = INVENTORY.equipped.weapon
+    let weaponDistance = 0
+    if (LIB.hero(id)) weaponDistance = ITEMS.weapons[weapon].distance
     const distance = COORDINATES.distance(
       entity.position,
       targetEntity.position
     )
-    return distance - targetEntity.size.width / 2 < skillDistance
+    return (
+      distance - targetEntity.size.width / 2 < skillDistance + weaponDistance
+    )
   }
 }

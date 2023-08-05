@@ -13,6 +13,8 @@ export default class {
       if (INPUT.keyboard.justPressed.includes("m")) {
         INTERFACE.input = !INTERFACE.input
       }
+      // console.log(SPRITE.effectContainers)
+      // console.log(WORLD.loop.elapsedMS)
     }
   }
 }
