@@ -12,6 +12,8 @@ export default class {
     EVENTS.onSingle("cast3", () => this.cast("slot3"))
     EVENTS.onSingle("cast4", () => this.cast("slot4"))
     EVENTS.on("cast", ({ entity, slot }) => {
+      const targetEntity = entity.target.entity
+      if (!targetEntity || targetEntity.state.active === "dead") return
       entity.skills.active = entity.skills[slot]
       entity.state.track = true
       entity.target.locked = true

@@ -6,7 +6,6 @@ export default class {
   init() {
     EVENTS.onSingle("moveOrCast1", () => {
       if (WORLD.hoverId) {
-        console.log("h|e/")
         EVENTS.emitSingle("cast1")
         EVENTS.emitSingle("lockTarget")
       } else this.mouseMove()
