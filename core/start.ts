@@ -28,6 +28,8 @@ export default defineNuxtPlugin(async (app) => {
     INVENTORY.init()
     INTERFACE.init()
     EFFECTS.init()
+    GLOBAL.init()
+    SCENE.init()
     // 📜 change dependency of hero
     REMOTE.init() // uses hero for now
     await ENTITY_FACTORY.create("mousepoint")
@@ -41,7 +43,7 @@ export default defineNuxtPlugin(async (app) => {
     await ENTITY_FACTORY.create("bunny", { sprite: {} })
     // timeout to make sure initial loading transition will work
     setTimeout(() => {
-      GLOBAL.loadingScreen = false
+      GLOBAL.loading = false
     }, 0)
   }
 })

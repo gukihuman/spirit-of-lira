@@ -1,17 +1,12 @@
 const inter = {
+  overlay: true,
+  inventory: false,
   target: false,
   targetLocked: false,
-  inventory: false,
   targetHealth: 0,
   targetMaxHealth: 0,
-  // 📜 need it?
-  input: false,
-  inputFocus: false,
   init() {
     WORLD.loop.add(() => {
-      // 📜 extend global context handling, should be here based on other states
-      if (this.inventory) GLOBAL.context = "interface"
-      else GLOBAL.context = "world"
       if (GLOBAL.context === "world") {
         if (WORLD.hero.target.id && WORLD.hero.target.entity) {
           INTERFACE.target = true
@@ -24,6 +19,8 @@ const inter = {
         if (WORLD.hero.target.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
       }
+      if (GLOBAL.context === "scene") this.overlay = false
+      else this.overlay = true
     }, "INTERFACE")
   },
 }

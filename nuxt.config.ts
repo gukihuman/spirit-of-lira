@@ -15,9 +15,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["core/**/*.{js,ts}", "data/**/*.{js,ts}", "logic/**/*.{js,ts}"],
   },
-  components: {
-    dirs: ["@/interface"],
-  },
+  components: [{ path: "@/interface", pathPrefix: false }],
   plugins: ["@/core/load.ts", "@/core/start.ts"],
   css: ["@/tailwind.css"],
 

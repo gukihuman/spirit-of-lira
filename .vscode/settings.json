@@ -9,7 +9,9 @@
     "package-lock.json": true,
     "prisma": true,
     "server": true,
-    "_old": true
+    "_old": true,
+    ".env": true,
+    "vitest.config.ts": true
   },
   "workspace.isHidden": true,
   "folder-path-color.folders": [

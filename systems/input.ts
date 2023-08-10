@@ -2,10 +2,8 @@ export default class {
   init() {
     INPUT.init(REFS.viewport) // input controller
   }
-
   process() {
     INPUT.update()
-
     // watch first mouse move (or double click)
     // to prevent movement to the 0 0 coordinates
     if (!GLOBAL.firstMouseMove) {

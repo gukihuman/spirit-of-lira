@@ -81,6 +81,7 @@ export default class {
     entity.skills.delayedLogicDone = true
   }
   process() {
+    if (GLOBAL.context === "scene") return
     WORLD.entities.forEach((entity, id) => {
       if (!entity.state || !entity.skills) return
       if (!entity.state.cast) {

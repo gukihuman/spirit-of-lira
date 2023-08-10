@@ -17,6 +17,7 @@ export default class {
     })
   }
   process() {
+    if (GLOBAL.context === "scene") return
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
       this.move(entity)
