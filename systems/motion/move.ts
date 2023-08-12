@@ -101,16 +101,22 @@ export default class {
     hero.move.finaldestination.y = possibleDestinationY
     this.gamepadAxesMoved = true
   }
-  move(entity: Entity) {
+  private canMove(entity) {
     if (
       !entity.move ||
+      !entity.state ||
       !entity.move.destination ||
-      !entity.move.finaldestination ||
-      entity.state.active === "cast" ||
-      entity.state.active === "dead"
+      !entity.move.finaldestination
     ) {
-      return
+      return false
     }
+    if (entity.state.active === "cast" || entity.state.active === "dead") {
+      return false
+    }
+    return true
+  }
+  move(entity: Entity) {
+    if (!this.canMove(entity)) return
     const speedPerTick = COORDINATES.speedPerTick(entity)
     const displacement = COORDINATES.vectorFromPoints(
       entity.position,

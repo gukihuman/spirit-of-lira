@@ -8,7 +8,5 @@ div(class="z-30")
   )
 </template>
 <script setup lang="ts">
-onMounted(() => {
-  console.log(SCENE.active)
-})
+onMounted(() => {})
 </script>

@@ -5,11 +5,15 @@ class Local {
   lastUpdateMS = 0
   init() {
     const heroPosition = this.parse("heroPosition")
-    WORLD.hero.position = heroPosition ?? WORLD.hero.position
+    if (heroPosition) WORLD.hero.position = heroPosition
     WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
-    WORLD.loop.add(() => {
-      this.process()
-    }, "LOCAL")
+    WORLD.loop.add(() => this.process(), "LOCAL")
+  }
+  process() {
+    if (WORLD.loop.elapsedMS > this.lastUpdateMS + this.updatePeriodMS) {
+      this.update()
+      this.lastUpdateMS = WORLD.loop.elapsedMS
+    }
   }
   update() {
     this.inventory.bag = INVENTORY.bag
@@ -17,12 +21,6 @@ class Local {
     this.heroPosition = WORLD.hero.position
     this.add("heroPosition", this.heroPosition)
     this.add("inventory", this.inventory)
-  }
-  process() {
-    if (WORLD.loop.elapsedMS > this.lastUpdateMS + this.updatePeriodMS) {
-      this.update()
-      this.lastUpdateMS = WORLD.loop.elapsedMS
-    }
   }
   add(key: string, data) {
     localStorage.setItem(key, JSON.stringify(data))

@@ -11,7 +11,7 @@ const global = {
   init() {
     WORLD.loop.add(() => {
       if (INTERFACE.inventory) GLOBAL.context = "interface"
-      // implemet handle context
+      // implement handle context
       else GLOBAL.context = "scene"
     }, "GLOBAL")
   },
