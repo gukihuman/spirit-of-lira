@@ -5,6 +5,10 @@ const inter = {
   targetLocked: false,
   targetHealth: 0,
   targetMaxHealth: 0,
+  scene: {
+    main: undefined,
+    add: [],
+  },
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context === "world") {
@@ -18,6 +22,9 @@ const inter = {
         }
         if (WORLD.hero.target.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
+      }
+      if (GLOBAL.context === "scene") {
+        this.scene.main = ASSETS.webps["lira-arms-down"]
       }
       if (GLOBAL.context === "scene") this.overlay = false
       else this.overlay = true

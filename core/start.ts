@@ -31,7 +31,6 @@ export default defineNuxtPlugin(async (app) => {
     GLOBAL.init()
     SCENE.init()
     // 📜 change dependency of hero
-    REMOTE.init() // uses hero for now
     await ENTITY_FACTORY.create("mousepoint")
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())

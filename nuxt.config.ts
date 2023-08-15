@@ -21,6 +21,7 @@ export default defineNuxtConfig({
 
   // important for correct work of importer
   vite: {
+    assetsInclude: ["**/*.md"],
     build: {
       minify: false,
     },

@@ -13,6 +13,8 @@ export default defineNuxtPlugin(async () => {
   await load(import.meta.glob("@/data/items/weapons/**/*"), ITEMS.weapons)
   await load(import.meta.glob("@/data/items/clothes/**/*"), ITEMS.clothes)
   await load(import.meta.glob("@/data/skills/**/*"), SKILLS.list)
+  await load(import.meta.glob("@/data/scenes/**/*"), SCENE.textPosition)
+  await load(import.meta.glob("@/data/scenes/**/*"), SCENE.mdPaths, false, "md")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
   // important for proper sprite work
@@ -26,7 +28,7 @@ async function load(
   paths,
   savePlace: AnyObject,
   addNameProperty: boolean = false,
-  format: "ts" | "webp" | "json" = "ts"
+  format: "ts" | "webp" | "json" | "md" = "ts"
 ) {
   for (const path in paths) {
     const name = getFileName(path, format)
@@ -36,7 +38,7 @@ async function load(
     if (addNameProperty) item.default.name = name
   }
 }
-function getFileName(path: string, format: "ts" | "webp" | "json") {
+function getFileName(path: string, format: "ts" | "webp" | "json" | "md") {
   let match
   if (format === "ts") {
     match = path.match(/\/([^/]+)\.ts/)
@@ -44,6 +46,8 @@ function getFileName(path: string, format: "ts" | "webp" | "json") {
     match = path.match(/\/([^/]+)\.webp/)
   } else if (format === "json") {
     match = path.match(/\/([^/]+)\.json/)
+  } else if (format === "md") {
+    match = path.match(/\/([^/]+)\.md/)
   }
   if (!match) return
   return `${_.toLower(match[1])}`
