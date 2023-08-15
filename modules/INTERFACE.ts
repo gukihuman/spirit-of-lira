@@ -5,10 +5,6 @@ const inter = {
   targetLocked: false,
   targetHealth: 0,
   targetMaxHealth: 0,
-  scene: {
-    mainImage: ASSETS.webps["lira-arms-down"],
-    additionalImages: ["lira-BLUSH", "lira-BLUE-LIGHT"],
-  },
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context === "world") {

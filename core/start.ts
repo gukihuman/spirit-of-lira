@@ -1,3 +1,5 @@
+import { r } from "vitest/dist/index-40ebba2b"
+
 export default defineNuxtPlugin(async (app) => {
   app.hook("app:mounted", () => startApp())
   async function startApp() {
