@@ -1,12 +1,12 @@
 class Scene {
   mdPaths = {}
-  mds = {}
-  textPosition = {}
+  mdPlainTexts = {}
+  textboxPosition = {}
   init() {
     _.forEach(this.mdPaths, (value, key) => {
       fetch(value)
         .then((response) => response.text())
-        .then((text) => (this.mds[key] = text))
+        .then((text) => (this.mdPlainTexts[key] = text))
     })
   }
 }
