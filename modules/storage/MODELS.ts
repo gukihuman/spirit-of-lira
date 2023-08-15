@@ -1,5 +1,4 @@
 class Models {
-  //
   // auto-imported from corresponding folders with the same names
   entities: AnyObject = {}
   components: AnyObject = {}

@@ -11,7 +11,8 @@
     "server": true,
     "_old": true,
     ".env": true,
-    "vitest.config.ts": true
+    "vitest.config.ts": true,
+    ".prettierignore": true
   },
   "workspace.isHidden": true,
   "folder-path-color.folders": [
@@ -28,7 +29,7 @@
       "color": "red"
     },
     {
-      "path": "logic",
+      "path": "modules",
       "color": "cyan"
     },
     {

@@ -36,19 +36,16 @@ class Settings {
     easyFight: false,
     attackBack: false,
   }
-
-  constructor() {
-    LIB.store(this.inputEvents)
-    LIB.store(this.inputOther)
-  }
-
+  // 📜 remove it if everything is ok without it :)
+  // constructor() {
+  //   LIB.store(this.inputEvents)
+  //   LIB.store(this.inputOther)
+  // }
   emitEvents() {
     if (LIB.deadZoneExceed(this.inputOther.gamepad.deadZone)) {
       EVENTS.emitSingle("gamepadMove")
     }
-
     if (INTERFACE.inputFocus) return
-
     _.forEach(this.inputEvents, (settingList, device) => {
       _.forEach(settingList, (button, setting) => {
         if (INPUT[device].justPressed.includes(button)) {
@@ -56,7 +53,6 @@ class Settings {
         }
       })
     })
-
     // overwrite default
     if (
       INPUT.mouse.pressed.includes(this.inputEvents.mouse.moveOrCast1) ||
@@ -91,12 +87,10 @@ class Settings {
     }
     if (INPUT.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
   }
-
   init() {
     WORLD.loop.add(() => {
       this.emitEvents()
     }, "SETTINGS")
   }
 }
-
 export const SETTINGS = new Settings()
