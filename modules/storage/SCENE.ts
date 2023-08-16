@@ -2,7 +2,6 @@ class Scene {
   mdPaths = {}
   mdPlainTexts = {}
   textboxPosition = {}
-  activeImages = ["lira-no-light"]
   init() {
     _.forEach(this.mdPaths, (value, key) => {
       fetch(value)
