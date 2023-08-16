@@ -1,4 +1,9 @@
 export default defineNuxtConfig({
+  app: {
+    head: {
+      link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+    },
+  },
   runtimeConfig: {
     OPEN_AI_KEY: process.env.OPEN_AI_KEY,
     HUGGINGFACE_TOKEN: process.env.HUGGINGFACE_TOKEN,
