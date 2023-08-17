@@ -95,4 +95,4 @@ A little!?
 > Yeah fine, I'm sorry. I promise I will help you well.
 # lira-arms-raised
 So... are you happy?
->> Yeah. Good girl. (s1-end)
+> Yeah. Good girl. (s1-end)

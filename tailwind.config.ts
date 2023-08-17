@@ -12,7 +12,7 @@ module.exports = {
         chestnut: "#a0492d",
         "dark-gunmetal": "#1a202a",
         "space-cadet": "#243551",
-        "light-steel-blue": "#D7CAB0",
+        "jelly-bean-blue": "#438a86",
       },
     },
   },
