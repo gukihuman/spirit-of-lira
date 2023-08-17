@@ -2,7 +2,7 @@ const activeScene = {
   steps: [],
   images: ["lira-no-light"],
   md: "s1-start",
-  text: "Um... Are you happy?",
+  text: "Um... / Are you happy?",
   choices: [
     {
       text: "Not quite. Can you sit back as you were?",
@@ -19,5 +19,7 @@ const activeScene = {
   y: 620,
   hue: -30,
   focusedChoice: 0,
+  showChoicebox: true,
+  showText: true,
 }
 export const ACTIVE_SCENE = LIB.store(activeScene)
