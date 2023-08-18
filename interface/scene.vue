@@ -7,5 +7,5 @@ div(class="z-30 relative")
     draggable="false"
     class="absolute"
   )
-  textbox
+  dialogue
 </template>
