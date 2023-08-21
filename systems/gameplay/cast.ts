@@ -88,7 +88,7 @@ export default class {
         this.reset(entity, id)
         return
       }
-      const lastEntity = LAST_WORLD.entities.get(id)
+      const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
       if (entity.state.cast && !lastEntity.state.cast) {
         entity.skills.lastFirstStartMS = WORLD.loop.elapsedMS

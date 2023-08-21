@@ -24,14 +24,14 @@ export default defineNuxtPlugin(async (app) => {
     WORLD.heroId = heroId
     // likely depend on WORLD and/or hero
     EVENTS.init()
-    LAST_WORLD.init()
+    LAST.init()
     SETTINGS.init()
     LOCAL.init() // local storage
     INVENTORY.init()
     INTERFACE.init()
     EFFECTS.init()
     GLOBAL.init()
-    SCENE.init()
+    await SCENE.init()
     // 📜 change dependency of hero
     await ENTITY_FACTORY.create("mousepoint")
     // right click menu off

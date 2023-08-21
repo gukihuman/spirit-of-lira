@@ -3,8 +3,8 @@ export default class {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move) return
       if (WORLD.loop.elapsedMS - entity.sprite.lastFlipMS < 200) return
-      if (!LAST_WORLD.entities.get(id)) return
-      const previousX = LAST_WORLD.entities.get(id).position.x
+      if (!LAST.entities.get(id)) return
+      const previousX = LAST.entities.get(id).position.x
       const container = SPRITE.getContainer(id)
       if (!container) return
       let before = 1

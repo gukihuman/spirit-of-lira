@@ -62,12 +62,12 @@ I guess I do...
 ...
 > Very nice. I'm impressed.
 Um... Are you happy?
->> Yeah. Good girl. (s1-end)
 > Not quite. Can you sit back as you were?
+>> Yeah. Good girl. (s1-end)
 # lira-arms-down, lira-blush, lira-eyes-at-viewer
 Well, here. Happy?
->> Yeah. Good girl. (s1-end)
 > Now raise your arms again.
+>> Yeah. Good girl. (s1-end)
 Again!?
 > You already did it, second time should be easy.
 # lira-arms-raised
@@ -78,8 +78,8 @@ Do you think so?
 > Absolutely.
 ...
 Thanks. Well, can we be done now?
->> Yeah. Good girl. (s1-end)
 > Put your arms down.
+>> Yeah. Good girl. (s1-end)
 Oh god...
 # lira-arms-down, lira-blush, lira-eyes-at-viewer
 ...
@@ -87,7 +87,7 @@ Let me guess, do you want me to raise my arms again?
 > I actually wanted to end this.
 Oh... Really?
 > No, raise them.
-# lira-arms-raised, lira-arms-raised-angry
+# lira-arms-raised, lira-angry
 
 I hope your help will worth it.
 > Ok, ok, I might get a little carried away.

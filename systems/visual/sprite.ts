@@ -16,7 +16,7 @@ export default class {
   }
   private updateFirstFrameOfState(entity, id) {
     if (entity.move) {
-      const lastEntity = LAST_WORLD.entities.get(id)
+      const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
       SPRITE.getLayer(id, "animation")?.children.forEach((animation) => {
         if (
@@ -108,7 +108,7 @@ export default class {
   private checkMove(entity, id) {
     if (!entity.move || entity.state.active === "cast") return
 
-    const lastEntity = LAST_WORLD.entities.get(id)
+    const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
 
     const distance = COORDINATES.distance(entity.position, lastEntity.position)
@@ -151,7 +151,7 @@ export default class {
   /** sets sprite if enough frames are validated */
   private setWithValidation(entity, id, sprite: string) {
     //
-    const lastEntity = LAST_WORLD.entities.get(id)
+    const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
 
     entity.sprite.onValidation = sprite
@@ -168,7 +168,7 @@ export default class {
     entity.sprite.framesValidated++
   }
   private updateLastChangeMS(entity, id) {
-    const lastEntity = LAST_WORLD.entities.get(id)
+    const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (entity.sprite.active !== lastEntity.sprite.active) {
       WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS

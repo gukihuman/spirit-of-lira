@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  v-if="index === ACTIVE_SCENE.focusedChoice"
+  v-if="index === ACTIVE_SCENE.focusedChoiceIndex"
   class="absolute w-[104%] h-full ml-[-2%] -z-50"
 )
   div(
@@ -11,5 +11,5 @@ div(
   )
 </template>
 <script setup lang="ts">
-const props = defineProps(["index", "choiceboxWidth"])
+const props = defineProps(["index"])
 </script>

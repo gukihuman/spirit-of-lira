@@ -10,7 +10,8 @@ class Settings {
       toggleInventory: "i",
       toggleFullscreen: "f",
       lockTarget: "u",
-      sendInput: "Enter",
+      // scene
+      continue: "m",
     },
     mouse: {
       moveOrCast1: 0,

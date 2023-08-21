@@ -61,21 +61,20 @@ class Lib {
     }
     return result
   }
-
   /** transform an object into reactive pinia store, ignores but saves init */
   store(object: AnyObject) {
-    //
-    const init = object.init
-    delete object.init
-
+    const functions = {}
+    _.forEach(object, (value, key) => {
+      if (typeof value === "function") {
+        functions[key] = value
+        delete object[key]
+      }
+    })
     const storeObject: AnyObject = {}
-
     storeObject.state = defineStore(this.generateRandomString(10), {
       state: () => object,
     })
-
     _.forEach(object, (value, key) => {
-      //
       Object.defineProperty(storeObject, key, {
         get: () => storeObject.state()[key],
         set: (value) => {
@@ -83,9 +82,9 @@ class Lib {
         },
       })
     })
-
-    if (init) storeObject.init = init
-
+    _.forEach(functions, (value, key) => {
+      storeObject[key] = value
+    })
     return storeObject
   }
   hero(id: number) {

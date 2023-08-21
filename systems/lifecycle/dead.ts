@@ -6,7 +6,7 @@ export default class {
       if (!entity.attributes) return
       if (entity.attributes.health <= 0) {
         entity.state.active = "dead"
-        const lastEntity = LAST_WORLD.entities.get(id)
+        const lastEntity = LAST.entities.get(id)
         if (
           entity.state.active === "dead" &&
           lastEntity.state.active !== "dead"

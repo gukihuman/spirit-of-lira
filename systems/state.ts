@@ -19,7 +19,7 @@ export default class {
     })
   }
   private checkStill(entity, id) {
-    const lastEntity = LAST_WORLD.entities.get(id)
+    const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (
       entity.position.x === lastEntity.position.x &&
@@ -29,7 +29,7 @@ export default class {
     } else entity.state.still = false
   }
   private updateLastChangeMS(entity, id) {
-    const lastEntity = LAST_WORLD.entities.get(id)
+    const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (entity.state.active !== lastEntity.state.active) {
       WORLD.entities.get(id).state.lastChangeMS = WORLD.loop.elapsedMS

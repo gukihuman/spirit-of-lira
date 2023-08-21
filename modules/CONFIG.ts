@@ -1,7 +1,5 @@
 import userConfig from "@/guki.config"
-
 class GukiConfig {
-  //
   /** merge user config with default config */
   constructor() {
     if (!userConfig) return
@@ -13,7 +11,6 @@ class GukiConfig {
       }
     })
   }
-
   /** setup 0 priority for unmentioned values
    */
   init() {
@@ -26,34 +23,28 @@ class GukiConfig {
       this.priority.systemInit[name] = 0
     })
   }
-
   viewport = {
     width: 1920,
     height: 1080,
   }
-
   maxFPS = 60
-
   // higher values goes first, what is not setted here will be 0
   priority = {
-    //
     componentInject: {
       sprite: 2,
       move: 1,
     },
-
     systemInit: {
       collision: 2,
       astar: 1,
     },
-
     process: {
-      //
-      state: 4,
-      sprite: 3,
-      LAST_WORLD: 2,
+      state: 5,
+      sprite: 4,
+      ACTIVE_SCENE: 3,
+      LAST: 2,
       input: 1, // at least SETTINGS depends on it
-
+      // <- rest of the logic here
       astar: -1, // check logic in EVENTS before it is empty
       EVENTS: -2, // runs all logic for collected events and empty itself
       move: -3,
@@ -63,5 +54,4 @@ class GukiConfig {
     },
   }
 }
-
 export const CONFIG = new GukiConfig()
