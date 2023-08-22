@@ -10,9 +10,12 @@ const global = {
   autoMouseMove: false,
   init() {
     WORLD.loop.add(() => {
-      if (INTERFACE.inventory) GLOBAL.context = "interface"
-      // implement handle context
-      else GLOBAL.context = "scene"
+      if (GLOBAL.context === "world") {
+        if (INTERFACE.inventory) GLOBAL.context = "interface"
+      }
+      if (GLOBAL.context === "interface") {
+        if (!INTERFACE.inventory) GLOBAL.context = "world"
+      }
     }, "GLOBAL")
   },
 }

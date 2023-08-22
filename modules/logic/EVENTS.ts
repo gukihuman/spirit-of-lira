@@ -25,6 +25,7 @@ class Events {
     // scenes
     endScene: [],
     continue: [],
+    mouseContinue: [],
   }
   active: [string, AnyObject][] = []
   activeSingle: string[] = []

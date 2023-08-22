@@ -1,7 +1,7 @@
 const activeScene = {
   name: "",
   nextSceneName: "",
-  stepIndex: 0,
+  stepIndex: 51,
   layerOne: {},
   layerTwo: {}, // images, text, choices, x, y, hue
   // choices: [{
@@ -11,57 +11,77 @@ const activeScene = {
   // }]
   activeLayer: "layerOne",
   focusedChoiceIndex: 0,
-  showChoiceBox: true,
+  showChoiceBox: false,
   showText: true,
-  preventNext: false,
+  lastContinueMS: 0,
   init() {
+    // 📜 handle this scene emit by some user data
+    EVENTS.emit("startScene", { name: "s1-start" })
     WORLD.loop.add(() => {
       if (GLOBAL.context !== "scene") return
       this.updateData()
-      EVENTS.emit("startScene", { name: "s1-start" })
     }, "ACTIVE_SCENE")
     EVENTS.on("startScene", (options) => {
       this.name = options.name
-      this.stepIndex = 0
+      this.nextSceneName = options.name
+      // this.stepIndex = 0
       GLOBAL.context = "scene"
     })
     EVENTS.onSingle("endScene", () => {
       GLOBAL.context = "world"
+      INTERFACE.inventory = false
+    })
+    EVENTS.onSingle("mouseContinue", () => {
+      if (this.showChoiceBox) return // handled by direct click event on choice
+      else EVENTS.emitSingle("continue")
     })
     EVENTS.onSingle("continue", () => {
-      if (this.preventNext) return
-      this.preventNext = true
+      if (this.lastContinueMS + CONFIG.scene.skipDelay > WORLD.loop.elapsedMS)
+        return
+      this.lastContinueMS = WORLD.loop.elapsedMS
       const steps = this.getSteps()
       if (!steps) return
       const { step, nextStep } = steps
-      if (nextStep && nextStep.choices.length === 0) this.showChoiceBox = false
-      else this.showChoiceBox = true
-      if (nextStep.text !== step.text) this.showText = false
-      setTimeout(() => {
-        if (this.activeLayer === "layerOne") this.activeLayer = "layerTwo"
-        else this.activeLayer = "layerOne"
-        console.log(this.activeLayer)
-        if (this.name === this.nextSceneName) {
-          this.stepIndex++
-          if (this.stepIndex >= SCENE.steps[this.name].length) {
-            this.stepIndex = 0
-            GLOBAL.context = "world"
-          }
-        } else {
-          this.stepIndex = 0
-          this.name = this.nextSceneName
-        }
-        this.showText = true
-        this.preventNext = false
-      }, 50)
-      setTimeout(() => {
+      if ((nextStep && nextStep.choices.length === 0) || !nextStep) {
+        this.showChoiceBox = false
+      } else {
+        // prevent quick appearance on first time
+        setTimeout(() => (this.showChoiceBox = true), 10)
+        const layerOne = this.layerOne as AnyObject
+        const layerTwo = this.layerTwo as AnyObject
+        layerOne.choices = nextStep.choices
+        layerTwo.choices = nextStep.choices
         this.focusedChoiceIndex = 0
-      }, 1000)
+      }
+      if (nextStep) {
+        if (nextStep.text !== step.text) this.showText = false
+        let delay = 50
+        if (!_.isEqual(step.images, nextStep.images)) {
+          delay = CONFIG.scene.transitionSpeed * 0.5
+          this.activeLayer = "layerTwo"
+          setTimeout(() => {
+            this.activeLayer = "layerOne"
+          }, delay)
+        }
+        setTimeout(() => {
+          this.showText = true
+          this.stepIndex++
+        }, delay)
+      }
+      if (this.name === this.nextSceneName || !this.nextSceneName) {
+        if (this.stepIndex >= SCENE.steps[this.name].length - 1) {
+          EVENTS.emitSingle("endScene")
+        }
+      } else {
+        this.stepIndex = -1
+        this.name = this.nextSceneName
+      }
     })
   },
   getSteps() {
     if (!SCENE.steps[ACTIVE_SCENE.name]) return
     const step = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex]
+    if (!step) return
     let nextStep
     if (step.choices.length === 0) {
       nextStep = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex + 1]
@@ -69,7 +89,10 @@ const activeScene = {
     }
     ACTIVE_SCENE.nextSceneName =
       step.choices[ACTIVE_SCENE.focusedChoiceIndex].nextSceneName
-    if (ACTIVE_SCENE.name === ACTIVE_SCENE.nextSceneName) {
+    if (
+      !ACTIVE_SCENE.nextSceneName ||
+      ACTIVE_SCENE.name === ACTIVE_SCENE.nextSceneName
+    ) {
       nextStep = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex + 1]
     } else {
       nextStep = SCENE.steps[ACTIVE_SCENE.nextSceneName][0]
@@ -78,13 +101,8 @@ const activeScene = {
   },
   updateData() {
     let layer, nextlayer
-    if (ACTIVE_SCENE.activeLayer === "layerOne") {
-      layer = ACTIVE_SCENE.layerOne
-      nextlayer = ACTIVE_SCENE.layerTwo
-    } else {
-      layer = ACTIVE_SCENE.layerTwo
-      nextlayer = ACTIVE_SCENE.layerOne
-    }
+    layer = ACTIVE_SCENE.layerOne
+    nextlayer = ACTIVE_SCENE.layerTwo
     const steps = this.getSteps()
     if (!steps) return
     const { step, nextStep } = steps
@@ -94,7 +112,6 @@ const activeScene = {
   updateLayerData(layer, step) {
     layer.images = step.images
     layer.text = step.text
-    layer.choices = step.choices
     layer.x = SCENE.optionsByImage[layer.images[0]]?.x || 950
     layer.y = SCENE.optionsByImage[layer.images[0]]?.y || 620
     layer.hue = SCENE.optionsByImage[layer.images[0]]?.hue || 0

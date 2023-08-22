@@ -10,7 +10,7 @@ div(class="absolute" :style="textBoxStyle")
     div(class="w-full h-full rounded-3xl bg-gradient-to-b from-dark-gunmetal to-space-cadet")
   //- text
   transition(name="fast"): div(
-    v-show="ACTIVE_SCENE.showText"
+    v-if="ACTIVE_SCENE.showText"
     class="my-7 mx-11 leading-10 font-semibold text-[28px] text-slate-300"
   )
     span(
@@ -21,7 +21,7 @@ div(class="absolute" :style="textBoxStyle")
     ) {{ word + " " }}
 </template>
 <script setup lang="ts">
-const props = defineProps(["layer", "width", "height", "border", "textSpeed"])
+const props = defineProps(["layer"])
 const addPauses = (array, arrayWithPauses) => {
   array.forEach((word) => {
     if (word.includes("...")) arrayWithPauses.push(word, "", "", "")
@@ -43,19 +43,19 @@ const textBoxStyle = computed(() => {
   return {
     "margin-left": `${ACTIVE_SCENE[props.layer].x}px`,
     "margin-top": `${ACTIVE_SCENE[props.layer].y}px`,
-    width: `${props.width}px`,
-    height: `${props.height}px`,
+    width: `${CONFIG.scene.textBoxWidth}px`,
+    height: `${CONFIG.scene.textBoxHeight}px`,
   }
 })
 const internalTextBoxStyle = computed(() => {
-  return { padding: `${props.border}px` }
+  return { padding: `${CONFIG.scene.border}px` }
 })
 const wordStyle = computed(() => {
   return (index) => {
-    const animationDuration = `${(0.8 - props.textSpeed / 180).toFixed(1)}s`
-    const animationDelay = `${((index / 10) * (100 - props.textSpeed)) / 25}s`
+    const duration = `${(0.8 - CONFIG.scene.textSpeed / 180).toFixed(1)}s`
+    const delay = `${((index / 10) * (100 - CONFIG.scene.textSpeed)) / 25}s`
     return {
-      animation: `fade-in ${animationDuration} ${animationDelay} forwards cubic-bezier(0.11, 0, 0.5, 0)`,
+      animation: `fade-in ${duration} ${delay} forwards cubic-bezier(0.11, 0, 0.5, 0)`,
       filter: "blur(1px)",
     }
   }

@@ -1,4 +1,5 @@
 # s1-lira-no-light
+
 Oh Nighty Goddess! I am Lira. I came to your shrine, the magic tree.
 I am all nude, as I heard, you prefer. I want to ask for help!
 ...
@@ -6,6 +7,7 @@ Anyone hear me?
 # s1-nighty-empty
 
 # s1-nighty
+
 Well well well, what a cute girl!
 What do you need, sweetie?
 # s1-lira-arms-down

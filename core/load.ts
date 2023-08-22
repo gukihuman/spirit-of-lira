@@ -14,7 +14,7 @@ export default defineNuxtPlugin(async () => {
   await load(import.meta.glob("@/data/items/clothes/**/*"), ITEMS.clothes)
   await load(import.meta.glob("@/data/skills/**/*"), SKILLS.list)
   await load(import.meta.glob("@/data/scenes/**/*"), SCENE.mdPaths, false, "md")
-  await load(import.meta.glob("@/data/scenes/options.ts"), SCENE)
+  await load(import.meta.glob("@/data/scenes/optionsByImage.ts"), SCENE)
   await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
   // important for proper sprite work
@@ -50,5 +50,5 @@ function getFileName(path: string, format: "ts" | "webp" | "json" | "md") {
     match = path.match(/\/([^/]+)\.md/)
   }
   if (!match) return
-  return `${_.toLower(match[1])}`
+  return `${match[1]}`
 }

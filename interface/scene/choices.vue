@@ -6,7 +6,7 @@ div(
 )
   //- choice boxes
   div(
-    v-for="(choice, index) in ACTIVE_SCENE.choices"
+    v-for="(choice, index) in ACTIVE_SCENE[props.layer].choices"
     :key="index"
     class="relative"
     :style="choiceBoxStyle"
@@ -23,7 +23,7 @@ div(
             :src="ASSETS.webps['arrow-icon']"
             )
         //- focus frame
-        transition: focus-frame(:index="index")
+        transition(name="fast"): focus-frame(:index="index")
         //- transparent border
         div(class="absolute rounded-3xl w-full h-full bg-gradient-to-b from-dark-gunmetal to-space-cadet opacity-[0.20]")
         //- internal choice box
@@ -38,50 +38,53 @@ div(
         ) {{ choice.text }}
 </template>
 <script setup lang="ts">
-const props = defineProps([
-  "layer",
-  "choiceBoxWidth",
-  "choiceBoxHeight",
-  "border",
-  "marginX",
-  "marginY",
-  "unfocusedChoiceIndexBoxOpacity",
-  "choiceBoxesGap",
-])
+const props = defineProps(["layer"])
 let preventClick = false
 const resolveChoiceTransition = computed(() => {
   return (index) => {
     let name = "unfocused"
-    if (ACTIVE_SCENE.activatedChoiceIndex === index) name = "focused"
+    if (ACTIVE_SCENE.focusedChoiceIndex === index) name = "focused"
     return name
   }
 })
 const mouseover = (index) => (ACTIVE_SCENE.focusedChoiceIndex = index)
 const click = (index) => EVENTS.emitSingle("continue")
 const mainStyle = computed(() => {
+  const marginX = (CONFIG.scene.textBoxWidth - CONFIG.scene.choiceBoxWidth) / 2
   return {
-    "margin-left": `${ACTIVE_SCENE[props.layer].x + props.marginX}px`,
-    "padding-bottom": `${props.marginY}px`,
-    width: `${props.choiceBoxWidth}px`,
+    "margin-left": `${ACTIVE_SCENE[props.layer].x + marginX}px`,
+    "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
+    width: `${CONFIG.scene.choiceBoxWidth}px`,
     height: `${ACTIVE_SCENE[props.layer].y}px`,
-    gap: `${props.choiceBoxesGap}px`,
+    gap: `${CONFIG.scene.choiceBoxesGap}px`,
   }
 })
 const choiceBoxStyle = computed(() => {
   return {
-    width: `${props.choiceBoxWidth}px`,
-    "min-height": `${props.choiceBoxHeight}px`,
+    width: `${CONFIG.scene.choiceBoxWidth}px`,
+    "min-height": `${CONFIG.scene.choiceBoxHeight}px`,
   }
 })
 const internalChoiceBoxStyle = computed(() => {
   return (index) => {
-    let opacity = props.unfocusedChoiceIndexBoxOpacity
-    if (index === ACTIVE_SCENE.focusedChoiceIndex) opacity = 0.65
+    let opacity = CONFIG.scene.unfocusedChoiceBoxOpacity
+    if (index === ACTIVE_SCENE.focusedChoiceIndex) {
+      opacity = CONFIG.scene.focusedChoiceBoxOpacity
+    }
     return {
       opacity: `${opacity}`,
-      padding: `${props.border}px`,
+      padding: `${CONFIG.scene.border}px`,
     }
   }
+})
+const focusedTransitionSpeed = computed(() => {
+  return `all ${CONFIG.scene.transitionSpeed / 2}ms ease-out`
+})
+// time must be the same as focused leave, to not mess with layout so instead uses bezier that leave quicly */
+const unfocusedTransitionSpeed = computed(() => {
+  return `all ${
+    CONFIG.scene.transitionSpeed / 2
+  }ms cubic-bezier(0.37, 0.9, 0.31, 1.65)`
 })
 </script>
 <style>
@@ -99,11 +102,9 @@ const internalChoiceBoxStyle = computed(() => {
   transition: all 200ms ease-out;
 }
 .focused-leave-active {
-  transition: all 1000ms ease-out;
+  transition: v-bind(focusedTransitionSpeed);
 }
 .unfocused-leave-active {
-  /* time must be the same as focused leave, to not mess with layout */
-  /* instead uses bezier that leave quicly */
-  transition: all 1000ms cubic-bezier(0.37, 0.9, 0.31, 1.65);
+  transition: v-bind(unfocusedTransitionSpeed);
 }
 </style>

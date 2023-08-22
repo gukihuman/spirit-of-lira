@@ -10,12 +10,15 @@ class Settings {
       toggleInventory: "i",
       toggleFullscreen: "f",
       lockTarget: "u",
+      // 📜 separate scene or something
       // scene
       continue: "m",
     },
     mouse: {
       moveOrCast1: 0,
       lockTarget: 2,
+      // scene
+      mouseContinue: 0,
     },
     gamepad: {
       cast1: "A",
@@ -55,6 +58,9 @@ class Settings {
       })
     })
     // overwrite default
+    if (INPUT.keyboard.pressed.includes(this.inputEvents.keyboard.continue)) {
+      EVENTS.emitSingle("continue")
+    }
     if (
       INPUT.mouse.pressed.includes(this.inputEvents.mouse.moveOrCast1) ||
       INPUT.keyboard.pressed.includes(this.inputEvents.keyboard.moveOrCast1)

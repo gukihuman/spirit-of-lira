@@ -7,13 +7,6 @@ export default class {
     EVENTS.onSingle("lockTarget", () => {
       const hero = WORLD.hero
       if (!hero.target.id) return
-      // when lock is used to lock a new target immidiately
-      if (INPUT.lastActiveDevice !== "gamepad") {
-        if (!WORLD.hoverId) return
-        hero.target.id = WORLD.hoverId
-        hero.target.locked = true
-        return
-      }
       hero.target.locked = !hero.target.locked
       // reset finaldestination if it is on the target
       if (
@@ -27,6 +20,13 @@ export default class {
       if (INPUT.lastActiveDevice !== "gamepad" && hero.state.cast) {
         hero.state.cast = false
         hero.move.finaldestination = _.cloneDeep(hero.position)
+      }
+      // when lock is used to lock a new target immidiately
+      if (INPUT.lastActiveDevice !== "gamepad") {
+        if (!WORLD.hoverId) return
+        hero.target.id = WORLD.hoverId
+        hero.target.locked = true
+        return
       }
     })
   }
