@@ -2,7 +2,7 @@
 //- choice section
 div(
   class="absolute flex flex-col-reverse justify-start"
-  :style="choiceSectionStyle"
+  :style="mainStyle"
 )
   //- choice boxes
   div(
@@ -14,7 +14,7 @@ div(
     @click="click(index)"
   )
     transition(:name="resolveChoiceTransition(index)")
-      div(v-if="ACTIVE_SCENE.showChoiceSection")
+      div(v-if="ACTIVE_SCENE.showChoiceBox")
         //- arrow icon
         div(class="absolute z-50 w-full h-full flex justify-end items-end")
           img(
@@ -39,6 +39,7 @@ div(
 </template>
 <script setup lang="ts">
 const props = defineProps([
+  "layer",
   "choiceBoxWidth",
   "choiceBoxHeight",
   "border",
@@ -50,19 +51,19 @@ const props = defineProps([
 let preventClick = false
 const resolveChoiceTransition = computed(() => {
   return (index) => {
-    let name = "short"
-    if (ACTIVE_SCENE.activatedChoiceIndex === index) name = "activated"
+    let name = "unfocused"
+    if (ACTIVE_SCENE.activatedChoiceIndex === index) name = "focused"
     return name
   }
 })
 const mouseover = (index) => (ACTIVE_SCENE.focusedChoiceIndex = index)
 const click = (index) => EVENTS.emitSingle("continue")
-const choiceSectionStyle = computed(() => {
+const mainStyle = computed(() => {
   return {
-    "margin-left": `${ACTIVE_SCENE.x + props.marginX}px`,
+    "margin-left": `${ACTIVE_SCENE[props.layer].x + props.marginX}px`,
     "padding-bottom": `${props.marginY}px`,
     width: `${props.choiceBoxWidth}px`,
-    height: `${ACTIVE_SCENE.y}px`,
+    height: `${ACTIVE_SCENE[props.layer].y}px`,
     gap: `${props.choiceBoxesGap}px`,
   }
 })
@@ -84,23 +85,25 @@ const internalChoiceBoxStyle = computed(() => {
 })
 </script>
 <style>
-.activated-enter-active,
-.activated-leave-active {
-  transition: all 1s ease-out;
-}
-.activated-enter-from {
+.focused-enter-from,
+.unfocused-enter-from,
+.unfocused-leave-to {
   opacity: 0;
 }
-.activated-leave-to {
+.focused-leave-to {
   opacity: 0;
   transform: translateX(20px);
 }
-.short-enter-active,
-.short-leave-active {
-  transition: all 1000ms cubic-bezier(0.37, 0.9, 0.31, 1.65); /* custom */
+.unfocused-enter-active,
+.focused-enter-active {
+  transition: all 200ms ease-out;
 }
-.short-enter-from,
-.short-leave-to {
-  opacity: 0;
+.focused-leave-active {
+  transition: all 1000ms ease-out;
+}
+.unfocused-leave-active {
+  /* time must be the same as focused leave, to not mess with layout */
+  /* instead uses bezier that leave quicly */
+  transition: all 1000ms cubic-bezier(0.37, 0.9, 0.31, 1.65);
 }
 </style>

@@ -32,17 +32,17 @@ const addPauses = (array, arrayWithPauses) => {
   })
 }
 const textArray = computed(() => {
-  let text = ACTIVE_SCENE.text
+  let text = ACTIVE_SCENE[props.layer].text
   if (!text) return
-  let array: string[] = [].concat(ACTIVE_SCENE.text.split(" "))
+  let array: string[] = [].concat(text.split(" "))
   let arrayWithPauses: string[] = []
   addPauses(array, arrayWithPauses)
   return arrayWithPauses
 })
 const textBoxStyle = computed(() => {
   return {
-    "margin-left": `${ACTIVE_SCENE.x}px`,
-    "margin-top": `${ACTIVE_SCENE.y}px`,
+    "margin-left": `${ACTIVE_SCENE[props.layer].x}px`,
+    "margin-top": `${ACTIVE_SCENE[props.layer].y}px`,
     width: `${props.width}px`,
     height: `${props.height}px`,
   }

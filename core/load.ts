@@ -14,7 +14,7 @@ export default defineNuxtPlugin(async () => {
   await load(import.meta.glob("@/data/items/clothes/**/*"), ITEMS.clothes)
   await load(import.meta.glob("@/data/skills/**/*"), SKILLS.list)
   await load(import.meta.glob("@/data/scenes/**/*"), SCENE.mdPaths, false, "md")
-  await load(import.meta.glob("@/data/scenes/**/*"), SCENE.options)
+  await load(import.meta.glob("@/data/scenes/options.ts"), SCENE)
   await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
   // important for proper sprite work

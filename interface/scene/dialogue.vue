@@ -1,6 +1,6 @@
 <template lang="pug">
 div(:style="mainStyle")
-  choice-section(
+  choices(
     :layer="layer"
     :choiceBoxWidth="choiceBoxWidth"
     :choiceBoxHeight="choiceBoxHeight"
@@ -31,7 +31,7 @@ const border = 10
 const textSpeed = 70
 const mainStyle = computed(() => {
   return {
-    filter: `hue-rotate(${ACTIVE_SCENE.hue}deg)`,
+    filter: `hue-rotate(${ACTIVE_SCENE[props.layer].hue}deg)`,
   }
 })
 </script>

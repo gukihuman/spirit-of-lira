@@ -5,7 +5,8 @@ class Events {
     unequip: [],
     cast: [],
     revenge: [],
-    continue: [],
+    // scenes
+    startScene: [],
   }
   listOfSingle: { [event: string]: Array<() => void> } = {
     toggleInventory: [],
@@ -21,6 +22,8 @@ class Events {
     autoMouseMove: [],
     gamepadMove: [],
     lockTarget: [],
+    // scenes
+    endScene: [],
     continue: [],
   }
   active: [string, AnyObject][] = []

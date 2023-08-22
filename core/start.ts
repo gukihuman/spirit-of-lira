@@ -32,6 +32,7 @@ export default defineNuxtPlugin(async (app) => {
     EFFECTS.init()
     GLOBAL.init()
     await SCENE.init()
+    ACTIVE_SCENE.init() // after scene
     // 📜 change dependency of hero
     await ENTITY_FACTORY.create("mousepoint")
     // right click menu off
