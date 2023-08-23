@@ -18,7 +18,14 @@ class Scene {
   private plainTextParse() {
     _.forEach(this.plainText, (value, key) => {
       this.steps[key] = []
-      const lineArray = value.split("\r\n")
+      let lineArray
+      console.log(value)
+      if (value.includes("\r\n")) {
+        lineArray = value.split("\r\n")
+      } else {
+        lineArray = value.split("\n") // for vercel
+      }
+      console.log(lineArray)
       let images: string[] = []
       const step: AnyObject = {
         images: [],
