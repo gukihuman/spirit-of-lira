@@ -36,6 +36,7 @@ const activeScene = {
       else EVENTS.emitSingle("continue")
     })
     EVENTS.onSingle("continue", () => {
+      console.log(SCENE, ACTIVE_SCENE, ASSETS)
       if (this.lastContinueMS + CONFIG.scene.skipDelay > WORLD.loop.elapsedMS)
         return
       this.lastContinueMS = WORLD.loop.elapsedMS

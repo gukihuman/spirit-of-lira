@@ -4,7 +4,7 @@ div(class="z-30 relative")
   images(layer="layerOne")
   dialogue(layer="layerOne")
   //- layerTwo
-  transition(:style='transition')
+  transition
     div(v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
       images(layer="layerTwo")
       dialogue(layer="layerTwo")
