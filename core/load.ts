@@ -17,6 +17,7 @@ export default defineNuxtPlugin(async () => {
   await load(import.meta.glob("@/data/scenes/optionsByImage.ts"), SCENE)
   await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
+  await load(import.meta.glob("@/assets/**/*"), ASSETS.audios, false, "mp3")
   // important for proper sprite work
   _.forEach(ASSETS.jsons, (value, name) => {
     if (value.meta && ASSETS.webps[name]) {
@@ -28,7 +29,7 @@ async function load(
   paths,
   savePlace: AnyObject,
   addNameProperty: boolean = false,
-  format: "ts" | "webp" | "json" | "md" = "ts"
+  format: LoadFormats = "ts"
 ) {
   for (const path in paths) {
     const name = getFileName(path, format)
@@ -38,7 +39,7 @@ async function load(
     if (addNameProperty) item.default.name = name
   }
 }
-function getFileName(path: string, format: "ts" | "webp" | "json" | "md") {
+function getFileName(path: string, format: LoadFormats) {
   let match
   if (format === "ts") {
     match = path.match(/\/([^/]+)\.ts/)
@@ -48,6 +49,8 @@ function getFileName(path: string, format: "ts" | "webp" | "json" | "md") {
     match = path.match(/\/([^/]+)\.json/)
   } else if (format === "md") {
     match = path.match(/\/([^/]+)\.md/)
+  } else if (format === "mp3") {
+    match = path.match(/\/([^/]+)\.mp3/)
   }
   if (!match) return
   return `${match[1]}`

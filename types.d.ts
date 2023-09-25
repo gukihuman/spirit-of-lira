@@ -1,4 +1,3 @@
-//
 // redeclare some types for GLOBAL accessability
 // nuxt issue, otherwise auto-import dont work,
 import {
@@ -38,8 +37,20 @@ declare global {
     gParse: () => void
     gProcessFrames: (any) => void
   }
-
   type Entity = { [key: string]: any }
   type Context = "world" | "scene" | "interface"
   type AnyObject = { [key: string]: any }
+  type LoadFormats = "ts" | "webp" | "json" | "md" | "mp3"
+  type SceneLayer = {
+    images: string[]
+    text: string
+    choices: {
+      text: string
+      nextSceneName: string
+      arrow: boolean
+    }[]
+    x: number
+    y: number
+    hue: number
+  }
 }

@@ -52,8 +52,21 @@ export default class {
   }
   private chooseEffectSprite(entity, id) {
     const targetEntity = entity.target.entity
+    // 📜 "sword-hit" should be taken from item, that hero is using
+    // data/items/weapons/common-sword.ts
     if (LIB.hero(id)) SPRITE.effect(entity, "sword-hit", targetEntity)
     else SPRITE.effect(entity, "bunbo-bite", targetEntity)
+  }
+  private chooseEffectAudio(entity, id) {
+    let soundId: any
+    const skill = entity.skills.data[entity.skills.active]
+    // 📜 0.8 and "sword-hit" should be taken from item, that hero is using
+    // data/items/weapons/common-sword.ts
+    let audioDelay
+    if (entity.skills.firstCastState) audioDelay = skill.firstCastMS * 0.95
+    else audioDelay = skill.castMS * 0.95
+    if (LIB.hero(id)) soundId = AUDIO.play("sword-hit", audioDelay)
+    else soundId = AUDIO.play("bunbo-bite")
   }
   private castLogic(entity, id, skill) {
     if (!entity.target.id) return
@@ -67,6 +80,7 @@ export default class {
     entity.skills.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
+    entity.skills.audioDone = false
     const inRange = WORLD.systems.track.inRange
     const targetEntity = entity.target.entity
     if (!inRange(entity, id, targetEntity, skill.distance)) {
@@ -106,6 +120,10 @@ export default class {
       }
       if (elapsedMS > entity.skills.lastDoneMS + skill.castMS) {
         this.castLogic(entity, id, skill)
+      }
+      if (!entity.skills.audioDone) {
+        this.chooseEffectAudio(entity, id)
+        entity.skills.audioDone = true
       }
       if (
         !entity.skills.delayedLogicDone &&

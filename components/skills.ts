@@ -10,6 +10,9 @@ export default {
   lastFirstStartMS: Infinity, // first in a sequence
   lastDoneMS: Infinity, // includes delay after cast logic
   delayedLogicDone: true,
+  audioDone: false,
+  // 📜 maybe move somewhere else
+  firstCastState: true,
   // 🔧
   inject(entity, id) {
     entity.skills.list.forEach((skill) => {

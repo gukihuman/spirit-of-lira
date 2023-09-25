@@ -31,6 +31,7 @@ export default defineNuxtPlugin(async (app) => {
     INTERFACE.init()
     EFFECTS.init()
     GLOBAL.init()
+    AUDIO.init()
     await SCENE.init()
     ACTIVE_SCENE.init() // after scene
     // 📜 change dependency of hero
@@ -43,10 +44,14 @@ export default defineNuxtPlugin(async (app) => {
     await ENTITY_FACTORY.create("magic-tree", { sprite: {} })
     await ENTITY_FACTORY.create("bridge-fence", { sprite: {} })
     await ENTITY_FACTORY.create("bunny", { sprite: {} })
+
+    // 📜 handle this scene emit by some user data
+    // EVENTS.emit("startScene", { name: "s1-start" })
+
     // timeout to make sure initial loading transition will work
     setTimeout(() => {
       GLOBAL.loading = false
-    }, 0)
+    }, 1)
   }
 })
 async function setupSystems() {

@@ -19,13 +19,11 @@ class Scene {
     _.forEach(this.plainText, (value, key) => {
       this.steps[key] = []
       let lineArray
-      console.log(value)
       if (value.includes("\r\n")) {
         lineArray = value.split("\r\n")
       } else {
-        lineArray = value.split("\n") // for vercel
+        lineArray = value.split("\n") // for vercel environment
       }
-      console.log(lineArray)
       let images: string[] = []
       const step: AnyObject = {
         images: [],

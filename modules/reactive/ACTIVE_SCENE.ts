@@ -1,22 +1,19 @@
+interface activeScene extends AnyObject {
+  layerOne: SceneLayer
+  layerTwo: SceneLayer
+}
 const activeScene = {
   name: "",
   nextSceneName: "",
-  stepIndex: 51,
+  stepIndex: 0,
   layerOne: {},
-  layerTwo: {}, // images, text, choices, x, y, hue
-  // choices: [{
-  //   text: "",
-  //   nextSceneName: "",
-  //   arrow: false
-  // }]
+  layerTwo: {},
   activeLayer: "layerOne",
   focusedChoiceIndex: 0,
   showChoiceBox: false,
   showText: true,
   lastContinueMS: 0,
   init() {
-    // 📜 handle this scene emit by some user data
-    EVENTS.emit("startScene", { name: "s1-start" })
     WORLD.loop.add(() => {
       if (GLOBAL.context !== "scene") return
       this.updateData()
