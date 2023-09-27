@@ -1,11 +1,8 @@
 class Ma {
   chunkSprites: Map<string, Sprite> = new Map()
   closeChunks: string[] = []
-
   greenForestChunks: string[] = this.setLocationChunks(0, 4)
-
-  /** @returns square of chunks, for example for 50 and 51 ["5050", "5051", "5150", "5151"]
-   */
+  /** @returns square of chunks, for example for 50 and 51 ["5050", "5051", "5150", "5151"] */
   private setLocationChunks(start: number, end: number) {
     const chunks: string[] = []
     for (let y = start; y <= end; y++) {
@@ -19,11 +16,9 @@ class Ma {
     }
     return chunks
   }
-
   async init() {
     await this.loadCloseChunks()
   }
-
   process() {
     this.loadCloseChunks()
     const heroPosition = WORLD.hero.position
@@ -41,16 +36,13 @@ class Ma {
         heroPosition.y
     })
   }
-
   private async loadCloseChunks() {
     if (!WORLD.heroId) return
     const heroEntity = WORLD.entities.get(WORLD.heroId)
     if (!heroEntity) return
     const heroPosition = WORLD.hero.position
-
     const startY = COORDINATES.coordinateToChunk(heroPosition.y) - 1
     const startX = COORDINATES.coordinateToChunk(heroPosition.x) - 2
-
     this.closeChunks = []
     const sprites: Promise<void>[] = []
     for (let y of _.range(startY, startY + 3)) {
@@ -66,21 +58,15 @@ class Ma {
     }
     await Promise.all(sprites)
   }
-
   private async loadChunkSprite(index: string) {
     if (this.chunkSprites.get(index)) return
-
     // immideately add index to the map to prevent duplicates
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
-
     let webp = ASSETS.webps[index]
-
     if (!webp) webp = ASSETS.webps["map-not-found"]
     if (!webp) return
-
     const texture = await PIXI.Assets.load(webp)
-
     const sprite = new PIXI.Sprite(texture)
     sprite.cullable = true
     WORLD.map.addChild(sprite)

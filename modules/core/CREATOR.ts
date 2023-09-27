@@ -1,10 +1,10 @@
-class EntityFactory {
+class Creator {
   private nextId = 1
   /**  @returns promise of entity id or undefined */
   async create(name: string, components?: { [key: string]: any }) {
     const entity = _.cloneDeep(MODELS.entities[name])
     if (!entity) {
-      LIB.logWarning(`"${name}" not found (ENTITY_FACTORY)`)
+      LIB.logWarning(`"${name}" not found (CREATOR)`)
       return
     }
     const id = this.nextId
@@ -55,7 +55,7 @@ class EntityFactory {
     this.dependCounter++
     if (this.dependCounter > 100) {
       LIB.logWarning(
-        `"more than 100 loops of merging components, likely a circular dependency (ENTITY_FACTORY)`
+        `"more than 100 loops of merging components, likely a circular dependency (CREATOR)`
       )
       return
     }
@@ -67,7 +67,7 @@ class EntityFactory {
         const dependValue = MODELS.components[dependName]
         if (!dependValue) {
           LIB.logWarning(
-            `"${dependName}" as a "${name}" dependency is not found (ENTITY_FACTORY)`
+            `"${dependName}" as a "${name}" dependency is not found (CREATOR)`
           )
           return
         }
@@ -85,7 +85,7 @@ class EntityFactory {
         const triggerValue = MODELS.components[triggerName]
         if (!triggerValue) {
           LIB.logWarning(
-            `"${triggerName}" as a "${name}" trigger is not found (ENTITY_FACTORY)`
+            `"${triggerName}" as a "${name}" trigger is not found (CREATOR)`
           )
           return
         }
@@ -101,4 +101,4 @@ class EntityFactory {
     delete entity[name].inject
   }
 }
-export const ENTITY_FACTORY = new EntityFactory()
+export const CREATOR = new Creator()

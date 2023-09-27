@@ -11,14 +11,14 @@ async function start() {
   if (useCookie("name").value == "guki") GLOBAL.devMode = true
   // everything depend on WORLD ticker, init it right after CONFIG
   await initModules()
-  await ENTITY_FACTORY.create("mousepoint")
+  await CREATOR.create("mousepoint")
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
   // 📜 move to static entity handler to remove and spawn depending
   // on current loaded chunks
-  await ENTITY_FACTORY.create("magic-tree", { sprite: {} })
-  await ENTITY_FACTORY.create("bridge-fence", { sprite: {} })
-  await ENTITY_FACTORY.create("bunny", { sprite: {} })
+  await CREATOR.create("magic-tree", { sprite: {} })
+  await CREATOR.create("bridge-fence", { sprite: {} })
+  await CREATOR.create("bunny", { sprite: {} })
   // 📜 handle this scene emit by some user data
   // EVENTS.emit("startScene", { name: "s1-start" })
   // timeout to make sure initial loading transition will work
@@ -26,16 +26,14 @@ async function start() {
 }
 async function initModules() {
   CONFIG.init() // prepare priority
-  const inits: Promise<void>[] = []
   const processes: { [name: string]: () => void } = {}
   const sortedPriority = LIB.sortedKeys(CONFIG.priority.modulesInit)
-  sortedPriority.forEach((name) => {
+  for (const name of sortedPriority) {
     const module = globalThis[name][name]
-    if (module.init) inits.push(module.init())
+    if (module.init) await module.init()
     if (module.process) processes[name] = () => module.process()
-  })
-  await Promise.all(inits)
-  // add processes after init, may depend on it
+  }
+  // add processes after init, may depend on other init
   _.forEach(processes, (process, name) => {
     WORLD.loop.add(() => process(), name)
   })

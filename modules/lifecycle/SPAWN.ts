@@ -72,7 +72,7 @@ class Spawn {
         // stop loop if position not found, all tiles in chunks with collision
         if (!position) return
 
-        await ENTITY_FACTORY.create(entity, { position })
+        await CREATOR.create(entity, { position })
         ratio -= 1
       }
     }
