@@ -8,11 +8,8 @@ div(
 
 </template>
 <script setup lang="ts">
-//
 const viewport = ref(null)
-
 onMounted(() => {
-  //
   // To init pixi and INPUT with
   REFS.viewport = viewport
 })

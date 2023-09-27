@@ -5,10 +5,6 @@ export default defineNuxtConfig({
       title: "Spirit of Lira",
     },
   },
-  runtimeConfig: {
-    OPEN_AI_KEY: process.env.OPEN_AI_KEY,
-    HUGGINGFACE_TOKEN: process.env.HUGGINGFACE_TOKEN,
-  },
   modules: [
     "@nuxtjs/tailwindcss",
     [
@@ -19,12 +15,11 @@ export default defineNuxtConfig({
     ],
   ],
   imports: {
-    dirs: ["core/**/*.{js,ts}", "modules/**/*.{js,ts}"],
+    dirs: ["boot/**/*.{js,ts}", "modules/**/*.{js,ts}"],
   },
   components: [{ path: "@/interface", pathPrefix: false }],
-  plugins: ["@/core/load.ts", "@/core/start.ts"],
+  plugins: ["@/boot/load.ts", "@/boot/start.ts"],
   css: ["@/tailwind.css"],
-
   // important for correct work of importer
   vite: {
     assetsInclude: ["**/*.md"],
@@ -32,7 +27,6 @@ export default defineNuxtConfig({
       minify: false,
     },
   },
-
   // local build not working with sourcemap
   sourcemap: false,
 })

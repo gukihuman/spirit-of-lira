@@ -22,6 +22,7 @@ function addShadow(shadow, id) {
   if (counter > limit) return
   const shadowLayer = SPRITE.getLayer(id, "shadow") as Container
   if (!shadowLayer) {
+    // wait until sprite is loaded
     setTimeout(() => addShadow(shadow, id), 100)
     counter++
     return

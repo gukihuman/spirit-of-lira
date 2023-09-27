@@ -109,9 +109,9 @@ const activeScene = {
   updateLayerData(layer, step) {
     layer.images = step.images
     layer.text = step.text
-    layer.x = SCENE.optionsByImage[layer.images[0]]?.x || 950
-    layer.y = SCENE.optionsByImage[layer.images[0]]?.y || 620
-    layer.hue = SCENE.optionsByImage[layer.images[0]]?.hue || 0
+    layer.x = SCENE.options[layer.images[0]]?.x || 950
+    layer.y = SCENE.options[layer.images[0]]?.y || 620
+    layer.hue = SCENE.options[layer.images[0]]?.hue || 0
   },
 }
 export const ACTIVE_SCENE = LIB.store(activeScene)

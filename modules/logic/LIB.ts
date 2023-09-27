@@ -7,6 +7,10 @@ class Lib {
     })
   }
 
+  wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+
   /** @returns string of time for example "22:43:54" */
   timeNow(): string {
     function _pad(num: number): string {
@@ -35,7 +39,7 @@ class Lib {
     })
     return clonedMap
   }
-  deadZoneExceed(deadZone: number) {
+  deadZoneExceed(deadZone: number, INPUT: any) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]
     let moved = false
 
@@ -86,10 +90,6 @@ class Lib {
       storeObject[key] = value
     })
     return storeObject
-  }
-  hero(id: number) {
-    if (id === WORLD.heroId) return true
-    return false
   }
 
   /**
@@ -173,11 +173,6 @@ class Lib {
           this._nextBatch()
         }
       })
-    }
-  }
-  logIfHero(id: number, ...args) {
-    if (id === WORLD.heroId) {
-      console.log(...args)
     }
   }
 }

@@ -6,8 +6,10 @@ class Local {
   init() {
     const heroPosition = this.parse("heroPosition")
     if (heroPosition) WORLD.hero.position = heroPosition
-    WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
     WORLD.loop.add(() => this.process(), "LOCAL")
+    setTimeout(() => {
+      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+    })
   }
   process() {
     if (WORLD.loop.elapsedMS > this.lastUpdateMS + this.updatePeriodMS) {

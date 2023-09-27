@@ -1,14 +1,14 @@
 class Scene {
-  mdPaths = {}
+  mds = {} // loaded on start
+  options = {} // loaded on start
   plainText: AnyObject = {}
-  optionsByImage: AnyObject = {}
   steps = {}
   async init() {
-    await this.mdPathsParse()
+    await this.mdsParse()
     this.plainTextParse()
   }
-  private async mdPathsParse() {
-    const promises = _.map(this.mdPaths, async (value, key) => {
+  private async mdsParse() {
+    const promises = _.map(this.mds, async (value, key) => {
       const response = await fetch(value)
       const text = await response.text()
       this.plainText[key] = text
@@ -73,4 +73,4 @@ class Scene {
     })
   }
 }
-export let SCENE = new Scene()
+export const SCENE = new Scene()
