@@ -19,11 +19,10 @@ class World {
   sortable = new PIXI.Container()
   collision = new PIXI.Container()
   loop = {
-    // precisely updated each loop
-    fps: CONFIG.maxFPS,
+    fps: CONFIG.maxFPS, // precisely updated each loop
     elapsedMS: 0,
-    // switched to getter
-    elapsedSec: 0,
+    elapsedSec: 0, // switched to getter
+    newSec: false,
     // switched to precise getter on init that includes delta fluctuations
     /** @returns 1/60 for 60 fps, 1/144 for 144 fps */
     deltaSec: 1 / CONFIG.maxFPS,
@@ -76,6 +75,8 @@ class World {
       if (lastFramesFPS.length > holdFrames) lastFramesFPS.shift()
       this.loop.fps = _.mean(lastFramesFPS)
       this.loop.elapsedMS += this.app.ticker.deltaMS
+      if (LAST.loopSec !== this.loop.elapsedSec) this.loop.newSec = true
+      else this.loop.newSec = false
     })
     Object.defineProperty(this.loop, "deltaSec", {
       get: () => {

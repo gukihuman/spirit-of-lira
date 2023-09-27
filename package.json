@@ -7,7 +7,8 @@
     "build": "npx prisma db push && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "makemap": "ts-node makemap.ts"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.1.3",
@@ -34,6 +35,8 @@
     "dotenv": "^16.0.3",
     "guki-input-controller": "^0.8.7",
     "pixi-filters": "^5.2.1",
+    "sharp": "^0.32.6",
+    "ts-node": "^10.9.1",
     "vite-plugin-string": "^1.2.1"
   }
 }

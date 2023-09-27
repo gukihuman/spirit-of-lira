@@ -1,4 +1,13 @@
 class Settings {
+  audio = {
+    music: 0.0,
+    sound: 0.5,
+  }
+  gameplay = {
+    // auto attack after kill and also autotarget for mouse
+    easyFight: false,
+    attackBack: false,
+  }
   inputEvents = {
     keyboard: {
       moveOrCast1: "o",
@@ -35,16 +44,6 @@ class Settings {
       deadZone: 0.15,
     },
   }
-  gameplay = {
-    // turn on auto target for mouse and continue attack after kill for both mouse and gamepad
-    easyFight: false,
-    attackBack: false,
-  }
-  // 📜 remove it if everything is ok without it :)
-  // constructor() {
-  //   LIB.store(this.inputEvents)
-  //   LIB.store(this.inputOther)
-  // }
   emitEvents() {
     if (LIB.deadZoneExceed(this.inputOther.gamepad.deadZone, INPUT)) {
       EVENTS.emitSingle("gamepadMove")
