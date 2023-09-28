@@ -14,11 +14,6 @@ async function start() {
   await CREATOR.create("mousepoint")
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
-  // 📜 move to static entity handler to remove and spawn depending
-  // on current loaded chunks
-  await CREATOR.create("magic-tree", { sprite: { static: true } })
-  await CREATOR.create("bridge-fence", { sprite: { static: true } })
-  await CREATOR.create("bunny", { sprite: { static: true } })
   // 📜 handle this scene emit by some user data
   // EVENTS.emit("startScene", { name: "s1-start" })
   // timeout to make sure initial loading transition will work

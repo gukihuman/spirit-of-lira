@@ -39,6 +39,7 @@ class Spawn {
       if (MAP.closeChunks.includes(chunk)) return
 
       WORLD.entities.forEach((entity, id) => {
+        if (!entity.move) return
         const position = entity.position
         if (!position) return
 

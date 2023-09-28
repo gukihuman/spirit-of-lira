@@ -131,7 +131,7 @@ class Collision {
     const link = document.createElement("a")
     link.style.display = "none"
     link.href = url
-    link.download = "collisionarray.json"
+    link.download = "collision.json"
 
     // Add the link element to the document
     document.body.appendChild(link)
