@@ -20,7 +20,7 @@ async function start() {
   await CREATOR.create("bridge-fence", { sprite: {} })
   await CREATOR.create("bunny", { sprite: {} })
   // 📜 handle this scene emit by some user data
-  // EVENTS.emit("startScene", { name: "s1-start" })
+  EVENTS.emit("startScene", { name: "s1-start" })
   // timeout to make sure initial loading transition will work
   setTimeout(() => (GLOBAL.loading = false), 1)
 }

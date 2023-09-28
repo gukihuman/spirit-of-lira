@@ -4,6 +4,7 @@ class Last {
   hover: AnyObject = {}
   scenePart: string = ""
   loopSec: number = -1
+  context: string = ""
   init() {
     WORLD.loop.add(() => {
       this.entities = LIB.cloneMapDeep(WORLD.entities)
@@ -11,6 +12,8 @@ class Last {
       this.hover = _.cloneDeep(WORLD.hover)
       this.scenePart = ACTIVE_SCENE.part
       this.loopSec = WORLD.loop.elapsedSec
+      if (GLOBAL.context !== this.context) EVENTS.emitSingle("contextChanged")
+      this.context = GLOBAL.context
     }, "LAST")
   }
 }

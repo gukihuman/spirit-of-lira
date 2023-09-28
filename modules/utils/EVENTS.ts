@@ -31,35 +31,21 @@ class Events {
   activeSingle: string[] = []
   /** Add logic to an event. Function must have data argument. If data not required, use onSingle instead. */
   on(event: string, fn: (data: AnyObject) => void) {
-    const eventFunctions = this.list[event]
-    if (!eventFunctions) {
-      LIB.logWarning(`Unknown event on: "${event}" (EVENTS)`)
-      return
-    }
-    eventFunctions.push(fn)
+    if (!this.list[event]) this.list[event] = []
+    this.list[event].push(fn)
   }
   /** Adds logic to an event. Single events execute only ones per loop no matter how many times emitted. Logic function must have no arguments. */
   onSingle(event: string, fn: () => void) {
-    const eventFunctions = this.listOfSingle[event]
-    if (!eventFunctions) {
-      LIB.logWarning(`Unknown single event on: "${event}" (EVENTS)`)
-      return
-    }
-    eventFunctions.push(fn)
+    if (!this.listOfSingle[event]) this.listOfSingle[event] = []
+    this.listOfSingle[event].push(fn)
   }
   emit(event: string, data: AnyObject) {
-    if (!this.list[event]) {
-      LIB.logWarning(`Unknown event on emit: "${event}" (EVENTS)`)
-      return
-    }
+    if (!this.list[event]) this.list[event] = []
     this.active.push([event, data])
   }
   /** Executes only once per loop no matter how many times emitted. */
   emitSingle(event: string) {
-    if (!this.listOfSingle[event]) {
-      LIB.logWarning(`Unknown single event emit: "${event}" (EVENTS)`)
-      return
-    }
+    if (!this.listOfSingle[event]) this.listOfSingle[event] = []
     if (this.activeSingle.includes(event)) return
     this.activeSingle.push(event)
   }

@@ -21,7 +21,13 @@ class Aud {
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
       this.audioBuffers[name] = audioBuffer
     }
+    EVENTS.onSingle("contextChanged", () => {
+      this.stop(this.currentMusicId, 1000, "music")
+      this.musicPlaying = false
+      this.initialMusicPlayed = false
+    })
   }
+
   process() {
     if (!WORLD.loop.newSec) return
     if (this.audioContext.state === "suspended") {
@@ -29,7 +35,7 @@ class Aud {
     }
     this.soundGain.gain.value = SETTINGS.audio.sound
     this.musicGain.gain.value = SETTINGS.audio.music
-    if (!this.musicPlaying) {
+    if (!this.musicPlaying && GLOBAL.context === "world") {
       if (!this.initialMusicPlayed) {
         // always 1 at start
         this.currentMusicId = this.play("green-forest-1", 0, "music")
@@ -39,6 +45,24 @@ class Aud {
       }
       if (Math.random() > 1 / this.averageSilenceSec) return // once per second
       this.currentMusicId = this.play("green-forest", 0, "music")
+      this.musicPlaying = true
+    }
+    if (!this.musicPlaying && GLOBAL.context === "scene") {
+      const sceneName = ACTIVE_SCENE.name.split("-")[0]
+      if (sceneName === "s1") {
+        if (!this.initialMusicPlayed) {
+          // always 1 at start
+          this.currentMusicId = this.play("s1-1", 0, "music")
+          this.initialMusicPlayed = true
+          this.musicPlaying = true
+          return
+        } else {
+          this.currentMusicId = this.play("s1-2", 0, "music")
+          this.musicPlaying = true
+          return
+        }
+      }
+      this.currentMusicId = this.play(sceneName, 0, "music")
       this.musicPlaying = true
     }
   }
@@ -64,7 +88,6 @@ class Aud {
   }
   stop(id, fadeDuration = 100, type = "sound") {
     if (!this.audioSources[id]) return
-    console.log("stop")
     const gainNode = this.audioContext.createGain()
     if (type === "sound") this.audioSources[id].disconnect(this.soundGain)
     else if (type === "music") this.audioSources[id].disconnect(this.musicGain)
