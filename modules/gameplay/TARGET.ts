@@ -6,7 +6,7 @@ class Target {
   init() {
     EVENTS.onSingle("lockTarget", () => {
       const hero = WORLD.hero
-      if (!hero.target.id || !hero.target.locked) return
+      if (!hero.target.id) return
       hero.target.locked = !hero.target.locked
       // reset finaldestination if it is on the target
       if (

@@ -1,4 +1,5 @@
 class Cast {
+  attackSoundIds: any = []
   private cast(slot = "slot1") {
     if (GLOBAL.context !== "world") return
     EVENTS.emit("cast", {
@@ -67,6 +68,17 @@ class Cast {
     else audioDelay = skill.castMS * 0.95
     if (WORLD.isHero(id)) soundId = AUDIO.play("sword-hit", audioDelay)
     else soundId = AUDIO.play("bunbo-bite")
+    entity.skills.attackSoundId = soundId
+  }
+  stopAttackSounds() {
+    WORLD.entities.forEach((entity, id) => {
+      if (!entity.skills) return
+      if (entity.skills.attackSoundId && entity.state.active !== "cast") {
+        AUDIO.stop(entity.skills.attackSoundId, 30)
+        entity.skills.audioDone = false
+        entity.skills.attackSoundId = undefined
+      }
+    })
   }
   private castLogic(entity, id, skill) {
     if (!entity.target.id) return
@@ -80,7 +92,6 @@ class Cast {
     entity.skills.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
-    entity.skills.audioDone = false
     const inRange = TRACK.inRange
     const targetEntity = entity.target.entity
     if (!inRange(entity, id, targetEntity, skill.distance)) {
@@ -94,8 +105,10 @@ class Cast {
     entity.skills.lastDoneMS = Infinity
     entity.skills.delayedLogicDone = true
   }
+
   process() {
     if (GLOBAL.context === "scene") return
+    this.stopAttackSounds()
     WORLD.entities.forEach((entity, id) => {
       if (!entity.state || !entity.skills) return
       if (!entity.state.cast) {
@@ -130,6 +143,7 @@ class Cast {
         elapsedMS > entity.skills.lastDoneMS
       ) {
         this.delayedLogic(entity, id, skill)
+        entity.skills.audioDone = false
       }
     })
   }

@@ -11,6 +11,7 @@ export default {
   lastDoneMS: Infinity, // includes delay after cast logic
   delayedLogicDone: true,
   audioDone: false,
+  attackSoundId: undefined,
   // 📜 maybe move somewhere else
   firstCastState: true,
   // 🔧

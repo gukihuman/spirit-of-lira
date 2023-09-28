@@ -55,7 +55,9 @@ class Coordinates {
   chunkFromCoordinates(x: number, y: number) {
     const chunkX = this.coordinateToChunk(x)
     const chunkY = this.coordinateToChunk(y)
-    return `${chunkY}${chunkX}`
+    return `${chunkY.toString().padStart(2, "0")}${chunkX
+      .toString()
+      .padStart(2, "0")}`
   }
   chunkToCoordinateX(chunk: string) {
     return (_.toNumber(chunk) % 100) * 1000

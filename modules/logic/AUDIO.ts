@@ -107,6 +107,7 @@ class Aud {
     this.audioSources[id].stop(
       this.audioContext.currentTime + fadeDuration / 1000
     )
+    delete this.audioSources[id]
   }
 }
 

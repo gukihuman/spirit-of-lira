@@ -4,7 +4,6 @@ class Destination {
 
   process() {
     WORLD.entities.forEach((entity, id) => {
-      //
       if (
         id !== WORLD.heroId &&
         entity.move &&
@@ -17,23 +16,26 @@ class Destination {
       }
     })
   }
-
+  init() {
+    EVENTS.onSingle("contextChanged", () => {
+      WORLD.entities.forEach((entity, id) => {
+        if (!entity.move) return
+        entity.move.randomDestinationMS = WORLD.loop.elapsedMS
+      })
+      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+    })
+  }
   private counter = 0
   private setRandomDestination(entity: Entity, id: number) {
-    //
-    let x = _.random(-500, 500)
-    let y = _.random(-500, 500)
-    let grid = COLLISION.collisionArray
-    let tileX = COORDINATES.coordinateToTile(x)
-    let tileY = COORDINATES.coordinateToTile(y)
-    if (!grid[tileY]) return
-    if (grid[tileY][tileX] === 2 || grid[tileY][tileX] === 3) {
+    let possibleX = entity.position.x + _.random(-500, 500)
+    let possibleY = entity.position.y + _.random(-500, 500)
+    if (!COORDINATES.isWalkable(possibleX, possibleY)) {
       this.counter++
       if (this.counter < 10) this.setRandomDestination(entity, id)
       return
     }
-    entity.move.finaldestination.x = entity.position.x + x
-    entity.move.finaldestination.y = entity.position.y + y
+    entity.move.finaldestination.x = possibleX
+    entity.move.finaldestination.y = possibleY
     entity.move.randomDestinationMS = WORLD.loop.elapsedMS
   }
 }
