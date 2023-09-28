@@ -2,15 +2,12 @@ class Astar {
   openList: any = []
   closedList: any = []
   clean = true
-
   maxSteps = 2000
-
+  maxTime = 5
   grid: number[][] = []
-
   init() {
     this.grid = COLLISION.collisionArray
   }
-
   process() {
     let executes: any = []
     WORLD.entities.forEach((entity, id) => {
@@ -246,6 +243,7 @@ class Astar {
   }
 
   findPath(startPos, endPos, entity) {
+    const t0 = performance.now()
     let walkable = true
     if (
       this.grid[endPos.y][endPos.x] !== 0 &&
@@ -265,6 +263,7 @@ class Astar {
     while (this.openList.length > 0) {
       maxSteps--
 
+      if (performance.now() - t0 >= this.maxTime) return []
       let current = this.getLowestF(this.openList)
 
       if (maxSteps < 0) {

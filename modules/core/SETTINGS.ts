@@ -1,6 +1,6 @@
 class Settings {
   audio = {
-    music: 0.7,
+    music: 0.0, // 0.7
     sound: 0.4,
   }
   gameplay = {

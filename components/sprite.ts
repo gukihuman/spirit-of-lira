@@ -1,4 +1,5 @@
 export default {
+  static: false,
   active: "", // corresponds to state names
   startFrames: {}, // { idle: 11, move: 5 } default is 0
   // how many frames meet conditions consecutively

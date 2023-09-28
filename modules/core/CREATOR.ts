@@ -28,9 +28,11 @@ class Creator {
         ],
       })
     } else if (!entity.move) {
-      await SPRITE.entity(entity, id, {
-        randomFlip: false,
-      })
+      if (entity.sprite.static) {
+        await SPRITE.staticEntity(entity, id, { randomFlip: false })
+      } else {
+        await SPRITE.entity(entity, id, { randomFlip: false })
+      }
     } else await SPRITE.entity(entity, id)
     return id
   }

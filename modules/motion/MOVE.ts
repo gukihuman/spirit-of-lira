@@ -49,7 +49,11 @@ class Move {
       WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
       return
     }
-    WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
+    const x = COORDINATES.mousePosition().x
+    const y = COORDINATES.mousePosition().y
+    if (COORDINATES.isWalkable(x, y)) {
+      WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
+    }
   }
   private gamepadMoveTries = 0
   gamepadMove() {

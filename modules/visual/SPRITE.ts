@@ -45,6 +45,42 @@ class Spr {
       else sprite.gotoAndPlay(0)
     })
   }
+  async staticEntity(entity: AnyObject, id: number, options: AnyObject = {}) {
+    const parent = options.parent ?? "sortable"
+    const randomFlip = options.randomFlip ?? true
+    const randomStartFrame = options.randomStartFrame ?? true
+    const loop = options.loop ?? true
+    const layers = options.layers ?? [
+      "shadow",
+      "backEffect",
+      "animation",
+      "frontEffect",
+    ]
+    const container = new PIXI.Container()
+    container.name = entity.name
+    this.entityContainers.set(id, container)
+    WORLD[parent].addChild(container)
+    for (let name of layers) {
+      const layer = new PIXI.Container()
+      layer.name = name
+      container.addChild(layer)
+    }
+    if (randomFlip) {
+      const animation = this.getLayer(id, "animation")
+      if (!animation) return
+      if (_.random() > 0.5) animation.scale.x = -1
+    }
+    const animation = this.getLayer(id, "animation")
+    const webpImage = ASSETS.webps[entity.name]
+    if (!animation || !webpImage) return
+    const texture = PIXI.Texture.from(webpImage)
+    const sprite = new PIXI.Sprite(texture)
+    sprite.name = entity.name
+    sprite.anchor.x = 0.5
+    sprite.anchor.y = 0.5
+    sprite.cullable = true
+    animation.addChild(sprite)
+  }
   async effect(entity: AnyObject, name: string, targetEntity: AnyObject) {
     if (!entity.target.id) return
     let parentLayerName, durationMS
