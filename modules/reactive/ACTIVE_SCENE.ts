@@ -5,19 +5,25 @@ interface activeScene extends AnyObject {
 const activeScene = {
   name: "",
   nextSceneName: "",
-  stepIndex: 0,
+  stepIndex: 51,
   layerOne: {},
   layerTwo: {},
   activeLayer: "layerOne",
-  focusedChoiceIndex: 0,
   showChoiceBox: false,
   showText: true,
   lastContinueMS: 0,
+  focusedChoiceIndex: 0,
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context !== "scene") return
       this.updateData()
     }, "ACTIVE_SCENE")
+    // usually its gonna be done through emit like this, exception only for intro
+    // EVENTS.emit("startScene", { name: "s1-start" })
+    if (!PROGRESS.scenes.includes("s1")) {
+      GLOBAL.context = "scene"
+      this.name = "s1-start"
+    }
     EVENTS.on("startScene", (options) => {
       this.name = options.name
       this.nextSceneName = options.name
@@ -27,6 +33,8 @@ const activeScene = {
     EVENTS.onSingle("endScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
+      PROGRESS.scenes.push(this.name.split("-")[0])
+      LOCAL.update()
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice
@@ -85,7 +93,7 @@ const activeScene = {
       return { step, nextStep }
     }
     ACTIVE_SCENE.nextSceneName =
-      step.choices[ACTIVE_SCENE.focusedChoiceIndex].nextSceneName
+      step.choices[this.focusedChoiceIndex].nextSceneName
     if (
       !ACTIVE_SCENE.nextSceneName ||
       ACTIVE_SCENE.name === ACTIVE_SCENE.nextSceneName

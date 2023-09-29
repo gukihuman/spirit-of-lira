@@ -1,4 +1,5 @@
 class Local {
+  progress: AnyObject = {}
   inventory: AnyObject = {}
   heroPosition: AnyObject = {}
   updatePeriodMS = 3000
@@ -6,6 +7,13 @@ class Local {
   init() {
     const heroPosition = this.parse("heroPosition")
     if (heroPosition) WORLD.hero.position = heroPosition
+    const inventory = LOCAL.parse("inventory")
+    if (inventory) {
+      INVENTORY.equipped = inventory.equipped
+      INVENTORY.bag = inventory.bag
+    }
+    const progress = LOCAL.parse("progress")
+    if (progress) PROGRESS.scenes = progress.scenes
     WORLD.loop.add(() => this.process(), "LOCAL")
     setTimeout(() => {
       WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
@@ -21,8 +29,10 @@ class Local {
     this.inventory.bag = INVENTORY.bag
     this.inventory.equipped = INVENTORY.equipped
     this.heroPosition = WORLD.hero.position
+    this.progress = { scenes: PROGRESS.scenes }
     this.add("heroPosition", this.heroPosition)
     this.add("inventory", this.inventory)
+    this.add("progress", this.progress)
   }
   add(key: string, data) {
     localStorage.setItem(key, JSON.stringify(data))

@@ -8,6 +8,7 @@ const global = {
   collision: true,
   firstMouseMove: false,
   autoMouseMove: false,
+  contextChangedMS: 0,
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context === "world") {
@@ -17,6 +18,9 @@ const global = {
         if (!INTERFACE.inventory) GLOBAL.context = "world"
       }
     }, "GLOBAL")
+    EVENTS.onSingle("contextChanged", () => {
+      this.contextChangedMS = WORLD.loop.elapsedMS
+    })
   },
 }
 

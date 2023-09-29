@@ -9,11 +9,6 @@ const inventory: AnyObject = {
   },
   init() {
     initEvents()
-    let inventory = LOCAL.parse("inventory")
-    if (inventory) {
-      this.equipped = inventory.equipped
-      this.bag = inventory.bag
-    }
     if (this.equipped.cloth) {
       SPRITE.item(this.equipped.cloth, "cloth")
     }

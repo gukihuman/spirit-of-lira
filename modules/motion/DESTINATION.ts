@@ -23,6 +23,7 @@ class Destination {
         entity.move.randomDestinationMS = WORLD.loop.elapsedMS
       })
       WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+      WORLD.hero.target.id = undefined
     })
   }
   private counter = 0

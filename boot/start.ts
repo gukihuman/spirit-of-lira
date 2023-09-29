@@ -13,8 +13,6 @@ async function start() {
   await initModules()
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
-  // 📜 handle this scene emit by some user data
-  // EVENTS.emit("startScene", { name: "s1-start" })
   // timeout to make sure initial loading transition will work
   setTimeout(() => (GLOBAL.loading = false), 1)
 }

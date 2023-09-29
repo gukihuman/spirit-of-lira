@@ -13,6 +13,10 @@ class DevMode {
       if (INPUT.keyboard.justPressed.includes("m")) {
         INTERFACE.input = !INTERFACE.input
       }
+      globalThis.resetProgress = () => {
+        PROGRESS.scenes = []
+        LOCAL.update()
+      }
     }
   }
 }

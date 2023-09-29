@@ -19,7 +19,8 @@ class GukiConfig {
     },
     modulesInit: {
       // CONFIG init is always first, handled separatly in start.ts
-      WORLD: 3,
+      WORLD: 4,
+      LOCAL: 3, // before ACTIVE_SCENE but after WORLD
       SCENE: 2,
       ACTIVE_SCENE: 1,
       COLLISION: 2,
