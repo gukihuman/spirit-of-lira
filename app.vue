@@ -1,12 +1,20 @@
 <template lang="pug">
 fullscreen
   loading
-  transition: game-window(v-show="!GLOBAL.loading" class="cursor-none")
+  transition: game-window(v-show="!GLOBAL.loading" :class="gameWindowClasses")
     viewport
     transition: overlay(v-show="INTERFACE.overlay")
     transition: inventory(v-show="INTERFACE.inventory")
     transition(name="scene"): scene(v-show="GLOBAL.context === 'scene'")
+    transition: audiomessage(v-if="!GLOBAL.firstUserGesture")
+    cursor(v-if="GLOBAL.firstUserGesture")
 </template>
+<script setup lang="ts">
+const gameWindowClasses = computed(() => {
+  return { "cursor-none": GLOBAL.firstUserGesture }
+})
+</script>
+
 <style>
 .scene-enter-active,
 .scene-leave-active {

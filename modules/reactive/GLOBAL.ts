@@ -8,19 +8,20 @@ const global = {
   collision: true,
   firstMouseMove: false,
   autoMouseMove: false,
-  contextChangedMS: 0,
-  init() {
-    WORLD.loop.add(() => {
-      if (GLOBAL.context === "world") {
-        if (INTERFACE.inventory) GLOBAL.context = "interface"
-      }
-      if (GLOBAL.context === "interface") {
-        if (!INTERFACE.inventory) GLOBAL.context = "world"
-      }
-    }, "GLOBAL")
-    EVENTS.onSingle("contextChanged", () => {
-      this.contextChangedMS = WORLD.loop.elapsedMS
-    })
+  sceneContextChangedMS: 0,
+  firstUserGesture: false,
+  mouseOfScreen: { x: 0, y: 0 },
+  mousePosition: { x: 0, y: 0 },
+  hoverId: undefined,
+  process() {
+    this.mouseOfScreen = COORDINATES.mouseOfScreen()
+    this.mousePosition = COORDINATES.mousePosition()
+    if (GLOBAL.context === "world") {
+      if (INTERFACE.inventory) GLOBAL.context = "interface"
+    }
+    if (GLOBAL.context === "interface") {
+      if (!INTERFACE.inventory) GLOBAL.context = "world"
+    }
   },
 }
 

@@ -5,7 +5,7 @@ class Move {
   private gamepadAxesMoved = false
   init() {
     EVENTS.onSingle("moveOrCast1", () => {
-      if (WORLD.hoverId) {
+      if (GLOBAL.hoverId) {
         EVENTS.emitSingle("cast1")
         EVENTS.emitSingle("lockTarget")
       } else this.mouseMove()
@@ -37,7 +37,6 @@ class Move {
     }
   }
   mouseMove() {
-    if (GLOBAL.context !== "world") return
     WORLD.hero.state.track = false
     WORLD.hero.state.cast = false
     WORLD.hero

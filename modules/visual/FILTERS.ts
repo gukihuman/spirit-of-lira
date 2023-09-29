@@ -35,7 +35,7 @@ class Filters {
       if (!WORLD.hero.state.track) return
       if (
         INPUT.lastActiveDevice !== "gamepad" &&
-        WORLD.hoverId !== id &&
+        GLOBAL.hoverId !== id &&
         !WORLD.hero.state.track
       ) {
         return

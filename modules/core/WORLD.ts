@@ -12,7 +12,6 @@ class World {
     return false
   }
   hover: AnyObject = {}
-  hoverId = 0
   // layers
   map = new PIXI.Container()
   ground = new PIXI.Container()

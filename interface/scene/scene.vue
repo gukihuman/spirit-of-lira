@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="z-30 relative")
+div(class="z-30 absolute relative")
   //- layerOne always on
   images(layer="layerOne")
   dialogue(layer="layerOne")

@@ -7,6 +7,7 @@ const fullscreen = ref(null)
 onMounted(() => {
   REFS.fullscreen = fullscreen
   EVENTS.onSingle("toggleFullscreen", () => {
+    console.log("e")
     GLOBAL.fullscreen = !GLOBAL.fullscreen
     if (REFS.fullscreen && !document.fullscreenElement) {
       REFS.fullscreen.requestFullscreen()

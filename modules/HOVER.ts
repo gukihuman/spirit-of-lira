@@ -42,7 +42,7 @@ class Hover {
     } else if (intersections.length === 1) {
       hoverEntityId = intersections[0]
     }
-    WORLD.hoverId = hoverEntityId
+    GLOBAL.hoverId = hoverEntityId
     WORLD.hover = WORLD.entities.get(hoverEntityId)
   }
 }

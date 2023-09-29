@@ -12,7 +12,12 @@ class Last {
       this.hover = _.cloneDeep(WORLD.hover)
       this.scenePart = ACTIVE_SCENE.part
       this.loopSec = WORLD.loop.elapsedSec
-      if (GLOBAL.context !== this.context) EVENTS.emitSingle("contextChanged")
+      if (
+        (GLOBAL.context === "scene" && LAST.context !== "scene") ||
+        (GLOBAL.context !== "scene" && LAST.context === "scene")
+      ) {
+        EVENTS.emitSingle("sceneContextChanged")
+      }
       this.context = GLOBAL.context
     }, "LAST")
   }

@@ -21,7 +21,7 @@ class Aud {
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
       this.audioBuffers[name] = audioBuffer
     }
-    EVENTS.onSingle("contextChanged", () => {
+    EVENTS.onSingle("sceneContextChanged", () => {
       this.stop(this.currentMusicId, 1000, "music")
       this.musicPlaying = false
       this.initialMusicPlayed = false
@@ -32,20 +32,23 @@ class Aud {
     if (!WORLD.loop.newSec) return
     if (this.audioContext.state === "suspended") {
       this.audioContext.resume()
+    } else {
+      GLOBAL.firstUserGesture = true // sometimes works so no need to gesture
     }
     this.soundGain.gain.value = SETTINGS.audio.sound
     this.musicGain.gain.value = SETTINGS.audio.music
-    if (!this.musicPlaying && GLOBAL.context === "world") {
+    if (
+      !this.musicPlaying &&
+      (GLOBAL.context === "world" || GLOBAL.context === "interface")
+    ) {
       if (!this.initialMusicPlayed) {
         // always 1 at start
         this.currentMusicId = this.play("green-forest-1", 0, "music")
-        this.initialMusicPlayed = true
-        this.musicPlaying = true
+        if (this.currentMusicId) this.initialMusicPlayed = true
         return
       }
       if (Math.random() > 1 / this.averageSilenceSec) return // once per second
       this.currentMusicId = this.play("green-forest", 0, "music")
-      this.musicPlaying = true
     }
     if (!this.musicPlaying && GLOBAL.context === "scene") {
       const sceneName = ACTIVE_SCENE.name.split("-")[0]
@@ -53,17 +56,14 @@ class Aud {
         if (!this.initialMusicPlayed) {
           // always 1 at start
           this.currentMusicId = this.play("s1-1", 0, "music")
-          this.initialMusicPlayed = true
-          this.musicPlaying = true
+          if (this.currentMusicId) this.initialMusicPlayed = true
           return
         } else {
           this.currentMusicId = this.play("s1-2", 0, "music")
-          this.musicPlaying = true
           return
         }
       }
       this.currentMusicId = this.play(sceneName, 0, "music")
-      this.musicPlaying = true
     }
   }
   play(name, delay = 0, type = "sound") {
@@ -71,6 +71,8 @@ class Aud {
       key.includes(name)
     )
     if (_.isEmpty(matchingBuffers)) return
+    if (type === "music" && this.currentMusicId) return
+    if (type === "music") this.musicPlaying = true
     const buffer = _.sample(matchingBuffers)
     const source = this.audioContext.createBufferSource()
     source.buffer = buffer
@@ -82,7 +84,11 @@ class Aud {
     const id = `${name}-${this.idCounter++}`
     this.audioSources[id] = source
     source.onended = () => delete this.audioSources[id]
-    if (type === "music") source.onended = () => (this.musicPlaying = false)
+    if (type === "music")
+      source.onended = () => {
+        this.currentMusicId = undefined
+        this.musicPlaying = false
+      }
     source.start(this.audioContext.currentTime + delay / 1000) // Add delay
     return id
   }

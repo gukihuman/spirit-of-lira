@@ -16,6 +16,7 @@ class DevMode {
       globalThis.resetProgress = () => {
         PROGRESS.scenes = []
         LOCAL.update()
+        location.reload()
       }
     }
   }

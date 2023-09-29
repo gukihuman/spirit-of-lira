@@ -13,8 +13,19 @@ async function start() {
   await initModules()
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
+  await CREATOR.create("mousepoint")
+  checkGesture()
   // timeout to make sure initial loading transition will work
   setTimeout(() => (GLOBAL.loading = false), 1)
+}
+function checkGesture() {
+  const listener = () => {
+    GLOBAL.firstUserGesture = true
+    removeEventListener("keydown", listener)
+    removeEventListener("mousedown", listener)
+  }
+  addEventListener("keydown", listener)
+  addEventListener("mousedown", listener)
 }
 async function initModules() {
   CONFIG.init() // prepare priority

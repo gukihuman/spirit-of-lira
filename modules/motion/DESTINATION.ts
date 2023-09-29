@@ -4,9 +4,9 @@ class Destination {
 
   process() {
     WORLD.entities.forEach((entity, id) => {
+      if (!entity.move) return
       if (
         id !== WORLD.heroId &&
-        entity.move &&
         entity.state.active === "idle" &&
         WORLD.loop.elapsedMS > entity.move.randomDestinationMS + this.delayMS &&
         Math.random() < 0.08 * WORLD.loop.deltaSec
@@ -14,16 +14,18 @@ class Destination {
         this.counter = 0
         this.setRandomDestination(entity, id)
       }
+      if (GLOBAL.context === "scene") {
+        entity.move.randomDestinationMS = WORLD.loop.elapsedMS
+      }
     })
   }
   init() {
-    EVENTS.onSingle("contextChanged", () => {
-      WORLD.entities.forEach((entity, id) => {
-        if (!entity.move) return
-        entity.move.randomDestinationMS = WORLD.loop.elapsedMS
-      })
-      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
-      WORLD.hero.target.id = undefined
+    EVENTS.onSingle("sceneContextChanged", () => {
+      GLOBAL.sceneContextChangedMS = WORLD.loop.elapsedMS
+      setTimeout(() => {
+        WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+        WORLD.hero.target.id = undefined
+      }, 50)
     })
   }
   private counter = 0

@@ -1,7 +1,6 @@
 class Cast {
   attackSoundIds: any = []
   private cast(slot = "slot1") {
-    if (GLOBAL.context !== "world") return
     EVENTS.emit("cast", {
       entity: WORLD.hero,
       slot: slot,
