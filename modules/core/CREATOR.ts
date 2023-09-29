@@ -27,6 +27,11 @@ class Creator {
           "frontEffect",
         ],
       })
+    } else if (entity.name.includes("cursor")) {
+      await SPRITE.staticEntity(entity, id, {
+        randomFlip: false,
+        parent: "top",
+      })
     } else if (!entity.move) {
       if (entity.sprite.static) {
         await SPRITE.staticEntity(entity, id, { randomFlip: false })

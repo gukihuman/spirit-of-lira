@@ -1,7 +1,7 @@
 class Settings {
   audio = {
-    music: 0.0, // 0.7
-    sound: 0.4,
+    music: 0.7, // 0.7
+    sound: 0.7,
   }
   gameplay = {
     // auto attack after kill and also autotarget for mouse

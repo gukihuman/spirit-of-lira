@@ -12,21 +12,6 @@ export default {
       return
     }
 
-    // hold mouse point on cursor while walkable tile isn't found
-    // after not walkable tile is proceeded
-    if (
-      WORLD.loop.elapsedMS <
-      WORLD.hero.move.setMousePointOnWalkableMS + 100
-    ) {
-      const mousePosition = COORDINATES.mousePosition()
-      position.x = mousePosition.x
-      position.y = mousePosition.y
-      const container = SPRITE.getContainer(id)
-      if (!container) return
-
-      return
-    }
-
     const finaldestination = WORLD.hero.move.finaldestination
     if (!finaldestination) {
       position.x = 0

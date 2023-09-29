@@ -18,6 +18,7 @@ class World {
   ground = new PIXI.Container()
   sortable = new PIXI.Container()
   collision = new PIXI.Container()
+  top = new PIXI.Container()
   loop = {
     fps: CONFIG.maxFPS, // precisely updated each loop
     elapsedMS: 0,
@@ -45,7 +46,7 @@ class World {
     this.loopSetup()
     // PIXI dev tools work with this constant
     globalThis.__PIXI_APP__ = this.app
-    const layers = ["map", "ground", "sortable", "collision"]
+    const layers = ["map", "ground", "sortable", "collision", "top"]
     for (let name of layers) {
       this.app.stage.addChild(this[name])
       // name attribute is used by PIXI dev tools to show containers with proper names

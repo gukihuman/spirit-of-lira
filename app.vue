@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen
   loading
-  transition: game-window(v-show="!GLOBAL.loading")
+  transition: game-window(v-show="!GLOBAL.loading" class="cursor-none")
     viewport
     transition: overlay(v-show="INTERFACE.overlay")
     transition: inventory(v-show="INTERFACE.inventory")

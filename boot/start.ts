@@ -11,7 +11,6 @@ async function start() {
   if (useCookie("name").value == "guki") GLOBAL.devMode = true
   // everything depend on WORLD ticker, init it right after CONFIG
   await initModules()
-  await CREATOR.create("mousepoint")
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
   // 📜 handle this scene emit by some user data
