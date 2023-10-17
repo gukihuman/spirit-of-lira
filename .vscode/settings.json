@@ -15,18 +15,18 @@
     ".prettierignore": true,
     "public": true
   },
-  "workspace.isHidden": true,
+  "workspace.isHidden": false,
   "folder-path-color.folders": [
     {
       "path": "systems",
       "color": "blue"
     },
     {
-      "path": "components",
+      "path": "boot",
       "color": "magenta"
     },
     {
-      "path": "data",
+      "path": "components",
       "color": "red"
     },
     {
@@ -39,6 +39,10 @@
     },
     {
       "path": "entities",
+      "color": "yellow"
+    },
+    {
+      "path": "data",
       "color": "yellow"
     }
   ]

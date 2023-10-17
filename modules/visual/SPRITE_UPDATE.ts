@@ -111,8 +111,8 @@ class SpriteUpdate {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
 
-    const distance = COORDINATES.distance(entity.position, lastEntity.position)
-    const speedPerTick = COORDINATES.speedPerTick(entity)
+    const distance = COORDS.distance(entity.position, lastEntity.position)
+    const speedPerTick = COORDS.speedPerTick(entity)
 
     if (distance / speedPerTick < 0.1) {
       //

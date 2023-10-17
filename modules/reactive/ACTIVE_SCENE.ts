@@ -5,7 +5,7 @@ interface activeScene extends AnyObject {
 const activeScene = {
   name: "",
   nextSceneName: "",
-  stepIndex: 51,
+  stepIndex: 0,
   layerOne: {},
   layerTwo: {},
   activeLayer: "layerOne",
@@ -18,19 +18,22 @@ const activeScene = {
       if (GLOBAL.context !== "scene") return
       this.updateData()
     }, "ACTIVE_SCENE")
-    // usually its gonna be done through emit like this, exception only for intro
-    // EVENTS.emit("startScene", { name: "s1-start" })
-    if (!PROGRESS.scenes.includes("s1")) {
+
+    // this is alternativ to startScene event at start (also no transition)
+    if (!PROGRESS.scenes.includes("s0")) {
       GLOBAL.context = "scene"
-      this.name = "s1-start"
+      this.name = "s0-adult-check"
+      EVENTS.emitSingle("continue")
     }
     EVENTS.on("startScene", (options) => {
-      this.name = options.name
-      this.nextSceneName = options.name
-      // this.stepIndex = 0
       GLOBAL.context = "scene"
+      this.name = options.name
+      this.nextSceneName = options.name // used each continue
+      this.stepIndex = 0
+      if (options.instantChoices) EVENTS.emitSingle("continue")
     })
     EVENTS.onSingle("endScene", () => {
+      this.name = ""
       GLOBAL.context = "world"
       INTERFACE.inventory = false
       PROGRESS.scenes.push(this.name.split("-")[0])

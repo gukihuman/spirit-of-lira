@@ -27,11 +27,11 @@ class Ma {
     this.chunkSprites.forEach((sprite, chunk) => {
       if (!heroPosition.x || !heroPosition.y) return
       sprite.x =
-        COORDINATES.chunkToCoordinateX(chunk) +
+        COORDS.chunkToCoordinateX(chunk) +
         CONFIG.viewport.width / 2 -
         heroPosition.x
       sprite.y =
-        COORDINATES.chunkToCoordinateY(chunk) +
+        COORDS.chunkToCoordinateY(chunk) +
         CONFIG.viewport.height / 2 -
         heroPosition.y
     })
@@ -41,8 +41,8 @@ class Ma {
     const heroEntity = WORLD.entities.get(WORLD.heroId)
     if (!heroEntity) return
     const heroPosition = WORLD.hero.position
-    const startY = COORDINATES.coordinateToChunk(heroPosition.y) - 1
-    const startX = COORDINATES.coordinateToChunk(heroPosition.x) - 2
+    const startY = COORDS.coordinateToChunk(heroPosition.y) - 1
+    const startX = COORDS.coordinateToChunk(heroPosition.x) - 2
     this.closeChunks = []
     const sprites: Promise<void>[] = []
     for (let y of _.range(startY, startY + 3)) {
@@ -60,7 +60,7 @@ class Ma {
   }
   private async loadChunkSprite(index: string) {
     if (this.chunkSprites.get(index)) return
-    // immideately add index to the map to prevent duplicates
+    // immideately adds index to the map to prevent duplicates
     // before Sprite is actually loaded using await later
     this.chunkSprites.set(index, new PIXI.Sprite())
     let webp = ASSETS.webps[index]

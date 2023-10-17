@@ -14,8 +14,8 @@ const global = {
   mousePosition: { x: 0, y: 0 },
   hoverId: undefined,
   process() {
-    this.mouseOfScreen = COORDINATES.mouseOfScreen()
-    this.mousePosition = COORDINATES.mousePosition()
+    this.mouseOfScreen = COORDS.mouseOfScreen()
+    this.mousePosition = COORDS.mousePosition()
     if (GLOBAL.context === "world") {
       if (INTERFACE.inventory) GLOBAL.context = "interface"
     }

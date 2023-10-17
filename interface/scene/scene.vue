@@ -1,13 +1,13 @@
 <template lang="pug">
 div(class="z-30 absolute relative")
-  //- layerOne always on
-  images(layer="layerOne")
-  dialogue(layer="layerOne")
+  //- layerOne always on (content switched :) )
+  images(layer = "layerOne")
+  dialogue(layer = "layerOne")
   //- layerTwo
   transition
     div(v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
-      images(layer="layerTwo")
-      dialogue(layer="layerTwo")
+      images(layer = "layerTwo")
+      dialogue(layer = "layerTwo")
 </template>
 <script setup lang="ts">
 const transitionSpeed = computed(() => {

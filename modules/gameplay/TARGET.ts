@@ -65,7 +65,7 @@ class Target {
   }
   private checkTargetDistance(entity, id) {
     if (!entity.target.id || !entity.target.entity) return
-    const distance = COORDINATES.distance(
+    const distance = COORDS.distance(
       entity.position,
       entity.target.entity.position
     )
@@ -82,10 +82,7 @@ class Target {
       if (!WORLD.isHero(id) && entity.attributes.mood === "peaceful") {
         return
       }
-      const distance = COORDINATES.distance(
-        entity.position,
-        otherEntity.position
-      )
+      const distance = COORDS.distance(entity.position, otherEntity.position)
       if (distance < minDistance) {
         minDistance = distance
         entity.target.id = otherId
@@ -98,7 +95,7 @@ class Target {
     }
   }
   targetByGamepadAxes() {
-    const axesVector = COORDINATES.vector(
+    const axesVector = COORDS.vector(
       INPUT.gamepad.axes[0],
       INPUT.gamepad.axes[1]
     )
@@ -112,15 +109,9 @@ class Target {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move || id === WORLD.heroId) return
       if (entity.state.active === "dead") return
-      const distance = COORDINATES.distance(
-        WORLD.hero.position,
-        entity.position
-      )
+      const distance = COORDS.distance(WORLD.hero.position, entity.position)
       if (distance > 750) return
-      const entityAngle = COORDINATES.angle(
-        WORLD.hero.position,
-        entity.position
-      )
+      const entityAngle = COORDS.angle(WORLD.hero.position, entity.position)
       const angle = Math.abs(entityAngle - axesAngle)
       if (angle < angleToGroup) {
         closestGroup.push(id)

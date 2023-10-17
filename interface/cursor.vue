@@ -32,7 +32,7 @@ const cursor = computed(() => {
   return (
     !(INPUT.lastActiveDevice === "gamepad") &&
     !GLOBAL.hoverId &&
-    COORDINATES.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
+    COORDS.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
   )
 })
 const cursorNo = computed(() => {
@@ -40,7 +40,7 @@ const cursorNo = computed(() => {
   return (
     !(INPUT.lastActiveDevice === "gamepad") &&
     !GLOBAL.hoverId &&
-    !COORDINATES.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
+    !COORDS.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
   )
 })
 const cursorCast = computed(() => {
@@ -48,7 +48,7 @@ const cursorCast = computed(() => {
   return (
     !(INPUT.lastActiveDevice === "gamepad") &&
     GLOBAL.hoverId &&
-    COORDINATES.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
+    COORDS.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
   )
 })
 </script>

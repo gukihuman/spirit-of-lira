@@ -43,10 +43,7 @@ class Spawn {
         const position = entity.position
         if (!position) return
 
-        const entityChunk = COORDINATES.chunkFromCoordinates(
-          position.x,
-          position.y
-        )
+        const entityChunk = COORDS.chunkFromCoordinates(position.x, position.y)
         if (entityChunk === chunk) {
           WORLD.entities.delete(id)
           let container = SPRITE.getContainer(id)
@@ -80,12 +77,12 @@ class Spawn {
   }
 
   private randomCoordinatesFromChunk(chunk: string, counter: number) {
-    let x = COORDINATES.chunkToCoordinateX(chunk)
-    let y = COORDINATES.chunkToCoordinateY(chunk)
+    let x = COORDS.chunkToCoordinateX(chunk)
+    let y = COORDS.chunkToCoordinateY(chunk)
     x += _.random(0, 999)
     y += _.random(0, 999)
 
-    if (COORDINATES.isWalkable(x, y)) {
+    if (COORDS.isWalkable(x, y)) {
       return { x, y }
     } else if (counter < 10) {
       counter++

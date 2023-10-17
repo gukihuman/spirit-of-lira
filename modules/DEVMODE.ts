@@ -18,6 +18,9 @@ class DevMode {
         LOCAL.update()
         location.reload()
       }
+      globalThis.log = () => {
+        console.log(SCENE.steps["s0-adult-check"])
+      }
     }
   }
 }

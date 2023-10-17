@@ -5,7 +5,7 @@ class Settings {
     sound: 0.8,
   }
   gameplay = {
-    // auto attack after kill and also autotarget for mouse
+    // auto attack after kill and also autotarget for mouse like on gamepad
     easyFight: false,
     attackBack: false,
   }
@@ -38,8 +38,8 @@ class Settings {
   sceneInputEvents = {
     keyboard: {
       continue: "m",
-      previousOption: "ArrowUp",
-      nextOption: "ArrowDown",
+      previousOption: "ArrowDown",
+      nextOption: "ArrowUp",
       toggleFullscreen: "f",
     },
     mouse: {
@@ -47,8 +47,8 @@ class Settings {
     },
     gamepad: {
       continue: "A",
-      previousOption: "Up",
-      nextOption: "Down",
+      previousOption: "Down",
+      nextOption: "Up",
       toggleFullscreen: "Menu",
     },
   }

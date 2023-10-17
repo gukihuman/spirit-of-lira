@@ -30,12 +30,19 @@ class Scene {
         text: "",
         choices: [],
       }
-      lineArray.forEach((line) => {
+      lineArray.forEach((line, index) => {
         // handle images
         if (line.startsWith("# ")) {
           let cleanLine = line.substring(2)
           images = cleanLine.split(", ")
           return
+        }
+        // choice lines doesnt immideately create a step, this is where we push step with all collected choices and previous text
+        let createChoiceStep = () => {
+          if (step.choices.length > 0) {
+            this.steps[key].push(_.cloneDeep(step))
+            step.choices = []
+          }
         }
         // nandle choices
         if (line.startsWith("> ") || line.startsWith(">> ")) {
@@ -46,26 +53,35 @@ class Scene {
             cleanLine = line.substring(3)
             choiceObject.arrow = true
           }
-          if (cleanLine.includes("(")) {
+          function extractBetween(where: string, start: string, end: string) {
             choiceObject.text = cleanLine
-              .substring(0, cleanLine.indexOf("(") - 2)
+              .substring(0, cleanLine.indexOf(start) - 2)
               .trim()
-            choiceObject.nextSceneName = cleanLine.substring(
-              cleanLine.indexOf("(") + 1,
-              cleanLine.indexOf(")")
+            choiceObject[where] = cleanLine.substring(
+              cleanLine.indexOf(start) + 1,
+              cleanLine.indexOf(end)
             )
+          }
+          if (cleanLine.includes("(") && !cleanLine.includes("{")) {
+            extractBetween("nextSceneName", "(", ")")
+          } else if (cleanLine.includes("{") && !cleanLine.includes("(")) {
+            extractBetween("eventSingle", "{", "}")
+          } else if (cleanLine.includes("{") && cleanLine.includes("(")) {
+            extractBetween("eventSingle", "{", "}")
+            extractBetween("nextSceneName", "(", ")")
           } else {
             choiceObject.text = cleanLine
           }
           step.choices.push(choiceObject)
-          return
+
+          if (lineArray.length != index + 1) return
+          else {
+            createChoiceStep()
+            return
+          }
         }
-        // choice lines doesnt immideately create a step, this is where we push step with all collected choices and previous text
-        if (step.choices.length > 0) {
-          this.steps[key].push(_.cloneDeep(step))
-          step.choices = []
-        }
-        // and in the same iteration a new "after-choice" line as plain text
+        // here create two steps at the same time (after choices)
+        createChoiceStep()
         step.text = line
         step.images = images
         this.steps[key].push(_.cloneDeep(step))

@@ -1,6 +1,6 @@
 class Move {
   private preventGamepadMoveMS = 500 // disable axes after start track
-  // used to not prevent gamepad move after kill, updates on mobs killed by hero
+  // used to not prevent gamepad move after kill, updates when hero kill mobs
   lastMobKilledMS = 0
   private gamepadAxesMoved = false
   init() {
@@ -18,7 +18,7 @@ class Move {
   }
   process() {
     if (GLOBAL.context === "scene") return
-    WORLD.entities.forEach((entity, id) => {
+    WORLD.entities.forEach((entity) => {
       if (!entity.move) return
       this.move(entity)
     })
@@ -36,22 +36,23 @@ class Move {
       this.gamepadAxesMoved = false
     }
   }
+  // TODO anything
   mouseMove() {
     WORLD.hero.state.track = false
     WORLD.hero.state.cast = false
     WORLD.hero
-    const distance = COORDINATES.distance(
-      COORDINATES.conterOfScreen(),
-      COORDINATES.mouseOfScreen()
+    const distance = COORDS.distance(
+      COORDS.conterOfScreen(),
+      COORDS.mouseOfScreen()
     )
     if (distance < 10) {
       WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
       return
     }
-    const x = COORDINATES.mousePosition().x
-    const y = COORDINATES.mousePosition().y
-    if (COORDINATES.isWalkable(x, y)) {
-      WORLD.hero.move.finaldestination = COORDINATES.mousePosition()
+    const x = COORDS.mousePosition().x
+    const y = COORDS.mousePosition().y
+    if (COORDS.isWalkable(x, y)) {
+      WORLD.hero.move.finaldestination = COORDS.mousePosition()
     }
   }
   private gamepadMoveTries = 0
@@ -71,15 +72,15 @@ class Move {
   }
   private gamepadMoveLogic(otherRatio = 1) {
     if (!WORLD.hero) return
-    const speedPerTick = COORDINATES.speedPerTick(WORLD.hero)
-    const axesVector = COORDINATES.vector(
+    const speedPerTick = COORDS.speedPerTick(WORLD.hero)
+    const axesVector = COORDS.vector(
       INPUT.gamepad.axes[0],
       INPUT.gamepad.axes[1]
     )
     const angle = axesVector.angle
     let ratio = axesVector.distance
     ratio = _.clamp(ratio, 1)
-    const vectorToFinalDestination = COORDINATES.vectorFromAngle(
+    const vectorToFinalDestination = COORDS.vectorFromAngle(
       angle,
       speedPerTick * WORLD.loop.fps * 2
     )
@@ -89,7 +90,7 @@ class Move {
     const possibleDestinationY =
       hero.position.y + vectorToFinalDestination.y * ratio * otherRatio
     if (
-      !COORDINATES.isWalkable(possibleDestinationX, possibleDestinationY) &&
+      !COORDS.isWalkable(possibleDestinationX, possibleDestinationY) &&
       GLOBAL.collision
     ) {
       this.gamepadMoveTries++
@@ -120,12 +121,12 @@ class Move {
   }
   move(entity: Entity) {
     if (!this.canMove(entity)) return
-    const speedPerTick = COORDINATES.speedPerTick(entity)
-    const displacement = COORDINATES.vectorFromPoints(
+    const speedPerTick = COORDS.speedPerTick(entity)
+    const displacement = COORDS.vectorFromPoints(
       entity.position,
       entity.move.destination
     )
-    const finaldisplacement = COORDINATES.vectorFromPoints(
+    const finaldisplacement = COORDS.vectorFromPoints(
       entity.position,
       entity.move.finaldestination
     )
@@ -148,7 +149,7 @@ class Move {
     ratio = _.clamp(ratio, 0.3, 1)
     if (WORLD.hero.state.track) ratio = 1
     const angle = displacement.angle
-    const velocity = COORDINATES.vectorFromAngle(angle, speedPerTick)
+    const velocity = COORDS.vectorFromAngle(angle, speedPerTick)
     entity.position.x += velocity.x * ratio
     entity.position.y += velocity.y * ratio
   }

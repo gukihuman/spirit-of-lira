@@ -18,17 +18,17 @@ class Astar {
             return
           }
           const startTile = {
-            x: COORDINATES.coordinateToTile(entity.position.x),
-            y: COORDINATES.coordinateToTile(entity.position.y),
+            x: COORDS.coordinateToTile(entity.position.x),
+            y: COORDS.coordinateToTile(entity.position.y),
           }
           let endTile = {
-            x: COORDINATES.coordinateToTile(entity.move.finaldestination.x),
-            y: COORDINATES.coordinateToTile(entity.move.finaldestination.y),
+            x: COORDS.coordinateToTile(entity.move.finaldestination.x),
+            y: COORDS.coordinateToTile(entity.move.finaldestination.y),
           }
 
-          const mousePosition = COORDINATES.mousePosition()
-          const mouseTileX = COORDINATES.coordinateToTile(mousePosition.x)
-          const mouseTileY = COORDINATES.coordinateToTile(mousePosition.y)
+          const mousePosition = COORDS.mousePosition()
+          const mouseTileX = COORDS.coordinateToTile(mousePosition.x)
+          const mouseTileY = COORDS.coordinateToTile(mousePosition.y)
 
           // mouseMove signal on non-walkable tile
           if (
@@ -61,9 +61,9 @@ class Astar {
             entity.move.destination.y = entity.move.finaldestination.y
           } else if (entity.move.path.length > 0 && entity.move.destination) {
             entity.move.destination.x =
-              COORDINATES.tileToCoordinate(entity.move.path[0].x) + 10
+              COORDS.tileToCoordinate(entity.move.path[0].x) + 10
             entity.move.destination.y =
-              COORDINATES.tileToCoordinate(entity.move.path[0].y) + 10
+              COORDS.tileToCoordinate(entity.move.path[0].y) + 10
           }
         }
       })
@@ -306,7 +306,7 @@ class Astar {
         } else {
           g = current.g + 2
         }
-        if (COORDINATES.isGreenTile(neighbor)) {
+        if (COORDS.isGreenTile(neighbor)) {
           g = current.g + 0.1
         }
         let h = this.heuristic(neighbor, endPos)
@@ -350,7 +350,7 @@ class Astar {
     // not green tiles
     indexes.forEach((i) => {
       //
-      if (!COORDINATES.isGreenTile(path[i])) {
+      if (!COORDS.isGreenTile(path[i])) {
         //
         if (indexes.includes(i - 1) && indexes.includes(i + 1)) {
           //
@@ -363,7 +363,7 @@ class Astar {
       // already removed
       if (!path[i]) return
 
-      if (COORDINATES.isGreenTile(path[i])) {
+      if (COORDS.isGreenTile(path[i])) {
         //
         //
         if (!path[i + 1]) {
@@ -372,7 +372,7 @@ class Astar {
         }
 
         // remove green tile only if after are green too
-        if (COORDINATES.isGreenTile(path[i + 1]) && firstGreenFound) {
+        if (COORDS.isGreenTile(path[i + 1]) && firstGreenFound) {
           //
           path[i] = undefined
         }
@@ -403,12 +403,8 @@ class Astar {
       }
     }
     if (closestTile) {
-      entity.move.finaldestination.x = COORDINATES.tileToCoordinate(
-        closestTile.x
-      )
-      entity.move.finaldestination.y = COORDINATES.tileToCoordinate(
-        closestTile.y
-      )
+      entity.move.finaldestination.x = COORDS.tileToCoordinate(closestTile.x)
+      entity.move.finaldestination.y = COORDS.tileToCoordinate(closestTile.y)
     }
   }
 

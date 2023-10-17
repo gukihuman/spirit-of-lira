@@ -37,13 +37,13 @@ class Coordinates {
   mouseOfScreen() {
     if (!GLOBAL.firstMouseMove) return this.vector(0, 0)
 
-    return COORDINATES.vector(
+    return COORDS.vector(
       INPUT.mouse.x / GLOBAL.gameWindowScale,
       INPUT.mouse.y / GLOBAL.gameWindowScale
     )
   }
   mousePosition() {
-    const mousePosition = COORDINATES.mouseOfScreen()
+    const mousePosition = COORDS.mouseOfScreen()
     return this.vector(
       (mousePosition.x += WORLD.hero.position.x - CONFIG.viewport.width / 2),
       (mousePosition.y += WORLD.hero.position.y - CONFIG.viewport.height / 2)
@@ -92,4 +92,4 @@ class Coordinates {
     return COLLISION.collisionArray[tile.y][tile.x] === 1
   }
 }
-export const COORDINATES = new Coordinates()
+export const COORDS = new Coordinates()
