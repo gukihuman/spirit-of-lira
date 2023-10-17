@@ -56,6 +56,16 @@ class Events {
       this.active = []
       this.activeSingle = []
     }, "EVENTS")
+    this.addCommonEvents()
+  }
+  private addCommonEvents() {
+    this.onSingle("closeApp", () => {
+      setTimeout(() => {
+        _.remove(PROGRESS.scenes, (s) => s === "s0") // keep adult check
+        LOCAL.update()
+      }, 20)
+      setTimeout(() => close(), 100)
+    })
   }
   private executeEventsTries = 0
   private limit = 10

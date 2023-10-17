@@ -5,7 +5,7 @@ div
       :key="index"
       :src="ASSETS.webps[value]"
       draggable="false"
-      class="absolute"
+      class="absolute -z-10"
     )
 </template>
 <script setup lang="ts">

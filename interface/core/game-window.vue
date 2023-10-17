@@ -11,8 +11,6 @@ const style = computed(() => {
     width: width + "px",
     height: height + "px",
     scale: scale.value,
-    // 📜 turn on when custom cursor gonna be made
-    // cursor: "none",
   }
 })
 function setScale() {

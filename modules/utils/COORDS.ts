@@ -35,7 +35,7 @@ class Coordinates {
     return this.vector(CONFIG.viewport.width / 2, CONFIG.viewport.height / 2)
   }
   mouseOfScreen() {
-    if (!GLOBAL.firstMouseMove) return this.vector(0, 0)
+    if (!GLOBAL.firstMouseMove) return this.vector(-30, -30)
 
     return COORDS.vector(
       INPUT.mouse.x / GLOBAL.gameWindowScale,

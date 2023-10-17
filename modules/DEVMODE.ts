@@ -19,7 +19,7 @@ class DevMode {
         location.reload()
       }
       globalThis.log = () => {
-        console.log(SCENE.steps["s0-adult-check"])
+        console.log(PROGRESS.scenes)
       }
     }
   }

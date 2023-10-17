@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none" :style="cursorStyle")
+div(
+  class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none" :style="cursorStyle"
+  v-if="GLOBAL.firstUserGesture"
+  )
   img(
       v-show="cursor"
       :src="ASSETS.webps.cursor"

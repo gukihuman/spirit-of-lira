@@ -1,5 +1,8 @@
 export default {
-  position: {},
+  position: {
+    x: -30,
+    y: -30,
+  },
   sprite: {},
 
   process(entity, id) {
@@ -7,23 +10,23 @@ export default {
     if (!position) return
 
     if (INPUT.lastActiveDevice === "gamepad") {
-      position.x = 0
-      position.y = 0
+      position.x = -30
+      position.y = -30
       return
     }
 
     const finaldestination = WORLD.hero.move.finaldestination
     if (!finaldestination) {
-      position.x = 0
-      position.y = 0
+      position.x = -30
+      position.y = -30
       return
     }
     position.x = finaldestination.x
     position.y = finaldestination.y
 
     if (!COORDS.isWalkable(position.x, position.y)) {
-      position.x = 0
-      position.y = 0
+      position.x = -30
+      position.y = -30
     }
 
     const displacement = COORDS.vectorFromPoints(
@@ -36,8 +39,8 @@ export default {
     // hide
     // 📜 change tracked to track state, implement track state
     if (distance < speedPerTick || WORLD.hero.state.track) {
-      position.x = 0
-      position.y = 0
+      position.x = -30
+      position.y = -30
       return
     }
 

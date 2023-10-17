@@ -1,5 +1,74 @@
 # s0-solid-dark
-This game is only for adults.
-> I'm an adult.
-> I'm an adult. Don't ask again.
-> I'll come back later.
+
+> Damn, I'll come back later.
+> Sure, I'm 18+. Don't ask again. {endScene}
+> I'm an adult. Let's start. {keepAdultCheck, endScene}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

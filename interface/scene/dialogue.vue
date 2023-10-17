@@ -7,7 +7,10 @@ div(:style="mainStyle")
 const props = defineProps(["layer"])
 const mainStyle = computed(() => {
   return {
-    filter: `hue-rotate(${ACTIVE_SCENE[props.layer].hue}deg)`,
+    filter: `
+      hue-rotate(${ACTIVE_SCENE[props.layer].hue}deg) 
+      brightness(${ACTIVE_SCENE[props.layer].brightness})
+    `,
   }
 })
 </script>

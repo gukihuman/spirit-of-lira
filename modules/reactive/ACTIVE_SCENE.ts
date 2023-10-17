@@ -30,13 +30,15 @@ const activeScene = {
       this.name = options.name
       this.nextSceneName = options.name // used each continue
       this.stepIndex = 0
-      if (options.instantChoices) EVENTS.emitSingle("continue")
+      if (options.instantChoices) {
+        setTimeout(() => EVENTS.emitSingle("continue"), 20)
+      }
     })
     EVENTS.onSingle("endScene", () => {
-      this.name = ""
       GLOBAL.context = "world"
       INTERFACE.inventory = false
       PROGRESS.scenes.push(this.name.split("-")[0])
+      this.name = ""
       LOCAL.update()
     })
     EVENTS.onSingle("mouseContinue", () => {
@@ -50,6 +52,7 @@ const activeScene = {
       const steps = this.getSteps()
       if (!steps) return
       const { step, nextStep } = steps
+      this.runChoiceEvent(step)
       if ((nextStep && nextStep.choices.length === 0) || !nextStep) {
         this.showChoiceBox = false
       } else {
@@ -85,6 +88,19 @@ const activeScene = {
         this.name = this.nextSceneName
       }
     })
+    EVENTS.onSingle("keepAdultCheck", () => {
+      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "s0"), 20)
+      LOCAL.update()
+    })
+  },
+  runChoiceEvent(step) {
+    if (step.choices.length === 0) return
+    let choiceEvents = step.choices[this.focusedChoiceIndex].choiceEvents
+    if (choiceEvents) {
+      choiceEvents.split(",").forEach((s) => {
+        EVENTS.emitSingle(s.trim())
+      })
+    }
   },
   getSteps() {
     if (!SCENE.steps[ACTIVE_SCENE.name]) return
@@ -123,6 +139,7 @@ const activeScene = {
     layer.x = SCENE.options[layer.images[0]]?.x || 950
     layer.y = SCENE.options[layer.images[0]]?.y || 620
     layer.hue = SCENE.options[layer.images[0]]?.hue || 0
+    layer.brightness = SCENE.options[layer.images[0]]?.brightness || 1
   },
 }
 export const ACTIVE_SCENE = LIB.store(activeScene)

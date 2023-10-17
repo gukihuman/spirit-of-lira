@@ -53,9 +53,9 @@ class Scene {
             cleanLine = line.substring(3)
             choiceObject.arrow = true
           }
-          function extractBetween(where: string, start: string, end: string) {
+          function extractBetween(start: string, end: string, where: string) {
             choiceObject.text = cleanLine
-              .substring(0, cleanLine.indexOf(start) - 2)
+              .substring(0, cleanLine.indexOf(start) - 1)
               .trim()
             choiceObject[where] = cleanLine.substring(
               cleanLine.indexOf(start) + 1,
@@ -63,12 +63,12 @@ class Scene {
             )
           }
           if (cleanLine.includes("(") && !cleanLine.includes("{")) {
-            extractBetween("nextSceneName", "(", ")")
+            extractBetween("(", ")", "nextSceneName")
           } else if (cleanLine.includes("{") && !cleanLine.includes("(")) {
-            extractBetween("eventSingle", "{", "}")
+            extractBetween("{", "}", "choiceEvents")
           } else if (cleanLine.includes("{") && cleanLine.includes("(")) {
-            extractBetween("eventSingle", "{", "}")
-            extractBetween("nextSceneName", "(", ")")
+            extractBetween("{", "}", "choiceEvents")
+            extractBetween("(", ")", "nextSceneName")
           } else {
             choiceObject.text = cleanLine
           }

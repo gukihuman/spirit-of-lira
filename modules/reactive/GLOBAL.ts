@@ -10,8 +10,8 @@ const global = {
   autoMouseMove: false,
   sceneContextChangedMS: 0,
   firstUserGesture: false,
-  mouseOfScreen: { x: 0, y: 0 },
-  mousePosition: { x: 0, y: 0 },
+  mouseOfScreen: { x: -30, y: -30 },
+  mousePosition: { x: -30, y: -30 },
   hoverId: undefined,
   process() {
     this.mouseOfScreen = COORDS.mouseOfScreen()
