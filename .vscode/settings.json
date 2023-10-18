@@ -1,19 +1,19 @@
 {
   "prisma.fileWatcher": false,
   "files.exclude": {
-    ".nuxt": true,
-    ".vscode": true,
-    "node_modules": true,
-    "tests": true,
-    ".gitignore": true,
-    "package-lock.json": true,
-    "prisma": true,
-    "server": true,
-    "_old": true,
-    ".env": true,
-    "vitest.config.ts": true,
-    ".prettierignore": true,
-    "public": true
+    ".nuxt": false,
+    ".vscode": false,
+    "node_modules": false,
+    "tests": false,
+    ".gitignore": false,
+    "package-lock.json": false,
+    "prisma": false,
+    "server": false,
+    "_old": false,
+    ".env": false,
+    "vitest.config.ts": false,
+    ".prettierignore": false,
+    "public": false
   },
   "workspace.isHidden": false,
   "folder-path-color.folders": [
