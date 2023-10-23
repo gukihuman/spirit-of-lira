@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="z-30 absolute relative")
+div(class="z-30 relative")
   //- layerOne always on (content switched :) )
   images(layer = "layerOne")
   dialogue(layer = "layerOne")

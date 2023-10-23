@@ -1,8 +1,9 @@
 node_modules
-*.log*
+whales
+desktop.ini
+.env
 .nuxt
 .nitro
 .cache
 .output
-.env
 dist

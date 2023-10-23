@@ -47,11 +47,9 @@ const cursorNo = computed(() => {
   )
 })
 const cursorCast = computed(() => {
-  if (GLOBAL.context === "interface" || GLOBAL.context === "scene") return false
-  return (
-    !(INPUT.lastActiveDevice === "gamepad") &&
-    GLOBAL.hoverId &&
-    COORDS.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
-  )
+  if (GLOBAL.context === "interface" || GLOBAL.context === "scene") {
+    return false
+  }
+  return !(INPUT.lastActiveDevice === "gamepad") && GLOBAL.hoverId
 })
 </script>

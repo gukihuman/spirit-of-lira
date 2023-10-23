@@ -1,5 +1,4 @@
 export default {
-  // 📜 move to attributes
   speed: 5,
 
   destination: undefined,

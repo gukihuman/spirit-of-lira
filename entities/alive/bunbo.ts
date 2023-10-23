@@ -2,6 +2,7 @@ export default {
   size: {
     width: 70,
     height: 60,
+    bottom: 17,
   },
   sprite: {
     leaveAnimationConditions: {

@@ -58,8 +58,8 @@ class Settings {
       toggleFullscreen: "f",
     },
     gamepad: {
-      toggleFullscreen: "Menu",
       toggleInventory: "Start",
+      toggleFullscreen: "Menu",
     },
   }
   inputOther = {

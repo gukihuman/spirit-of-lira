@@ -7,8 +7,6 @@ class Hover {
     let hoverEntityId = 0
     WORLD.entities.forEach((entity, id) => {
       if (id === WORLD.heroId || !entity.move || !entity.size) return
-      // how much height goes under the y coordinate
-      let offset = entity.size.width / 4
       const position = entity.position
       const rect = {
         x:
@@ -21,7 +19,7 @@ class Hover {
           heroPosition.y +
           CONFIG.viewport.height / 2 -
           entity.size.height +
-          offset,
+          entity.size.bottom,
         width: entity.size.width,
         height: entity.size.height,
       }

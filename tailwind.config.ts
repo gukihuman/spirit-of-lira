@@ -2,10 +2,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["montserrat", "system-ui"],
-        serif: ["ui-serif", "Georgia"],
-        mono: ["Roboto Mono"],
-        display: ["Boogaloo"],
+        sans: ["montserrat", "system-ui"], // default
+        fira: ["Fira Code"], // for numbers
+        lilita: ["Lilita One"], // special numbers (e.g. level)
+        roboto: ["Roboto Mono"],
       },
       colors: {
         tan: "#cfc391",
