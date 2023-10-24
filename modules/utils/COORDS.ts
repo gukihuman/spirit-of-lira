@@ -78,18 +78,17 @@ class Coordinates {
     let tileX = this.coordinateToTile(x)
     let tileY = this.coordinateToTile(y)
     if (
-      COLLISION.collisionArray[tileY] === undefined ||
-      !COLLISION.collisionArray[tileY][tileX] === undefined
+      COLLISION.array[tileY] === undefined ||
+      !COLLISION.array[tileY][tileX] === undefined
     ) {
       return
     }
     return (
-      COLLISION.collisionArray[tileY][tileX] !== 2 &&
-      COLLISION.collisionArray[tileY][tileX] !== 3
+      COLLISION.array[tileY][tileX] !== 2 && COLLISION.array[tileY][tileX] !== 3
     )
   }
   isGreenTile(tile: { x: number; y: number }) {
-    return COLLISION.collisionArray[tile.y][tile.x] === 1
+    return COLLISION.array[tile.y][tile.x] === 1
   }
 }
 export const COORDS = new Coordinates()

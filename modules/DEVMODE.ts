@@ -13,6 +13,9 @@ class DevMode {
       if (INPUT.keyboard.justPressed.includes("m")) {
         INTERFACE.input = !INTERFACE.input
       }
+      if (INPUT.keyboard.justPressed.includes("g")) {
+        SOCKET.sendArray([1, 2, 3, 4])
+      }
       globalThis.resetProgress = () => {
         PROGRESS.scenes = []
         LOCAL.update()

@@ -6,7 +6,7 @@ class Astar {
   maxTime = 5
   grid: number[][] = []
   init() {
-    this.grid = COLLISION.collisionArray
+    this.grid = COLLISION.array
   }
   process() {
     let executes: any = []

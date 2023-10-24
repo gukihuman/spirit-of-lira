@@ -13,7 +13,9 @@ export default defineNuxtConfig({
         autoImports: ["defineStore"],
       },
     ],
+    "~/server/socket",
   ],
+  ignore: ["whales/**"],
   imports: {
     dirs: ["boot/**/*.{js,ts}", "modules/**/*.{js,ts}"],
   },
