@@ -34,7 +34,7 @@ class Filters {
       // 📜 here cast is always offensive, when other cast added, think how to change that
       if (!WORLD.hero.state.track) return
       if (
-        INPUT.lastActiveDevice !== "gamepad" &&
+        GLOBAL.lastActiveDevice !== "gamepad" &&
         GLOBAL.hoverId !== id &&
         !WORLD.hero.state.track
       ) {

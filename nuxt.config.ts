@@ -13,7 +13,6 @@ export default defineNuxtConfig({
         autoImports: ["defineStore"],
       },
     ],
-    "~/server/socket",
   ],
   ignore: ["whales/**"],
   imports: {

@@ -6,12 +6,10 @@ async function start() {
     LIB.logWarning("viewport not found (starter)")
     return
   }
+  if (process.env.NODE_ENV == "development") GLOBAL.devMode = true
+
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
-
-  // set devMode, set it first cuz some tools init may depend on it
-  useCookie("name").value = useCookie("name").value || "default"
-  if (useCookie("name").value == "guki") GLOBAL.devMode = true
 
   // everything depend on WORLD ticker, init it right after CONFIG
   await initModules()
@@ -22,6 +20,7 @@ async function start() {
   // timeout to make sure initial loading transition will work
   setTimeout(() => (GLOBAL.loading = false), 1)
 }
+
 async function initModules() {
   CONFIG.init() // prepare priority
   const processes: { [name: string]: () => void } = {}

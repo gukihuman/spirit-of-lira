@@ -164,7 +164,7 @@ class Settings {
       ) {
         EVENTS.emitSingle("cast4")
       }
-      if (INPUT.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
+      if (GLOBAL.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
     }
   }
 }

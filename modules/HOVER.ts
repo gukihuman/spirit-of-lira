@@ -1,7 +1,7 @@
 class Hover {
   process() {
-    if (INPUT.lastActiveDevice === "gamepad") return
-    const point = COORDS.mouseOfScreen()
+    if (GLOBAL.lastActiveDevice === "gamepad") return
+    const point = COORD.mouseOfScreen()
     const heroPosition = WORLD.hero.position
     const intersections: number[] = []
     let hoverEntityId = 0

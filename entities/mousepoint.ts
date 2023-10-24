@@ -9,7 +9,7 @@ export default {
     let position = entity.position
     if (!position) return
 
-    if (INPUT.lastActiveDevice === "gamepad") {
+    if (GLOBAL.lastActiveDevice === "gamepad") {
       position.x = -30
       position.y = -30
       return
@@ -24,17 +24,17 @@ export default {
     position.x = finaldestination.x
     position.y = finaldestination.y
 
-    if (!COORDS.isWalkable(position.x, position.y)) {
+    if (!COORD.isWalkable(position.x, position.y)) {
       position.x = -30
       position.y = -30
     }
 
-    const displacement = COORDS.vectorFromPoints(
+    const displacement = COORD.vectorFromPoints(
       position,
       WORLD.entities.get(WORLD.heroId).position
     )
     const distance = displacement.distance
-    const speedPerTick = COORDS.speedPerTick(WORLD.entities.get(WORLD.heroId))
+    const speedPerTick = COORD.speedPerTick(WORLD.entities.get(WORLD.heroId))
 
     // hide
     // 📜 change tracked to track state, implement track state

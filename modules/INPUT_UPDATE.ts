@@ -11,6 +11,7 @@ class InputUpdate {
         GLOBAL.firstMouseMove = true
       }
     }
+    GLOBAL.lastActiveDevice = INPUT.lastActiveDevice
   }
 }
 export const INPUT_UPDATE = new InputUpdate()

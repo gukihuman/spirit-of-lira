@@ -17,12 +17,12 @@ class Target {
       ) {
         hero.move.finaldestination = _.cloneDeep(hero.position)
       }
-      if (INPUT.lastActiveDevice !== "gamepad" && hero.state.cast) {
+      if (GLOBAL.lastActiveDevice !== "gamepad" && hero.state.cast) {
         hero.state.cast = false
         hero.move.finaldestination = _.cloneDeep(hero.position)
       }
       // when lock is used to lock a new target immidiately
-      if (INPUT.lastActiveDevice !== "gamepad") {
+      if (GLOBAL.lastActiveDevice !== "gamepad") {
         if (!GLOBAL.hoverId) return
         hero.target.id = GLOBAL.hoverId
         hero.target.locked = true
@@ -37,14 +37,14 @@ class Target {
       this.checkTargetDistance(entity, id)
       if (entity.state.active !== "track" && !entity.target.locked) {
         if (!SETTINGS.gameplay.easyFight) {
-          if (WORLD.isHero(id) && INPUT.lastActiveDevice !== "gamepad") return
+          if (WORLD.isHero(id) && GLOBAL.lastActiveDevice !== "gamepad") return
         }
         // work on all entities and hero with gamepad
         this.autoTarget(entity, id)
       }
     })
     if (
-      INPUT.lastActiveDevice === "gamepad" &&
+      GLOBAL.lastActiveDevice === "gamepad" &&
       LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT) &&
       !WORLD.hero.target.locked
     ) {
@@ -52,7 +52,7 @@ class Target {
       this.targetByGamepadAxes()
     }
     if (
-      INPUT.lastActiveDevice !== "gamepad" &&
+      GLOBAL.lastActiveDevice !== "gamepad" &&
       !GLOBAL.autoMouseMove &&
       !WORLD.hero.target.locked
     ) {
@@ -65,7 +65,7 @@ class Target {
   }
   private checkTargetDistance(entity, id) {
     if (!entity.target.id || !entity.target.entity) return
-    const distance = COORDS.distance(
+    const distance = COORD.distance(
       entity.position,
       entity.target.entity.position
     )
@@ -82,7 +82,7 @@ class Target {
       if (!WORLD.isHero(id) && entity.attributes.mood === "peaceful") {
         return
       }
-      const distance = COORDS.distance(entity.position, otherEntity.position)
+      const distance = COORD.distance(entity.position, otherEntity.position)
       if (distance < minDistance) {
         minDistance = distance
         entity.target.id = otherId
@@ -95,7 +95,7 @@ class Target {
     }
   }
   targetByGamepadAxes() {
-    const axesVector = COORDS.vector(
+    const axesVector = COORD.vector(
       INPUT.gamepad.axes[0],
       INPUT.gamepad.axes[1]
     )
@@ -109,9 +109,9 @@ class Target {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.move || id === WORLD.heroId) return
       if (entity.state.active === "dead") return
-      const distance = COORDS.distance(WORLD.hero.position, entity.position)
+      const distance = COORD.distance(WORLD.hero.position, entity.position)
       if (distance > 750) return
-      const entityAngle = COORDS.angle(WORLD.hero.position, entity.position)
+      const entityAngle = COORD.angle(WORLD.hero.position, entity.position)
       const angle = Math.abs(entityAngle - axesAngle)
       if (angle < angleToGroup) {
         closestGroup.push(id)

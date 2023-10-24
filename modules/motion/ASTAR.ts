@@ -4,10 +4,6 @@ class Astar {
   clean = true
   maxSteps = 2000
   maxTime = 5
-  grid: number[][] = []
-  init() {
-    this.grid = COLLISION.array
-  }
   process() {
     let executes: any = []
     WORLD.entities.forEach((entity, id) => {
@@ -18,34 +14,34 @@ class Astar {
             return
           }
           const startTile = {
-            x: COORDS.coordinateToTile(entity.position.x),
-            y: COORDS.coordinateToTile(entity.position.y),
+            x: COORD.coordinateToTile(entity.position.x),
+            y: COORD.coordinateToTile(entity.position.y),
           }
           let endTile = {
-            x: COORDS.coordinateToTile(entity.move.finaldestination.x),
-            y: COORDS.coordinateToTile(entity.move.finaldestination.y),
+            x: COORD.coordinateToTile(entity.move.finaldestination.x),
+            y: COORD.coordinateToTile(entity.move.finaldestination.y),
           }
 
-          const mousePosition = COORDS.mousePosition()
-          const mouseTileX = COORDS.coordinateToTile(mousePosition.x)
-          const mouseTileY = COORDS.coordinateToTile(mousePosition.y)
+          const mousePosition = COORD.mousePosition()
+          const mouseTileX = COORD.coordinateToTile(mousePosition.x)
+          const mouseTileY = COORD.coordinateToTile(mousePosition.y)
 
           // mouseMove signal on non-walkable tile
           if (
-            INPUT.lastActiveDevice !== "gamepad" &&
+            GLOBAL.lastActiveDevice !== "gamepad" &&
             EVENTS.activeSingle.includes("mouseMove") &&
-            this.grid[mouseTileY][mouseTileX] !== 0 &&
-            this.grid[mouseTileY][mouseTileX] !== 1
+            COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 0 &&
+            COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 1
           ) {
             entity.move.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
           }
 
           if (
-            this.grid[endTile.y][endTile.x] !== 0 &&
-            this.grid[endTile.y][endTile.x] !== 1 &&
+            COLLISION.getArrayElement([endTile.y, endTile.x]) !== 0 &&
+            COLLISION.getArrayElement([endTile.y, endTile.x]) !== 1 &&
             (WORLD.loop.elapsedMS <
               entity.move.setMousePointOnWalkableMS + 100 ||
-              INPUT.lastActiveDevice === "gamepad")
+              GLOBAL.lastActiveDevice === "gamepad")
           ) {
             if (GLOBAL.collision) {
               return
@@ -61,9 +57,9 @@ class Astar {
             entity.move.destination.y = entity.move.finaldestination.y
           } else if (entity.move.path.length > 0 && entity.move.destination) {
             entity.move.destination.x =
-              COORDS.tileToCoordinate(entity.move.path[0].x) + 10
+              COORD.tileToCoordinate(entity.move.path[0].x) + 10
             entity.move.destination.y =
-              COORDS.tileToCoordinate(entity.move.path[0].y) + 10
+              COORD.tileToCoordinate(entity.move.path[0].y) + 10
           }
         }
       })
@@ -77,24 +73,24 @@ class Astar {
 
     // Add neighbor left
     if (
-      this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
     if (
-      this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
     if (
-      this.grid[node.y - 1][node.x] === 0 ||
-      this.grid[node.y - 1][node.x] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
@@ -102,8 +98,8 @@ class Astar {
 
     // Add neighbor below
     if (
-      this.grid[node.y + 1][node.x] === 0 ||
-      this.grid[node.y + 1][node.x] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
@@ -111,8 +107,8 @@ class Astar {
 
     // Top left
     if (
-      this.grid[node.y - 1][node.x - 1] === 0 ||
-      this.grid[node.y - 1][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
@@ -120,8 +116,8 @@ class Astar {
 
     // Top right
     if (
-      this.grid[node.y - 1][node.x + 1] === 0 ||
-      this.grid[node.y - 1][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
@@ -129,8 +125,8 @@ class Astar {
 
     // Bottom left
     if (
-      this.grid[node.y + 1][node.x - 1] === 0 ||
-      this.grid[node.y + 1][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
@@ -138,8 +134,8 @@ class Astar {
 
     // Bottom right
     if (
-      this.grid[node.y + 1][node.x + 1] === 0 ||
-      this.grid[node.y + 1][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
@@ -153,24 +149,24 @@ class Astar {
 
     // Add neighbor left
     if (
-      this.grid[node.y][node.x - 1] === 0 ||
-      this.grid[node.y][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
     if (
-      this.grid[node.y][node.x + 1] === 0 ||
-      this.grid[node.y][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
     if (
-      this.grid[node.y - 1][node.x] === 0 ||
-      this.grid[node.y - 1][node.x] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
@@ -178,8 +174,8 @@ class Astar {
 
     // Add neighbor below
     if (
-      this.grid[node.y + 1][node.x] === 0 ||
-      this.grid[node.y + 1][node.x] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
@@ -192,8 +188,8 @@ class Astar {
 
     // Top left
     if (
-      this.grid[node.y - 1][node.x - 1] === 0 ||
-      this.grid[node.y - 1][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
@@ -201,8 +197,8 @@ class Astar {
 
     // Top right
     if (
-      this.grid[node.y - 1][node.x + 1] === 0 ||
-      this.grid[node.y - 1][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
@@ -210,8 +206,8 @@ class Astar {
 
     // Bottom left
     if (
-      this.grid[node.y + 1][node.x - 1] === 0 ||
-      this.grid[node.y + 1][node.x - 1] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
@@ -219,8 +215,8 @@ class Astar {
 
     // Bottom right
     if (
-      this.grid[node.y + 1][node.x + 1] === 0 ||
-      this.grid[node.y + 1][node.x + 1] === 1 ||
+      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
+      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1 ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
@@ -246,8 +242,8 @@ class Astar {
     const t0 = performance.now()
     let walkable = true
     if (
-      this.grid[endPos.y][endPos.x] !== 0 &&
-      this.grid[endPos.y][endPos.x] !== 1
+      COLLISION.getArrayElement([endPos.y, endPos.x]) !== 0 &&
+      COLLISION.getArrayElement([endPos.y, endPos.x]) !== 1
     ) {
       walkable = false
     }
@@ -306,7 +302,7 @@ class Astar {
         } else {
           g = current.g + 2
         }
-        if (COORDS.isGreenTile(neighbor)) {
+        if (COORD.isGreenTile(neighbor)) {
           g = current.g + 0.1
         }
         let h = this.heuristic(neighbor, endPos)
@@ -350,7 +346,7 @@ class Astar {
     // not green tiles
     indexes.forEach((i) => {
       //
-      if (!COORDS.isGreenTile(path[i])) {
+      if (!COORD.isGreenTile(path[i])) {
         //
         if (indexes.includes(i - 1) && indexes.includes(i + 1)) {
           //
@@ -363,7 +359,7 @@ class Astar {
       // already removed
       if (!path[i]) return
 
-      if (COORDS.isGreenTile(path[i])) {
+      if (COORD.isGreenTile(path[i])) {
         //
         //
         if (!path[i + 1]) {
@@ -372,7 +368,7 @@ class Astar {
         }
 
         // remove green tile only if after are green too
-        if (COORDS.isGreenTile(path[i + 1]) && firstGreenFound) {
+        if (COORD.isGreenTile(path[i + 1]) && firstGreenFound) {
           //
           path[i] = undefined
         }
@@ -394,7 +390,10 @@ class Astar {
     let filteredList = this.closedList.filter((p, i) => i % 15 === 0)
 
     for (let tile of filteredList) {
-      if (this.grid[tile.y][tile.x] === 0 || this.grid[tile.y][tile.x] === 1) {
+      if (
+        COLLISION.getArrayElement([tile.y, tile.x]) === 0 ||
+        COLLISION.getArrayElement([tile.y, tile.x]) === 1
+      ) {
         let dist = this.heuristic(tile, endPos)
         if (dist < minDist) {
           closestTile = tile
@@ -403,8 +402,8 @@ class Astar {
       }
     }
     if (closestTile) {
-      entity.move.finaldestination.x = COORDS.tileToCoordinate(closestTile.x)
-      entity.move.finaldestination.y = COORDS.tileToCoordinate(closestTile.y)
+      entity.move.finaldestination.x = COORD.tileToCoordinate(closestTile.x)
+      entity.move.finaldestination.y = COORD.tileToCoordinate(closestTile.y)
     }
   }
 

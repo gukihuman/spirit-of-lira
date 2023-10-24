@@ -9,3 +9,8 @@ export const PIXI_FILTERS = pixiFilters
 
 import lodash from "lodash"
 export const _ = lodash
+
+import * as mathjs from "mathjs"
+export const MATHJS = mathjs
+
+// 📜 mb add only fns that is used if dev start is faster

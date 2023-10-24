@@ -1,5 +1,5 @@
 export default {
-  position: { x: 1600, y: 1750 },
+  position: { x: 6600, y: 6750 },
   size: {
     width: 60,
     height: 90,

@@ -37,13 +37,13 @@ class Coordinates {
   mouseOfScreen() {
     if (!GLOBAL.firstMouseMove) return this.vector(-30, -30)
 
-    return COORDS.vector(
+    return COORD.vector(
       INPUT.mouse.x / GLOBAL.gameWindowScale,
       INPUT.mouse.y / GLOBAL.gameWindowScale
     )
   }
   mousePosition() {
-    const mousePosition = COORDS.mouseOfScreen()
+    const mousePosition = COORD.mouseOfScreen()
     return this.vector(
       (mousePosition.x += WORLD.hero.position.x - CONFIG.viewport.width / 2),
       (mousePosition.y += WORLD.hero.position.y - CONFIG.viewport.height / 2)
@@ -74,21 +74,29 @@ class Coordinates {
   tileToCoordinate(tile: number) {
     return tile * 20
   }
+  // isWalkable(x: number, y: number) {
+  //   let tileX = this.coordinateToTile(x)
+  //   let tileY = this.coordinateToTile(y)
+  //   if (
+  //     COLLISION.array[tileY] === undefined ||
+  //     !COLLISION.array[tileY][tileX] === undefined
+  //   ) {
+  //     return
+  //   }
+  //   return (
+  //     COLLISION.array[tileY][tileX] !== 2 && COLLISION.array[tileY][tileX] !== 3
+  //   )
+  // }
   isWalkable(x: number, y: number) {
     let tileX = this.coordinateToTile(x)
     let tileY = this.coordinateToTile(y)
-    if (
-      COLLISION.array[tileY] === undefined ||
-      !COLLISION.array[tileY][tileX] === undefined
-    ) {
-      return
-    }
     return (
-      COLLISION.array[tileY][tileX] !== 2 && COLLISION.array[tileY][tileX] !== 3
+      COLLISION.getArrayElement([tileY, tileX]) !== 2 &&
+      COLLISION.getArrayElement([tileY, tileX]) !== 3
     )
   }
   isGreenTile(tile: { x: number; y: number }) {
-    return COLLISION.array[tile.y][tile.x] === 1
+    return COLLISION.getArrayElement([tile.y, tile.x]) === 1
   }
 }
-export const COORDS = new Coordinates()
+export const COORD = new Coordinates()

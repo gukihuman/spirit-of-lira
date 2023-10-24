@@ -1,3 +1,3 @@
 export default {
-  position: { x: 2049, y: 2594 },
+  position: { x: 7049, y: 7594 },
 }

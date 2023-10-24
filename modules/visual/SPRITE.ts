@@ -130,7 +130,7 @@ class Spr {
       container.position.x = -container.position.x
     }
     container.position.y = -targetEntity.size.height * effectHeightRatio
-    const angle = COORDS.angle(entity.position, targetEntity.position)
+    const angle = COORD.angle(entity.position, targetEntity.position)
     container.rotation = angle
   }
 

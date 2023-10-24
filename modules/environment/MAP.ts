@@ -1,7 +1,7 @@
 class Ma {
   chunkSprites: Map<string, Sprite> = new Map()
   closeChunks: string[] = []
-  greenForestChunks: string[] = this.setLocationChunks(0, 4)
+  greenForestChunks: string[] = this.setLocationChunks(5, 9)
   /** @returns square of chunks, for example for 50 and 51 ["5050", "5051", "5150", "5151"] */
   private setLocationChunks(start: number, end: number) {
     const chunks: string[] = []
@@ -27,11 +27,11 @@ class Ma {
     this.chunkSprites.forEach((sprite, chunk) => {
       if (!heroPosition.x || !heroPosition.y) return
       sprite.x =
-        COORDS.chunkToCoordinateX(chunk) +
+        COORD.chunkToCoordinateX(chunk) +
         CONFIG.viewport.width / 2 -
         heroPosition.x
       sprite.y =
-        COORDS.chunkToCoordinateY(chunk) +
+        COORD.chunkToCoordinateY(chunk) +
         CONFIG.viewport.height / 2 -
         heroPosition.y
     })
@@ -41,8 +41,8 @@ class Ma {
     const heroEntity = WORLD.entities.get(WORLD.heroId)
     if (!heroEntity) return
     const heroPosition = WORLD.hero.position
-    const startY = COORDS.coordinateToChunk(heroPosition.y) - 1
-    const startX = COORDS.coordinateToChunk(heroPosition.x) - 2
+    const startY = COORD.coordinateToChunk(heroPosition.y) - 1
+    const startX = COORD.coordinateToChunk(heroPosition.x) - 2
     this.closeChunks = []
     const sprites: Promise<void>[] = []
     for (let y of _.range(startY, startY + 3)) {
