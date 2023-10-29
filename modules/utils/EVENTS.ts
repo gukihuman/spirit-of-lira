@@ -1,32 +1,6 @@
 class Events {
-  list: { [event: string]: Array<(AnyObject) => void> } = {
-    damage: [],
-    equip: [],
-    unequip: [],
-    cast: [],
-    revenge: [],
-    // scenes
-    startScene: [],
-  }
-  listOfSingle: { [event: string]: Array<() => void> } = {
-    toggleInventory: [],
-    toggleFullscreen: [],
-    toggleCollision: [],
-    toggleEditMode: [],
-    cast1: [],
-    cast2: [],
-    cast3: [],
-    cast4: [],
-    decide: [],
-    mouseMove: [],
-    autoMouseMove: [],
-    gamepadMove: [],
-    lockTarget: [],
-    // scenes
-    endScene: [],
-    continue: [],
-    mouseContinue: [],
-  }
+  list: { [event: string]: Array<(AnyObject) => void> } = {}
+  listOfSingle: { [event: string]: Array<() => void> } = {}
   active: [string, AnyObject][] = []
   activeSingle: string[] = []
   /** Add logic to an event. Function must have data argument. If data not required, use onSingle instead. */
