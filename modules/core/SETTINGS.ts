@@ -11,7 +11,7 @@ class Settings {
   }
   worldInputEvents = {
     keyboard: {
-      moveOrCast1: "o",
+      decide: "o",
       cast1: "g",
       cast2: "",
       cast3: "",
@@ -22,7 +22,7 @@ class Settings {
       lockTarget: "u",
     },
     mouse: {
-      moveOrCast1: 0,
+      decide: 0,
       lockTarget: 2,
     },
     gamepad: {
@@ -128,13 +128,11 @@ class Settings {
       })
       // overwrite default
       if (
-        INPUT.mouse.pressed.includes(this.worldInputEvents.mouse.moveOrCast1) ||
-        INPUT.keyboard.pressed.includes(
-          this.worldInputEvents.keyboard.moveOrCast1
-        )
+        INPUT.mouse.pressed.includes(this.worldInputEvents.mouse.decide) ||
+        INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.decide)
       ) {
         if (WORLD.loop.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
-          EVENTS.emitSingle("moveOrCast1")
+          EVENTS.emitSingle("decide")
           GLOBAL.autoMouseMove = false
         }
       }

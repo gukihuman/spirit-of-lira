@@ -17,7 +17,7 @@ class Events {
     cast2: [],
     cast3: [],
     cast4: [],
-    moveOrCast1: [],
+    decide: [],
     mouseMove: [],
     autoMouseMove: [],
     gamepadMove: [],

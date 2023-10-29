@@ -4,7 +4,7 @@ class Move {
   lastMobKilledMS = 0
   private gamepadAxesMoved = false
   init() {
-    EVENTS.onSingle("moveOrCast1", () => {
+    EVENTS.onSingle("decide", () => {
       if (GLOBAL.hoverId) {
         EVENTS.emitSingle("cast1")
         EVENTS.emitSingle("lockTarget")
