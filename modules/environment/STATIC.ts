@@ -1,10 +1,10 @@
+import staticCollection from "@/entities/static"
 class Static {
   async init() {
-    await CREATOR.create("magic-tree", { sprite: { static: true } })
-    await CREATOR.create("bridge-fence", { sprite: { static: true } })
-    await CREATOR.create("bunny", { sprite: { static: true } })
-    await CREATOR.create("low-tree", { sprite: { static: true } })
-    await CREATOR.create("low-forest", { sprite: { static: true } })
+    for (const key in staticCollection) {
+      if (key === "🔧") continue
+      await CREATOR.create(key, { sprite: {} })
+    }
   }
 }
 export const STATIC = new Static()

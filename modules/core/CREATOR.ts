@@ -33,10 +33,10 @@ class Creator {
         parent: "top",
       })
     } else if (!entity.move) {
-      if (entity.sprite.static) {
-        await SPRITE.staticEntity(entity, id, { randomFlip: false })
-      } else {
+      if (ASSETS.jsons[name]) {
         await SPRITE.entity(entity, id, { randomFlip: false })
+      } else {
+        await SPRITE.staticEntity(entity, id, { randomFlip: false })
       }
     } else await SPRITE.entity(entity, id)
     return id

@@ -5,7 +5,7 @@ export default {
   },
   sprite: {},
 
-  process(entity, id) {
+  process(entity: { position: any }, id: number) {
     let position = entity.position
     if (!position) return
 

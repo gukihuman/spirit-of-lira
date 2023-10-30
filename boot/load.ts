@@ -19,11 +19,11 @@ export default defineNuxtPlugin(async () => {
   })
 })
 async function load(
-  paths,
+  paths: Record<string, () => Promise<Record<string, any>>>,
   savePlace: AnyObject | string[],
-  addNameProperty: boolean = false,
+  addNameProperty = false,
   format: LoadFormats = "ts",
-  justNames: boolean = false
+  justNames = false
 ) {
   for (const path in paths) {
     const name = getFileName(path, format)
@@ -34,12 +34,23 @@ async function load(
       savePlace.push(name)
       continue
     }
-    savePlace[name] = item.default
-    if (addNameProperty) item.default.name = name
+    if (item.default["🔧"] === "collection") {
+      _.forEach(item.default, (value, key) => {
+        if (key === "type") return
+        savePlace[key] = value
+        // check if it's an object because some unknown string error occurs
+        if (addNameProperty && typeof savePlace[key] === "object") {
+          savePlace[key].name = key
+        }
+      })
+    } else {
+      savePlace[name] = item.default
+      if (addNameProperty) item.default.name = name
+    }
   }
 }
 function getFileName(path: string, format: LoadFormats) {
-  let match
+  let match: any[] | null = null
   if (format === "ts") {
     match = path.match(/\/([^/]+)\.ts/)
   } else if (format === "webp") {
