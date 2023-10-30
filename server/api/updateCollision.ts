@@ -8,5 +8,6 @@ export default eventHandler(async (event) => {
     "../../assets/jumble/collision.json"
   )
   await writeFile(path, JSON.stringify(body))
+  console.log("updated: assets/jumble/collision.json")
   return { statusCode: 200 }
 })

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="relative flex justify-center items-center w-[120px] hover:brightness-125"
+  class="relative flex justify-center items-center w-[120px] hover:brightness-125 hover:scale-[1.05] transition duration-150 ease-in-out"
   :style="style"
   @mouseover="INTERFACE.talkHover = true"
   @mouseleave="INTERFACE.talkHover = false"
