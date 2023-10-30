@@ -21,13 +21,11 @@ export default defineNuxtConfig({
   components: [{ path: "@/interface", pathPrefix: false }],
   plugins: ["@/boot/load.ts", "@/boot/start.ts"],
   css: ["@/tailwind.css"],
+
   // important for correct work of importer
   vite: {
     assetsInclude: ["**/*.md"],
-    build: {
-      minify: false,
-    },
+    build: { minify: false },
   },
-  // local build not working with sourcemap
-  sourcemap: false,
+  sourcemap: false, // local build not working with sourcemap
 })

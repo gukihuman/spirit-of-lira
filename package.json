@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "makemap": "ts-node makemap.ts"
+    "forge": "ts-node forge.ts"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.1.3",
