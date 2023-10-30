@@ -2,9 +2,9 @@ class Last {
   entities: Map<number, any> = new Map()
   hero: AnyObject = {}
   hover: AnyObject = {}
-  scenePart: string = ""
-  loopSec: number = -1
-  context: string = ""
+  scenePart = ""
+  loopSec = -1
+  context = ""
   init() {
     WORLD.loop.add(() => {
       this.entities = LIB.cloneMapDeep(WORLD.entities)

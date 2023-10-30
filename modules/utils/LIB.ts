@@ -6,11 +6,9 @@ class Lib {
       configurable: true,
     })
   }
-
   wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
-
   /** @returns string of time for example "22:43:54" */
   timeNow(): string {
     function _pad(num: number): string {

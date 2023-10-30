@@ -5,6 +5,10 @@ const inter = {
   targetLocked: false,
   targetHealth: 0,
   targetMaxHealth: 0,
+  talk: false,
+  talkPosition: { x: 0, y: 0 },
+  talkEntity: "",
+  talkHover: false,
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context === "world") {

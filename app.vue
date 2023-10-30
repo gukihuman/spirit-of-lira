@@ -26,7 +26,7 @@ const gameWindowClasses = computed(() => {
 }
 .fast-enter-active,
 .fast-leave-active {
-  transition: opacity 50ms ease;
+  transition: opacity 70ms ease;
 }
 .fast-enter-from,
 .fast-leave-to {
