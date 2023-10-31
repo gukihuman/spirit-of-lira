@@ -26,6 +26,7 @@ const activeScene = {
       EVENTS.emitSingle("continue")
     }
     EVENTS.on("startScene", (options) => {
+      if (!options.name) return
       GLOBAL.context = "scene"
       this.name = options.name
       this.nextSceneName = options.name // used each continue
@@ -142,4 +143,4 @@ const activeScene = {
     layer.brightness = SCENE.options[layer.images[0]]?.brightness || 1
   },
 }
-export const ACTIVE_SCENE = LIB.store(activeScene)
+export const ACTIVE_SCENE = LIBRARY.store(activeScene)

@@ -1,4 +1,4 @@
-class Lit {
+class Museum {
   processEntity(components: string[], fn: (entity, id?) => void) {
     WORLD.entities.forEach((entity, id) => {
       let satisfied = true
@@ -9,4 +9,4 @@ class Lit {
     })
   }
 }
-export const LIT = new Lit()
+export const MUSEUM = new Museum()

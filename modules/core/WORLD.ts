@@ -60,7 +60,7 @@ class World {
     // hero creation
     let heroId = await CREATOR.create("lira")
     if (!heroId) {
-      LIB.logWarning("hero is not created (starter)")
+      LIBRARY.logWarning("hero is not created (starter)")
       return
     }
     WORLD.hero = WORLD.entities.get(heroId)

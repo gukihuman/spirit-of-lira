@@ -93,7 +93,7 @@ class Settings {
     })
   }
   emitEvents() {
-    if (LIB.deadZoneExceed(this.inputOther.gamepad.deadZone, INPUT)) {
+    if (LIBRARY.deadZoneExceed(this.inputOther.gamepad.deadZone, INPUT)) {
       EVENTS.emitSingle("gamepadMove")
     }
     if (INTERFACE.inputFocus) return

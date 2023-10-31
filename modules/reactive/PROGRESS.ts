@@ -1,4 +1,4 @@
 const progress = {
   scenes: [],
 }
-export const PROGRESS = LIB.store(progress)
+export const PROGRESS = LIBRARY.store(progress)

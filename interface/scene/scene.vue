@@ -11,7 +11,7 @@ div(class="z-30 relative")
 
   //- only for adult check
   div(
-    class="-z-10 flex justify-center items-center w-full h-[1080px] relative pointer-events-none"
+    class="-z-10 flex justify-center items-center w-full h-[1080px] relative pointer-events-none bg-slate-800"
     v-if="ACTIVE_SCENE.name === 's0-adult-check' && ACTIVE_SCENE.stepIndex < 2"
   )
     p(class="mt-[-310px] w-[500px] h-[80px] leading-10 font-semibold text-[30px] text-red-400 text-center") This game is strictly 18+ 🔞

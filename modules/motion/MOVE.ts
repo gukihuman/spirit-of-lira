@@ -26,7 +26,7 @@ class Move {
     this.checkGamepadAxes()
   }
   private checkGamepadAxes() {
-    if (LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT)) {
+    if (LIBRARY.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT)) {
       this.gamepadAxesMoved = true
     } else {
       // first time not moved
@@ -38,6 +38,7 @@ class Move {
   }
   // TODO anything
   mouseMove() {
+    if (INTERFACE.talkHover) return
     WORLD.hero.state.track = false
     WORLD.hero.state.cast = false
     WORLD.hero

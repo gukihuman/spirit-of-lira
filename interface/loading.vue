@@ -14,4 +14,8 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
           draggable="false"
           class="w-[40px] saturate-[.2]"
         )
+  transition: div(
+    class="absolute w-full h-full bg-slate-800"
+    v-show="!GLOBAL.loading"
+  )
 </template>

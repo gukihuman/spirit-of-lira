@@ -3,7 +3,7 @@ export default defineNuxtPlugin(async (app) => {
 })
 async function start() {
   if (!REFS.viewport) {
-    LIB.logWarning("viewport not found (starter)")
+    LIBRARY.logWarning("viewport not found (starter)")
     return
   }
   if (process.env.NODE_ENV == "development") GLOBAL.devMode = true
@@ -24,7 +24,7 @@ async function start() {
 async function initModules() {
   CONFIG.init() // prepare priority
   const processes: { [name: string]: () => void } = {}
-  const sortedPriority = LIB.sortedKeys(CONFIG.priority.modulesInit)
+  const sortedPriority = LIBRARY.sortedKeys(CONFIG.priority.modulesInit)
   for (const name of sortedPriority) {
     const module = globalThis[name][name]
     if (module.init) await module.init()

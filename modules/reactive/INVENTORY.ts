@@ -24,7 +24,7 @@ function initEvents() {
   EVENTS.on("equip", (data) => {
     const { singular, plural } = getType(data.name)
     if (!singular || !plural) {
-      LIB.logWarning(`"${data.name}" not found on equip (INVENTORY)`)
+      LIBRARY.logWarning(`"${data.name}" not found on equip (INVENTORY)`)
       return
     }
     const lastWeapon = INVENTORY.equipped[singular]
@@ -39,7 +39,7 @@ function initEvents() {
   EVENTS.on("unequip", (data) => {
     const { singular, plural } = getType(data.name)
     if (!singular || !plural) {
-      LIB.logWarning(`"${data.name}" not found on unequip (INVENTORY)`)
+      LIBRARY.logWarning(`"${data.name}" not found on unequip (INVENTORY)`)
       return
     }
     INVENTORY.equipped[singular] = undefined
@@ -62,4 +62,4 @@ function getType(name: string) {
   }
   return { singular, plural }
 }
-export const INVENTORY = LIB.store(inventory)
+export const INVENTORY = LIBRARY.store(inventory)

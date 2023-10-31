@@ -48,7 +48,9 @@ class Events {
   private executeEvents() {
     this.executeEventsTries++
     if (this.executeEventsTries > this.limit) {
-      LIB.logWarning(`Chain of emitted events exceeds ${this.limit} (EVENTS)`)
+      LIBRARY.logWarning(
+        `Chain of emitted events exceeds ${this.limit} (EVENTS)`
+      )
       return
     }
     this.activeLength = this.active.length
@@ -58,7 +60,7 @@ class Events {
       const data = eventTuple[1]
       const eventFunctions = this.list[event]
       if (!eventFunctions) {
-        LIB.logWarning(
+        LIBRARY.logWarning(
           `Unknown event or logic is not defined: "${event}" (EVENTS)`
         )
         return
@@ -67,7 +69,7 @@ class Events {
     })
     this.activeSingle.forEach((event) => {
       if (!this.listOfSingle[event]) {
-        LIB.logWarning(`Unknown single event: "${event}" (EVENTS)`)
+        LIBRARY.logWarning(`Unknown single event: "${event}" (EVENTS)`)
         return
       }
       this.listOfSingle[event].forEach((fn) => fn())

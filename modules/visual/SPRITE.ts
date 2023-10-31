@@ -92,7 +92,7 @@ class Spr {
       durationMS = EFFECTS.back[name]
     }
     if (!durationMS) {
-      LIB.logWarning(`effect ${name} not found (SPRITE)`)
+      LIBRARY.logWarning(`effect ${name} not found (SPRITE)`)
       return
     }
     const container = new PIXI.Container()
@@ -193,7 +193,7 @@ class Spr {
   async getSpritesheet(name: string): Promise<gSpritesheet | undefined> {
     let json = ASSETS.jsons[name]
     if (!json) {
-      LIB.logWarning(`no json for ${name} in ASSETS.jsons (SPRITE)`)
+      LIBRARY.logWarning(`no json for ${name} in ASSETS.jsons (SPRITE)`)
       return
     }
     // lazy guard for an ISpritesheetData type of json from Texture Packer
@@ -210,7 +210,7 @@ class Spr {
       spritesheet = PIXI.Cache.get(name)[1]
     }
     // adds gParse function as a non-cache alternative to parse
-    LIB.addParseWithoutCaching(spritesheet)
+    LIBRARY.addParseWithoutCaching(spritesheet)
     await spritesheet.gParse()
     return spritesheet
   }

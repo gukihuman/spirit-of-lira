@@ -1,4 +1,7 @@
 export default {
-  x: -50,
-  y: -220,
+  distance: 200,
+  scene: "",
+  instantChoices: true, // maybe, just maybe some talk without it :)
+  x: -60,
+  y: -100,
 }

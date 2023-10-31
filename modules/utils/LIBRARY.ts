@@ -1,4 +1,4 @@
-class Lib {
+class Library {
   addGetter(object: AnyObject, name: string, fn: () => any) {
     Object.defineProperty(object, name, {
       get: fn,
@@ -175,4 +175,4 @@ class Lib {
   }
 }
 
-export const LIB = new Lib()
+export const LIBRARY = new Library()

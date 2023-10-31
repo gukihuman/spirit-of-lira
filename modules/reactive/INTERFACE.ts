@@ -29,4 +29,4 @@ const inter = {
     }, "INTERFACE")
   },
 }
-export const INTERFACE = LIB.store(inter)
+export const INTERFACE = LIBRARY.store(inter)

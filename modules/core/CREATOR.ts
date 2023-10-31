@@ -4,7 +4,7 @@ class Creator {
   async create(name: string, components?: { [key: string]: any }) {
     const entity = _.cloneDeep(MODELS.entities[name])
     if (!entity) {
-      LIB.logWarning(`"${name}" not found (CREATOR)`)
+      LIBRARY.logWarning(`"${name}" not found (CREATOR)`)
       return
     }
     const id = this.nextId
@@ -44,7 +44,7 @@ class Creator {
   /** inject / expand components from components folder */
   private async injectComponents(entity: Entity, id: number) {
     // 📜 move sorting outside to calculate it only once
-    const sortedPriority = LIB.sortedKeys(CONFIG.priority.componentInject)
+    const sortedPriority = LIBRARY.sortedKeys(CONFIG.priority.componentInject)
     const promises: Promise<void>[] = []
     sortedPriority.forEach((name) => {
       const value = MODELS.components[name]
@@ -61,7 +61,7 @@ class Creator {
   private async mergeComponent(entity, id, value, name) {
     this.dependCounter++
     if (this.dependCounter > 100) {
-      LIB.logWarning(
+      LIBRARY.logWarning(
         `"more than 100 loops of merging components, likely a circular dependency (CREATOR)`
       )
       return
@@ -73,7 +73,7 @@ class Creator {
         if (entity[dependName]) return
         const dependValue = MODELS.components[dependName]
         if (!dependValue) {
-          LIB.logWarning(
+          LIBRARY.logWarning(
             `"${dependName}" as a "${name}" dependency is not found (CREATOR)`
           )
           return
@@ -91,7 +91,7 @@ class Creator {
         if (entity[triggerName]) return
         const triggerValue = MODELS.components[triggerName]
         if (!triggerValue) {
-          LIB.logWarning(
+          LIBRARY.logWarning(
             `"${triggerName}" as a "${name}" trigger is not found (CREATOR)`
           )
           return

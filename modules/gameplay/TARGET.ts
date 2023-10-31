@@ -45,7 +45,7 @@ class Target {
     })
     if (
       GLOBAL.lastActiveDevice === "gamepad" &&
-      LIB.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT) &&
+      LIBRARY.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT) &&
       !WORLD.hero.target.locked
     ) {
       // overwrites autoTarget for hero with gamepad axes
