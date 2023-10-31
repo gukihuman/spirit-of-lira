@@ -1,13 +1,19 @@
 class Settings {
+  process() {
+    if (this.interface.showKeys) INTERFACE.showKeys = true
+    else INTERFACE.showKeys = false
+  }
   audio = {
-    // 0.8 kind of default
-    music: 0.0,
-    sound: 0.8,
+    music: 0.0, // 0.8
+    sound: 0.7, // 0.7
   }
   gameplay = {
     // auto attack after kill and also autotarget for mouse like on gamepad
     easyFight: false,
     attackBack: false,
+  }
+  interface = {
+    showKeys: true,
   }
   worldInputEvents = {
     keyboard: {
@@ -15,11 +21,11 @@ class Settings {
       cast1: "g",
       cast2: "",
       cast3: "",
-      cast4: "",
       autoMouseMove: "e",
       toggleInventory: "i",
       toggleFullscreen: "f",
       lockTarget: "u",
+      talk: "t",
     },
     mouse: {
       decide: 0,
@@ -29,10 +35,10 @@ class Settings {
       cast1: "A",
       cast2: "",
       cast3: "",
-      cast4: "",
       toggleFullscreen: "Menu",
       toggleInventory: "Start",
       lockTarget: "RT",
+      talk: "Y",
     },
   }
   sceneInputEvents = {
