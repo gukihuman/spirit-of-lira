@@ -47,7 +47,10 @@ declare global {
     choices: {
       text: string
       nextSceneName: string
+      choiceEvents: string // events separated by comma like "event1, event2"
       arrow: boolean
+      bulb: boolean
+      bulbScene: string
     }[]
     x: number
     y: number

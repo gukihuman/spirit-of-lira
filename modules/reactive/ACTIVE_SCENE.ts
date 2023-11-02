@@ -20,10 +20,10 @@ const activeScene = {
     }, "ACTIVE_SCENE")
 
     // this is alternative to startScene event at start (also no transition)
-    if (!PROGRESS.scenes.includes("g1")) {
+    if (!PROGRESS.scenes.includes("a0")) {
       GLOBAL.context = "scene"
-      this.name = "g1-adult-check"
-      EVENTS.emitSingle("continue")
+      this.name = "a0-adult-check"
+      EVENTS.emitSingle("continue") // trigger choices appearance :)
     }
     EVENTS.on("startScene", (options) => {
       if (!options.name) return
@@ -92,7 +92,7 @@ const activeScene = {
       }
     })
     EVENTS.onSingle("keepAdultCheck", () => {
-      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "g1"), 20)
+      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "a0"), 20)
       SAVE.update()
     })
   },

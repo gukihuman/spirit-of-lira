@@ -1,6 +1,7 @@
 class Scene {
-  mds = {} // loaded on start
-  options = {} // loaded on start
+  mds = {}
+  options = {}
+  conditions = {}
   plainText: AnyObject = {}
   steps = {}
   async init() {
@@ -45,13 +46,20 @@ class Scene {
           }
         }
         // nandle choices
-        if (line.startsWith("> ") || line.startsWith(">> ")) {
+        if (line.startsWith(">")) {
           let choiceObject: AnyObject = {}
           let cleanLine = ""
-          if (line.startsWith("> ")) cleanLine = line.substring(2)
+          if (line.startsWith("> ")) {
+            cleanLine = line.substring(2)
+          }
           if (line.startsWith(">> ")) {
-            cleanLine = line.substring(3)
             choiceObject.arrow = true
+            cleanLine = line.substring(3)
+          }
+          if (line.startsWith(">[")) {
+            choiceObject.bulb = true
+            choiceObject.bulbScene = line.substring(2, line.indexOf("]"))
+            cleanLine = line.substring(line.indexOf("]") + 1).trim()
           }
           function extractBetween(start: string, end: string, where: string) {
             choiceObject.text = cleanLine

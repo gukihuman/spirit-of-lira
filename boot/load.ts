@@ -8,6 +8,7 @@ export default defineNuxtPlugin(async () => {
   await load(import.meta.glob("@/data/skills/**/*"), SKILLS.list)
   await load(import.meta.glob("@/data/scenes/**/*"), SCENE.mds, false, "md")
   await load(import.meta.glob("@/data/scenes/options.ts"), SCENE)
+  await load(import.meta.glob("@/data/scenes/conditions.ts"), SCENE)
   await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
   await load(import.meta.glob("@/assets/**/*"), ASSETS.audios, false, "mp3")

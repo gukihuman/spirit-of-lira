@@ -16,6 +16,7 @@ class Save {
       },
       progress: {
         scenes: PROGRESS.scenes,
+        mobs: PROGRESS.mobs,
       },
     }
     // takes start save and fill it with storage values recursively
@@ -23,10 +24,12 @@ class Save {
     // in the future we might add logic for specific versions of storage save
     this.save = this.resolveSaves(this.startSave, storageSave)
 
+    // 📜 do some logic to declare this in one place - not in update too
     WORLD.hero.position = this.save.hero.position
     INVENTORY.bag = this.save.inventory.bag
     INVENTORY.gear = this.save.inventory.gear
     PROGRESS.scenes = this.save.progress.scenes
+    PROGRESS.mobs = this.save.progress.mobs
 
     SH.stopHero() // update final destination otherwise hero run at the start
   }
@@ -36,6 +39,7 @@ class Save {
     this.save.inventory.bag = _.cloneDeep(INVENTORY.bag)
     this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
     this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)
+    this.save.progress.mobs = _.cloneDeep(PROGRESS.mobs)
     this.stringifyLocal("save", this.save)
   }
   process() {

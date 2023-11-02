@@ -10,6 +10,10 @@ class Dead {
           lastEntity.state.active !== "dead"
         ) {
           entity.state.deadTimeMS = WORLD.loop.elapsedMS
+          if (!WORLD.isHero(id)) {
+            PROGRESS.mobs[entity.name]++
+            SAVE.update()
+          }
         }
         entity.target.id = undefined
         const animation = SPRITE.getLayer(id, "animation")
