@@ -19,10 +19,10 @@ const activeScene = {
       this.updateData()
     }, "ACTIVE_SCENE")
 
-    // this is alternativ to startScene event at start (also no transition)
-    if (!PROGRESS.scenes.includes("s0")) {
+    // this is alternative to startScene event at start (also no transition)
+    if (!PROGRESS.scenes.includes("g1")) {
       GLOBAL.context = "scene"
-      this.name = "s0-adult-check"
+      this.name = "g1-adult-check"
       EVENTS.emitSingle("continue")
     }
     EVENTS.on("startScene", (options) => {
@@ -38,9 +38,11 @@ const activeScene = {
     EVENTS.onSingle("endScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
-      PROGRESS.scenes.push(this.name.split("-")[0])
+      if (PROGRESS.scenes && !PROGRESS.scenes.includes(this.name)) {
+        PROGRESS.scenes.push(this.name.split("-")[0])
+      }
       this.name = ""
-      LOCAL.update()
+      SAVE.update()
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice
@@ -90,8 +92,8 @@ const activeScene = {
       }
     })
     EVENTS.onSingle("keepAdultCheck", () => {
-      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "s0"), 20)
-      LOCAL.update()
+      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "g1"), 20)
+      SAVE.update()
     })
   },
   runChoiceEvent(step) {

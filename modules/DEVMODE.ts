@@ -10,22 +10,12 @@ class DevMode {
       if (INPUT.keyboard.justPressed.includes("l")) {
         console.log(WORLD.hover)
       }
-      if (INPUT.keyboard.justPressed.includes("m")) {
-        INTERFACE.input = !INTERFACE.input
-      }
-      if (INPUT.keyboard.justPressed.includes("g")) {
-        console.log(GLOBAL.lastActiveDevice)
-      }
-      // if (INPUT.keyboard.justPressed.length > 0) {
-      //   console.log(INPUT.keyboard.justPressed)
-      // }
-      globalThis.resetProgress = () => {
-        PROGRESS.scenes = []
-        LOCAL.update()
+      globalThis.reset = () => {
+        SAVE.stringifyLocal("save", SAVE.startSave)
         location.reload()
       }
       globalThis.log = () => {
-        console.log(PROGRESS.scenes)
+        return WORLD.hero.position
       }
     }
   }

@@ -173,6 +173,12 @@ class Library {
       })
     }
   }
+  isPureObject(item) {
+    if (typeof item === "object" && item !== null && !Array.isArray(item)) {
+      return true
+    }
+    return false
+  }
 }
 
 export const LIBRARY = new Library()

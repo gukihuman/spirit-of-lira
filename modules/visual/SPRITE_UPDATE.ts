@@ -1,6 +1,9 @@
 class SpriteUpdate {
   private framesToValidate = 3
   private walkRunRatio = 0.9
+  init() {
+    this.updateItems() // to load item sprites during loading
+  }
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (!entity.sprite || !entity.position) return
@@ -57,7 +60,7 @@ class SpriteUpdate {
     // now weapon sprite option controls cast sprite
     // but it should be skill first by adding offensive or nutral options
     if (WORLD.isHero(id)) {
-      return ITEMS.weapons[INVENTORY.equipped.weapon].sprite
+      return ITEMS.weapons[INVENTORY.gear.weapon].sprite
     } else {
       return entity.skills.active
     }

@@ -39,7 +39,7 @@ class Cast {
   private dealDamage(entity, id, skill) {
     if (WORLD.isHero(id)) {
       let weaponDamage = 0
-      const weapon = INVENTORY.equipped.weapon
+      const weapon = INVENTORY.gear.weapon
       if (weapon) weaponDamage = ITEMS.weapons[weapon].damage
       entity.target.entity.attributes.health -= weaponDamage
     } else {

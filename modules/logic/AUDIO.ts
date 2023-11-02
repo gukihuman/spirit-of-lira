@@ -52,14 +52,14 @@ class Aud {
     }
     if (!this.musicPlaying && GLOBAL.context === "scene") {
       const sceneName = ACTIVE_SCENE.name.split("-")[0]
-      if (sceneName === "s1") {
+      if (sceneName === "n1") {
         if (!this.initialMusicPlayed) {
           // always 1 at start
-          this.currentMusicId = this.play("s1-1", 0, "music")
+          this.currentMusicId = this.play("n1-1", 0, "music")
           if (this.currentMusicId) this.initialMusicPlayed = true
           return
         } else {
-          this.currentMusicId = this.play("s1-2", 0, "music")
+          this.currentMusicId = this.play("n1-2", 0, "music")
           return
         }
       }

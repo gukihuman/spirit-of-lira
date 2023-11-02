@@ -1,4 +1,5 @@
 const global = {
+  version: "0.1.0",
   context: "world",
   gameWindowScale: 1,
   fullscreen: false,

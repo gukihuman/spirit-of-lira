@@ -1,8 +1,8 @@
 export default {
   speed: 5,
 
-  destination: undefined,
-  finaldestination: undefined,
+  destination: null,
+  finaldestination: null,
   path: [],
 
   randomDestinationMS: 0,

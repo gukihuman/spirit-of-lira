@@ -27,5 +27,5 @@ export default defineNuxtConfig({
     assetsInclude: ["**/*.md"],
     build: { minify: false },
   },
-  sourcemap: false, // local build not working with sourcemap
+  sourcemap: false, // save build not working with sourcemap
 })
