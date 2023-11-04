@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       },
     ],
   ],
-  ignore: ["whales/**"],
+  ignore: ["whales/**", "sprout/**"],
   imports: {
     dirs: ["boot/**/*.{js,ts}", "modules/**/*.{js,ts}"],
   },

@@ -11,7 +11,7 @@ class World {
     if (id === this.heroId) return true
     return false
   }
-  hover: AnyObject = {}
+  hover: AnyObject | null = {}
   // layers
   map = new PIXI.Container()
   ground = new PIXI.Container()

@@ -40,8 +40,15 @@ class Hover {
     } else if (intersections.length === 1) {
       hoverEntityId = intersections[0]
     }
-    GLOBAL.hoverId = hoverEntityId
-    WORLD.hover = WORLD.entities.get(hoverEntityId)
+    if (hoverEntityId) {
+      GLOBAL.hoverId = hoverEntityId
+      WORLD.hover = WORLD.entities.get(hoverEntityId)
+      this.debouncedEmpty()
+    }
   }
+  debouncedEmpty = _.debounce(() => {
+    GLOBAL.hoverId = null
+    WORLD.hover = null
+  }, 120)
 }
 export const HOVER = new Hover()
