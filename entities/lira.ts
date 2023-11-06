@@ -15,7 +15,7 @@ export default {
     },
   },
   sprite: {
-    startFrames: { idle: 11, walk: 8, run: 4, "sword-attack": 14 },
+    startFrames: { idle: 11, walk: 8, run: 4, "attack-sword": 14 },
     effectHeightRatio: 0.45,
     effectWidthRatio: 0.25,
   },

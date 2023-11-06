@@ -1,5 +1,5 @@
 export default {
-  sprite: "sword-attack",
+  sprite: "attack-sword",
   audio: "sword-hit",
   audioDelay: 0.8, // multiplier on the cast time
   hitEffect: "sword-hit",
