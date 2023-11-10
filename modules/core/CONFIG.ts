@@ -59,7 +59,7 @@ class GukiConfig {
     focusedChoiceBoxOpacity: 0.65,
     textSpeed: 70,
     transitionSpeed: 700,
-    skipDelay: 250,
+    skipDelay: 100,
   }
 }
 export const CONFIG = new GukiConfig()

@@ -29,16 +29,12 @@
     "vitest": "^0.26.2"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.0",
     "dotenv": "^16.0.3",
     "guki-input-controller": "^0.8.7",
     "mathjs": "^11.11.2",
     "pixi-filters": "^5.2.1",
     "sharp": "^0.32.6",
-    "socket.io": "^4.7.2",
-    "socket.io-client": "^4.7.2",
     "spritesheet-js": "^1.2.8",
-    "ts-node": "^10.9.1",
-    "vite-plugin-string": "^1.2.1"
+    "ts-node": "^10.9.1"
   }
 }

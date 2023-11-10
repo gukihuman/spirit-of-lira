@@ -43,10 +43,11 @@ class Settings {
   }
   sceneInputEvents = {
     keyboard: {
-      continue: "m",
+      continue: "Space",
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
       toggleFullscreen: "f",
+      skipScene: "Escape",
     },
     mouse: {
       mouseContinue: 0,
@@ -56,6 +57,7 @@ class Settings {
       previousOption: "Down",
       nextOption: "Up",
       toggleFullscreen: "Menu",
+      skipScene: "Start",
     },
   }
   interfaceInputEvents = {

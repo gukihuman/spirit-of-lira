@@ -15,7 +15,7 @@ class DevMode {
         location.reload()
       }
       globalThis.log = () => {
-        return WORLD.hero.position
+        return PROGRESS.scenes
       }
     }
   }

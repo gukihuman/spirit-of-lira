@@ -35,14 +35,19 @@ const activeScene = {
         setTimeout(() => EVENTS.emitSingle("continue"), 20)
       }
     })
-    EVENTS.onSingle("endScene", () => {
+    EVENTS.onSingle("skipScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
-      if (PROGRESS.scenes && !PROGRESS.scenes.includes(this.name)) {
+      this.name = ""
+    })
+    EVENTS.onSingle("endScene", () => {
+      if (!PROGRESS.scenes.includes(this.name.split("-")[0])) {
         PROGRESS.scenes.push(this.name.split("-")[0])
       }
-      this.name = ""
       SAVE.update()
+      GLOBAL.context = "world"
+      INTERFACE.inventory = false
+      this.name = ""
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice

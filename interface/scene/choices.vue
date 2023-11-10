@@ -8,7 +8,7 @@ div(
   div(
     v-for="(choice, index) in ACTIVE_SCENE[props.layer].choices"
     :key="index"
-    class="relative"
+    class="relative hover:scale-[1.03] transition duration-300 ease-in-out"
     :style="choiceBoxStyle"
     @mouseover="mouseover(index)"
     @click="click(index)"
@@ -16,11 +16,26 @@ div(
     transition(:name="resolveChoiceTransition(index)")
       div(v-if="ACTIVE_SCENE.showChoiceBox")
         //- arrow icon
-        div(class="absolute z-50 w-full h-full flex justify-end items-end")
+        div(class="absolute z-50 w-full h-full flex justify-end items-end bottom-[12px] right-[10px] opacity-[0.8]")
           img(
             v-if="choice.arrow"
-            class="scale-[0.8] m-[2px]"
+            class="scale-[1] m-[2px]"
             :src="ASSETS.webps['arrow-icon']"
+            )
+        //- bulb icons
+        div(
+          v-if="choice.bulb"
+          class="absolute z-50 w-full h-full flex justify-end items-end bottom-[10px] right-[10px] opacity-[0.8]"
+        )
+          img(
+            v-if="PROGRESS.scenes.includes(choice.bulbScene)"
+            class="scale-[1] m-[2px]"
+            :src="ASSETS.webps['bulb-scene-on']"
+            )
+          img(
+            v-if="!PROGRESS.scenes.includes(choice.bulbScene)"
+            class="scale-[1] m-[2px]"
+            :src="ASSETS.webps['bulb-scene-off']"
             )
         //- focus frame
         transition(name="fast"): focus-frame(:index="index")

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="relative w-[120px] hover:brightness-125 transition duration-150 ease-in-out"
+  class="relative w-[120px] hover:brightness-[1.15] transition duration-150 ease-in-out"
   :style="style"
 )
   div(
