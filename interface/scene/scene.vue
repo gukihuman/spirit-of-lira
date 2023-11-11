@@ -8,6 +8,9 @@ div(class="z-30 relative")
     div(v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
       images(layer = "layerTwo")
       dialogue(layer = "layerTwo")
+  div(:style="keysStyle" class="absolute left-[35px] top-[1005px] flex gap-10")
+    skip
+    navigate
 
   //- only for adult check
   div(
@@ -21,6 +24,14 @@ div(class="z-30 relative")
 <script setup lang="ts">
 const transitionSpeed = computed(() => {
   return `opacity ${CONFIG.scene.transitionSpeed}ms ease`
+})
+const keysStyle = computed(() => {
+  return {
+    filter: `
+      hue-rotate(${ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].hue}deg) 
+      brightness(${ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].brightness})
+    `,
+  }
 })
 </script>
 <style scoped>

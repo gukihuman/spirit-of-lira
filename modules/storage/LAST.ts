@@ -1,7 +1,7 @@
 class Last {
   entities: Map<number, any> = new Map()
   hero: AnyObject = {}
-  hover: AnyObject = {}
+  hover: AnyObject | null = {}
   scenePart = ""
   loopSec = -1
   context = ""

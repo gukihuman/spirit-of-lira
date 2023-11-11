@@ -34,7 +34,7 @@ class GukiConfig {
       LAST: 2,
       INPUT_UPDATE: 1, // at least SETTINGS depends on it
       // <- rest of the logic here
-      ASTAR: -1, // check logic in EVENTS before it is empty
+      ASTAR: -1, // check logic in EVENTS before it is empty4
       EVENTS: -2, // runs all logic for collected events and empty itself
       MOVE: -3,
       CAST: -4,
@@ -59,7 +59,7 @@ class GukiConfig {
     focusedChoiceBoxOpacity: 0.65,
     textSpeed: 70,
     transitionSpeed: 700,
-    skipDelay: 100,
+    skipDelay: 220,
   }
 }
 export const CONFIG = new GukiConfig()

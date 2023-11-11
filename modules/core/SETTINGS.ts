@@ -43,11 +43,11 @@ class Settings {
   }
   sceneInputEvents = {
     keyboard: {
-      continue: "Space",
+      continue: " ", // Space
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
       toggleFullscreen: "f",
-      skipScene: "Escape",
+      skipScene: "s",
     },
     mouse: {
       mouseContinue: 0,

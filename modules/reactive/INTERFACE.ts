@@ -9,6 +9,7 @@ const inter = {
   talkPosition: { x: 0, y: 0 },
   talkEntity: "",
   talkHover: false,
+  skipHover: false,
   showKeys: true,
   init() {
     WORLD.loop.add(() => {

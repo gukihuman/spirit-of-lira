@@ -23,8 +23,7 @@ class Keys {
     "Shift",
     "Alt",
     "Enter",
-    "Escape",
-    "Space",
+    " ", // Space
     "Delete",
     "CapsLock",
     "Tab",
