@@ -6,7 +6,7 @@ class Loop {
   }
   /** @returns 1/60 for 60 fps, 1/144 for 144 fps with delta correction */
   get deltaSec() {
-    if (!WORLD.app) return
+    if (!WORLD.app) return 1 / 60
     return WORLD.app.ticker.deltaMS / 16.66 / 60
   }
   newSec = false

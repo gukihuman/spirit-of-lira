@@ -26,7 +26,7 @@ class Entities {
       ATTRIBUTES: {
         health: 20,
         maxHealth: 20,
-        healthRegen: 0.5,
+        healthRegen: 0.2,
       },
     },
     bunbo: {

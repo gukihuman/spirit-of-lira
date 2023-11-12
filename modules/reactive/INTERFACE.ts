@@ -13,6 +13,8 @@ const inter = {
   showKeys: true,
   heroHealth: 0,
   heroMaxHealth: 0,
+  heroEnergy: 0,
+  heroMaxEnergy: 0,
   init() {
     LOOP.add(() => {
       if (GLOBAL.context === "world") {
@@ -25,8 +27,9 @@ const inter = {
           INTERFACE.target = false
         }
         INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
-        INTERFACE.heroMaxHealth =
-          ENTITIES.collection[SH.hero.name].ATTRIBUTES.health
+        INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.maxHealth
+        INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.mana
+        INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.maxEnergy
         if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
       }
