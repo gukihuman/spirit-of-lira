@@ -37,23 +37,6 @@ declare global {
     gParse: () => void
     gProcessFrames: (any) => void
   }
-  type Entity = { [key: string]: any }
-  type Context = "world" | "scene" | "interface"
+
   type AnyObject = { [key: string]: any }
-  type LoadFormats = "ts" | "webp" | "json" | "md" | "mp3"
-  type SceneLayer = {
-    images: string[]
-    text: string
-    choices: {
-      text: string
-      nextSceneName: string
-      choiceEvents: string // events separated by comma like "event1, event2"
-      arrow: boolean
-      bulb: boolean
-      bulbScene: string
-    }[]
-    x: number
-    y: number
-    hue: number
-  }
 }

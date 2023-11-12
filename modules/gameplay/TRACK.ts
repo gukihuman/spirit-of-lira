@@ -1,15 +1,15 @@
 class Track {
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.state || entity.state.active !== "track") return
-      if (!entity.target.id) {
-        entity.state.track = false
+      if (!entity.STATE || entity.STATE.active !== "track") return
+      if (!entity.TARGET.id) {
+        entity.STATE.track = false
         return
       }
-      entity.move.finaldestination = _.cloneDeep(entity.target.entity.position)
-      const skill = entity.skills.data[entity.skills.active]
-      if (this.inRange(entity, id, entity.target.entity, skill.distance)) {
-        entity.state.cast = true
+      entity.MOVE.finaldestination = _.cloneDeep(entity.TARGET.entity.POSITION)
+      const skill = entity.SKILLS.data[entity.SKILLS.active]
+      if (this.inRange(entity, id, entity.TARGET.entity, skill.distance)) {
+        entity.STATE.cast = true
       }
     })
   }
@@ -17,10 +17,11 @@ class Track {
     if (!targetEntity) return
     const weapon = INVENTORY.gear.weapon
     let weaponDistance = 0
-    if (WORLD.isHero(id)) weaponDistance = ITEMS.weapons[weapon].distance
-    const distance = COORD.distance(entity.position, targetEntity.position)
+    if (WORLD.isHero(id))
+      weaponDistance = ITEMS.collection.weapons[weapon].distance
+    const distance = COORD.distance(entity.POSITION, targetEntity.POSITION)
     return (
-      distance - targetEntity.size.width / 2 < skillDistance + weaponDistance
+      distance - targetEntity.SIZE.width / 2 < skillDistance + weaponDistance
     )
   }
 }

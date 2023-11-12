@@ -1,20 +1,26 @@
 class Talk {
-  // 📜 add component talk here :)
+  component = {
+    distance: 200,
+    scene: "",
+    instantChoices: true, // maybe, just maybe some talk without it :)
+    x: -60,
+    y: -100,
+  }
   updatePosition = false
   entity
   process() {
-    MUSEUM.processEntity(["talk"], (entityToCheck) => {
+    MUSEUM.processEntity(["TALK"], (entityToCheck) => {
       if (
-        COORD.distance(entityToCheck.position, WORLD.hero.position) <
-        entityToCheck.talk.distance
+        COORD.distance(entityToCheck.POSITION, WORLD.hero.POSITION) <
+        entityToCheck.TALK.distance
       ) {
         this.entity = entityToCheck
       }
     })
     if (!this.entity) return
     if (
-      COORD.distance(this.entity.position, WORLD.hero.position) <
-      this.entity.talk.distance
+      COORD.distance(this.entity.POSITION, WORLD.hero.POSITION) <
+      this.entity.TALK.distance
     ) {
       INTERFACE.talk = true
       this.updatePosition = true
@@ -26,15 +32,15 @@ class Talk {
       INTERFACE.talkEntity = this.entity.name
       INTERFACE.talkPosition = {
         x:
-          this.entity.position.x -
-          WORLD.hero.position.x +
+          this.entity.POSITION.x -
+          WORLD.hero.POSITION.x +
           CONFIG.viewport.width / 2 +
-          this.entity.talk.x,
+          this.entity.TALK.x,
         y:
-          this.entity.position.y -
-          WORLD.hero.position.y +
+          this.entity.POSITION.y -
+          WORLD.hero.POSITION.y +
           CONFIG.viewport.height / 2 +
-          this.entity.talk.y,
+          this.entity.TALK.y,
       }
     }
   }
@@ -48,8 +54,8 @@ class Talk {
   emit() {
     if (!this.entity) return
     EVENTS.emit("startScene", {
-      name: this.entity.talk.scene,
-      instantChoices: this.entity.talk.instantChoices,
+      name: this.entity.TALK.scene,
+      instantChoices: this.entity.TALK.instantChoices,
     })
   }
 }

@@ -30,7 +30,7 @@ class Aud {
 
   process() {
     if (!WORLD.loop.newSec) return
-    if (this.audioContext.state === "suspended") {
+    if (this.audioContext.STATE === "suspended") {
       this.audioContext.resume()
     } else {
       GLOBAL.firstUserGesture = true // sometimes works so no need to gesture

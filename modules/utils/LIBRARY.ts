@@ -73,14 +73,14 @@ class Library {
       }
     })
     const storeObject: AnyObject = {}
-    storeObject.state = defineStore(this.generateRandomString(10), {
+    storeObject.STATE = defineStore(this.generateRandomString(10), {
       state: () => object,
     })
     _.forEach(object, (value, key) => {
       Object.defineProperty(storeObject, key, {
-        get: () => storeObject.state()[key],
+        get: () => storeObject.STATE()[key],
         set: (value) => {
-          storeObject.state()[key] = value
+          storeObject.STATE()[key] = value
         },
       })
     })

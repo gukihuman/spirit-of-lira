@@ -28,8 +28,8 @@ class Coordinates {
   distance(p1: { x: number; y: number }, p2: { x: number; y: number }) {
     return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
   }
-  speedPerTick(entity: Entity) {
-    return entity.move.speed * 10 * WORLD.loop.deltaSec
+  speedPerTick(entity) {
+    return entity.MOVE.speed * 10 * WORLD.loop.deltaSec
   }
   conterOfScreen() {
     return this.vector(CONFIG.viewport.width / 2, CONFIG.viewport.height / 2)
@@ -45,8 +45,8 @@ class Coordinates {
   mousePosition() {
     const mousePosition = COORD.mouseOfScreen()
     return this.vector(
-      (mousePosition.x += WORLD.hero.position.x - CONFIG.viewport.width / 2),
-      (mousePosition.y += WORLD.hero.position.y - CONFIG.viewport.height / 2)
+      (mousePosition.x += WORLD.hero.POSITION.x - CONFIG.viewport.width / 2),
+      (mousePosition.y += WORLD.hero.POSITION.y - CONFIG.viewport.height / 2)
     )
   }
   coordinateToChunk(coordinate: number) {

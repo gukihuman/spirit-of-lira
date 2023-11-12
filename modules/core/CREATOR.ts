@@ -1,12 +1,24 @@
 class Creator {
   private nextId = 1
+  async createStatic(
+    name: string,
+    components?: { [key: string]: any },
+    pool: AnyObject = ENTITIES_STATIC.collection
+  ) {
+    this.create(name, components, pool)
+  }
   /**  @returns promise of entity id or undefined */
-  async create(name: string, components?: { [key: string]: any }) {
-    const entity = _.cloneDeep(MODELS.entities[name])
+  async create(
+    name: string,
+    components?: { [key: string]: any },
+    pool: AnyObject = ENTITIES.collection
+  ) {
+    const entity = _.cloneDeep(pool[name])
     if (!entity) {
       LIBRARY.logWarning(`"${name}" not found (CREATOR)`)
       return
     }
+    entity.name = name
     const id = this.nextId
     this.nextId++
     // inject / expand components from argument
@@ -32,7 +44,7 @@ class Creator {
         randomFlip: false,
         parent: "top",
       })
-    } else if (!entity.move) {
+    } else if (!entity.MOVE) {
       if (ASSETS.jsons[name]) {
         await SPRITE.entity(entity, id, { randomFlip: false })
       } else {
@@ -42,12 +54,12 @@ class Creator {
     return id
   }
   /** inject / expand components from components folder */
-  private async injectComponents(entity: Entity, id: number) {
+  private async injectComponents(entity, id: number) {
     // 📜 move sorting outside to calculate it only once
     const sortedPriority = LIBRARY.sortedKeys(CONFIG.priority.componentInject)
     const promises: Promise<void>[] = []
     sortedPriority.forEach((name) => {
-      const value = MODELS.components[name]
+      const value = globalThis[name].component
       if (!value) return
       // entity model has this component or component is auto injected
       if (entity[name] || value.autoInject) {
@@ -71,7 +83,7 @@ class Creator {
       const promises: Promise<void>[] = []
       value.depend.forEach((dependName) => {
         if (entity[dependName]) return
-        const dependValue = MODELS.components[dependName]
+        const dependValue = globalThis[dependName].component
         if (!dependValue) {
           LIBRARY.logWarning(
             `"${dependName}" as a "${name}" dependency is not found (CREATOR)`
@@ -89,7 +101,7 @@ class Creator {
       const promises: Promise<void>[] = []
       value.trigger.forEach((triggerName) => {
         if (entity[triggerName]) return
-        const triggerValue = MODELS.components[triggerName]
+        const triggerValue = globalThis[triggerName].component
         if (!triggerValue) {
           LIBRARY.logWarning(
             `"${triggerName}" as a "${name}" trigger is not found (CREATOR)`

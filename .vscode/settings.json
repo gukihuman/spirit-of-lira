@@ -22,11 +22,11 @@
       "color": "blue"
     },
     {
-      "path": "boot",
+      "path": "assets",
       "color": "magenta"
     },
     {
-      "path": "components",
+      "path": "boot",
       "color": "red"
     },
     {
@@ -34,7 +34,7 @@
       "color": "cyan"
     },
     {
-      "path": "interface",
+      "path": "-",
       "color": "green"
     },
     {
@@ -42,7 +42,7 @@
       "color": "yellow"
     },
     {
-      "path": "data",
+      "path": "interface",
       "color": "yellow"
     }
   ]

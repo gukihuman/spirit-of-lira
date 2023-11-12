@@ -1,8 +1,25 @@
+type Choice = {
+  text?: string
+  nextSceneName?: string
+  choiceEvents?: string // events separated by comma like "event1, event2"
+  arrow?: boolean
+  bulb?: boolean
+  bulbScene?: string
+}
+type SceneLayer = {
+  images?: string[]
+  text?: string
+  choices?: Choice[]
+  x?: number
+  y?: number
+  hue?: number
+}
 interface activeScene extends AnyObject {
   layerOne: SceneLayer
   layerTwo: SceneLayer
+  activeLayer: "layerOne" | "layerTwo"
 }
-const activeScene = {
+const activeScene: activeScene = {
   name: "",
   nextSceneName: "",
   stepIndex: 0,

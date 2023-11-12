@@ -6,7 +6,7 @@ class SpriteUpdate {
   }
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.sprite || !entity.position) return
+      if (!entity.SPRITE || !entity.POSITION) return
       const container = SPRITE.getContainer(id)
       if (!container) return
       this.updateAnimation(entity, id)
@@ -18,15 +18,15 @@ class SpriteUpdate {
     this.updateItems()
   }
   private updateFirstFrameOfState(entity, id) {
-    if (entity.move) {
+    if (entity.MOVE) {
       const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
       SPRITE.getLayer(id, "animation")?.children.forEach((animation) => {
         if (
-          entity.sprite.active === animation.name &&
-          lastEntity.sprite.active !== animation.name
+          entity.SPRITE.active === animation.name &&
+          lastEntity.SPRITE.active !== animation.name
         ) {
-          const frame = entity.sprite.startFrames[animation.name]
+          const frame = entity.SPRITE.startFrames[animation.name]
           if (frame) {
             SPRITE.getAnimation(id, animation.name)?.gotoAndPlay(frame)
           } else {
@@ -38,14 +38,14 @@ class SpriteUpdate {
   }
   private updateCoordinates(entity, container) {
     container.x =
-      entity.position.x - WORLD.hero.position.x + CONFIG.viewport.width / 2
+      entity.POSITION.x - WORLD.hero.POSITION.x + CONFIG.viewport.width / 2
     container.y =
-      entity.position.y - WORLD.hero.position.y + CONFIG.viewport.height / 2
+      entity.POSITION.y - WORLD.hero.POSITION.y + CONFIG.viewport.height / 2
   }
   private updateVisibility(entity, id) {
-    if (entity.move) {
+    if (entity.MOVE) {
       SPRITE.getLayer(id, "animation")?.children.forEach((child) => {
-        if (child.name === entity.sprite.active) child.visible = true
+        if (child.name === entity.SPRITE.active) child.visible = true
         else child.visible = false
       })
     } else {
@@ -60,9 +60,9 @@ class SpriteUpdate {
     // now weapon sprite option controls cast sprite
     // but it should be skill first by adding offensive or nutral options
     if (WORLD.isHero(id)) {
-      return ITEMS.weapons[INVENTORY.gear.weapon].sprite
+      return ITEMS.collection.weapons[INVENTORY.gear.weapon].sprite
     } else {
-      return entity.skills.active
+      return entity.SKILLS.active
     }
   }
   private updateItems() {
@@ -74,7 +74,7 @@ class SpriteUpdate {
     // syncronize all weapon sprites in cast state
     // turn visibility on for cast and off for non-attack
     // 📜 check if skill is neutral to not update and leave weapon idle
-    if (WORLD.hero.sprite.active === heroSpriteName) {
+    if (WORLD.hero.SPRITE.active === heroSpriteName) {
       frontWeapon.children.forEach((child) => {
         const sprite = child as AnimatedSprite
         sprite.gotoAndPlay(heroAnimation.currentFrame)
@@ -87,21 +87,21 @@ class SpriteUpdate {
     }
   }
   private updateAnimation(entity, id) {
-    if (!entity.state) return
+    if (!entity.STATE) return
 
     if (
-      entity.sprite.leaveAnimationConditions &&
-      entity.state.active !== "cast"
+      entity.SPRITE.leaveAnimationConditions &&
+      entity.STATE.active !== "cast"
     ) {
       if (
-        entity.sprite.active === "move" &&
-        !entity.sprite.leaveAnimationConditions.move(entity, id)
+        entity.SPRITE.active === "move" &&
+        !entity.SPRITE.leaveAnimationConditions.move(entity, id)
       )
         return
     }
 
-    if (entity.state.active === "dead") {
-      entity.sprite.active = "dead"
+    if (entity.STATE.active === "dead") {
+      entity.SPRITE.active = "dead"
       return
     }
 
@@ -109,12 +109,12 @@ class SpriteUpdate {
     this.checkCast(entity, id)
   }
   private checkMove(entity, id) {
-    if (!entity.move || entity.state.active === "cast") return
+    if (!entity.MOVE || entity.STATE.active === "cast") return
 
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
 
-    const distance = COORD.distance(entity.position, lastEntity.position)
+    const distance = COORD.distance(entity.POSITION, lastEntity.POSITION)
     const speedPerTick = COORD.speedPerTick(entity)
 
     if (distance / speedPerTick < 0.1) {
@@ -142,13 +142,13 @@ class SpriteUpdate {
   }
   private checkCast(entity, id) {
     //
-    if (!entity.move || !entity.skills) return
-    if (entity.state.active !== "cast") return
+    if (!entity.MOVE || !entity.SKILLS) return
+    if (entity.STATE.active !== "cast") return
 
     if (id === WORLD.heroId) {
-      entity.sprite.active = this.getHeroCastSprite(WORLD.hero, WORLD.heroId)
+      entity.SPRITE.active = this.getHeroCastSprite(WORLD.hero, WORLD.heroId)
     } else {
-      entity.sprite.active = "attack"
+      entity.SPRITE.active = "attack"
     }
   }
   /** sets sprite if enough frames are validated */
@@ -157,24 +157,24 @@ class SpriteUpdate {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
 
-    entity.sprite.onValidation = sprite
+    entity.SPRITE.onValidation = sprite
 
-    if (lastEntity.sprite.onValidation !== entity.sprite.onValidation) {
-      entity.sprite.framesValidated = 0
+    if (lastEntity.SPRITE.onValidation !== entity.SPRITE.onValidation) {
+      entity.SPRITE.framesValidated = 0
       return
     }
-    if (lastEntity.sprite.framesValidated >= this.framesToValidate) {
+    if (lastEntity.SPRITE.framesValidated >= this.framesToValidate) {
       //
-      entity.sprite.active = sprite
+      entity.SPRITE.active = sprite
       return
     }
-    entity.sprite.framesValidated++
+    entity.SPRITE.framesValidated++
   }
   private updateLastChangeMS(entity, id) {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
-    if (entity.sprite.active !== lastEntity.sprite.active) {
-      WORLD.entities.get(id).sprite.lastChangeMS = WORLD.loop.elapsedMS
+    if (entity.SPRITE.active !== lastEntity.SPRITE.active) {
+      WORLD.entities.get(id).SPRITE.lastChangeMS = WORLD.loop.elapsedMS
     }
   }
 }

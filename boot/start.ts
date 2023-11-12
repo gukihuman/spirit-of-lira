@@ -11,13 +11,12 @@ async function start() {
   // right click menu off
   document.addEventListener("contextmenu", (event) => event.preventDefault())
 
-  // everything depend on WORLD ticker, init it right after CONFIG
   await initModules()
 
   await CREATOR.create("mousepoint")
   checkGesture()
 
-  // timeout to make sure initial loading transition will work
+  // timeout to make initial loading transition work
   setTimeout(() => (GLOBAL.loading = false), 1)
 }
 
@@ -26,7 +25,7 @@ async function initModules() {
   const processes: { [name: string]: () => void } = {}
   const sortedPriority = LIBRARY.sortedKeys(CONFIG.priority.modulesInit)
   for (const name of sortedPriority) {
-    const module = globalThis[name][name]
+    const module = globalThis[name]
     if (module.init) await module.init()
     if (module.process) processes[name] = () => module.process()
   }

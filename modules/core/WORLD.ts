@@ -1,3 +1,6 @@
+declare global {
+  type Context = "world" | "scene" | "interface"
+}
 class World {
   // has to be initiated when window DOM object exist
   app?: Application

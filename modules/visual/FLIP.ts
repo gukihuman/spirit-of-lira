@@ -1,10 +1,10 @@
 class Flip {
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move) return
-      if (WORLD.loop.elapsedMS - entity.sprite.lastFlipMS < 200) return
+      if (!entity.MOVE) return
+      if (WORLD.loop.elapsedMS - entity.SPRITE.lastFlipMS < 200) return
       if (!LAST.entities.get(id)) return
-      const previousX = LAST.entities.get(id).position.x
+      const previousX = LAST.entities.get(id).POSITION.x
       const container = SPRITE.getContainer(id)
       if (!container) return
       let before = 1
@@ -19,22 +19,22 @@ class Flip {
         if (layerName === "animation") before = layer.scale.x
       })
       // move
-      if (entity.position.x < previousX) {
+      if (entity.POSITION.x < previousX) {
         layersToFlip.forEach((layer) => (layer.scale.x = -1))
-      } else if (entity.position.x > previousX) {
+      } else if (entity.POSITION.x > previousX) {
         layersToFlip.forEach((layer) => (layer.scale.x = 1))
       }
       // attack target
-      if (entity.target.id && entity.state.track) {
-        const targetEntity = WORLD.entities.get(entity.target.id)
-        if (targetEntity.position.x < entity.position.x) {
+      if (entity.TARGET.id && entity.STATE.track) {
+        const targetEntity = WORLD.entities.get(entity.TARGET.id)
+        if (targetEntity.POSITION.x < entity.POSITION.x) {
           layersToFlip.forEach((container) => (container.scale.x = -1))
-        } else if (targetEntity.position.x > entity.position.x) {
+        } else if (targetEntity.POSITION.x > entity.POSITION.x) {
           layersToFlip.forEach((container) => (container.scale.x = 1))
         }
       }
       if (SPRITE.getLayer(id, "animation")?.scale.x !== before) {
-        entity.sprite.lastFlipMS = WORLD.loop.elapsedMS
+        entity.SPRITE.lastFlipMS = WORLD.loop.elapsedMS
       }
     })
   }

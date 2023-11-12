@@ -39,8 +39,8 @@ class Spawn {
       if (MAP.closeChunks.includes(chunk)) return
 
       WORLD.entities.forEach((entity, id) => {
-        if (!entity.move) return
-        const position = entity.position
+        if (!entity.MOVE) return
+        const position = entity.POSITION
         if (!position) return
 
         const entityChunk = COORD.chunkFromCoordinates(position.x, position.y)
@@ -70,7 +70,7 @@ class Spawn {
         // stop loop if position not found, all tiles in chunks with collision
         if (!position) return
 
-        await CREATOR.create(entity, { position })
+        await CREATOR.create(entity, { POSITION: position })
         ratio -= 1
       }
     }

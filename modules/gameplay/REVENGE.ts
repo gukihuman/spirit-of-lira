@@ -3,10 +3,10 @@ class Revenge {
     EVENTS.on("revenge", ({ entity, id, offender, offenderId }) => {
       if (WORLD.isHero(id) && !SETTINGS.gameplay.attackBack) return
       if (
-        entity.state.active === "idle" ||
-        (!WORLD.isHero(id) && entity.state.active === "move")
+        entity.STATE.active === "idle" ||
+        (!WORLD.isHero(id) && entity.STATE.active === "move")
       ) {
-        entity.target.id = offenderId
+        entity.TARGET.id = offenderId
         EVENTS.emit("cast", { entity, slot: "slot1" })
       }
     })

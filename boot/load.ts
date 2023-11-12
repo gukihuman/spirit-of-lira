@@ -1,56 +1,42 @@
+type Format = "ts" | "webp" | "json" | "md" | "mp3"
 export default defineNuxtPlugin(async () => {
-  const modules = MODELS.modules // for compact view :)
-  await load(import.meta.glob("@/modules/**/*"), modules, false, "ts", true)
-  await load(import.meta.glob("@/entities/**/*"), MODELS.entities, true)
-  await load(import.meta.glob("@/components/**/*"), MODELS.components)
-  await load(import.meta.glob("@/data/items/weapons/**/*"), ITEMS.weapons)
-  await load(import.meta.glob("@/data/items/clothes/**/*"), ITEMS.clothes)
-  await load(import.meta.glob("@/data/skills/**/*"), SKILLS.list)
-  await load(import.meta.glob("@/data/scenes/**/*"), SCENE.mds, false, "md")
-  await load(import.meta.glob("@/data/scenes/options.ts"), SCENE)
-  await load(import.meta.glob("@/data/scenes/conditions.ts"), SCENE)
-  await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, false, "webp")
-  await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, false, "json")
-  await load(import.meta.glob("@/assets/**/*"), ASSETS.audios, false, "mp3")
-  // essentially important for proper sprite work
+  await loadModules(import.meta.glob("@/modules/**/*"))
+  await load(import.meta.glob("@/assets/**/*"), ASSETS.mds, "md")
+  await load(import.meta.glob("@/assets/**/*"), ASSETS.audios, "mp3")
+  await load(import.meta.glob("@/assets/**/*"), ASSETS.webps, "webp")
+  await load(import.meta.glob("@/assets/**/*"), ASSETS.jsons, "json")
+  // update image path for sprite jsons, essentially important
   _.forEach(ASSETS.jsons, (value, name) => {
-    if (value.meta && ASSETS.webps[name]) {
-      value.meta.image = ASSETS.webps[name]
-    }
+    if (value.meta && ASSETS.webps[name]) value.meta.image = ASSETS.webps[name]
   })
 })
+async function loadModules(
+  paths: Record<string, () => Promise<Record<string, any>>>
+) {
+  for (const path in paths) {
+    const name = getFileName(path, "ts")
+    if (!name) continue
+    const item = await paths[path]()
+    if (!item[name]) continue
+    globalThis[name] = item[name] // to automatically init modules in start.ts
+    CONFIG.modules.push(name)
+    if (item[name].component) CONFIG.components.push(name)
+  }
+}
 async function load(
   paths: Record<string, () => Promise<Record<string, any>>>,
-  savePlace: AnyObject | string[],
-  addNameProperty = false,
-  format: LoadFormats = "ts",
-  justNames = false
+  savePlace: AnyObject,
+  format: Format
 ) {
   for (const path in paths) {
     const name = getFileName(path, format)
     if (!name) continue
     const item = await paths[path]()
-    if (justNames) {
-      globalThis[name] = item
-      savePlace.push(name)
-      continue
-    }
-    if (item.default["🔧"] === "collection") {
-      _.forEach(item.default, (value, key) => {
-        if (key === "type") return
-        savePlace[key] = value
-        // check if it's an object because some unknown string error occurs
-        if (addNameProperty && typeof savePlace[key] === "object") {
-          savePlace[key].name = key
-        }
-      })
-    } else {
-      savePlace[name] = item.default
-      if (addNameProperty) item.default.name = name
-    }
+    // for webp and mp3 item.default is just a string of path to the file
+    savePlace[name] = item.default
   }
 }
-function getFileName(path: string, format: LoadFormats) {
+function getFileName(path: string, format: Format) {
   let match: any[] | null = null
   if (format === "ts") {
     match = path.match(/\/([^/]+)\.ts/)

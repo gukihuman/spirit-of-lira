@@ -1,11 +1,14 @@
 class GukiConfig {
+  // automatically loaded from modules folder by load.ts
+  modules: string[] = [] // ["WORLD", "GLOBAL", ...]
+  components: string[] = [] // ["ATTTRIBUTES", "MOVE", ...]
   // setup 0 priority for unmentioned values
   init() {
-    _.forEach(MODELS.components, (value, name) => {
+    this.components.forEach((name) => {
       if (this.priority.componentInject[name]) return
       this.priority.componentInject[name] = 0
     })
-    MODELS.modules.forEach((name) => {
+    this.modules.forEach((name) => {
       if (this.priority.modulesInit[name] || name === "CONFIG") return
       this.priority.modulesInit[name] = 0
     })
@@ -13,19 +16,21 @@ class GukiConfig {
   // higher values goes first, what is not setted here will be 0
   priority = {
     componentInject: {
-      sprite: 2,
-      move: 1,
-      // <- rest of the logic here
+      SPRITE: 2,
+      MOVE: 1,
+      // <- rest of the logic
     },
     modulesInit: {
       // CONFIG init is always first, handled separatly in start.ts
+      ENTITIES_STATIC: 6,
+      ENTITIES: 5,
       WORLD: 4,
       SAVE: 3, // before ACTIVE_SCENE but after WORLD
       SCENE: 2,
       ACTIVE_SCENE: 1,
       COLLISION: 2,
       ASTAR: 1,
-      // <- rest of the logic here
+      // <- rest of the logic
     },
     modulesProcess: {
       STATE: 5,

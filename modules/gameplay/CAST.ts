@@ -12,26 +12,26 @@ class Cast {
     EVENTS.onSingle("cast3", () => this.cast("slot3"))
     EVENTS.onSingle("cast4", () => this.cast("slot4"))
     EVENTS.on("cast", ({ entity, slot }) => {
-      const targetEntity = entity.target.entity
-      if (!targetEntity || targetEntity.state.active === "dead") return
-      entity.skills.active = entity.skills[slot]
-      entity.state.track = true
-      entity.target.locked = true
+      const targetEntity = entity.TARGET.entity
+      if (!targetEntity || targetEntity.STATE.active === "dead") return
+      entity.SKILLS.active = entity.SKILLS[slot]
+      entity.STATE.track = true
+      entity.TARGET.locked = true
     })
   }
   private targetDiesLogic(entity, id) {
-    entity.target.id = undefined
-    entity.target.locked = false
+    entity.TARGET.id = undefined
+    entity.TARGET.locked = false
     if (WORLD.isHero(id)) {
-      if (!SETTINGS.gameplay.easyFight) entity.state.track = false
-      entity.move.finaldestination = _.cloneDeep(entity.position)
+      if (!SETTINGS.gameplay.easyFight) entity.STATE.track = false
+      entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
       MOVE.lastMobKilledMS = WORLD.loop.elapsedMS
     }
   }
   private revengeLogic(entity, id, skill) {
     EVENTS.emit("revenge", {
-      entity: entity.target.entity,
-      id: entity.target.id,
+      entity: entity.TARGET.entity,
+      id: entity.TARGET.id,
       offender: entity,
       offenderId: id,
     })
@@ -40,109 +40,107 @@ class Cast {
     if (WORLD.isHero(id)) {
       let weaponDamage = 0
       const weapon = INVENTORY.gear.weapon
-      if (weapon) weaponDamage = ITEMS.weapons[weapon].damage
-      entity.target.entity.attributes.health -= weaponDamage
+      if (weapon) weaponDamage = ITEMS.collection.weapons[weapon].damage
+      entity.TARGET.entity.ATTRIBUTES.health -= weaponDamage
     } else {
-      entity.target.entity.attributes.health -= skill.damage
+      entity.TARGET.entity.ATTRIBUTES.health -= skill.damage
     }
   }
   private firstCastLogic(entity, id, skill) {
     this.castLogic(entity, id, skill)
-    entity.skills.lastFirstStartMS = Infinity
+    entity.SKILLS.lastFirstStartMS = Infinity
   }
   private chooseEffectSprite(entity, id) {
-    const targetEntity = entity.target.entity
+    const targetEntity = entity.TARGET.entity
     // 📜 "sword-hit" should be taken from item, that hero is using
-    // data/items/weapons/common-sword.ts
     if (WORLD.isHero(id)) SPRITE.effect(entity, "sword-hit", targetEntity)
     else SPRITE.effect(entity, "bunbo-bite", targetEntity)
   }
   private chooseEffectAudio(entity, id) {
     let soundId: any
-    const skill = entity.skills.data[entity.skills.active]
+    const skill = entity.SKILLS.data[entity.SKILLS.active]
     // 📜 0.8 and "sword-hit" should be taken from item, that hero is using
-    // data/items/weapons/common-sword.ts
     let audioDelay
-    if (entity.skills.firstCastState) audioDelay = skill.firstCastMS * 0.95
+    if (entity.SKILLS.firstCastState) audioDelay = skill.firstCastMS * 0.95
     else audioDelay = skill.castMS * 0.95
     if (WORLD.isHero(id)) soundId = AUDIO.play("sword-hit", audioDelay)
     else soundId = AUDIO.play("bunbo-bite")
-    entity.skills.attackSoundId = soundId
+    entity.SKILLS.attackSoundId = soundId
   }
   stopAttackSounds() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.skills) return
-      if (entity.skills.attackSoundId && entity.state.active !== "cast") {
-        AUDIO.stop(entity.skills.attackSoundId, 30)
-        entity.skills.audioDone = false
-        entity.skills.attackSoundId = undefined
+      if (!entity.SKILLS) return
+      if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
+        AUDIO.stop(entity.SKILLS.attackSoundId, 30)
+        entity.SKILLS.audioDone = false
+        entity.SKILLS.attackSoundId = undefined
       }
     })
   }
   private castLogic(entity, id, skill) {
-    if (!entity.target.id) return
+    if (!entity.TARGET.id) return
     this.chooseEffectSprite(entity, id)
     if (skill.offensive) this.dealDamage(entity, id, skill)
     if (skill.revenge) this.revengeLogic(entity, id, skill)
-    const targetHealth = entity.target.entity.attributes.health
+    const targetHealth = entity.TARGET.entity.ATTRIBUTES.health
     if (targetHealth <= 0) this.targetDiesLogic(entity, id)
     if (skill.logic) skill.logic(entity, id)
-    entity.skills.lastDoneMS = WORLD.loop.elapsedMS + skill.delayMS
-    entity.skills.delayedLogicDone = false
+    entity.SKILLS.lastDoneMS = WORLD.loop.elapsedMS + skill.delayMS
+    entity.SKILLS.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
     const inRange = TRACK.inRange
-    const targetEntity = entity.target.entity
+    const targetEntity = entity.TARGET.entity
     if (!inRange(entity, id, targetEntity, skill.distance)) {
-      entity.state.cast = false
-      entity.skills.lastDoneMS = Infinity
+      entity.STATE.cast = false
+      entity.SKILLS.lastDoneMS = Infinity
     }
-    entity.skills.delayedLogicDone = true
+    entity.SKILLS.delayedLogicDone = true
   }
   private reset(entity, id) {
-    entity.skills.lastFirstStartMS = Infinity
-    entity.skills.lastDoneMS = Infinity
-    entity.skills.delayedLogicDone = true
+    entity.SKILLS.lastFirstStartMS = Infinity
+    entity.SKILLS.lastDoneMS = Infinity
+    entity.SKILLS.delayedLogicDone = true
   }
 
   process() {
     if (GLOBAL.context === "scene") return
     this.stopAttackSounds()
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.state || !entity.skills) return
-      if (!entity.state.cast) {
+      if (!entity.STATE || !entity.SKILLS) return
+      if (!entity.STATE.cast) {
         this.reset(entity, id)
         return
       }
       const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
-      if (entity.state.cast && !lastEntity.state.cast) {
-        entity.skills.lastFirstStartMS = WORLD.loop.elapsedMS
+      if (entity.STATE.cast && !lastEntity.STATE.cast) {
+        entity.SKILLS.lastFirstStartMS = WORLD.loop.elapsedMS
       }
-      const skill = entity.skills.data[entity.skills.active]
+      const skill = entity.SKILLS.data[entity.SKILLS.active]
       const elapsedMS = WORLD.loop.elapsedMS
-      const delayMS = entity.skills.delayMS
+      const delayMS = entity.SKILLS.delayMS
       // if target is dead
-      if (!entity.target.id && elapsedMS > entity.skills.lastDoneMS + delayMS) {
-        entity.state.cast = false
+      if (!entity.TARGET.id && elapsedMS > entity.SKILLS.lastDoneMS + delayMS) {
+        entity.STATE.cast = false
         return
       }
-      if (elapsedMS > entity.skills.lastFirstStartMS + skill.firstCastMS) {
+      if (elapsedMS > entity.SKILLS.lastFirstStartMS + skill.firstCastMS) {
         this.firstCastLogic(entity, id, skill)
       }
-      if (elapsedMS > entity.skills.lastDoneMS + skill.castMS) {
+      if (elapsedMS > entity.SKILLS.lastDoneMS + skill.castMS) {
         this.castLogic(entity, id, skill)
       }
-      if (!entity.skills.audioDone) {
+      if (!entity.SKILLS.audioDone) {
         this.chooseEffectAudio(entity, id)
-        entity.skills.audioDone = true
+        entity.SKILLS.audioDone = true
       }
       if (
-        !entity.skills.delayedLogicDone &&
-        elapsedMS > entity.skills.lastDoneMS
+        !entity.SKILLS.delayedLogicDone &&
+        elapsedMS > entity.SKILLS.lastDoneMS
       ) {
         this.delayedLogic(entity, id, skill)
-        entity.skills.audioDone = false
+        entity.SKILLS.audioDone = false
       }
     })
   }

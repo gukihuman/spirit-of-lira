@@ -52,11 +52,11 @@ function initEvents() {
 function getType(name: string) {
   let singular
   let plural
-  if (_.keys(ITEMS.weapons).includes(name)) {
+  if (_.keys(ITEMS.collection.weapons).includes(name)) {
     singular = "weapon"
     plural = "weapons"
   }
-  if (_.keys(ITEMS.clothes).includes(name)) {
+  if (_.keys(ITEMS.collection.clothes).includes(name)) {
     singular = "cloth"
     plural = "clothes"
   }

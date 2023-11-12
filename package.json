@@ -35,6 +35,7 @@
     "pixi-filters": "^5.2.1",
     "sharp": "^0.32.6",
     "spritesheet-js": "^1.2.8",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.1"
   }
 }

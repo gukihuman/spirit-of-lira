@@ -1,4 +1,26 @@
 class Target {
+  component = {
+    id: 0,
+    _locked: false,
+    // 🔧
+    inject(entity, id) {
+      Object.defineProperty(entity.TARGET, "entity", {
+        get() {
+          return WORLD.entities.get(entity.TARGET.id)
+        },
+      })
+      Object.defineProperty(entity.TARGET, "locked", {
+        get() {
+          if (!entity.TARGET.id) return
+          return entity.TARGET._locked
+        },
+        set(value: boolean) {
+          if (value && !entity.TARGET.id) return
+          return (entity.TARGET._locked = value)
+        },
+      })
+    },
+  }
   heroAutoTargetDistance = 500
   mobsAutoTargetDistance = 300
   heroMaxTargetDistance = 1000
@@ -6,36 +28,36 @@ class Target {
   init() {
     EVENTS.onSingle("lockTarget", () => {
       const hero = WORLD.hero
-      if (!hero.target.id) return
-      hero.target.locked = !hero.target.locked
-      // reset finaldestination if it is on the target
+      if (!hero.TARGET.id) return
+      hero.TARGET.locked = !hero.TARGET.locked
+      // reset finaldestination if it is on the TARGET
       if (
-        hero.move.finaldestination &&
-        !hero.target.locked &&
-        hero.target.entity.position.x === hero.move.finaldestination.x &&
-        hero.target.entity.position.y === hero.move.finaldestination.y
+        hero.MOVE.finaldestination &&
+        !hero.TARGET.locked &&
+        hero.TARGET.entity.POSITION.x === hero.MOVE.finaldestination.x &&
+        hero.TARGET.entity.POSITION.y === hero.MOVE.finaldestination.y
       ) {
-        hero.move.finaldestination = _.cloneDeep(hero.position)
+        hero.MOVE.finaldestination = _.cloneDeep(hero.POSITION)
       }
-      if (GLOBAL.lastActiveDevice !== "gamepad" && hero.state.cast) {
-        hero.state.cast = false
-        hero.move.finaldestination = _.cloneDeep(hero.position)
+      if (GLOBAL.lastActiveDevice !== "gamepad" && hero.STATE.cast) {
+        hero.STATE.cast = false
+        hero.MOVE.finaldestination = _.cloneDeep(hero.POSITION)
       }
-      // when lock is used to lock a new target immidiately
+      // when lock is used to lock a new TARGET immidiately
       if (GLOBAL.lastActiveDevice !== "gamepad") {
         if (!GLOBAL.hoverId) return
-        hero.target.id = GLOBAL.hoverId
-        hero.target.locked = true
+        hero.TARGET.id = GLOBAL.hoverId
+        hero.TARGET.locked = true
         return
       }
     })
   }
   process() {
-    if (!WORLD.hero.target) return
+    if (!WORLD.hero.TARGET) return
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move) return
+      if (!entity.MOVE) return
       this.checkTargetDistance(entity, id)
-      if (entity.state.active !== "track" && !entity.target.locked) {
+      if (entity.STATE.active !== "track" && !entity.TARGET.locked) {
         if (!SETTINGS.gameplay.easyFight) {
           if (WORLD.isHero(id) && GLOBAL.lastActiveDevice !== "gamepad") return
         }
@@ -46,7 +68,7 @@ class Target {
     if (
       GLOBAL.lastActiveDevice === "gamepad" &&
       LIBRARY.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT) &&
-      !WORLD.hero.target.locked
+      !WORLD.hero.TARGET.locked
     ) {
       // overwrites autoTarget for hero with gamepad axes
       this.targetByGamepadAxes()
@@ -54,44 +76,44 @@ class Target {
     if (
       GLOBAL.lastActiveDevice !== "gamepad" &&
       !GLOBAL.autoMouseMove &&
-      !WORLD.hero.target.locked
+      !WORLD.hero.TARGET.locked
     ) {
       this.targetByMouse()
     }
   }
   targetByMouse() {
     if (SETTINGS.gameplay.easyFight && !GLOBAL.hoverId) return
-    WORLD.hero.target.id = GLOBAL.hoverId
+    WORLD.hero.TARGET.id = GLOBAL.hoverId
   }
   private checkTargetDistance(entity, id) {
-    if (!entity.target.id || !entity.target.entity) return
+    if (!entity.TARGET.id || !entity.TARGET.entity) return
     const distance = COORD.distance(
-      entity.position,
-      entity.target.entity.position
+      entity.POSITION,
+      entity.TARGET.entity.POSITION
     )
     let maxDistance = 0
     if (WORLD.isHero(id)) maxDistance = this.heroMaxTargetDistance
     else maxDistance = this.mobsMaxTargetDistance
-    if (distance > maxDistance) entity.target.id = undefined
+    if (distance > maxDistance) entity.TARGET.id = undefined
   }
   autoTarget(entity, id) {
     let minDistance = Infinity
     WORLD.entities.forEach((otherEntity, otherId) => {
-      if (id === otherId || !otherEntity.move) return
-      if (otherEntity.state.active === "dead") return
-      if (!WORLD.isHero(id) && entity.attributes.mood === "peaceful") {
+      if (id === otherId || !otherEntity.MOVE) return
+      if (otherEntity.STATE.active === "dead") return
+      if (!WORLD.isHero(id) && entity.ATTRIBUTES.mood === "peaceful") {
         return
       }
-      const distance = COORD.distance(entity.position, otherEntity.position)
+      const distance = COORD.distance(entity.POSITION, otherEntity.POSITION)
       if (distance < minDistance) {
         minDistance = distance
-        entity.target.id = otherId
+        entity.TARGET.id = otherId
       }
     })
     let autoTargetDistance = this.mobsAutoTargetDistance
     if (WORLD.isHero(id)) autoTargetDistance = this.heroAutoTargetDistance
     if (minDistance > autoTargetDistance) {
-      entity.target.id = undefined
+      entity.TARGET.id = undefined
     }
   }
   targetByGamepadAxes() {
@@ -107,11 +129,11 @@ class Target {
     const correspondDistances: number[] = []
     const angleToGroup = 0.2 // about 12 degrees
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.move || id === WORLD.heroId) return
-      if (entity.state.active === "dead") return
-      const distance = COORD.distance(WORLD.hero.position, entity.position)
+      if (!entity.MOVE || id === WORLD.heroId) return
+      if (entity.STATE.active === "dead") return
+      const distance = COORD.distance(WORLD.hero.POSITION, entity.POSITION)
       if (distance > 750) return
-      const entityAngle = COORD.angle(WORLD.hero.position, entity.position)
+      const entityAngle = COORD.angle(WORLD.hero.POSITION, entity.POSITION)
       const angle = Math.abs(entityAngle - axesAngle)
       if (angle < angleToGroup) {
         closestGroup.push(id)
@@ -133,7 +155,7 @@ class Target {
         }
       })
     }
-    WORLD.hero.target.id = closestEntityId
+    WORLD.hero.TARGET.id = closestEntityId
   }
 }
 export const TARGET = new Target()

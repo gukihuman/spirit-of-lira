@@ -1,18 +1,27 @@
 class State {
+  component = {
+    active: "idle",
+    still: true,
+    track: false,
+    cast: false,
+    lastChangeMS: 0,
+    deadTimeMS: Infinity,
+    deadDelayMS: 1000,
+  }
   process() {
     WORLD.entities.forEach((entity, id) => {
-      if (!entity.state) return
+      if (!entity.STATE) return
       // controlled by dead system
-      if (entity.state.active === "dead") return
+      if (entity.STATE.active === "dead") return
       this.checkStill(entity, id)
-      if (entity.state.cast) {
-        entity.state.active = "cast"
-      } else if (entity.state.track) {
-        entity.state.active = "track"
-      } else if (!entity.state.still) {
-        entity.state.active = "move"
+      if (entity.STATE.cast) {
+        entity.STATE.active = "cast"
+      } else if (entity.STATE.track) {
+        entity.STATE.active = "track"
+      } else if (!entity.STATE.still) {
+        entity.STATE.active = "move"
       } else {
-        entity.state.active = "idle"
+        entity.STATE.active = "idle"
       }
       this.updateLastChangeMS(entity, id)
     })
@@ -21,17 +30,17 @@ class State {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (
-      entity.position.x === lastEntity.position.x &&
-      entity.position.y === lastEntity.position.y
+      entity.POSITION.x === lastEntity.POSITION.x &&
+      entity.POSITION.y === lastEntity.POSITION.y
     ) {
-      entity.state.still = true
-    } else entity.state.still = false
+      entity.STATE.still = true
+    } else entity.STATE.still = false
   }
   private updateLastChangeMS(entity, id) {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
-    if (entity.state.active !== lastEntity.state.active) {
-      WORLD.entities.get(id).state.lastChangeMS = WORLD.loop.elapsedMS
+    if (entity.STATE.active !== lastEntity.STATE.active) {
+      WORLD.entities.get(id).STATE.lastChangeMS = WORLD.loop.elapsedMS
     }
   }
 }

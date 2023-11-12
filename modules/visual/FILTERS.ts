@@ -23,8 +23,8 @@ class Filters {
   lastContainer: Container | undefined
   process() {
     if (this.lastContainer) this.lastContainer.filters = []
-    if (!WORLD.hero.target) return
-    const id = WORLD.hero.target.id
+    if (!WORLD.hero.TARGET) return
+    const id = WORLD.hero.TARGET.id
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
     const animation = SPRITE.getLayer(id, "animation")
@@ -32,11 +32,11 @@ class Filters {
     if (animation) {
       animation.filters = [this.hover]
       // 📜 here cast is always offensive, when other cast added, think how to change that
-      if (!WORLD.hero.state.track) return
+      if (!WORLD.hero.STATE.track) return
       if (
         GLOBAL.lastActiveDevice !== "gamepad" &&
         GLOBAL.hoverId !== id &&
-        !WORLD.hero.state.track
+        !WORLD.hero.STATE.track
       ) {
         return
       }

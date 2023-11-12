@@ -56,7 +56,7 @@ class Collision {
 
   updateCollisionGrid() {
     if (!WORLD.heroId) return
-    const heroPosition = WORLD.hero.position
+    const heroPosition = WORLD.hero.POSITION
 
     // center point of collision grid minus hero offset
     // 50 is the half of the tile size of 100
@@ -88,7 +88,7 @@ class Collision {
     })
 
     // draw path
-    WORLD.hero.move.path.forEach((tile) => {
+    WORLD.hero.MOVE.path.forEach((tile) => {
       if (!tile || !GLOBAL.collision) return
       let row = tile.x - startX
       let col = tile.y - startY
@@ -99,7 +99,7 @@ class Collision {
 
   private updateCollisionArray() {
     if (!WORLD.heroId) return
-    const heroPosition = WORLD.hero.position
+    const heroPosition = WORLD.hero.POSITION
 
     let y = COORD.coordinateToTile(heroPosition.y)
     let x = COORD.coordinateToTile(heroPosition.x)

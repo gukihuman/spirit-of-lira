@@ -1,15 +1,26 @@
 class Scene {
-  mds = {}
-  options = {}
-  conditions = {}
+  options = {
+    "n1-lira-no-light": { hue: -30 },
+    "n1-lira-arms-down": { hue: -30 },
+    "n1-lira-arms-raised": { hue: -30 },
+    "n1-nighty": { x: 370, y: 700 },
+    "n1-nighty-close": { x: 950 },
+    "a0-solid-dark": { x: 610, y: 750, brightness: 1.1 },
+  }
+  conditions = {
+    n1: {
+      text: () => `Kill bunbos ${PROGRESS.mobs.bunbo} / 30`,
+      condition: () => PROGRESS.mobs.bunbo >= 30,
+    },
+  }
   plainText: AnyObject = {}
   steps = {}
   async init() {
-    await this.mdsParse()
+    await this.importMds()
     this.plainTextParse()
   }
-  private async mdsParse() {
-    const promises = _.map(this.mds, async (value, key) => {
+  private async importMds() {
+    const promises = _.map(ASSETS.mds, async (value, key) => {
       const response = await fetch(value)
       const text = await response.text()
       this.plainText[key] = text

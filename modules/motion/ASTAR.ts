@@ -8,18 +8,18 @@ class Astar {
     let executes: any = []
     WORLD.entities.forEach((entity, id) => {
       executes.push(() => {
-        if (entity.move) {
-          if (!entity.move.finaldestination) return
+        if (entity.MOVE) {
+          if (!entity.MOVE.finaldestination) return
           if (_.round(WORLD.loop.elapsedMS / 100) % _.random(1, 5) !== 0) {
             return
           }
           const startTile = {
-            x: COORD.coordinateToTile(entity.position.x),
-            y: COORD.coordinateToTile(entity.position.y),
+            x: COORD.coordinateToTile(entity.POSITION.x),
+            y: COORD.coordinateToTile(entity.POSITION.y),
           }
           let endTile = {
-            x: COORD.coordinateToTile(entity.move.finaldestination.x),
-            y: COORD.coordinateToTile(entity.move.finaldestination.y),
+            x: COORD.coordinateToTile(entity.MOVE.finaldestination.x),
+            y: COORD.coordinateToTile(entity.MOVE.finaldestination.y),
           }
 
           const mousePosition = COORD.mousePosition()
@@ -33,14 +33,14 @@ class Astar {
             COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 0 &&
             COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 1
           ) {
-            entity.move.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
+            entity.MOVE.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
           }
 
           if (
             COLLISION.getArrayElement([endTile.y, endTile.x]) !== 0 &&
             COLLISION.getArrayElement([endTile.y, endTile.x]) !== 1 &&
             (WORLD.loop.elapsedMS <
-              entity.move.setMousePointOnWalkableMS + 100 ||
+              entity.MOVE.setMousePointOnWalkableMS + 100 ||
               GLOBAL.lastActiveDevice === "gamepad")
           ) {
             if (GLOBAL.collision) {
@@ -49,17 +49,17 @@ class Astar {
           }
 
           const possiblePath = this.findPath(startTile, endTile, entity)
-          if (possiblePath) entity.move.path = possiblePath
+          if (possiblePath) entity.MOVE.path = possiblePath
 
-          entity.move.destination = _.cloneDeep(entity.position)
-          if (entity.move.path.length <= 1 && entity.move.destination) {
-            entity.move.destination.x = entity.move.finaldestination.x
-            entity.move.destination.y = entity.move.finaldestination.y
-          } else if (entity.move.path.length > 0 && entity.move.destination) {
-            entity.move.destination.x =
-              COORD.tileToCoordinate(entity.move.path[0].x) + 10
-            entity.move.destination.y =
-              COORD.tileToCoordinate(entity.move.path[0].y) + 10
+          entity.MOVE.destination = _.cloneDeep(entity.POSITION)
+          if (entity.MOVE.path.length <= 1 && entity.MOVE.destination) {
+            entity.MOVE.destination.x = entity.MOVE.finaldestination.x
+            entity.MOVE.destination.y = entity.MOVE.finaldestination.y
+          } else if (entity.MOVE.path.length > 0 && entity.MOVE.destination) {
+            entity.MOVE.destination.x =
+              COORD.tileToCoordinate(entity.MOVE.path[0].x) + 10
+            entity.MOVE.destination.y =
+              COORD.tileToCoordinate(entity.MOVE.path[0].y) + 10
           }
         }
       })
@@ -267,7 +267,7 @@ class Astar {
 
         if (!walkable) {
           this.setFinalDestinationToWalkable(endPos, entity)
-          entity.move.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
+          entity.MOVE.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
         return this.refinePath(path)
@@ -402,8 +402,8 @@ class Astar {
       }
     }
     if (closestTile) {
-      entity.move.finaldestination.x = COORD.tileToCoordinate(closestTile.x)
-      entity.move.finaldestination.y = COORD.tileToCoordinate(closestTile.y)
+      entity.MOVE.finaldestination.x = COORD.tileToCoordinate(closestTile.x)
+      entity.MOVE.finaldestination.y = COORD.tileToCoordinate(closestTile.y)
     }
   }
 

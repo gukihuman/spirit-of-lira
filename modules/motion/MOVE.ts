@@ -1,4 +1,23 @@
 class Move {
+  component = {
+    speed: 5,
+
+    destination: null,
+    finaldestination: null,
+    path: [],
+
+    randomDestinationMS: 0,
+    setMousePointOnWalkableMS: 0,
+
+    // 🔧
+    depend: ["POSITION"],
+    trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
+    inject(entity, id) {
+      entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
+      entity.MOVE.randomDestinationMS = WORLD.loop.elapsedMS - 10_000
+    },
+  }
+
   private preventGamepadMoveMS = 500 // disable axes after start track
   // used to not prevent gamepad move after kill, updates when hero kill mobs
   lastMobKilledMS = 0
@@ -19,7 +38,7 @@ class Move {
   process() {
     if (GLOBAL.context === "scene") return
     WORLD.entities.forEach((entity) => {
-      if (!entity.move) return
+      if (!entity.MOVE) return
       this.move(entity)
     })
     if (GLOBAL.autoMouseMove) EVENTS.emitSingle("mouseMove")
@@ -31,7 +50,7 @@ class Move {
     } else {
       // first time not moved
       if (this.gamepadAxesMoved && GLOBAL.lastActiveDevice === "gamepad") {
-        WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+        WORLD.hero.MOVE.finaldestination = _.cloneDeep(WORLD.hero.POSITION)
       }
       this.gamepadAxesMoved = false
     }
@@ -39,35 +58,35 @@ class Move {
   // TODO anything
   mouseMove() {
     if (INTERFACE.talkHover) return
-    WORLD.hero.state.track = false
-    WORLD.hero.state.cast = false
+    WORLD.hero.STATE.track = false
+    WORLD.hero.STATE.cast = false
     WORLD.hero
     const distance = COORD.distance(
       COORD.conterOfScreen(),
       COORD.mouseOfScreen()
     )
     if (distance < 10) {
-      WORLD.hero.move.finaldestination = _.cloneDeep(WORLD.hero.position)
+      WORLD.hero.MOVE.finaldestination = _.cloneDeep(WORLD.hero.POSITION)
       return
     }
     const x = COORD.mousePosition().x
     const y = COORD.mousePosition().y
     if (COORD.isWalkable(x, y)) {
-      WORLD.hero.move.finaldestination = COORD.mousePosition()
+      WORLD.hero.MOVE.finaldestination = COORD.mousePosition()
     }
   }
   private gamepadMoveTries = 0
   gamepadMove() {
     const elapsedMS = WORLD.loop.elapsedMS
     if (
-      WORLD.hero.state.active === "track" &&
-      elapsedMS < WORLD.hero.state.lastChangeMS + this.preventGamepadMoveMS &&
+      WORLD.hero.STATE.active === "track" &&
+      elapsedMS < WORLD.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
       elapsedMS > this.lastMobKilledMS + this.preventGamepadMoveMS
     ) {
       return
     }
-    WORLD.hero.state.track = false
-    WORLD.hero.state.cast = false
+    WORLD.hero.STATE.track = false
+    WORLD.hero.STATE.cast = false
     this.gamepadMoveTries = 0
     this.gamepadMoveLogic()
   }
@@ -87,9 +106,9 @@ class Move {
     )
     const hero = WORLD.hero
     const possibleDestinationX =
-      hero.position.x + vectorToFinalDestination.x * ratio * otherRatio
+      hero.POSITION.x + vectorToFinalDestination.x * ratio * otherRatio
     const possibleDestinationY =
-      hero.position.y + vectorToFinalDestination.y * ratio * otherRatio
+      hero.POSITION.y + vectorToFinalDestination.y * ratio * otherRatio
     if (
       !COORD.isWalkable(possibleDestinationX, possibleDestinationY) &&
       GLOBAL.collision
@@ -102,45 +121,45 @@ class Move {
       this.gamepadMoveLogic(otherRatio + 0.1)
       return
     }
-    hero.move.finaldestination.x = possibleDestinationX
-    hero.move.finaldestination.y = possibleDestinationY
+    hero.MOVE.finaldestination.x = possibleDestinationX
+    hero.MOVE.finaldestination.y = possibleDestinationY
     this.gamepadAxesMoved = true
   }
   private canMove(entity) {
     if (
-      !entity.move ||
-      !entity.state ||
-      !entity.move.destination ||
-      !entity.move.finaldestination
+      !entity.MOVE ||
+      !entity.STATE ||
+      !entity.MOVE.destination ||
+      !entity.MOVE.finaldestination
     ) {
       return false
     }
-    if (entity.state.active === "cast" || entity.state.active === "dead") {
+    if (entity.STATE.active === "cast" || entity.STATE.active === "dead") {
       return false
     }
     return true
   }
-  move(entity: Entity) {
+  move(entity) {
     if (!this.canMove(entity)) return
     const speedPerTick = COORD.speedPerTick(entity)
     const displacement = COORD.vectorFromPoints(
-      entity.position,
-      entity.move.destination
+      entity.POSITION,
+      entity.MOVE.destination
     )
     const finaldisplacement = COORD.vectorFromPoints(
-      entity.position,
-      entity.move.finaldestination
+      entity.POSITION,
+      entity.MOVE.finaldestination
     )
     const finaldistance = finaldisplacement.distance
     const distance = displacement.distance
     if (distance < speedPerTick) {
       return
     }
-    if (entity.attack && entity.target.tracked) {
-      const targetEntity = WORLD.entities.get(entity.target.id)
+    if (entity.attack && entity.TARGET.tracked) {
+      const targetEntity = WORLD.entities.get(entity.TARGET.id)
       if (
         targetEntity &&
-        finaldistance < targetEntity.size.width / 2 + entity.attack.distance
+        finaldistance < targetEntity.SIZE.width / 2 + entity.attack.distance
       ) {
         return
       }
@@ -148,11 +167,11 @@ class Move {
     let ratio = _.clamp(finaldistance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
-    if (WORLD.hero.state.track) ratio = 1
+    if (WORLD.hero.STATE.track) ratio = 1
     const angle = displacement.angle
     const velocity = COORD.vectorFromAngle(angle, speedPerTick)
-    entity.position.x += velocity.x * ratio
-    entity.position.y += velocity.y * ratio
+    entity.POSITION.x += velocity.x * ratio
+    entity.POSITION.y += velocity.y * ratio
   }
 }
 export const MOVE = new Move()

@@ -9,8 +9,8 @@ div(
     @mouseleave="INTERFACE.skipHover = false"
     )
     p(
-      class="absolute z-10 text-tan text-[25px] mt-[6px] font-semibold mb-2 points-events-none transition duration-1000 ease-in-out opacity-[.8]"
+      class="absolute z-10 text-tan text-[23px] mt-[6px] font-semibold mb-2 points-events-none transition duration-1000 ease-in-out opacity-[.9]"
       :class="GLOBAL.context === 'scene' ? { 'hue-rotate-180': true } : {}"
     ) Skip
-  keys(class="top-[10px] left-[68px]" inputEvent="skipScene")
+  keys(class="top-[10px] left-[66px]" inputEvent="skipScene")
 </template>

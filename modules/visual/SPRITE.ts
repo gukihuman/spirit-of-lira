@@ -1,4 +1,15 @@
 class Spr {
+  component = {
+    active: "", // corresponds to state names
+    startFrames: {}, // { idle: 11, move: 5 } default is 0
+    // how many frames meet conditions consecutively
+    framesValidated: 0,
+    onValidation: "idle",
+    lastChangeMS: 0,
+    lastFlipMS: 0,
+    effectHeightRatio: 0.1,
+    effectWidthRatio: 0.15, // became negative depending on source
+  }
   entityContainers: Map<number, Container> = new Map()
   effectContainers: Map<number, Container> = new Map()
   async entity(entity: AnyObject, id: number, options: AnyObject = {}) {
@@ -82,7 +93,7 @@ class Spr {
     animation.addChild(sprite)
   }
   async effect(entity: AnyObject, name: string, targetEntity: AnyObject) {
-    if (!entity.target.id) return
+    if (!entity.TARGET.id) return
     let parentLayerName, durationMS
     if (EFFECTS.front[name]) {
       parentLayerName = "frontEffect"
@@ -96,7 +107,7 @@ class Spr {
       return
     }
     const container = new PIXI.Container()
-    const parentLayer = this.getLayer(entity.target.id, parentLayerName)
+    const parentLayer = this.getLayer(entity.TARGET.id, parentLayerName)
     if (!parentLayer) return
     parentLayer.addChild(container)
     this.offsetEffectContainer(container, entity, targetEntity)
@@ -123,14 +134,14 @@ class Spr {
     })
   }
   private offsetEffectContainer(container, entity, targetEntity) {
-    let effectHeightRatio = targetEntity.sprite.effectHeightRatio
-    let effectWidthRatio = targetEntity.sprite.effectWidthRatio
-    container.position.x = -targetEntity.size.width * effectWidthRatio
-    if (targetEntity.position.x < entity.position.x) {
+    let effectHeightRatio = targetEntity.SPRITE.effectHeightRatio
+    let effectWidthRatio = targetEntity.SPRITE.effectWidthRatio
+    container.position.x = -targetEntity.SIZE.width * effectWidthRatio
+    if (targetEntity.POSITION.x < entity.POSITION.x) {
       container.position.x = -container.position.x
     }
-    container.position.y = -targetEntity.size.height * effectHeightRatio
-    const angle = COORD.angle(entity.position, targetEntity.position)
+    container.position.y = -targetEntity.SIZE.height * effectHeightRatio
+    const angle = COORD.angle(entity.POSITION, targetEntity.POSITION)
     container.rotation = angle
   }
 

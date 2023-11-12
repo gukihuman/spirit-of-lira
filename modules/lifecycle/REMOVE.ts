@@ -2,10 +2,10 @@ class Remove {
   process() {
     WORLD.entities.forEach((entity, id) => {
       if (
-        entity.state &&
-        entity.state.active === "dead" &&
+        entity.STATE &&
+        entity.STATE.active === "dead" &&
         WORLD.loop.elapsedMS >
-          entity.state.deadTimeMS + entity.state.deadDelayMS
+          entity.STATE.deadTimeMS + entity.STATE.deadDelayMS
       ) {
         const container = SPRITE.getContainer(id)
         if (!container) return
