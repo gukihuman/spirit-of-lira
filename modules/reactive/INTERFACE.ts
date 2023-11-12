@@ -16,18 +16,18 @@ const inter = {
   init() {
     WORLD.loop.add(() => {
       if (GLOBAL.context === "world") {
-        if (WORLD.hero.TARGET.id && WORLD.hero.TARGET.entity) {
+        if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
           INTERFACE.target = true
-          INTERFACE.targetHealth = WORLD.hero.TARGET.entity.ATTRIBUTES.health
+          INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
           INTERFACE.targetMaxHealth =
-            ENTITIES.collection[WORLD.hero.TARGET.entity.name].ATTRIBUTES.health
+            ENTITIES.collection[SH.hero.TARGET.entity.name].ATTRIBUTES.health
         } else {
           INTERFACE.target = false
         }
-        INTERFACE.heroHealth = WORLD.hero.ATTRIBUTES.health
+        INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
         INTERFACE.heroMaxHealth =
-          ENTITIES.collection[WORLD.hero.name].ATTRIBUTES.health
-        if (WORLD.hero.TARGET.locked) INTERFACE.targetLocked = true
+          ENTITIES.collection[SH.hero.name].ATTRIBUTES.health
+        if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
       }
       if (GLOBAL.context === "scene") this.overlay = false

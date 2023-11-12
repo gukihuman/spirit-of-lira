@@ -25,6 +25,8 @@ class Entities {
       },
       ATTRIBUTES: {
         health: 20,
+        maxHealth: 20,
+        healthRegen: 0.5,
       },
     },
     bunbo: {
@@ -56,6 +58,7 @@ class Entities {
       },
       ATTRIBUTES: {
         health: 10,
+        maxHealth: 10,
       },
       STATE: {
         deadDelayMS: 1300,
@@ -71,7 +74,7 @@ class Entities {
       process(entity: { POSITION: any }, id: number) {
         let position = entity.POSITION
         if (!position) return
-        if (WORLD.hero.STATE.active === "dead") {
+        if (SH.hero.STATE.active === "dead") {
           SH.stopHero()
           return
         }
@@ -82,7 +85,7 @@ class Entities {
           return
         }
 
-        const finaldestination = WORLD.hero.MOVE.finaldestination
+        const finaldestination = SH.hero.MOVE.finaldestination
         if (!finaldestination) {
           position.x = -30
           position.y = -30
@@ -96,18 +99,13 @@ class Entities {
           position.y = -30
         }
 
-        const displacement = COORD.vectorFromPoints(
-          position,
-          WORLD.entities.get(WORLD.heroId).POSITION
-        )
+        const displacement = COORD.vectorFromPoints(position, SH.hero.POSITION)
         const distance = displacement.distance
-        const speedPerTick = COORD.speedPerTick(
-          WORLD.entities.get(WORLD.heroId)
-        )
+        const speedPerTick = COORD.speedPerTick(SH.hero)
 
         // hide
         // 📜 change tracked to track state, implement track state
-        if (distance < speedPerTick || WORLD.hero.STATE.track) {
+        if (distance < speedPerTick || SH.hero.STATE.track) {
           position.x = -30
           position.y = -30
           return

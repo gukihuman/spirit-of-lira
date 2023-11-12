@@ -1,5 +1,5 @@
 // redeclare some types for GLOBAL accessability
-// nuxt issue, otherwise auto-import dont work,
+// nuxt issue, otherwise types auto-import doesnt work,
 import {
   Graphics as tempGraphics,
   Container as tempContainer,

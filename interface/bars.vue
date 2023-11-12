@@ -4,7 +4,7 @@ div(class="absolute relative top-[950px] left-[520px]")
   img(:src="ASSETS.webps.bars" class="absolute" draggable="false")
   img(
     :src="ASSETS.webps['bars-health']" draggable="false"
-    class="absolute left-0 w-[858px] h-[141px] object-left object-cover transition-all duration-300 ease-in-out"
+    class="absolute left-0 w-[858px] h-[141px] object-left object-cover transition-all duration-150 ease-in-out"
     :style="health"
   )
   img(:src="ASSETS.webps['bars-mana']" class="absolute" draggable="false")

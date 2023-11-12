@@ -2,7 +2,7 @@ class Cast {
   attackSoundIds: any = []
   private cast(slot = "slot1") {
     EVENTS.emit("cast", {
-      entity: WORLD.hero,
+      entity: SH.hero,
       slot: slot,
     })
   }
@@ -23,7 +23,7 @@ class Cast {
     entity.TARGET.id = undefined
     entity.TARGET.locked = false
     entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
-    if (WORLD.isHero(id)) {
+    if (entity.HERO) {
       if (!SETTINGS.gameplay.easyFight) entity.STATE.track = false
       MOVE.lastMobKilledMS = WORLD.loop.elapsedMS
     }
@@ -37,7 +37,7 @@ class Cast {
     })
   }
   private dealDamage(entity, id, skill) {
-    if (WORLD.isHero(id)) {
+    if (entity.HERO) {
       let weaponDamage = 0
       const weapon = INVENTORY.gear.weapon
       if (weapon) weaponDamage = ITEMS.collection.weapons[weapon].damage
@@ -53,7 +53,7 @@ class Cast {
   private chooseEffectSprite(entity, id) {
     const targetEntity = entity.TARGET.entity
     // 📜 "sword-hit" should be taken from item, that hero is using
-    if (WORLD.isHero(id)) SPRITE.effect(entity, "sword-hit", targetEntity)
+    if (entity.HERO) SPRITE.effect(entity, "sword-hit", targetEntity)
     else SPRITE.effect(entity, "bunbo-bite", targetEntity)
   }
   private chooseEffectAudio(entity, id) {
@@ -63,7 +63,7 @@ class Cast {
     let audioDelay
     if (entity.SKILLS.firstCastState) audioDelay = skill.firstCastMS * 0.95
     else audioDelay = skill.castMS * 0.95
-    if (WORLD.isHero(id)) soundId = AUDIO.play("sword-hit", audioDelay)
+    if (entity.HERO) soundId = AUDIO.play("sword-hit", audioDelay)
     else soundId = AUDIO.play("bunbo-bite")
     entity.SKILLS.attackSoundId = soundId
   }
@@ -151,7 +151,7 @@ class Cast {
   //   // set up animation speed
   //   if (!entity.attack) return
 
-  //   if (id === WORLD.heroId) {
+  //   if (entity.HERO) {
   //     //
   //     // 📜 make attack animation dynamic depend on weapon or skill
   //     const sprite = SPRITE.getAnimation(id, "sword-attack")

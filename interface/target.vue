@@ -3,7 +3,7 @@ div(class="absolute relative top-[-20px] left-[757px]")
   img(:src="ASSETS.webps.target" class="absolute" draggable="false")
   img(
     :src="ASSETS.webps['target-health']"
-    class="absolute left-0 w-[400px] h-[150px] object-left object-cover transition-all duration-300 ease-in-out"
+    class="absolute left-0 w-[400px] h-[150px] object-left object-cover transition-all duration-150 ease-in-out"
     draggable="false"
     :style="health"
   )

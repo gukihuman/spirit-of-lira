@@ -25,6 +25,7 @@ class GukiConfig {
       ENTITIES_STATIC: 6,
       ENTITIES: 5,
       WORLD: 4,
+      SH: 4,
       SAVE: 3, // before ACTIVE_SCENE but after WORLD
       SCENE: 2,
       ACTIVE_SCENE: 1,

@@ -22,7 +22,7 @@ class Dead {
         lastEntity.STATE.active !== "dead"
       ) {
         entity.STATE.deadTimeMS = WORLD.loop.elapsedMS
-        if (!WORLD.isHero(id)) {
+        if (!entity.HERO) {
           PROGRESS.mobs[entity.name]++
           SAVE.update()
         }

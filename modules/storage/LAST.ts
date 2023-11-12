@@ -8,7 +8,7 @@ class Last {
   init() {
     WORLD.loop.add(() => {
       this.entities = LIBRARY.cloneMapDeep(WORLD.entities)
-      this.hero = _.cloneDeep(WORLD.hero)
+      this.hero = _.cloneDeep(SH.hero)
       this.hover = _.cloneDeep(WORLD.hover)
       this.scenePart = ACTIVE_SCENE.part
       this.loopSec = WORLD.loop.elapsedSec

@@ -11,15 +11,14 @@ class Talk {
   process() {
     MUSEUM.processEntity(["TALK"], (entity) => {
       if (
-        COORD.distance(entity.POSITION, WORLD.hero.POSITION) <
-        entity.TALK.distance
+        COORD.distance(entity.POSITION, SH.hero.POSITION) < entity.TALK.distance
       ) {
         this.talkEntity = entity
       }
     })
     if (!this.talkEntity) return
     if (
-      COORD.distance(this.talkEntity.POSITION, WORLD.hero.POSITION) <
+      COORD.distance(this.talkEntity.POSITION, SH.hero.POSITION) <
       this.talkEntity.TALK.distance
     ) {
       INTERFACE.talk = true
@@ -33,12 +32,12 @@ class Talk {
       INTERFACE.talkPosition = {
         x:
           this.talkEntity.POSITION.x -
-          WORLD.hero.POSITION.x +
+          SH.hero.POSITION.x +
           CONFIG.viewport.width / 2 +
           this.talkEntity.TALK.x,
         y:
           this.talkEntity.POSITION.y -
-          WORLD.hero.POSITION.y +
+          SH.hero.POSITION.y +
           CONFIG.viewport.height / 2 +
           this.talkEntity.TALK.y,
       }

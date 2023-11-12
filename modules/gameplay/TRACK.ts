@@ -17,8 +17,7 @@ class Track {
     if (!targetEntity) return
     const weapon = INVENTORY.gear.weapon
     let weaponDistance = 0
-    if (WORLD.isHero(id))
-      weaponDistance = ITEMS.collection.weapons[weapon].distance
+    if (entity.HERO) weaponDistance = ITEMS.collection.weapons[weapon].distance
     const distance = COORD.distance(entity.POSITION, targetEntity.POSITION)
     return (
       distance - targetEntity.SIZE.width / 2 < skillDistance + weaponDistance

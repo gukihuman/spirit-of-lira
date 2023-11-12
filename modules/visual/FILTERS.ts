@@ -14,7 +14,7 @@ class Filters {
       brightness: 0.7,
     })
     // Preload filters to prevent lag
-    const container = SPRITE.getContainer(WORLD.heroId)
+    const container = SPRITE.getContainer(SH.heroId)
     if (container) {
       container.filters = [this.hover, this.tracked]
       setTimeout(() => (container.filters = []), 0)
@@ -23,8 +23,8 @@ class Filters {
   lastContainer: Container | undefined
   process() {
     if (this.lastContainer) this.lastContainer.filters = []
-    if (!WORLD.hero.TARGET) return
-    const id = WORLD.hero.TARGET.id
+    if (!SH.hero.TARGET) return
+    const id = SH.hero.TARGET.id
     const entity = WORLD.entities.get(id)
     if (!id || !entity) return
     const animation = SPRITE.getLayer(id, "animation")
@@ -32,11 +32,11 @@ class Filters {
     if (animation) {
       animation.filters = [this.hover]
       // 📜 here cast is always offensive, when other cast added, think how to change that
-      if (!WORLD.hero.STATE.track) return
+      if (!SH.hero.STATE.track) return
       if (
         GLOBAL.lastActiveDevice !== "gamepad" &&
         GLOBAL.hoverId !== id &&
-        !WORLD.hero.STATE.track
+        !SH.hero.STATE.track
       ) {
         return
       }

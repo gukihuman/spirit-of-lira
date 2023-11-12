@@ -27,7 +27,7 @@ class Target {
   mobsMaxTargetDistance = 430 // stop track
   init() {
     EVENTS.onSingle("lockTarget", () => {
-      const hero = WORLD.hero
+      const hero = SH.hero
       if (!hero.TARGET.id) return
       hero.TARGET.locked = !hero.TARGET.locked
       // reset finaldestination if it is on the TARGET
@@ -53,13 +53,13 @@ class Target {
     })
   }
   process() {
-    if (!WORLD.hero.TARGET) return
+    if (!SH.hero.TARGET) return
     WORLD.entities.forEach((entity, id) => {
       if (!entity.MOVE) return
       this.checkTargetDistance(entity, id)
       if (entity.STATE.active !== "track" && !entity.TARGET.locked) {
         if (!SETTINGS.gameplay.easyFight) {
-          if (WORLD.isHero(id) && GLOBAL.lastActiveDevice !== "gamepad") return
+          if (entity.HERO && GLOBAL.lastActiveDevice !== "gamepad") return
         }
         // work on all entities and hero with gamepad
         this.autoTarget(entity, id)
@@ -68,7 +68,7 @@ class Target {
     if (
       GLOBAL.lastActiveDevice === "gamepad" &&
       LIBRARY.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT) &&
-      !WORLD.hero.TARGET.locked
+      !SH.hero.TARGET.locked
     ) {
       // overwrites autoTarget for hero with gamepad axes
       this.targetByGamepadAxes()
@@ -76,14 +76,14 @@ class Target {
     if (
       GLOBAL.lastActiveDevice !== "gamepad" &&
       !GLOBAL.autoMouseMove &&
-      !WORLD.hero.TARGET.locked
+      !SH.hero.TARGET.locked
     ) {
       this.targetByMouse()
     }
   }
   targetByMouse() {
     if (SETTINGS.gameplay.easyFight && !GLOBAL.hoverId) return
-    WORLD.hero.TARGET.id = GLOBAL.hoverId
+    SH.hero.TARGET.id = GLOBAL.hoverId
   }
   private checkTargetDistance(entity, id) {
     if (!entity.TARGET.id || !entity.TARGET.entity) return
@@ -92,7 +92,7 @@ class Target {
       entity.TARGET.entity.POSITION
     )
     let maxDistance = 0
-    if (WORLD.isHero(id)) maxDistance = this.heroMaxTargetDistance
+    if (entity.HERO) maxDistance = this.heroMaxTargetDistance
     else maxDistance = this.mobsMaxTargetDistance
     if (distance > maxDistance) entity.TARGET.id = undefined
   }
@@ -101,7 +101,7 @@ class Target {
     WORLD.entities.forEach((otherEntity, otherId) => {
       if (id === otherId || !otherEntity.MOVE) return
       if (otherEntity.STATE.active === "dead") return
-      if (!WORLD.isHero(id) && entity.ATTRIBUTES.mood === "peaceful") {
+      if (!entity.HERO && entity.ATTRIBUTES.mood === "peaceful") {
         return
       }
       const distance = COORD.distance(entity.POSITION, otherEntity.POSITION)
@@ -111,7 +111,7 @@ class Target {
       }
     })
     let autoTargetDistance = this.mobsAutoTargetDistance
-    if (WORLD.isHero(id)) autoTargetDistance = this.heroAutoTargetDistance
+    if (entity.HERO) autoTargetDistance = this.heroAutoTargetDistance
     if (minDistance > autoTargetDistance) {
       entity.TARGET.id = undefined
     }
@@ -128,12 +128,11 @@ class Target {
     const closestGroup: number[] = []
     const correspondDistances: number[] = []
     const angleToGroup = 0.2 // about 12 degrees
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.MOVE || id === WORLD.heroId) return
+    MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
       if (entity.STATE.active === "dead") return
-      const distance = COORD.distance(WORLD.hero.POSITION, entity.POSITION)
+      const distance = COORD.distance(SH.hero.POSITION, entity.POSITION)
       if (distance > 750) return
-      const entityAngle = COORD.angle(WORLD.hero.POSITION, entity.POSITION)
+      const entityAngle = COORD.angle(SH.hero.POSITION, entity.POSITION)
       const angle = Math.abs(entityAngle - axesAngle)
       if (angle < angleToGroup) {
         closestGroup.push(id)
@@ -155,7 +154,7 @@ class Target {
         }
       })
     }
-    WORLD.hero.TARGET.id = closestEntityId
+    SH.hero.TARGET.id = closestEntityId
   }
 }
 export const TARGET = new Target()

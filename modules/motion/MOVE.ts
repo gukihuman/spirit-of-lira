@@ -50,7 +50,7 @@ class Move {
     } else {
       // first time not moved
       if (this.gamepadAxesMoved && GLOBAL.lastActiveDevice === "gamepad") {
-        WORLD.hero.MOVE.finaldestination = _.cloneDeep(WORLD.hero.POSITION)
+        SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
       }
       this.gamepadAxesMoved = false
     }
@@ -58,41 +58,41 @@ class Move {
   // TODO anything
   mouseMove() {
     if (INTERFACE.talkHover) return
-    WORLD.hero.STATE.track = false
-    WORLD.hero.STATE.cast = false
-    WORLD.hero
+    SH.hero.STATE.track = false
+    SH.hero.STATE.cast = false
+    SH.hero
     const distance = COORD.distance(
       COORD.conterOfScreen(),
       COORD.mouseOfScreen()
     )
     if (distance < 10) {
-      WORLD.hero.MOVE.finaldestination = _.cloneDeep(WORLD.hero.POSITION)
+      SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
       return
     }
     const x = COORD.mousePosition().x
     const y = COORD.mousePosition().y
     if (COORD.isWalkable(x, y)) {
-      WORLD.hero.MOVE.finaldestination = COORD.mousePosition()
+      SH.hero.MOVE.finaldestination = COORD.mousePosition()
     }
   }
   private gamepadMoveTries = 0
   gamepadMove() {
     const elapsedMS = WORLD.loop.elapsedMS
     if (
-      WORLD.hero.STATE.active === "track" &&
-      elapsedMS < WORLD.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
+      SH.hero.STATE.active === "track" &&
+      elapsedMS < SH.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
       elapsedMS > this.lastMobKilledMS + this.preventGamepadMoveMS
     ) {
       return
     }
-    WORLD.hero.STATE.track = false
-    WORLD.hero.STATE.cast = false
+    SH.hero.STATE.track = false
+    SH.hero.STATE.cast = false
     this.gamepadMoveTries = 0
     this.gamepadMoveLogic()
   }
   private gamepadMoveLogic(otherRatio = 1) {
-    if (!WORLD.hero) return
-    const speedPerTick = COORD.speedPerTick(WORLD.hero)
+    if (!SH.hero) return
+    const speedPerTick = COORD.speedPerTick(SH.hero)
     const axesVector = COORD.vector(
       INPUT.gamepad.axes[0],
       INPUT.gamepad.axes[1]
@@ -104,7 +104,7 @@ class Move {
       angle,
       speedPerTick * WORLD.loop.fps * 2
     )
-    const hero = WORLD.hero
+    const hero = SH.hero
     const possibleDestinationX =
       hero.POSITION.x + vectorToFinalDestination.x * ratio * otherRatio
     const possibleDestinationY =
@@ -167,7 +167,7 @@ class Move {
     let ratio = _.clamp(finaldistance / 200, 1)
     ratio = Math.sqrt(ratio)
     ratio = _.clamp(ratio, 0.3, 1)
-    if (WORLD.hero.STATE.track) ratio = 1
+    if (SH.hero.STATE.track) ratio = 1
     const angle = displacement.angle
     const velocity = COORD.vectorFromAngle(angle, speedPerTick)
     entity.POSITION.x += velocity.x * ratio

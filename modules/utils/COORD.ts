@@ -45,8 +45,8 @@ class Coordinates {
   mousePosition() {
     const mousePosition = COORD.mouseOfScreen()
     return this.vector(
-      (mousePosition.x += WORLD.hero.POSITION.x - CONFIG.viewport.width / 2),
-      (mousePosition.y += WORLD.hero.POSITION.y - CONFIG.viewport.height / 2)
+      (mousePosition.x += SH.hero.POSITION.x - CONFIG.viewport.width / 2),
+      (mousePosition.y += SH.hero.POSITION.y - CONFIG.viewport.height / 2)
     )
   }
   coordinateToChunk(coordinate: number) {

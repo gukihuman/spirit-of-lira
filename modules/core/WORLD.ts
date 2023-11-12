@@ -6,14 +6,7 @@ class World {
   app?: Application
   entities: Map<number, any> = new Map()
   systems: AnyObject = {}
-  // shortcuts for often used entities
-  hero: AnyObject = {}
-  heroId = 0
   // 📜 rewrite in one line
-  isHero(id: number) {
-    if (id === this.heroId) return true
-    return false
-  }
   hover: AnyObject | null = {}
   // layers
   map = new PIXI.Container()
@@ -60,14 +53,7 @@ class World {
         if (entity.process) entity.process(entity, id)
       })
     }, "WORLD")
-    // hero creation
-    let heroId = await CREATOR.create("lira")
-    if (!heroId) {
-      LIBRARY.logWarning("hero is not created (starter)")
-      return
-    }
-    WORLD.hero = WORLD.entities.get(heroId)
-    WORLD.heroId = heroId
+    await CREATOR.create("lira") // here so other modules can use it on init
   }
   private loopSetup() {
     const holdFrames = 20

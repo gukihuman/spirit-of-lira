@@ -1,12 +1,9 @@
 class Destination {
-  //
   delayMS = 15_000
-
   process() {
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.MOVE) return
+    MUSEUM.processEntity("MOVE", (entity, id) => {
       if (
-        id !== WORLD.heroId &&
+        entity.NONHERO &&
         entity.STATE.active === "idle" &&
         WORLD.loop.elapsedMS > entity.MOVE.randomDestinationMS + this.delayMS &&
         Math.random() < 0.08 * WORLD.loop.deltaSec
@@ -23,8 +20,8 @@ class Destination {
     EVENTS.onSingle("sceneContextChanged", () => {
       GLOBAL.sceneContextChangedMS = WORLD.loop.elapsedMS
       setTimeout(() => {
-        WORLD.hero.MOVE.finaldestination = _.cloneDeep(WORLD.hero.POSITION)
-        WORLD.hero.TARGET.id = undefined
+        SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
+        SH.hero.TARGET.id = undefined
       }, 50)
     })
   }

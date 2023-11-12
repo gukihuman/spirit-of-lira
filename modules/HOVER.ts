@@ -2,11 +2,10 @@ class Hover {
   process() {
     if (GLOBAL.lastActiveDevice === "gamepad") return
     const point = COORD.mouseOfScreen()
-    const heroPosition = WORLD.hero.POSITION
+    const heroPosition = SH.hero.POSITION
     const intersections: number[] = []
     let hoverEntityId = 0
-    WORLD.entities.forEach((entity, id) => {
-      if (id === WORLD.heroId || !entity.MOVE || !entity.SIZE) return
+    MUSEUM.processEntity(["NONHERO", "MOVE", "SIZE"], (entity, id) => {
       const position = entity.POSITION
       const rect = {
         x:
