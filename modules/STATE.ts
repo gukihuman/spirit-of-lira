@@ -1,5 +1,9 @@
+type ActiveState = "idle" | "move" | "track" | "cast" | "dead"
+interface Component extends AnyObject {
+  active: ActiveState
+}
 class State {
-  component = {
+  component: Component = {
     active: "idle",
     still: true,
     track: false,

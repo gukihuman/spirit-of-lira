@@ -21,12 +21,12 @@ const inter = {
           INTERFACE.targetHealth = WORLD.hero.TARGET.entity.ATTRIBUTES.health
           INTERFACE.targetMaxHealth =
             ENTITIES.collection[WORLD.hero.TARGET.entity.name].ATTRIBUTES.health
-          INTERFACE.heroHealth = WORLD.hero.ATTRIBUTES.health
-          INTERFACE.heroMaxHealth =
-            ENTITIES.collection[WORLD.hero.name].ATTRIBUTES.health
         } else {
           INTERFACE.target = false
         }
+        INTERFACE.heroHealth = WORLD.hero.ATTRIBUTES.health
+        INTERFACE.heroMaxHealth =
+          ENTITIES.collection[WORLD.hero.name].ATTRIBUTES.health
         if (WORLD.hero.TARGET.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
       }

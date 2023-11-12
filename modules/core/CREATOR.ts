@@ -118,6 +118,7 @@ class Creator {
     delete entity[name].depend
     delete entity[name].trigger
     delete entity[name].inject
+    if (entity.HERO) delete entity.NONHERO
   }
 }
 export const CREATOR = new Creator()

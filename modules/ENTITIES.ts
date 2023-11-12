@@ -2,6 +2,7 @@ type AddName<T> = T & { name: string }
 class Entities {
   collection = {
     lira: {
+      HERO: true,
       POSITION: { x: 6588, y: 6891 },
       SIZE: {
         width: 60,
@@ -70,6 +71,10 @@ class Entities {
       process(entity: { POSITION: any }, id: number) {
         let position = entity.POSITION
         if (!position) return
+        if (WORLD.hero.STATE.active === "dead") {
+          SH.stopHero()
+          return
+        }
 
         if (GLOBAL.lastActiveDevice === "gamepad") {
           position.x = -30

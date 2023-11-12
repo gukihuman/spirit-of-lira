@@ -1,8 +1,7 @@
 class Remove {
   process() {
-    WORLD.entities.forEach((entity, id) => {
+    MUSEUM.processEntity(["STATE", "NONHERO"], (entity, id) => {
       if (
-        entity.STATE &&
         entity.STATE.active === "dead" &&
         WORLD.loop.elapsedMS >
           entity.STATE.deadTimeMS + entity.STATE.deadDelayMS

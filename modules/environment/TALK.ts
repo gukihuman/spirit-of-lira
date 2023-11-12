@@ -7,20 +7,20 @@ class Talk {
     y: -100,
   }
   updatePosition = false
-  entity
+  talkEntity
   process() {
-    MUSEUM.processEntity(["TALK"], (entityToCheck) => {
+    MUSEUM.processEntity(["TALK"], (entity) => {
       if (
-        COORD.distance(entityToCheck.POSITION, WORLD.hero.POSITION) <
-        entityToCheck.TALK.distance
+        COORD.distance(entity.POSITION, WORLD.hero.POSITION) <
+        entity.TALK.distance
       ) {
-        this.entity = entityToCheck
+        this.talkEntity = entity
       }
     })
-    if (!this.entity) return
+    if (!this.talkEntity) return
     if (
-      COORD.distance(this.entity.POSITION, WORLD.hero.POSITION) <
-      this.entity.TALK.distance
+      COORD.distance(this.talkEntity.POSITION, WORLD.hero.POSITION) <
+      this.talkEntity.TALK.distance
     ) {
       INTERFACE.talk = true
       this.updatePosition = true
@@ -29,33 +29,33 @@ class Talk {
       INTERFACE.talk = false
     }
     if (this.updatePosition) {
-      INTERFACE.talkEntity = this.entity.name
+      INTERFACE.talkEntity = this.talkEntity.name
       INTERFACE.talkPosition = {
         x:
-          this.entity.POSITION.x -
+          this.talkEntity.POSITION.x -
           WORLD.hero.POSITION.x +
           CONFIG.viewport.width / 2 +
-          this.entity.TALK.x,
+          this.talkEntity.TALK.x,
         y:
-          this.entity.POSITION.y -
+          this.talkEntity.POSITION.y -
           WORLD.hero.POSITION.y +
           CONFIG.viewport.height / 2 +
-          this.entity.TALK.y,
+          this.talkEntity.TALK.y,
       }
     }
   }
   debouncedTurnOff = _.debounce(() => {
     this.updatePosition = false
-    this.entity = null
+    this.talkEntity = null
   }, 500)
   init() {
     EVENTS.onSingle("talk", () => this.emit())
   }
   emit() {
-    if (!this.entity) return
+    if (!this.talkEntity) return
     EVENTS.emit("startScene", {
-      name: this.entity.TALK.scene,
-      instantChoices: this.entity.TALK.instantChoices,
+      name: this.talkEntity.TALK.scene,
+      instantChoices: this.talkEntity.TALK.instantChoices,
     })
   }
 }
