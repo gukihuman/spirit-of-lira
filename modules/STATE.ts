@@ -44,7 +44,7 @@ class State {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (entity.STATE.active !== lastEntity.STATE.active) {
-      WORLD.entities.get(id).STATE.lastChangeMS = WORLD.loop.elapsedMS
+      WORLD.entities.get(id).STATE.lastChangeMS = LOOP.elapsedMS
     }
   }
 }

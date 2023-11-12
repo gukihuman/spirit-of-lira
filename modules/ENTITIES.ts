@@ -115,7 +115,7 @@ class Entities {
         const animation = SPRITE.getLayer(id, "animation")
 
         if (container && animation) {
-          animation.angle += 80 * WORLD.loop.deltaSec
+          animation.angle += 80 * LOOP.deltaSec
           const scale = 1
           container.scale = { x: 1, y: 0.5 }
           container.scale.x *= scale

@@ -14,7 +14,7 @@ const inter = {
   heroHealth: 0,
   heroMaxHealth: 0,
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       if (GLOBAL.context === "world") {
         if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
           INTERFACE.target = true

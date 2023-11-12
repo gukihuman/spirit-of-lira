@@ -76,7 +76,7 @@ class Settings {
     },
   }
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       this.emitEvents()
     }, "SETTINGS")
     EVENTS.onSingle("previousOption", () => {
@@ -139,7 +139,7 @@ class Settings {
         INPUT.mouse.pressed.includes(this.worldInputEvents.mouse.decide) ||
         INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.decide)
       ) {
-        if (WORLD.loop.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
+        if (LOOP.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
           EVENTS.emitSingle("decide")
           GLOBAL.autoMouseMove = false
         }
@@ -148,7 +148,7 @@ class Settings {
         INPUT.gamepad.pressed.includes(this.worldInputEvents.gamepad.cast1) ||
         INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.cast1)
       ) {
-        if (WORLD.loop.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
+        if (LOOP.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
           EVENTS.emitSingle("cast1")
         }
       }

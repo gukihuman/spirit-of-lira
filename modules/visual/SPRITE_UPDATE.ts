@@ -172,7 +172,7 @@ class SpriteUpdate {
     const lastEntity = LAST.entities.get(id)
     if (!lastEntity) return
     if (entity.SPRITE.active !== lastEntity.SPRITE.active) {
-      WORLD.entities.get(id).SPRITE.lastChangeMS = WORLD.loop.elapsedMS
+      WORLD.entities.get(id).SPRITE.lastChangeMS = LOOP.elapsedMS
     }
   }
 }

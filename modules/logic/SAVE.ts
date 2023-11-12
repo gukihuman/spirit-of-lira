@@ -43,9 +43,9 @@ class Save {
     this.stringifyLocal("save", this.save)
   }
   process() {
-    if (WORLD.loop.elapsedMS > this.lastUpdateMS + this.updatePeriodMS) {
+    if (LOOP.elapsedMS > this.lastUpdateMS + this.updatePeriodMS) {
       this.update()
-      this.lastUpdateMS = WORLD.loop.elapsedMS
+      this.lastUpdateMS = LOOP.elapsedMS
     }
   }
   private parseLocal(key: string) {

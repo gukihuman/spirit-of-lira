@@ -3,7 +3,7 @@ class Time {
   stamps: Stamps = {}
   stamp(duration) {
     const stampId = UNIQUE.string()
-    this.stamps.stampId = WORLD.loop.elapsedMS
+    this.stamps.stampId = LOOP.elapsedMS
     return stampId
   }
   process() {}

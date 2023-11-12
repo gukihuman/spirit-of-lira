@@ -31,7 +31,7 @@ const activeScene: activeScene = {
   lastContinueMS: 0,
   focusedChoiceIndex: 0,
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       if (GLOBAL.context !== "scene") return
       this.updateData()
     }, "ACTIVE_SCENE")
@@ -72,9 +72,8 @@ const activeScene: activeScene = {
       else EVENTS.emitSingle("continue")
     })
     EVENTS.onSingle("continue", () => {
-      if (this.lastContinueMS + CONFIG.scene.skipDelay > WORLD.loop.elapsedMS)
-        return
-      this.lastContinueMS = WORLD.loop.elapsedMS
+      if (this.lastContinueMS + CONFIG.scene.skipDelay > LOOP.elapsedMS) return
+      this.lastContinueMS = LOOP.elapsedMS
       const steps = this.getSteps()
       if (!steps) return
       const { step, nextStep } = steps

@@ -29,7 +29,7 @@ class Aud {
   }
 
   process() {
-    if (!WORLD.loop.newSec) return
+    if (!LOOP.newSec) return
     if (this.audioContext.STATE === "suspended") {
       this.audioContext.resume()
     } else {

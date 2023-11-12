@@ -3,8 +3,7 @@ class Remove {
     MUSEUM.processEntity(["STATE", "NONHERO"], (entity, id) => {
       if (
         entity.STATE.active === "dead" &&
-        WORLD.loop.elapsedMS >
-          entity.STATE.deadTimeMS + entity.STATE.deadDelayMS
+        LOOP.elapsedMS > entity.STATE.deadTimeMS + entity.STATE.deadDelayMS
       ) {
         const container = SPRITE.getContainer(id)
         if (!container) return

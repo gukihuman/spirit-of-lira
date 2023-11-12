@@ -24,7 +24,7 @@ class Events {
     this.activeSingle.push(event)
   }
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       this.executeEventsTries = 0
       this.executeEvents()
       this.active = []

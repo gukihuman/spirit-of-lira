@@ -14,7 +14,7 @@ class Move {
     trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
     inject(entity, id) {
       entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
-      entity.MOVE.randomDestinationMS = WORLD.loop.elapsedMS - 10_000
+      entity.MOVE.randomDestinationMS = LOOP.elapsedMS - 10_000
     },
   }
 
@@ -77,7 +77,7 @@ class Move {
   }
   private gamepadMoveTries = 0
   gamepadMove() {
-    const elapsedMS = WORLD.loop.elapsedMS
+    const elapsedMS = LOOP.elapsedMS
     if (
       SH.hero.STATE.active === "track" &&
       elapsedMS < SH.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
@@ -102,7 +102,7 @@ class Move {
     ratio = _.clamp(ratio, 1)
     const vectorToFinalDestination = COORD.vectorFromAngle(
       angle,
-      speedPerTick * WORLD.loop.fps * 2
+      speedPerTick * LOOP.fps * 2
     )
     const hero = SH.hero
     const possibleDestinationX =

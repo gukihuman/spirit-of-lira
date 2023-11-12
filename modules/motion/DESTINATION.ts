@@ -5,20 +5,20 @@ class Destination {
       if (
         entity.NONHERO &&
         entity.STATE.active === "idle" &&
-        WORLD.loop.elapsedMS > entity.MOVE.randomDestinationMS + this.delayMS &&
-        Math.random() < 0.08 * WORLD.loop.deltaSec
+        LOOP.elapsedMS > entity.MOVE.randomDestinationMS + this.delayMS &&
+        Math.random() < 0.08 * LOOP.deltaSec
       ) {
         this.counter = 0
         this.setRandomDestination(entity, id)
       }
       if (GLOBAL.context === "scene") {
-        entity.MOVE.randomDestinationMS = WORLD.loop.elapsedMS
+        entity.MOVE.randomDestinationMS = LOOP.elapsedMS
       }
     })
   }
   init() {
     EVENTS.onSingle("sceneContextChanged", () => {
-      GLOBAL.sceneContextChangedMS = WORLD.loop.elapsedMS
+      GLOBAL.sceneContextChangedMS = LOOP.elapsedMS
       setTimeout(() => {
         SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
         SH.hero.TARGET.id = undefined
@@ -36,7 +36,7 @@ class Destination {
     }
     entity.MOVE.finaldestination.x = possibleX
     entity.MOVE.finaldestination.y = possibleY
-    entity.MOVE.randomDestinationMS = WORLD.loop.elapsedMS
+    entity.MOVE.randomDestinationMS = LOOP.elapsedMS
   }
 }
 export const DESTINATION = new Destination()

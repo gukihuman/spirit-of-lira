@@ -10,7 +10,7 @@ class Astar {
       executes.push(() => {
         if (entity.MOVE) {
           if (!entity.MOVE.finaldestination) return
-          if (_.round(WORLD.loop.elapsedMS / 100) % _.random(1, 5) !== 0) {
+          if (_.round(LOOP.elapsedMS / 100) % _.random(1, 5) !== 0) {
             return
           }
           const startTile = {
@@ -33,14 +33,13 @@ class Astar {
             COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 0 &&
             COLLISION.getArrayElement([mouseTileY, mouseTileX]) !== 1
           ) {
-            entity.MOVE.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
+            entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsedMS
           }
 
           if (
             COLLISION.getArrayElement([endTile.y, endTile.x]) !== 0 &&
             COLLISION.getArrayElement([endTile.y, endTile.x]) !== 1 &&
-            (WORLD.loop.elapsedMS <
-              entity.MOVE.setMousePointOnWalkableMS + 100 ||
+            (LOOP.elapsedMS < entity.MOVE.setMousePointOnWalkableMS + 100 ||
               GLOBAL.lastActiveDevice === "gamepad")
           ) {
             if (GLOBAL.collision) {
@@ -267,7 +266,7 @@ class Astar {
 
         if (!walkable) {
           this.setFinalDestinationToWalkable(endPos, entity)
-          entity.MOVE.setMousePointOnWalkableMS = WORLD.loop.elapsedMS
+          entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
         return this.refinePath(path)

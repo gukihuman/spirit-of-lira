@@ -25,7 +25,7 @@ class Cast {
     entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
     if (entity.HERO) {
       if (!SETTINGS.gameplay.easyFight) entity.STATE.track = false
-      MOVE.lastMobKilledMS = WORLD.loop.elapsedMS
+      MOVE.lastMobKilledMS = LOOP.elapsedMS
     }
   }
   private revengeLogic(entity, id, skill) {
@@ -85,7 +85,7 @@ class Cast {
     const targetHealth = entity.TARGET.entity.ATTRIBUTES.health
     if (targetHealth <= 0) this.targetDiesLogic(entity, id)
     if (skill.logic) skill.logic(entity, id)
-    entity.SKILLS.lastDoneMS = WORLD.loop.elapsedMS + skill.delayMS
+    entity.SKILLS.lastDoneMS = LOOP.elapsedMS + skill.delayMS
     entity.SKILLS.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
@@ -115,10 +115,10 @@ class Cast {
       const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
       if (entity.STATE.cast && !lastEntity.STATE.cast) {
-        entity.SKILLS.lastFirstStartMS = WORLD.loop.elapsedMS
+        entity.SKILLS.lastFirstStartMS = LOOP.elapsedMS
       }
       const skill = entity.SKILLS.data[entity.SKILLS.active]
-      const elapsedMS = WORLD.loop.elapsedMS
+      const elapsedMS = LOOP.elapsedMS
       const delayMS = entity.SKILLS.delayMS
       // if target is dead
       if (!entity.TARGET.id && elapsedMS > entity.SKILLS.lastDoneMS + delayMS) {

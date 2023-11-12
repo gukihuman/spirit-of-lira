@@ -4,7 +4,7 @@ class Flip {
       ["MOVE", "POSITION", "STATE", "TARGET"],
       (entity, id) => {
         if (entity.STATE.active === "dead") return
-        if (WORLD.loop.elapsedMS - entity.SPRITE.lastFlipMS < 200) return
+        if (LOOP.elapsedMS - entity.SPRITE.lastFlipMS < 200) return
         if (!LAST.entities.get(id)) return
         const previousX = LAST.entities.get(id).POSITION.x
         const container = SPRITE.getContainer(id)
@@ -36,7 +36,7 @@ class Flip {
           }
         }
         if (SPRITE.getLayer(id, "animation")?.scale.x !== before) {
-          entity.SPRITE.lastFlipMS = WORLD.loop.elapsedMS
+          entity.SPRITE.lastFlipMS = LOOP.elapsedMS
         }
       }
     )

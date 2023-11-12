@@ -111,7 +111,7 @@ class Spr {
     if (!parentLayer) return
     parentLayer.addChild(container)
     this.offsetEffectContainer(container, entity, targetEntity)
-    const expireMS = _.round(WORLD.loop.elapsedMS + durationMS)
+    const expireMS = _.round(LOOP.elapsedMS + durationMS)
     this.effectContainers.set(expireMS, container)
     const possibleSprites: string[] = []
     _.forEach(ASSETS.jsons, (json, key) => {

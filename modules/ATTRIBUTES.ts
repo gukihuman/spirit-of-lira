@@ -9,7 +9,7 @@ class Attributes {
     MUSEUM.processEntity("ATTRIBUTES", (entity, id) => {
       if (entity.ATTRIBUTES.health < entity.ATTRIBUTES.maxHealth) {
         entity.ATTRIBUTES.health +=
-          entity.ATTRIBUTES.healthRegen * WORLD.loop.deltaSec
+          entity.ATTRIBUTES.healthRegen * LOOP.deltaSec
       }
     })
   }

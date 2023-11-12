@@ -6,12 +6,12 @@ class Last {
   loopSec = -1
   context = ""
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       this.entities = LIBRARY.cloneMapDeep(WORLD.entities)
       this.hero = _.cloneDeep(SH.hero)
       this.hover = _.cloneDeep(WORLD.hover)
       this.scenePart = ACTIVE_SCENE.part
-      this.loopSec = WORLD.loop.elapsedSec
+      this.loopSec = LOOP.elapsedSec
       if (
         (GLOBAL.context === "scene" && LAST.context !== "scene") ||
         (GLOBAL.context !== "scene" && LAST.context === "scene")

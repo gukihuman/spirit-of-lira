@@ -21,7 +21,7 @@ class Dead {
         entity.STATE.active === "dead" &&
         lastEntity.STATE.active !== "dead"
       ) {
-        entity.STATE.deadTimeMS = WORLD.loop.elapsedMS
+        entity.STATE.deadTimeMS = LOOP.elapsedMS
         if (!entity.HERO) {
           PROGRESS.mobs[entity.name]++
           SAVE.update()
@@ -32,12 +32,10 @@ class Dead {
       if (!animation || !shadow) return
       // fade
       const timeTillRemove =
-        entity.STATE.deadTimeMS +
-        entity.STATE.deadDelayMS -
-        WORLD.loop.elapsedMS
+        entity.STATE.deadTimeMS + entity.STATE.deadDelayMS - LOOP.elapsedMS
       animation.alpha = timeTillRemove / 500
       if (timeTillRemove < 500) {
-        entity.POSITION.y += 0.5 * (60 / WORLD.loop.fps)
+        entity.POSITION.y += 0.5 * (60 / LOOP.fps)
       }
       // 0.08 is defaul shadow alpha
       shadow.alpha = (timeTillRemove / 500) * 0.08

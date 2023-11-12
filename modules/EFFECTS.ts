@@ -5,9 +5,9 @@ class Effects {
   }
   back = {}
   init() {
-    WORLD.loop.add(() => {
+    LOOP.add(() => {
       SPRITE.effectContainers.forEach((container, expireMS) => {
-        if (WORLD.loop.elapsedMS > expireMS) {
+        if (LOOP.elapsedMS > expireMS) {
           // 📜 change to destroy with testing
           container.destroy()
           SPRITE.effectContainers.delete(expireMS)

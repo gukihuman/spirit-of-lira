@@ -31,7 +31,7 @@ async function initModules() {
   }
   // add processes after init, may depend on other init
   _.forEach(processes, (process, name) => {
-    WORLD.loop.add(() => process(), name)
+    LOOP.add(() => process(), name)
   })
 }
 function checkGesture() {

@@ -29,7 +29,7 @@ class Coordinates {
     return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
   }
   speedPerTick(entity) {
-    return entity.MOVE.speed * 10 * WORLD.loop.deltaSec
+    return entity.MOVE.speed * 10 * LOOP.deltaSec
   }
   conterOfScreen() {
     return this.vector(CONFIG.viewport.width / 2, CONFIG.viewport.height / 2)
