@@ -1,3 +1,5 @@
+import { g } from "vitest/dist/index-40ebba2b"
+
 type Choice = {
   text?: string
   nextSceneName?: string
@@ -18,9 +20,11 @@ interface activeScene extends AnyObject {
   layerOne: SceneLayer
   layerTwo: SceneLayer
   activeLayer: "layerOne" | "layerTwo"
+  focusedChoiceIndex: number | null
 }
 const activeScene: activeScene = {
   name: "",
+  leaveMenuMS: 0,
   nextSceneName: "",
   stepIndex: 0,
   layerOne: {},
@@ -29,7 +33,16 @@ const activeScene: activeScene = {
   showChoiceBox: false,
   showText: true,
   lastContinueMS: 0,
-  focusedChoiceIndex: 0,
+  focusedChoiceIndex: null,
+  process() {
+    SCENE.menuScenes.forEach((menuScene) => {
+      if (!LAST.sceneName) return
+      if (LAST.sceneName === this.name) return
+      if (LAST.sceneName.includes(menuScene)) {
+        this.leaveMenuMS = LOOP.elapsedMS
+      }
+    })
+  },
   init() {
     LOOP.add(() => {
       if (GLOBAL.context !== "scene") return
@@ -52,7 +65,7 @@ const activeScene: activeScene = {
         setTimeout(() => EVENTS.emitSingle("continue"), 20)
       }
     })
-    EVENTS.onSingle("skipScene", () => {
+    EVENTS.onSingle("quitScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
       this.name = ""
@@ -64,7 +77,7 @@ const activeScene: activeScene = {
       SAVE.update()
       GLOBAL.context = "world"
       INTERFACE.inventory = false
-      this.name = ""
+      setTimeout(() => (this.name = ""), 1000)
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice
@@ -87,8 +100,28 @@ const activeScene: activeScene = {
         const layerTwo = this.layerTwo as AnyObject
         layerOne.choices = nextStep.choices
         layerTwo.choices = nextStep.choices
-        this.focusedChoiceIndex = 0
+        let possibleIndex: number | null = null
+        // 📜 maybe merge with previous and next in settings
+        for (let i = 0; i < nextStep.choices.length; i++) {
+          const choice = nextStep.choices[i]
+          if (!choice.bulb) {
+            possibleIndex = i
+            break
+          }
+          const condition: Condition | undefined =
+            SCENE.sceneConditions[choice.bulbScene]
+          if (!condition) {
+            possibleIndex = i
+            break
+          }
+          if (condition.getCondition()) {
+            possibleIndex = i
+            break
+          }
+        }
+        this.focusedChoiceIndex = possibleIndex
       }
+      if (this.focusedChoiceIndex === null) return
       if (nextStep) {
         if (nextStep.text !== step.text) this.showText = false
         let delay = 50

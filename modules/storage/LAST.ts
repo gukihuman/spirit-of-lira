@@ -3,6 +3,7 @@ class Last {
   hero: AnyObject = {}
   hover: AnyObject | null = {}
   scenePart = ""
+  sceneName = ""
   loopSec = -1
   context = ""
   init() {
@@ -11,6 +12,7 @@ class Last {
       this.hero = _.cloneDeep(SH.hero)
       this.hover = _.cloneDeep(WORLD.hover)
       this.scenePart = ACTIVE_SCENE.part
+      this.sceneName = ACTIVE_SCENE.name
       this.loopSec = LOOP.elapsedSec
       if (
         (GLOBAL.context === "scene" && LAST.context !== "scene") ||

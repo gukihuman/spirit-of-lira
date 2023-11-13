@@ -59,8 +59,6 @@ class Spr {
   async staticEntity(entity: AnyObject, id: number, options: AnyObject = {}) {
     const parent = options.parent ?? "sortable"
     const randomFlip = options.randomFlip ?? true
-    const randomStartFrame = options.randomStartFrame ?? true
-    const loop = options.loop ?? true
     const layers = options.layers ?? [
       "shadow",
       "backEffect",
@@ -185,6 +183,16 @@ class Spr {
   emptyClothLayer() {
     const cloth = this.getLayer(SH.heroId, "cloth") as Container
     cloth.removeChildren()
+  }
+  fillWeaponLayers() {
+    if (INVENTORY.gear.weapon) {
+      SPRITE.item(INVENTORY.gear.weapon, "weapon")
+    }
+  }
+  fillClothLayer() {
+    if (INVENTORY.gear.cloth) {
+      SPRITE.item(INVENTORY.gear.cloth, "cloth")
+    }
   }
   getContainer(id: number | undefined): Container | undefined {
     if (!id) return

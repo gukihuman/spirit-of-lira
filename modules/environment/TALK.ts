@@ -52,6 +52,8 @@ class Talk {
   }
   emit() {
     if (!this.talkEntity) return
+    if (SH.hero.STATE.active === "dead") return
+    if (GLOBAL.sceneContextChangedMS + 1000 > LOOP.elapsedMS) return
     EVENTS.emit("startScene", {
       name: this.talkEntity.TALK.scene,
       instantChoices: this.talkEntity.TALK.instantChoices,

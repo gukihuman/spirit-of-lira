@@ -1,4 +1,23 @@
 class Dead {
+  init() {
+    EVENTS.onSingle("reset", () => {
+      if (SH.hero.STATE.active !== "dead") return
+      SH.hero.STATE.cast = false
+      SH.hero.STATE.active = "idle"
+      SH.hero.ATTRIBUTES.health = SH.hero.ATTRIBUTES.healthMax
+      SH.hero.ATTRIBUTES.energy = SH.hero.ATTRIBUTES.energyMax
+      SH.hero.POSITION = _.cloneDeep(ENTITIES.collection.lira.POSITION)
+      SH.hero.TARGET.id = null
+      SH.hero.TARGET.locked = false
+      SH.resetDestination()
+      INTERFACE.reset = false
+      const container = SPRITE.getContainer(SH.heroId)
+      if (!container) return
+      container.setParent(WORLD.sortable)
+      console.log(container.parent.name)
+      SPRITE.fillWeaponLayers()
+    })
+  }
   process() {
     MUSEUM.processEntity("HERO", (entity, id) => {
       if (entity.ATTRIBUTES.health > 0) return
@@ -6,11 +25,20 @@ class Dead {
       entity.TARGET.id = null
       entity.TARGET.locked = false
       SPRITE.emptyWeaponLayers()
-      setTimeout(() => {
-        const container = SPRITE.getContainer(id)
-        if (!container) return
-        container.setParent(WORLD.ground)
-      }, 1000)
+      INTERFACE.reset = true
+      const lastEntity = LAST.entities.get(id)
+      if (
+        entity.STATE.active === "dead" &&
+        lastEntity.STATE.active !== "dead"
+      ) {
+        SAVE.update()
+        setTimeout(() => {
+          if (entity.STATE.active !== "dead") return
+          const container = SPRITE.getContainer(id)
+          if (!container) return
+          container.setParent(WORLD.ground)
+        }, 1000)
+      }
     })
     MUSEUM.processEntity(["ATTRIBUTES", "STATE", "NONHERO"], (entity, id) => {
       if (entity.ATTRIBUTES.health > 0) return
@@ -22,10 +50,8 @@ class Dead {
         lastEntity.STATE.active !== "dead"
       ) {
         entity.STATE.deadTimeMS = LOOP.elapsedMS
-        if (!entity.HERO) {
-          PROGRESS.mobs[entity.name]++
-          SAVE.update()
-        }
+        PROGRESS.mobs[entity.name]++
+        SAVE.update()
       }
       const animation = SPRITE.getLayer(id, "animation")
       const shadow = SPRITE.getLayer(id, "shadow")

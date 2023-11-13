@@ -1,3 +1,12 @@
+declare global {
+  type Condition = {
+    getText: () => string
+    getCondition: () => boolean
+  }
+}
+interface sceneConditions extends AnyObject {
+  [key: string]: Condition
+}
 class Scene {
   options = {
     "n1-lira-no-light": { hue: -30 },
@@ -7,10 +16,11 @@ class Scene {
     "n1-nighty-close": { x: 950 },
     "a0-solid-dark": { x: 610, y: 750, brightness: 1.1 },
   }
-  conditions = {
-    n1: {
-      text: () => `Kill bunbos ${PROGRESS.mobs.bunbo} / 30`,
-      condition: () => PROGRESS.mobs.bunbo >= 30,
+  menuScenes = ["n0"]
+  sceneConditions = {
+    b1: {
+      getText: () => `Kill bunbos ${PROGRESS.mobs.bunbo} / 20`,
+      getCondition: () => PROGRESS.mobs.bunbo >= 20,
     },
   }
   plainText: AnyObject = {}

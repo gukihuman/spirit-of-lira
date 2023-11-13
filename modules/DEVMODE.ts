@@ -15,7 +15,7 @@ class DevMode {
         location.reload()
       }
       globalThis.log = () => {
-        return PROGRESS.scenes
+        return ACTIVE_SCENE.focusedChoiceIndex
       }
     }
   }

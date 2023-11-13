@@ -57,7 +57,7 @@ class Move {
   }
   // TODO anything
   mouseMove() {
-    if (INTERFACE.talkHover) return
+    if (INTERFACE.buttonHover) return
     SH.hero.STATE.track = false
     SH.hero.STATE.cast = false
     SH.hero

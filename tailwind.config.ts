@@ -14,6 +14,16 @@ module.exports = {
         "space-cadet": "#243551",
         "jelly-bean-blue": "#438a86",
       },
+      animation: {
+        "translate-y-menu": "translate-y-menu 800ms ease-in-out",
+        "fade-in": "fade-in 150ms ease-in-out",
+      },
+      keyframes: {
+        "translate-y-menu": {
+          "0%": { transform: "translateY(-80px)" },
+          "100%": { transform: "translateY(0)" },
+        },
+      },
     },
   },
   content: [

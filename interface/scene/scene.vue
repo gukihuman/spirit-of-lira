@@ -4,12 +4,15 @@ div(class="z-30 relative")
   images(layer = "layerOne")
   dialogue(layer = "layerOne")
   //- layerTwo
-  transition
-    div(v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
-      images(layer = "layerTwo")
-      dialogue(layer = "layerTwo")
-  div(:style="keysStyle" class="absolute left-[35px] top-[1005px] flex gap-10")
-    skip
+  transition: div(v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
+    images(layer = "layerTwo")
+    dialogue(layer = "layerTwo")
+  div(
+    v-if="GLOBAL.context === 'scene' && ACTIVE_SCENE.name !== 'a0-adult-check'"
+    :style="keysStyle"
+    class="absolute left-[35px] top-[1005px] flex gap-10"
+  )
+    quit
     navigate
 
   //- only for adult check

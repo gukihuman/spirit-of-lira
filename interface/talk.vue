@@ -1,13 +1,13 @@
 <template lang="pug">
 div(
-  class="relative w-[120px] hover:brightness-[1.15] transition duration-150 ease-in-out"
+  class="absolute w-[120px] hover:brightness-[1.15] transition duration-150 ease-in-out"
   :style="style"
 )
   div(
     class="relative flex justify-center items-center hover:scale-[1.05] transition duration-150 ease-in-out h-[80px]"
     @click="TALK.emit()"
-    @mouseover="INTERFACE.talkHover = true"
-    @mouseleave="INTERFACE.talkHover = false"
+    @mouseover="INTERFACE.buttonHover = true"
+    @mouseleave="INTERFACE.buttonHover = false"
     )
     img(
       :src="ASSETS.webps.talk"

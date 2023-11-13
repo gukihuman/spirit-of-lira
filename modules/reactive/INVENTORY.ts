@@ -9,12 +9,8 @@ const inventory: AnyObject = {
   },
   init() {
     initEvents()
-    if (this.gear.cloth) {
-      SPRITE.item(this.gear.cloth, "cloth")
-    }
-    if (this.gear.weapon) {
-      SPRITE.item(this.gear.weapon, "weapon")
-    }
+    SPRITE.fillWeaponLayers()
+    SPRITE.fillClothLayer()
   },
 }
 function initEvents() {

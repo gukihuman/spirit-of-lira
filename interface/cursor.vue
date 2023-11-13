@@ -33,7 +33,7 @@ const cursorStyle = computed(() => {
 const cursor = computed(() => {
   if (GLOBAL.lastActiveDevice === "gamepad") return false
   if (GLOBAL.context === "interface" || GLOBAL.context === "scene") return true
-  if (INTERFACE.talkHover) return true
+  if (INTERFACE.buttonHover) return true
   return (
     !GLOBAL.hoverId &&
     COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
@@ -42,7 +42,7 @@ const cursor = computed(() => {
 const cursorNo = computed(() => {
   if (GLOBAL.lastActiveDevice === "gamepad") return false
   if (GLOBAL.context === "interface" || GLOBAL.context === "scene") return false
-  if (INTERFACE.talkHover) return false
+  if (INTERFACE.buttonHover) return false
   return (
     !GLOBAL.hoverId &&
     !COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
@@ -53,7 +53,7 @@ const cursorCast = computed(() => {
   if (GLOBAL.context === "interface" || GLOBAL.context === "scene") {
     return false
   }
-  if (INTERFACE.talkHover) return false
+  if (INTERFACE.buttonHover) return false
   return GLOBAL.hoverId
 })
 </script>

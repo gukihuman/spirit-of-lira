@@ -25,7 +25,7 @@ class Entities {
       },
       ATTRIBUTES: {
         health: 20,
-        maxHealth: 20,
+        healthMax: 20,
         healthRegen: 0.2,
       },
     },
@@ -58,7 +58,7 @@ class Entities {
       },
       ATTRIBUTES: {
         health: 10,
-        maxHealth: 10,
+        healthMax: 10,
       },
       STATE: {
         deadDelayMS: 1300,
@@ -75,7 +75,7 @@ class Entities {
         let position = entity.POSITION
         if (!position) return
         if (SH.hero.STATE.active === "dead") {
-          SH.stopHero()
+          SH.resetDestination()
           return
         }
 

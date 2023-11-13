@@ -1,7 +1,7 @@
 class Save {
   startSave: AnyObject = {}
   save: AnyObject = {}
-  updatePeriodMS = 3000
+  updatePeriodMS = 1000
   lastUpdateMS = 0
   init() {
     const storageSave = this.parseLocal("save") || this.save
@@ -9,6 +9,7 @@ class Save {
       version: GLOBAL.version,
       hero: {
         POSITION: SH.hero.POSITION,
+        health: SH.hero.ATTRIBUTES.health,
       },
       inventory: {
         bag: INVENTORY.bag,
@@ -26,16 +27,18 @@ class Save {
 
     // 📜 do some logic to declare this in one place - not in update too
     SH.hero.POSITION = this.save.hero.POSITION
+    SH.hero.ATTRIBUTES.health = this.save.hero.health
     INVENTORY.bag = this.save.inventory.bag
     INVENTORY.gear = this.save.inventory.gear
     PROGRESS.scenes = this.save.progress.scenes
     PROGRESS.mobs = this.save.progress.mobs
 
-    SH.stopHero() // update final destination otherwise hero run at the start
+    SH.resetDestination() // update final destination otherwise hero run at the start
   }
   update() {
     // clone deep is important especially with pinia stores
     this.save.hero.POSITION = _.cloneDeep(SH.hero.POSITION)
+    this.save.hero.health = _.cloneDeep(SH.hero.ATTRIBUTES.health)
     this.save.inventory.bag = _.cloneDeep(INVENTORY.bag)
     this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
     this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)

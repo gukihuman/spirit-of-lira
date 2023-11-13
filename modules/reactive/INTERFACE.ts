@@ -8,13 +8,14 @@ const inter = {
   talk: false,
   talkPosition: { x: 0, y: 0 },
   talkEntity: "",
-  talkHover: false,
+  buttonHover: false,
   skipHover: false,
   showKeys: true,
   heroHealth: 0,
   heroMaxHealth: 0,
   heroEnergy: 0,
   heroMaxEnergy: 0,
+  reset: false,
   init() {
     LOOP.add(() => {
       if (GLOBAL.context === "world") {
@@ -27,9 +28,9 @@ const inter = {
           INTERFACE.target = false
         }
         INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
-        INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.maxHealth
-        INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.mana
-        INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.maxEnergy
+        INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.healthMax
+        INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.energy
+        INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.energyMax
         if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
         else INTERFACE.targetLocked = false
       }

@@ -1,7 +1,7 @@
 class Shortcuts {
   hero: AnyObject = {}
   heroId: number = 0
-  stopHero() {
+  resetDestination() {
     this.hero.MOVE.finaldestination = _.clone(this.hero.POSITION)
   }
   init() {

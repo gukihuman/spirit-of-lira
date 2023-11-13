@@ -15,7 +15,9 @@ const global = {
   mousePosition: { x: -30, y: -30 },
   hoverId: undefined,
   lastActiveDevice: "keyboard",
+  elapsedMS: 0,
   process() {
+    this.elapsedMS = LOOP.elapsedMS
     this.mouseOfScreen = COORD.mouseOfScreen()
     this.mousePosition = COORD.mousePosition()
     if (GLOBAL.context === "world") {

@@ -26,6 +26,7 @@ class Settings {
       toggleFullscreen: "f",
       lockTarget: "u",
       talk: "t",
+      reset: "r",
     },
     mouse: {
       decide: 0,
@@ -39,6 +40,7 @@ class Settings {
       toggleInventory: "Start",
       lockTarget: "RT",
       talk: "Y",
+      reset: "LB",
     },
   }
   sceneInputEvents = {
@@ -47,7 +49,7 @@ class Settings {
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
       toggleFullscreen: "f",
-      skipScene: "s",
+      quitScene: "q",
     },
     mouse: {
       mouseContinue: 0,
@@ -57,7 +59,7 @@ class Settings {
       previousOption: "Down",
       nextOption: "Up",
       toggleFullscreen: "Menu",
-      skipScene: "Start",
+      quitScene: "Start",
     },
   }
   interfaceInputEvents = {
@@ -80,18 +82,60 @@ class Settings {
       this.emitEvents()
     }, "SETTINGS")
     EVENTS.onSingle("previousOption", () => {
+      if (!ACTIVE_SCENE.focusedChoiceIndex) return
       if (!ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices) return
-      const length = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices.length
-      let newIndex = ACTIVE_SCENE.focusedChoiceIndex - 1
-      if (newIndex < 0) newIndex = length - 1
-      ACTIVE_SCENE.focusedChoiceIndex = newIndex
+      const choices = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices
+      let possibleIndex: number | null = null
+      // 📜 maybe merge with "continue" in ACTIVE_SCENE
+      let startIndex = ACTIVE_SCENE.focusedChoiceIndex - 1
+      if (startIndex < 0) startIndex += choices.length
+      for (let i = startIndex; i < choices.length; i--) {
+        if (i < 0) i += choices.length
+        let choice = choices[i]
+        if (!choice.bulb) {
+          possibleIndex = i
+          break
+        }
+        const condition: Condition | undefined =
+          SCENE.sceneConditions[choice.bulbScene]
+        if (!condition) {
+          possibleIndex = i
+          break
+        }
+        if (condition.getCondition()) {
+          possibleIndex = i
+          break
+        }
+      }
+      ACTIVE_SCENE.focusedChoiceIndex = possibleIndex
     })
     EVENTS.onSingle("nextOption", () => {
+      if (!ACTIVE_SCENE.focusedChoiceIndex) return
       if (!ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices) return
-      const length = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices.length
-      let newIndex = ACTIVE_SCENE.focusedChoiceIndex + 1
-      if (newIndex > length - 1) newIndex = 0
-      ACTIVE_SCENE.focusedChoiceIndex = newIndex
+      const choices = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices
+      let possibleIndex: number | null = null
+      // 📜 maybe merge with "continue" in ACTIVE_SCENE
+      let startIndex = ACTIVE_SCENE.focusedChoiceIndex + 1
+      if (startIndex >= choices.length) startIndex -= choices.length
+      for (let i = startIndex; i < choices.length; i++) {
+        if (i >= choices.length) i -= choices.length
+        let choice = choices[i]
+        if (!choice.bulb) {
+          possibleIndex = i
+          break
+        }
+        const condition: Condition | undefined =
+          SCENE.sceneConditions[choice.bulbScene]
+        if (!condition) {
+          possibleIndex = i
+          break
+        }
+        if (condition.getCondition()) {
+          possibleIndex = i
+          break
+        }
+      }
+      ACTIVE_SCENE.focusedChoiceIndex = possibleIndex
     })
   }
   emitEvents() {

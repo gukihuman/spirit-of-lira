@@ -58,14 +58,13 @@ class GukiConfig {
     textBoxHeight: 220,
     choiceBoxWidth: 550,
     choiceBoxHeight: 80,
-    choiceBoxesGap: 15,
     choiceSectionMarginY: 30,
     border: 10,
     unfocusedChoiceBoxOpacity: 0.3,
     focusedChoiceBoxOpacity: 0.65,
     textSpeed: 70,
     transitionSpeed: 700,
-    skipDelay: 220,
+    skipDelay: 300,
   }
 }
 export const CONFIG = new GukiConfig()
