@@ -9,16 +9,33 @@ class Cast {
     })
   }
   init() {
+    EVENTS.onSingle("decide", () => {
+      if (GLOBAL.hoverId) {
+        if (GLOBAL.hoverId !== SH.hero.TARGET.id) {
+          SH.hero.TARGET.id = GLOBAL.hoverId
+          SH.hero.STATE.idle = true
+          SH.hero.STATE.cast = false
+          SH.hero.STATE.active = "idle"
+        }
+        EVENTS.emitSingle("cast1")
+        EVENTS.emitSingle("lockTarget")
+      } else MOVE.mouseMove()
+    })
     EVENTS.onSingle("cast1", () => this.cast("slot1"))
     EVENTS.onSingle("cast2", () => this.cast("slot2"))
     EVENTS.onSingle("cast3", () => this.cast("slot3"))
     EVENTS.onSingle("cast4", () => this.cast("slot4"))
     EVENTS.on("cast", ({ entity, slot }) => {
-      const targetEntity = entity.TARGET.entity
-      if (!targetEntity || targetEntity.STATE.active === "dead") return
+      if (
+        !entity.TARGET.entity ||
+        entity.TARGET.entity.STATE.active === "dead"
+      ) {
+        return
+      }
       entity.SKILLS.active = entity.SKILLS[slot]
       entity.STATE.track = true
-      entity.TARGET.locked = true
+      entity.TARGET.locked = true // important even for hero :)
+      entity.TARGET.attackedId = entity.TARGET.id
     })
   }
   private targetDiesLogic(entity, id) {
@@ -26,8 +43,15 @@ class Cast {
     entity.TARGET.locked = false
     entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
     if (entity.HERO) {
-      if (!SETTINGS.gameplay.easyFight) entity.STATE.track = false
-      MOVE.lastMobKilledMS = LOOP.elapsedMS
+      if (!SETTINGS.gameplay.easyFight) {
+        entity.STATE.track = false
+      } else {
+        // 📜 make strictly next frame and not just 20ms
+        setTimeout(() => {
+          entity.TARGET.locked = true // its new target by easyFight here
+        }, 20)
+      }
+      MOVE.lastMobKilledMS = LOOP.elapsedMS // prevent gamepad move on delay
     }
   }
   private revengeLogic(entity, id, skill) {
@@ -78,7 +102,22 @@ class Cast {
       entity.STATE.cast = false
       entity.SKILLS.castAndDelayMS = Infinity
       return
+    } else {
+      entity.TARGET.locked = true // its new target by easyFight here
     }
+    if (
+      entity.HERO &&
+      !SETTINGS.gameplay.easyFight &&
+      // here we have new target but not easyFight
+      entity.TARGET.id !== entity.TARGET.attackedId
+    ) {
+      entity.TARGET.id = null
+      entity.TARGET.locked = false
+      entity.STATE.cast = false
+      entity.SKILLS.castAndDelayMS = Infinity
+      return
+    }
+
     this.alignAnimations(entity, id)
   }
   private alignAnimations(entity, id) {

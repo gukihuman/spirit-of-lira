@@ -3,6 +3,8 @@ class Dead {
     EVENTS.onSingle("reset", () => {
       if (SH.hero.STATE.active !== "dead") return
       SH.hero.STATE.cast = false
+      SH.hero.STATE.track = false
+      SH.hero.STATE.idle = true
       SH.hero.STATE.active = "idle"
       SH.hero.ATTRIBUTES.health = SH.hero.ATTRIBUTES.healthMax
       SH.hero.ATTRIBUTES.energy = SH.hero.ATTRIBUTES.energyMax

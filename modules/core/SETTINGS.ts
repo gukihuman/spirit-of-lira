@@ -11,6 +11,9 @@ class Settings {
     // auto attack after kill and also autotarget for mouse like on gamepad
     easyFight: false,
     attackBack: false,
+    // keepLock is about keeping lock after stop attacking
+    // attack target is always locked anyway, coding is hard in that matter
+    keepLock: true,
   }
   interface = {
     showKeys: true,
@@ -207,12 +210,6 @@ class Settings {
         INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.cast3)
       ) {
         EVENTS.emitSingle("cast3")
-      }
-      if (
-        INPUT.gamepad.pressed.includes(this.worldInputEvents.gamepad.cast4) ||
-        INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.cast4)
-      ) {
-        EVENTS.emitSingle("cast4")
       }
       if (GLOBAL.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
     }

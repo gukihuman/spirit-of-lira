@@ -1,12 +1,25 @@
 class Target {
   component = {
     id: 0,
+    attackedId: 0,
+    lastId: 0,
+    lastCacheId: 0,
     _locked: false,
     // 🔧
     inject(entity, id) {
       Object.defineProperty(entity.TARGET, "entity", {
         get() {
           return WORLD.entities.get(entity.TARGET.id)
+        },
+      })
+      Object.defineProperty(entity.TARGET, "lastEntity", {
+        get() {
+          return WORLD.entities.get(entity.TARGET.lastId)
+        },
+      })
+      Object.defineProperty(entity.TARGET, "attackedEntity", {
+        get() {
+          return WORLD.entities.get(entity.TARGET.attackedId)
         },
       })
       Object.defineProperty(entity.TARGET, "locked", {
@@ -27,40 +40,71 @@ class Target {
   mobsMaxTargetDistance = 430 // stop track
   init() {
     EVENTS.onSingle("lockTarget", () => {
-      const hero = SH.hero
-      if (!hero.TARGET.id) return
-      hero.TARGET.locked = !hero.TARGET.locked
+      if (!SH.hero.TARGET.id) return
+      SH.hero.TARGET.locked = !SH.hero.TARGET.locked
       // reset finaldestination if it is on the TARGET
       if (
-        hero.MOVE.finaldestination &&
-        !hero.TARGET.locked &&
-        hero.TARGET.entity.POSITION.x === hero.MOVE.finaldestination.x &&
-        hero.TARGET.entity.POSITION.y === hero.MOVE.finaldestination.y
+        SH.hero.MOVE.finaldestination &&
+        !SH.hero.TARGET.locked &&
+        SH.hero.TARGET.entity.POSITION.x === SH.hero.MOVE.finaldestination.x &&
+        SH.hero.TARGET.entity.POSITION.y === SH.hero.MOVE.finaldestination.y
       ) {
-        hero.MOVE.finaldestination = _.cloneDeep(hero.POSITION)
+        SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
       }
-      if (GLOBAL.lastActiveDevice !== "gamepad" && hero.STATE.cast) {
-        hero.STATE.cast = false
-        hero.MOVE.finaldestination = _.cloneDeep(hero.POSITION)
+      if (
+        (GLOBAL.lastActiveDevice === "gamepad" && SH.hero.STATE.cast) ||
+        // only if lock is manually turned off after cast
+        (SH.hero.STATE.track && !SH.hero.TARGET.locked && !GLOBAL.hoverId)
+        // also lockTarget called a couple of times while key is pressed
+      ) {
+        SH.hero.STATE.active = "idle"
+        SH.hero.STATE.cast = false
+        SH.hero.STATE.track = false
+        SH.hero.TARGET.id = null
+        SH.hero.TARGET.lock = false
+        SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
       }
       // when lock is used to lock a new TARGET immidiately
       if (GLOBAL.lastActiveDevice !== "gamepad") {
-        if (!GLOBAL.hoverId) return
-        hero.TARGET.id = GLOBAL.hoverId
-        hero.TARGET.locked = true
-        return
+        if (!GLOBAL.hoverId || SETTINGS.gameplay.easyFight) return
+        SH.hero.TARGET.id = GLOBAL.hoverId
+        SH.hero.TARGET.locked = true
       }
     })
   }
+  private updateLastTarget(entity) {
+    if (entity.TARGET.id && entity.TARGET.id !== entity.TARGET.lastCacheId) {
+      entity.TARGET.lastId = entity.TARGET.lastCacheId
+      entity.TARGET.lastCacheId = entity.TARGET.id
+    }
+  }
+  private updateKeepTrack(hero, id) {
+    const lastHero = LAST.entities.get(id)
+    if (!lastHero) return
+    if (
+      !hero.STATE.track &&
+      !hero.STATE.cast &&
+      lastHero.STATE.track &&
+      !SETTINGS.gameplay.keepLock
+    ) {
+      hero.TARGET.locked = false
+    }
+  }
   process() {
     if (!SH.hero.TARGET) return
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.MOVE) return
+    MUSEUM.processEntity(["MOVE", "TARGET"], (entity, id) => {
+      this.updateLastTarget(entity)
+      if (entity.HERO) this.updateKeepTrack(entity, id)
       this.checkTargetDistance(entity, id)
       if (entity.STATE.active !== "track" && !entity.TARGET.locked) {
-        if (!SETTINGS.gameplay.easyFight) {
-          if (entity.HERO && GLOBAL.lastActiveDevice !== "gamepad") return
+        if (
+          !SETTINGS.gameplay.easyFight &&
+          entity.HERO &&
+          GLOBAL.lastActiveDevice !== "gamepad"
+        ) {
+          return
         }
+
         // work on all entities and hero with gamepad
         this.autoTarget(entity, id)
       }

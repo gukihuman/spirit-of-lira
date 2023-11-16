@@ -9,7 +9,7 @@ class Entities {
         height: 153,
       },
       MOVE: {
-        speed: 15,
+        speed: 16,
       },
       SKILLS: {
         modify: {
@@ -24,8 +24,8 @@ class Entities {
         effectWidthRatio: 0.25,
       },
       ATTRIBUTES: {
-        health: 2000,
-        healthMax: 2000,
+        health: 20,
+        healthMax: 20,
         healthRegen: 0.2,
       },
     },
@@ -58,8 +58,8 @@ class Entities {
         },
       },
       ATTRIBUTES: {
-        health: 1000,
-        healthMax: 1000,
+        health: 10,
+        healthMax: 10,
       },
       STATE: {
         deadDelayMS: 1300,

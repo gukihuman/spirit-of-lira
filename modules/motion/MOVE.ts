@@ -23,12 +23,6 @@ class Move {
   lastMobKilledMS = 0
   private gamepadAxesMoved = false
   init() {
-    EVENTS.onSingle("decide", () => {
-      if (GLOBAL.hoverId) {
-        EVENTS.emitSingle("cast1")
-        EVENTS.emitSingle("lockTarget")
-      } else this.mouseMove()
-    })
     EVENTS.onSingle("mouseMove", () => this.mouseMove())
     EVENTS.onSingle("gamepadMove", () => this.gamepadMove())
     EVENTS.onSingle("autoMouseMove", () => {

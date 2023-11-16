@@ -37,6 +37,7 @@ class GukiConfig {
       STATE: 5,
       SPRITE_UPDATE: 4,
       ACTIVE_SCENE: 3,
+      DEVMODE: 3, // between STATE and LAST
       LAST: 2,
       INPUT_UPDATE: 1, // at least SETTINGS depends on it
       // <- rest of the logic here
@@ -45,7 +46,8 @@ class GukiConfig {
       MOVE: -3,
       CAST: -4,
       TARGET: -5,
-      FLIP: -6,
+      DEAD: -6, // remove target after TARGET so dead hero cant target :)
+      FLIP: -7,
     },
   }
   viewport = {
