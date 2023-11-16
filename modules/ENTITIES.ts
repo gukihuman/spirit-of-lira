@@ -6,10 +6,10 @@ class Entities {
       POSITION: { x: 6588, y: 6891 },
       SIZE: {
         width: 60,
-        height: 90,
+        height: 153,
       },
       MOVE: {
-        speed: 14,
+        speed: 15,
       },
       SKILLS: {
         modify: {
@@ -24,8 +24,8 @@ class Entities {
         effectWidthRatio: 0.25,
       },
       ATTRIBUTES: {
-        health: 20,
-        healthMax: 20,
+        health: 2000,
+        healthMax: 2000,
         healthRegen: 0.2,
       },
     },
@@ -44,21 +44,22 @@ class Entities {
         startFrames: { attack: 18 },
       },
       MOVE: {
-        speed: 8,
+        speed: 10,
       },
       SKILLS: {
         modify: {
           attack: {
             distance: 40,
             damage: 2,
-            castMS: 2200,
+            castMS: 1600,
             firstCastMS: 1400,
+            delayMS: 800,
           },
         },
       },
       ATTRIBUTES: {
-        health: 10,
-        healthMax: 10,
+        health: 1000,
+        healthMax: 1000,
       },
       STATE: {
         deadDelayMS: 1300,

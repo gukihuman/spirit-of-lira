@@ -22,8 +22,8 @@ class Settings {
       cast2: "",
       cast3: "",
       autoMouseMove: "e",
-      toggleInventory: "i",
       toggleFullscreen: "f",
+      toggleInventory: "i",
       lockTarget: "u",
       talk: "t",
       reset: "r",
@@ -33,11 +33,11 @@ class Settings {
       lockTarget: 2,
     },
     gamepad: {
-      cast1: "A",
+      cast1: "X",
       cast2: "",
       cast3: "",
-      toggleFullscreen: "Menu",
-      toggleInventory: "Start",
+      toggleFullscreen: "Start",
+      toggleInventory: "B",
       lockTarget: "RT",
       talk: "Y",
       reset: "LB",
@@ -58,18 +58,18 @@ class Settings {
       continue: "A",
       previousOption: "Down",
       nextOption: "Up",
-      toggleFullscreen: "Menu",
-      quitScene: "Start",
+      toggleFullscreen: "Start",
+      quitScene: "B",
     },
   }
   interfaceInputEvents = {
     keyboard: {
-      toggleInventory: "i",
       toggleFullscreen: "f",
+      toggleInventory: "i",
     },
     gamepad: {
-      toggleInventory: "Start",
-      toggleFullscreen: "Menu",
+      toggleFullscreen: "Start",
+      toggleInventory: "B",
     },
   }
   inputOther = {
@@ -82,7 +82,7 @@ class Settings {
       this.emitEvents()
     }, "SETTINGS")
     EVENTS.onSingle("previousOption", () => {
-      if (!ACTIVE_SCENE.focusedChoiceIndex) return
+      if (ACTIVE_SCENE.focusedChoiceIndex === null) return
       if (!ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices) return
       const choices = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices
       let possibleIndex: number | null = null
@@ -110,7 +110,7 @@ class Settings {
       ACTIVE_SCENE.focusedChoiceIndex = possibleIndex
     })
     EVENTS.onSingle("nextOption", () => {
-      if (!ACTIVE_SCENE.focusedChoiceIndex) return
+      if (ACTIVE_SCENE.focusedChoiceIndex === null) return
       if (!ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices) return
       const choices = ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices
       let possibleIndex: number | null = null

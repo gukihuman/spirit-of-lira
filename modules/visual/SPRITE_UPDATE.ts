@@ -55,13 +55,15 @@ class SpriteUpdate {
       }
     }
   }
-  private getHeroCastSprite(entity, id) {
+  getHeroCastSprite(entity, id) {
     // 📜 add sprite handling for other skills than attack
     // now weapon sprite option controls cast sprite
     // but it should be skill first by adding offensive or nutral options
     if (entity.HERO) {
+      // "attack-sword"
       return ITEMS.collection.weapons[INVENTORY.gear.weapon].sprite
     } else {
+      // "attack-sword"
       return entity.SKILLS.active
     }
   }

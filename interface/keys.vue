@@ -7,20 +7,50 @@ div(
   img(
     :src="image"
     draggable="false"
-    class="absolute object-none transition duration-1000 ease-in-out"
+    class="absolute object-none"
     :class="imageClass"
+    :style="imageStyle"
   )
   p(
-    class="absolute z-10 text-tan text-[22px] font-semibold ml-[1px] mb-[2px] points-events-none opacity-[.7]"
+    class="absolute z-10 text-tan text-[22px] font-semibold ml-[1px] mb-[2px] points-events-none opacity-[.9]"
     :class="textClass"
   ) {{ text }}
 </template>
 <script setup lang="ts">
 const props = defineProps(["inputEvent"])
+const iconClass = computed(() => {
+  if (GLOBAL.context === "scene") {
+    return {
+      "hue-rotate-180": true,
+    }
+  }
+  return {}
+})
+const imageStyle = computed(() => {
+  return {
+    transition: "filter 1000ms ease-in-out",
+  }
+})
 const image = computed(() => {
   const key = findKey()
   if (!key) return
   if (GLOBAL.lastActiveDevice === "gamepad") {
+    if (
+      key.includes("Down") ||
+      key.includes("Right") ||
+      key.includes("Left") ||
+      key.includes("Up")
+    ) {
+      return ASSETS.webps["gamepad-key-cross"]
+    }
+    if (key.includes("LB")) return ASSETS.webps["gamepad-key-lb"]
+    if (key.includes("RB")) return ASSETS.webps["gamepad-key-rb"]
+    if (key.includes("LT")) return ASSETS.webps["gamepad-key-lt"]
+    if (key.includes("RT")) return ASSETS.webps["gamepad-key-rt"]
+    if (key.includes("LS")) return ASSETS.webps["gamepad-key-ls"]
+    if (key.includes("RS")) return ASSETS.webps["gamepad-key-rs"]
+    if (key.includes("Start")) return ASSETS.webps["gamepad-key-start"]
+    if (key.includes("Menu")) return ASSETS.webps["gamepad-key-menu"]
     return ASSETS.webps["gamepad-key"]
   } else {
     if (key.includes("Arrow")) {
@@ -30,31 +60,22 @@ const image = computed(() => {
     return ASSETS.webps["keyboard-key"]
   }
 })
-const iconClass = computed(() => {
-  if (GLOBAL.context === "scene") {
-    return {
-      "hue-rotate-180": true,
-    }
-  }
-  return {}
-})
 const imageClass = computed(() => {
   const key = findKey()
   if (!key) return
+  const classObject = {
+    "rotate-90": key === "ArrowRight" || key === "Right",
+    "rotate-180": key === "ArrowDown" || key === "Down",
+    "-rotate-90": key === "ArrowLeft" || key === "Left",
+  }
   if (GLOBAL.context === "scene") {
-    return {
-      "saturate-[.8]": true,
-      "brightness-[.8]": true,
-      "rotate-90": key === "ArrowRight",
-      "rotate-180": key === "ArrowDown",
-      "-rotate-90": key === "ArrowLeft",
-    }
+    _.merge(classObject, {
+      "saturate-[.6]": true,
+      "brightness-[.85]": true,
+      "contrast-[1.2]": true,
+    })
   }
-  return {
-    "rotate-90": key === "ArrowRight",
-    "rotate-180": key === "ArrowDown",
-    "-rotate-90": key === "ArrowLeft",
-  }
+  return classObject
 })
 const textClass = computed(() => {
   const key = findKey()
@@ -72,19 +93,33 @@ const text = computed(() => {
   return textMap[key] ? textMap[key] : key
 })
 const textMap = {
+  // keyboard
   Control: "Ct",
   Shift: "Sh",
   Alt: "Al",
   Enter: "En",
   " ": "Sp",
-  Tab: "Tb",
-  CopsLock: "Cl",
-  Backspace: "Bs",
   Delete: "Dl",
-  ArrowLeft: " ",
-  ArrowRight: " ",
+  CopsLock: "Cl",
+  Tab: "Tb",
+  Backspace: "Bs",
   ArrowUp: " ",
+  ArrowRight: " ",
   ArrowDown: " ",
+  ArrowLeft: " ",
+  // gamepad
+  LB: " ",
+  RB: " ",
+  LT: " ",
+  RT: " ",
+  Start: " ",
+  Menu: " ",
+  LS: " ",
+  RS: " ",
+  Up: " ",
+  Down: " ",
+  Left: " ",
+  Right: " ",
 }
 function findKey() {
   let key

@@ -7,6 +7,7 @@ class Attributes {
     energy: 10,
     energyMax: 10,
     energyRegen: 0,
+    attackSpeed: 1, // work only for animations for now :)
   }
   process() {
     MUSEUM.processEntity("ATTRIBUTES", (entity, id) => {

@@ -15,7 +15,7 @@ class DevMode {
         location.reload()
       }
       globalThis.log = () => {
-        return ACTIVE_SCENE.focusedChoiceIndex
+        return INTERFACE.damageOverlays
       }
     }
   }

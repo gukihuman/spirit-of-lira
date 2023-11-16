@@ -1,5 +1,30 @@
-const inter = {
+declare global {
+  type DamageOverlay = {
+    hero: boolean
+    damage: number
+    x: number
+    y: number
+    entityHeight: number
+    screen: {
+      x: number
+      y: number
+      randomX: number
+      randomY: number
+      offsetX: number
+      offsetY: number
+    }
+    opacity: number
+    startMS: number
+  }
+}
+interface Inter extends AnyObject {
+  damageOverlays: DamageOverlay[]
+}
+const inter: Inter = {
   overlay: true,
+  damageOverlays: [],
+  damage: true,
+  damageLifetimeMS: 800,
   inventory: false,
   target: false,
   targetLocked: false,
@@ -37,6 +62,23 @@ const inter = {
       if (GLOBAL.context === "scene") this.overlay = false
       else this.overlay = true
     }, "INTERFACE")
+  },
+  process() {
+    this.damageOverlays.forEach((overlay, index) => {
+      if (LOOP.elapsedMS > overlay.startMS + this.damageLifetimeMS) {
+        this.damageOverlays.splice(index, 1)
+      }
+      const { x, y } = COORD.coordinateToScreen(overlay.x, overlay.y)
+      overlay.screen.offsetX += overlay.screen.randomX * LOOP.deltaSec
+      overlay.screen.offsetY += overlay.screen.randomY * LOOP.deltaSec
+      overlay.screen.x = x + overlay.screen.offsetX
+      overlay.screen.y = y + overlay.screen.offsetY
+      const elapsed = LOOP.elapsedMS - overlay.startMS
+      const halfLifeMS = this.damageLifetimeMS / 2
+      if (elapsed > halfLifeMS) {
+        overlay.opacity = 1 - (elapsed - halfLifeMS) / halfLifeMS
+      }
+    })
   },
 }
 export const INTERFACE = LIBRARY.store(inter)

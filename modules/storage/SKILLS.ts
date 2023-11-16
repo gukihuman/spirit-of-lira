@@ -20,8 +20,8 @@ class Skills {
     list: ["attack"],
     data: {}, // filled from SKILLS constant 📜 do we need it here? may be take directly from SKILLS where its needed?
     modify: {}, // overwrite skills data
-    lastFirstStartMS: Infinity, // first in a sequence
-    lastDoneMS: Infinity, // includes delay after cast logic
+    castStartMS: Infinity,
+    castAndDelayMS: Infinity, // includes delay after cast logic
     delayedLogicDone: true,
     audioDone: false,
     attackSoundId: undefined,

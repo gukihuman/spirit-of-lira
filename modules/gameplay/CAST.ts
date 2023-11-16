@@ -1,5 +1,7 @@
+// no damage if target go away based on skill distance
 class Cast {
   attackSoundIds: any = []
+  heroSwordAttackCastStage: 0 | 1 = 0 // animation stage
   private cast(slot = "slot1") {
     EVENTS.emit("cast", {
       entity: SH.hero,
@@ -36,27 +38,7 @@ class Cast {
       offenderId: id,
     })
   }
-  private dealDamage(entity, id, skill) {
-    if (entity.HERO) {
-      let weaponDamage = 0
-      const weapon = INVENTORY.gear.weapon
-      if (weapon) weaponDamage = ITEMS.collection.weapons[weapon].damage
-      entity.TARGET.entity.ATTRIBUTES.health -= weaponDamage
-    } else {
-      entity.TARGET.entity.ATTRIBUTES.health -= skill.damage
-    }
-  }
-  private firstCastLogic(entity, id, skill) {
-    this.castLogic(entity, id, skill)
-    entity.SKILLS.lastFirstStartMS = Infinity
-  }
-  private chooseEffectSprite(entity, id) {
-    const targetEntity = entity.TARGET.entity
-    // 📜 "sword-hit" should be taken from item, that hero is using
-    if (entity.HERO) SPRITE.effect(entity, "sword-hit", targetEntity)
-    else SPRITE.effect(entity, "bunbo-bite", targetEntity)
-  }
-  private chooseEffectAudio(entity, id) {
+  private playAudioEffect(entity) {
     let soundId: any
     const skill = entity.SKILLS.data[entity.SKILLS.active]
     // 📜 0.8 and "sword-hit" should be taken from item, that hero is using
@@ -67,103 +49,134 @@ class Cast {
     else soundId = AUDIO.play("bunbo-bite")
     entity.SKILLS.attackSoundId = soundId
   }
-  stopAttackSounds() {
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.SKILLS) return
-      if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
-        AUDIO.stop(entity.SKILLS.attackSoundId, 30)
-        entity.SKILLS.audioDone = false
-        entity.SKILLS.attackSoundId = undefined
-      }
-    })
+  private createCastEffectSprite(entity, id) {
+    const targetEntity = entity.TARGET.entity
+    // 📜 "sword-hit" should be taken from item, that hero is using
+    if (entity.HERO) SPRITE.effect(entity, "sword-hit", targetEntity)
+    else SPRITE.effect(entity, "bunbo-bite", targetEntity)
+  }
+  private firstCastLogic(entity, id, skill) {
+    this.heroSwordAttackCastStage = 0
+    this.castLogic(entity, id, skill)
   }
   private castLogic(entity, id, skill) {
-    if (!entity.TARGET.id) return
-    this.chooseEffectSprite(entity, id)
-    if (skill.offensive) this.dealDamage(entity, id, skill)
+    if (!entity.TARGET.id || entity.STATE.active !== "cast") return
+    if (TRACK.inRange(entity, skill.distance, 3)) {
+      this.createCastEffectSprite(entity, id)
+      if (skill.offensive) DAMAGE.deal(entity, id, skill)
+    }
     if (skill.revenge) this.revengeLogic(entity, id, skill)
     const targetHealth = entity.TARGET.entity.ATTRIBUTES.health
     if (targetHealth <= 0) this.targetDiesLogic(entity, id)
     if (skill.logic) skill.logic(entity, id)
-    entity.SKILLS.lastDoneMS = LOOP.elapsedMS + skill.delayMS
+    entity.SKILLS.castAndDelayMS = LOOP.elapsedMS + skill.delayMS
     entity.SKILLS.delayedLogicDone = false
   }
   private delayedLogic(entity, id, skill) {
-    const inRange = TRACK.inRange
-    const targetEntity = entity.TARGET.entity
-    if (!inRange(entity, id, targetEntity, skill.distance)) {
-      entity.STATE.cast = false
-      entity.SKILLS.lastDoneMS = Infinity
-    }
     entity.SKILLS.delayedLogicDone = true
+    if (!TRACK.inRange(entity, skill.distance)) {
+      entity.STATE.cast = false
+      entity.SKILLS.castAndDelayMS = Infinity
+      return
+    }
+    this.alignAnimations(entity, id)
+  }
+  private alignAnimations(entity, id) {
+    let sprite
+    let spriteName = "attack"
+    if (entity.HERO) {
+      // "attack-sword"
+      spriteName = SPRITE_UPDATE.getHeroCastSprite(SH.hero, SH.heroId)
+    }
+    sprite = SPRITE.getAnimation(id, spriteName)
+    if (!sprite) return
+    let frame = entity.SPRITE.startFrames[spriteName] - 1
+    if (frame < 0) frame = sprite.totalFrames - 1
+    if (entity.HERO) {
+      if (!this.heroSwordAttackCastStage) {
+        this.heroSwordAttackCastStage = 1
+      } else {
+        this.heroSwordAttackCastStage = 0
+        sprite.gotoAndPlay(frame)
+      }
+    } else {
+      sprite.gotoAndPlay(frame)
+    }
   }
   private reset(entity, id) {
-    entity.SKILLS.lastFirstStartMS = Infinity
-    entity.SKILLS.lastDoneMS = Infinity
+    entity.SKILLS.castAndDelayMS = Infinity
     entity.SKILLS.delayedLogicDone = true
   }
-
+  stopAttackSoundsIfNotCast(entity, id) {
+    if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
+      AUDIO.stop(entity.SKILLS.attackSoundId, 30)
+      entity.SKILLS.audioDone = false
+      entity.SKILLS.attackSoundId = undefined
+    }
+  }
   process() {
     if (GLOBAL.context === "scene") return
-    this.stopAttackSounds()
-    WORLD.entities.forEach((entity, id) => {
-      if (!entity.STATE || !entity.SKILLS) return
+    MUSEUM.processEntity(["STATE", "SKILLS"], (entity, id) => {
+      this.stopAttackSoundsIfNotCast(entity, id)
       if (!entity.STATE.cast) {
         this.reset(entity, id)
         return
-      }
-      const lastEntity = LAST.entities.get(id)
-      if (!lastEntity) return
-      if (entity.STATE.cast && !lastEntity.STATE.cast) {
-        entity.SKILLS.lastFirstStartMS = LOOP.elapsedMS
       }
       const skill = entity.SKILLS.data[entity.SKILLS.active]
       const elapsedMS = LOOP.elapsedMS
       const delayMS = entity.SKILLS.delayMS
       // if target is dead
-      if (!entity.TARGET.id && elapsedMS > entity.SKILLS.lastDoneMS + delayMS) {
+      if (
+        !entity.TARGET.id &&
+        elapsedMS > entity.SKILLS.castAndDelayMS + delayMS
+      ) {
         entity.STATE.cast = false
         return
       }
-      if (elapsedMS > entity.SKILLS.lastFirstStartMS + skill.firstCastMS) {
-        this.firstCastLogic(entity, id, skill)
+      const lastEntity = LAST.entities.get(id)
+      if (!lastEntity) return
+      if (entity.STATE.cast && !lastEntity.STATE.cast) {
+        entity.SKILLS.castStartMS = LOOP.elapsedMS
+        entity.SKILLS.castAndDelayMS =
+          LOOP.elapsedMS - skill.castMS + skill.firstCastMS
       }
-      if (elapsedMS > entity.SKILLS.lastDoneMS + skill.castMS) {
-        this.castLogic(entity, id, skill)
+      if (elapsedMS > entity.SKILLS.castAndDelayMS + skill.castMS) {
+        if (
+          LOOP.elapsedMS <
+          // 1.5 is just to find time between first and second cast :)
+          entity.SKILLS.castStartMS + skill.firstCastMS * 1.5
+        ) {
+          this.firstCastLogic(entity, id, skill)
+        } else {
+          this.castLogic(entity, id, skill)
+        }
       }
       if (!entity.SKILLS.audioDone) {
-        this.chooseEffectAudio(entity, id)
+        this.playAudioEffect(entity)
         entity.SKILLS.audioDone = true
       }
       if (
         !entity.SKILLS.delayedLogicDone &&
-        elapsedMS > entity.SKILLS.lastDoneMS
+        elapsedMS > entity.SKILLS.castAndDelayMS
       ) {
         this.delayedLogic(entity, id, skill)
         entity.SKILLS.audioDone = false
       }
+      this.updateAnimationSpeed(entity, id)
     })
   }
-
-  // 📜 make animation sync after adding effects for convinience
-  // private updateAnimationSpeed(entity, id) {
-  //   //
-  //   // set up animation speed
-  //   if (!entity.attack) return
-
-  //   if (entity.HERO) {
-  //     //
-  //     // 📜 make attack animation dynamic depend on weapon or skill
-  //     const sprite = SPRITE.getAnimation(id, "sword-attack")
-  //     if (!sprite) return
-
-  //     sprite.animationSpeed = 1.2 / entity.attack.speed / 6
-  //   } else {
-  //     const sprite = SPRITE.getAnimation(id, "attack")
-  //     if (!sprite) return
-
-  //     sprite.animationSpeed = 1.2 / entity.attack.speed / 6
-  //   }
-  // }
+  private updateAnimationSpeed(entity, id) {
+    let sprite
+    if (entity.HERO) {
+      // "attack-sword"
+      const spriteName = SPRITE_UPDATE.getHeroCastSprite(SH.hero, SH.heroId)
+      sprite = SPRITE.getAnimation(SH.heroId, spriteName)
+    } else {
+      sprite = SPRITE.getAnimation(id, "attack")
+    }
+    if (!sprite) return
+    sprite.animationSpeed =
+      (1 / (CONFIG.maxFPS / 10)) * entity.ATTRIBUTES.attackSpeed
+  }
 }
 export const CAST = new Cast()

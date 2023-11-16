@@ -8,8 +8,9 @@ class Effects {
     LOOP.add(() => {
       SPRITE.effectContainers.forEach((container, expireMS) => {
         if (LOOP.elapsedMS > expireMS) {
-          // 📜 change to destroy with testing
           container.destroy()
+          // 📜 check if destroy is successful, sometimes effects hanging
+          // mb its only hmr though
           SPRITE.effectContainers.delete(expireMS)
         }
       })

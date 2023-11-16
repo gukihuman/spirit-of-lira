@@ -8,19 +8,21 @@ class Track {
       }
       entity.MOVE.finaldestination = _.cloneDeep(entity.TARGET.entity.POSITION)
       const skill = entity.SKILLS.data[entity.SKILLS.active]
-      if (this.inRange(entity, id, entity.TARGET.entity, skill.distance)) {
+      if (this.inRange(entity, skill.distance)) {
         entity.STATE.cast = true
       }
     })
   }
-  inRange(entity, id, targetEntity, skillDistance) {
+  inRange(entity, skillDistance, multiplier: number = 1) {
+    const targetEntity = entity.TARGET.entity
     if (!targetEntity) return
     const weapon = INVENTORY.gear.weapon
     let weaponDistance = 0
     if (entity.HERO) weaponDistance = ITEMS.collection.weapons[weapon].distance
     const distance = COORD.distance(entity.POSITION, targetEntity.POSITION)
     return (
-      distance - targetEntity.SIZE.width / 2 < skillDistance + weaponDistance
+      distance - targetEntity.SIZE.width / 2 <
+      (skillDistance + weaponDistance) * multiplier
     )
   }
 }

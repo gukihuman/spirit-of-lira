@@ -7,4 +7,6 @@ div(class="absolute z-10 overflow-hidden w-full h-full")
     talk(v-show="INTERFACE.talk && !INTERFACE.inventory")
   transition
     reset(v-show="INTERFACE.reset && !INTERFACE.inventory")
+  transition
+    damage(v-show="INTERFACE.damage && !INTERFACE.inventory")
 </template>

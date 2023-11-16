@@ -63,7 +63,7 @@ class Library {
     }
     return result
   }
-  /** transform an object into reactive pinia store, ignores but saves init */
+  /** transform an object into reactive pinia store, ignores but saves fns */
   store(object: AnyObject) {
     const functions = {}
     _.forEach(object, (value, key) => {
