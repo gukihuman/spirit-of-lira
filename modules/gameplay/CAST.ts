@@ -136,13 +136,6 @@ class Cast {
     entity.SKILLS.castAndDelayMS = Infinity
     entity.SKILLS.delayedLogicDone = true
   }
-  stopAttackSoundsIfNotCast(entity, id) {
-    if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
-      AUDIO.stop(entity.SKILLS.attackSoundId, 30)
-      entity.SKILLS.audioDone = false
-      entity.SKILLS.attackSoundId = null
-    }
-  }
   process() {
     if (GLOBAL.context === "scene") return
     MUSEUM.processEntity(["STATE", "SKILLS"], (entity, id) => {
@@ -182,7 +175,7 @@ class Cast {
           this.castLogic(entity, id, skill)
         }
       }
-      if (!entity.SKILLS.audioDone) {
+      if (!entity.SKILLS.audioDone && entity.STATE.active !== "dead") {
         this.playAudioEffect(entity)
         entity.SKILLS.audioDone = true
       }
@@ -222,6 +215,13 @@ class Cast {
     if (entity.HERO) soundId = AUDIO.play("sword-hit", audioDelay)
     else soundId = AUDIO.play("bunbo-bite", audioDelay)
     entity.SKILLS.attackSoundId = soundId
+  }
+  stopAttackSoundsIfNotCast(entity, id) {
+    if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
+      AUDIO.stop(entity.SKILLS.attackSoundId, 30)
+      entity.SKILLS.audioDone = false
+      entity.SKILLS.attackSoundId = null
+    }
   }
 }
 export const CAST = new Cast()

@@ -52,7 +52,7 @@ class Settings {
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
       toggleFullscreen: "f",
-      quitScene: "q",
+      quitScene: "t",
     },
     mouse: {
       mouseContinue: 0,
