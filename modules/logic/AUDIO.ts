@@ -30,7 +30,8 @@ class Aud {
 
   startIdleMobs() {
     MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
-      if (Math.random() > 0.5 * LOOP.deltaSec) return
+      if (COORD.distance(entity.POSITION, SH.hero.POSITION) > 1500) return
+      if (Math.random() > 0.7 * LOOP.deltaSec) return
       // 📜 mb add move state :)
       if (entity.STATE.active === "idle") {
         this.play(entity.name + "-idle")
