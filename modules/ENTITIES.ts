@@ -54,6 +54,7 @@ class Entities {
             castMS: 1600,
             firstCastMS: 1400,
             delayMS: 800,
+            audioStartMS: -200,
           },
         },
       },

@@ -28,8 +28,18 @@ class Aud {
     })
   }
 
+  startIdleMobs() {
+    MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
+      if (Math.random() > 0.5 * LOOP.deltaSec) return
+      // 📜 mb add move state :)
+      if (entity.STATE.active === "idle") {
+        this.play(entity.name + "-idle")
+      }
+    })
+  }
   process() {
     if (!LOOP.newSec) return
+    this.startIdleMobs()
     if (this.audioContext.STATE === "suspended") {
       this.audioContext.resume()
     } else {

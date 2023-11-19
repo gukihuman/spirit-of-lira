@@ -62,17 +62,6 @@ class Cast {
       offenderId: id,
     })
   }
-  private playAudioEffect(entity) {
-    let soundId: any
-    const skill = entity.SKILLS.data[entity.SKILLS.active]
-    // 📜 0.8 and "sword-hit" should be taken from item, that hero is using
-    let audioDelay
-    if (entity.SKILLS.firstCastState) audioDelay = skill.firstCastMS * 0.95
-    else audioDelay = skill.castMS * 0.95
-    if (entity.HERO) soundId = AUDIO.play("sword-hit", audioDelay)
-    else soundId = AUDIO.play("bunbo-bite")
-    entity.SKILLS.attackSoundId = soundId
-  }
   private createCastEffectSprite(entity, id) {
     const targetEntity = entity.TARGET.entity
     // 📜 "sword-hit" should be taken from item, that hero is using
@@ -82,6 +71,7 @@ class Cast {
   private firstCastLogic(entity, id, skill) {
     this.heroSwordAttackCastStage = 0
     this.castLogic(entity, id, skill)
+    entity.SKILLS.firstCastState = false
   }
   private castLogic(entity, id, skill) {
     if (!entity.TARGET.id || entity.STATE.active !== "cast") return
@@ -150,7 +140,7 @@ class Cast {
     if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
       AUDIO.stop(entity.SKILLS.attackSoundId, 30)
       entity.SKILLS.audioDone = false
-      entity.SKILLS.attackSoundId = undefined
+      entity.SKILLS.attackSoundId = null
     }
   }
   process() {
@@ -174,10 +164,12 @@ class Cast {
       }
       const lastEntity = LAST.entities.get(id)
       if (!lastEntity) return
+      // start casting
       if (entity.STATE.cast && !lastEntity.STATE.cast) {
         entity.SKILLS.castStartMS = LOOP.elapsedMS
         entity.SKILLS.castAndDelayMS =
           LOOP.elapsedMS - skill.castMS + skill.firstCastMS
+        entity.SKILLS.firstCastState = true
       }
       if (elapsedMS > entity.SKILLS.castAndDelayMS + skill.castMS) {
         if (
@@ -216,6 +208,20 @@ class Cast {
     if (!sprite) return
     sprite.animationSpeed =
       (1 / (CONFIG.maxFPS / 10)) * entity.ATTRIBUTES.attackSpeed
+  }
+  private playAudioEffect(entity) {
+    let soundId: any
+    const skill = entity.SKILLS.data[entity.SKILLS.active]
+    // 📜 0.8 and "sword-hit" should be taken from item for hero and from entity for mobs
+    let audioDelay
+    if (entity.SKILLS.firstCastState) {
+      audioDelay = skill.firstCastMS + skill.audioStartMS
+    } else {
+      audioDelay = skill.castMS + skill.audioStartMS
+    }
+    if (entity.HERO) soundId = AUDIO.play("sword-hit", audioDelay)
+    else soundId = AUDIO.play("bunbo-bite", audioDelay)
+    entity.SKILLS.attackSoundId = soundId
   }
 }
 export const CAST = new Cast()

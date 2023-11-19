@@ -16,7 +16,6 @@ class Dead {
       const container = SPRITE.getContainer(SH.heroId)
       if (!container) return
       container.setParent(WORLD.sortable)
-      console.log(container.parent.name)
       SPRITE.fillWeaponLayers()
     })
   }

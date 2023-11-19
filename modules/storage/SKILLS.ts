@@ -9,6 +9,8 @@ class Skills {
       castMS: 1000,
       firstCastMS: 1000,
       delayMS: 200,
+      audioStartMS: -100, // based on cast done time
+      audioDone: true,
     },
   }
   component = {
