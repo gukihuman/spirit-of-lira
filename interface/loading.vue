@@ -7,12 +7,12 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
     p(class="text-slate-300 text-2xl font-semibold mb-4") loading...
     div(class="flex gap-2 mb-4 ml-1")
       p(class="text-slate-400 text-[15px] font-semibold mb-2") gamepad supported
-      div(class="-mt-[1px]")
+      div(class="-mt-[15px] -ml-[5px]")
         img(
           class="opacity-[.85]"
           :src="ASSETS.webps['gamepad']"
           draggable="false"
-          class="w-[40px] saturate-[.2]"
+          class="w-[60px] saturate-[.2]"
         )
   transition: div(
     class="absolute w-full h-full bg-slate-800"

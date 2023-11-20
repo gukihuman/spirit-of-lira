@@ -91,7 +91,7 @@ const mainStyle = computed(() => {
     "margin-left": `${ACTIVE_SCENE[props.layer].x + marginX}px`,
     "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
     width: `${CONFIG.scene.choiceBoxWidth}px`,
-    height: "1000px",
+    height: "1080px",
   }
   let finalStyle = center
   if (

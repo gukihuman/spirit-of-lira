@@ -5,7 +5,7 @@ class Settings {
   }
   audio = {
     music: 0.0, // 0.8
-    sound: 0.7, // 0.7
+    sound: 0.8, // 0.8
   }
   gameplay = {
     // auto attack after kill and also autotarget for mouse like on gamepad
@@ -13,7 +13,7 @@ class Settings {
     attackBack: false,
     // keepLock is about keeping lock after stop attacking
     // attack target is always locked anyway, coding is hard in that matter
-    keepLock: true,
+    keepLock: true, // ❗ currently not working properly, like there is no way to lock target while attacking, ideally make possible to attack target without locking
   }
   interface = {
     showKeys: true,
@@ -41,9 +41,9 @@ class Settings {
       cast3: "",
       toggleFullscreen: "Start",
       toggleInventory: "B",
-      lockTarget: "RT",
-      talk: "Y",
-      reset: "LB",
+      lockTarget: "LB",
+      talk: "RB",
+      reset: "RB",
     },
   }
   sceneInputEvents = {

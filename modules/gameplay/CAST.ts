@@ -10,6 +10,7 @@ class Cast {
   }
   init() {
     EVENTS.onSingle("decide", () => {
+      if (INTERFACE.buttonHover) return
       if (GLOBAL.hoverId) {
         if (GLOBAL.hoverId !== SH.hero.TARGET.id) {
           SH.hero.TARGET.id = GLOBAL.hoverId

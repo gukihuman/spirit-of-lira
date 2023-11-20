@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
   v-if="INTERFACE.showKeys"
-  class="absolute top-0 left-0 w-[50px] flex justify-center items-center mt-[25px] pointer-events-none transition duration-1000 ease-in-out"
+  class="absolute w-[50px] flex justify-center items-center mt-[25px] pointer-events-none transition duration-1000 ease-in-out"
   :class="iconClass"
 )
   img(

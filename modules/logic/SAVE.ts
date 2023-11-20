@@ -19,6 +19,15 @@ class Save {
         scenes: PROGRESS.scenes,
         mobs: PROGRESS.mobs,
       },
+      settings: {
+        audio: SETTINGS.audio,
+        gameplay: SETTINGS.gameplay,
+        interface: SETTINGS.interface,
+        worldInputEvents: SETTINGS.worldInputEvents,
+        sceneInputEvents: SETTINGS.sceneInputEvents,
+        interfaceInputEvents: SETTINGS.interfaceInputEvents,
+        inputOther: SETTINGS.inputOther,
+      },
     }
     // takes start save and fill it with storage values recursively
     // storage keys that dosnt exist in start save are simply removed for now
@@ -32,6 +41,13 @@ class Save {
     INVENTORY.gear = this.save.inventory.gear
     PROGRESS.scenes = this.save.progress.scenes
     PROGRESS.mobs = this.save.progress.mobs
+    SETTINGS.audio = this.save.settings.audio
+    SETTINGS.gameplay = this.save.settings.gameplay
+    SETTINGS.interface = this.save.settings.interface
+    SETTINGS.worldInputEvents = this.save.settings.worldInputEvents
+    SETTINGS.sceneInputEvents = this.save.settings.sceneInputEvents
+    SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents
+    SETTINGS.inputOther = this.save.settings.inputOther
 
     SH.resetDestination() // update final destination otherwise hero run at the start
   }
@@ -43,6 +59,13 @@ class Save {
     this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
     this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)
     this.save.progress.mobs = _.cloneDeep(PROGRESS.mobs)
+    this.save.audio = _.cloneDeep(SETTINGS.audio)
+    this.save.gameplay = _.cloneDeep(SETTINGS.gameplay)
+    this.save.interface = _.cloneDeep(SETTINGS.interface)
+    this.save.worldInputEvents = _.cloneDeep(SETTINGS.worldInputEvents)
+    this.save.sceneInputEvents = _.cloneDeep(SETTINGS.sceneInputEvents)
+    this.save.interfaceInputEvents = _.cloneDeep(SETTINGS.interfaceInputEvents)
+    this.save.inputOther = _.cloneDeep(SETTINGS.inputOther)
     this.stringifyLocal("save", this.save)
   }
   process() {

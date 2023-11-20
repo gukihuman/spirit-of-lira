@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="damage")
+div()
   div(
     v-for="(overlay, index) in INTERFACE.damageOverlays"
     :key="index"
