@@ -5,6 +5,7 @@ fullscreen
     viewport
     transition: overlay(v-show="INTERFACE.overlay")
     transition: inventory(v-show="INTERFACE.inventory")
+    transition: settings(v-show="INTERFACE.settings")
     transition(name="scene"): scene(v-show="GLOBAL.context === 'scene'")
     transition: audiomessage(v-if="!GLOBAL.firstUserGesture")
     cursor(v-if="GLOBAL.firstUserGesture")

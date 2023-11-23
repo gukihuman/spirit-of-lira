@@ -10,10 +10,7 @@ class DevMode {
       if (INPUT.keyboard.justPressed.includes("l")) {
         console.log(WORLD.hover)
       }
-      globalThis.reset = () => {
-        SAVE.stringifyLocal("save", SAVE.startSave)
-        location.reload()
-      }
+      globalThis.reset = () => SAVE.reset()
       globalThis.log = () => {
         return INTERFACE.damageOverlays
       }

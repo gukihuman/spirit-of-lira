@@ -67,80 +67,9 @@ class Astar {
   }
 
   getAllNeighbors(node) {
-    const neighbors: any = []
-    const collision = GLOBAL.collision
-
-    // Add neighbor left
-    if (
-      COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y, node.x - 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x - 1, y: node.y })
-    }
-    // Add neighbor right
-    if (
-      COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y, node.x + 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x + 1, y: node.y })
-    }
-    // Add neighbor above
-    if (
-      COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x, y: node.y - 1 })
-    }
-
-    // Add neighbor below
-    if (
-      COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x, y: node.y + 1 })
-    }
-
-    // Top left
-    if (
-      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x - 1, y: node.y - 1 })
-    }
-
-    // Top right
-    if (
-      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x + 1, y: node.y - 1 })
-    }
-
-    // Bottom left
-    if (
-      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x - 1, y: node.y + 1 })
-    }
-
-    // Bottom right
-    if (
-      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1 ||
-      !collision
-    ) {
-      neighbors.push({ x: node.x + 1, y: node.y + 1 })
-    }
-
-    return neighbors
+    const diagonalNeighbors = this.getDiagonalNeighbors(node)
+    const cardinalNeighbors = this.getCardinalNeighbors(node)
+    return diagonalNeighbors.concat(cardinalNeighbors)
   }
   getCardinalNeighbors(node) {
     const neighbors: any = []
@@ -148,24 +77,27 @@ class Astar {
 
     // Add neighbor left
     if (
-      COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y, node.x - 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y, node.x - 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
+          COLLISION.getArrayElement([node.y, node.x - 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
     if (
-      COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y, node.x + 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y, node.x + 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
+          COLLISION.getArrayElement([node.y, node.x + 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
     if (
-      COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x]) !== 2 &&
+        (COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
+          COLLISION.getArrayElement([node.y - 1, node.x]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y - 1 })
@@ -173,8 +105,9 @@ class Astar {
 
     // Add neighbor below
     if (
-      COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x]) !== 2 &&
+        (COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
+          COLLISION.getArrayElement([node.y + 1, node.x]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x, y: node.y + 1 })
@@ -187,8 +120,9 @@ class Astar {
 
     // Top left
     if (
-      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x - 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
+          COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
@@ -196,8 +130,9 @@ class Astar {
 
     // Top right
     if (
-      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x + 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
+          COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
@@ -205,8 +140,9 @@ class Astar {
 
     // Bottom left
     if (
-      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x - 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
+          COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
@@ -214,8 +150,9 @@ class Astar {
 
     // Bottom right
     if (
-      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
-      COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1 ||
+      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x + 1]) !== 2 &&
+        (COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
+          COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1)) ||
       !collision
     ) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })

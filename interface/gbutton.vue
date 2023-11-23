@@ -20,6 +20,8 @@ const props = defineProps(["type"]) // like toggleFullscreen
 const handleClick = () => {
   if (props.type === "inventory") {
     EVENTS.emitSingle("toggleInventory")
+  } else if (props.type === "settings") {
+    EVENTS.emitSingle("toggleSettings")
   } else {
     EVENTS.emitSingle("toggleFullscreen")
   }
@@ -27,6 +29,8 @@ const handleClick = () => {
 const inputEvent = computed(() => {
   if (props.type === "inventory") {
     return "toggleInventory"
+  } else if (props.type === "settings") {
+    return "toggleSettings"
   } else {
     return "toggleFullscreen"
   }

@@ -31,7 +31,7 @@ class Aud {
   startIdleMobs() {
     MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
       if (COORD.distance(entity.POSITION, SH.hero.POSITION) > 1500) return
-      if (Math.random() > 0.7 * LOOP.deltaSec) return
+      if (Math.random() > 0.5 * LOOP.deltaSec) return
       // 📜 mb add move state :)
       if (entity.STATE.active === "idle") {
         this.play(entity.name + "-idle")
@@ -46,8 +46,8 @@ class Aud {
     } else {
       GLOBAL.firstUserGesture = true // sometimes works so no need to gesture
     }
-    this.soundGain.gain.value = SETTINGS.audio.sound
-    this.musicGain.gain.value = SETTINGS.audio.music
+    this.soundGain.gain.value = SETTINGS.general.sound
+    this.musicGain.gain.value = SETTINGS.general.music
     if (
       !this.musicPlaying &&
       (GLOBAL.context === "world" || GLOBAL.context === "interface")
@@ -114,8 +114,8 @@ class Aud {
     else if (type === "music") parentGain = this.musicGain
     gainNode.connect(parentGain)
     let volume
-    if (type === "sound") volume = SETTINGS.audio.sound
-    else if (type === "music") volume = SETTINGS.audio.music
+    if (type === "sound") volume = SETTINGS.general.sound
+    else if (type === "music") volume = SETTINGS.general.music
     gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime)
     gainNode.gain.linearRampToValueAtTime(
       0,

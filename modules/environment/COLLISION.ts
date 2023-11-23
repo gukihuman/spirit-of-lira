@@ -1,6 +1,7 @@
 const MAP_SIZE = { width: 40_000, height: 30_000 }
 class Collision {
   array: math.Matrix = MATHJS.sparse()
+  arrayOfEntities: math.Matrix = MATHJS.sparse()
   private collisionGrid: Graphics[][] = []
   init() {
     const arrayString = JSON.stringify(ASSETS.jsons.collision)
@@ -16,9 +17,19 @@ class Collision {
     })
   }
   process() {
+    this.arrayOfEntities = MATHJS.sparse()
+    MUSEUM.processEntity(["MOVE", "NONHERO"], (entity) => {
+      let y = COORD.coordinateToTile(entity.POSITION.y)
+      let x = COORD.coordinateToTile(entity.POSITION.x)
+      this.arrayOfEntities.set([y, x], 2)
+      this.arrayOfEntities.set([y, x - 1], 2)
+      this.arrayOfEntities.set([y, x + 1], 2)
+      this.arrayOfEntities.set([y + 1, x], 2)
+      this.arrayOfEntities.set([y - 1, x], 2)
+    })
     if (GLOBAL.editMode) {
       WORLD.collision.visible = true
-      this.updateCollisionArray()
+      this.editCollisionArray()
       this.updateCollisionGrid()
     } else {
       WORLD.collision.visible = false
@@ -79,7 +90,10 @@ class Collision {
           square.tint = 0x8f0005
           return
         }
-
+        if (this.getArrayOfEntitiesElement([tileY, tileX]) === 2) {
+          square.tint = 0x7e7eff
+          return
+        }
         if (this.array.get([tileY, tileX]) === 0) square.tint = 0xffffff
         else if (this.array.get([tileY, tileX]) === 1) square.tint = 0x95d5b2
         else if (this.array.get([tileY, tileX]) === 2) square.tint = 0x7e7eff
@@ -87,17 +101,20 @@ class Collision {
       })
     })
 
-    // draw path
-    SH.hero.MOVE.path.forEach((tile) => {
-      if (!tile || !GLOBAL.collision) return
-      let row = tile.x - startX
-      let col = tile.y - startY
-      if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return
-      this.collisionGrid[col][row].tint = 0x414833
+    // draw paths
+    MUSEUM.processEntity("MOVE", (entity) => {
+      if (!entity.MOVE.path) return
+      entity.MOVE.path.forEach((tile) => {
+        if (!tile || !GLOBAL.collision) return
+        let row = tile.x - startX
+        let col = tile.y - startY
+        if (!this.collisionGrid[col] || !this.collisionGrid[col][row]) return
+        this.collisionGrid[col][row].tint = 0x414833
+      })
     })
   }
 
-  private updateCollisionArray() {
+  private editCollisionArray() {
     if (!SH.hero) return
     const heroPosition = SH.hero.POSITION
 
@@ -132,6 +149,21 @@ class Collision {
   getArrayElement([y, x]) {
     try {
       return this.array.get([y, x])
+    } catch (error) {
+      return undefined
+    }
+  }
+  getArrayOfEntitiesElement([y, x]) {
+    try {
+      // Check if y and x are within the bounds of the matrix
+      if (
+        y < this.arrayOfEntities._size[0] &&
+        x < this.arrayOfEntities._size[1]
+      ) {
+        return this.arrayOfEntities.get([y, x])
+      } else {
+        return 0
+      }
     } catch (error) {
       return undefined
     }

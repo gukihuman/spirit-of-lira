@@ -1,7 +1,7 @@
 class Revenge {
   init() {
     EVENTS.on("revenge", ({ entity, id, offender, offenderId }) => {
-      if (entity.HERO && !SETTINGS.gameplay.attackBack) return
+      if (entity.HERO && !SETTINGS.general.attackBack) return
       if (
         entity.STATE.active === "idle" ||
         (!entity.HERO && entity.STATE.active === "move")

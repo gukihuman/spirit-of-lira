@@ -6,6 +6,8 @@ module.exports = {
         fira: ["Fira Code"], // for numbers
         lilita: ["Lilita One"], // special numbers (e.g. level)
         roboto: ["Roboto Mono"],
+        courgette: ["Courgette"],
+        hat: ["Red Hat Display"],
       },
       colors: {
         tan: "#cfc391",

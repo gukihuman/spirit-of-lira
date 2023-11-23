@@ -99,7 +99,8 @@ class Coordinates {
     let tileY = this.coordinateToTile(y)
     return (
       COLLISION.getArrayElement([tileY, tileX]) !== 2 &&
-      COLLISION.getArrayElement([tileY, tileX]) !== 3
+      COLLISION.getArrayElement([tileY, tileX]) !== 3 &&
+      COLLISION.getArrayOfEntitiesElement([tileY, tileX]) !== 2
     )
   }
   isGreenTile(tile: { x: number; y: number }) {

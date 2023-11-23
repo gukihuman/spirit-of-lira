@@ -1,22 +1,15 @@
 class Settings {
-  process() {
-    if (this.interface.showKeys) INTERFACE.showKeys = true
-    else INTERFACE.showKeys = false
-  }
-  audio = {
+  general = {
     music: 0.0, // 0.8
     sound: 0.8, // 0.8
-  }
-  gameplay = {
     // auto attack after kill and also autotarget for mouse like on gamepad
     easyFight: false,
     attackBack: false,
     // keepLock is about keeping lock after stop attacking
     // attack target is always locked anyway, coding is hard in that matter
-    keepLock: true, // ❗ currently not working properly, like there is no way to lock target while attacking, ideally make possible to attack target without locking
-  }
-  interface = {
+    keepLock: true, // ❗ currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking
     showKeys: true,
+    floatDamage: true,
   }
   worldInputEvents = {
     keyboard: {
@@ -26,10 +19,11 @@ class Settings {
       cast3: "",
       autoMouseMove: "e",
       toggleFullscreen: "f",
-      toggleInventory: "i",
+      // toggleInventory: "i",
+      toggleSettings: "w",
       lockTarget: "u",
       talk: "t",
-      reset: "r",
+      reset: "t",
     },
     mouse: {
       decide: 0,
@@ -40,7 +34,8 @@ class Settings {
       cast2: "",
       cast3: "",
       toggleFullscreen: "Start",
-      toggleInventory: "B",
+      // toggleInventory: "B",
+      toggleSettings: "Menu",
       lockTarget: "LB",
       talk: "RB",
       reset: "RB",
@@ -68,11 +63,13 @@ class Settings {
   interfaceInputEvents = {
     keyboard: {
       toggleFullscreen: "f",
-      toggleInventory: "i",
+      // toggleInventory: "i",
+      toggleSettings: "w",
     },
     gamepad: {
       toggleFullscreen: "Start",
-      toggleInventory: "B",
+      // toggleInventory: "B",
+      toggleSettings: "Menu",
     },
   }
   inputOther = {

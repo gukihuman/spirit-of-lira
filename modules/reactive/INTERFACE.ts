@@ -12,8 +12,9 @@ declare global {
       randomY: number
       offsetX: number
       offsetY: number
+      opacity: number
+      scale: number
     }
-    opacity: number
     startMS: number
   }
 }
@@ -23,9 +24,10 @@ interface Inter extends AnyObject {
 const inter: Inter = {
   overlay: true,
   damageOverlays: [],
-  damage: true,
-  damageLifetimeMS: 800,
+  floatDamage: true,
+  damageLifetimeMS: 1200,
   inventory: false,
+  settings: false,
   target: false,
   targetLocked: false,
   targetHealth: 0,
@@ -41,29 +43,27 @@ const inter: Inter = {
   heroEnergy: 0,
   heroMaxEnergy: 0,
   reset: false,
-  init() {
-    LOOP.add(() => {
-      if (GLOBAL.context === "world") {
-        if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
-          INTERFACE.target = true
-          INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
-          INTERFACE.targetMaxHealth =
-            ENTITIES.collection[SH.hero.TARGET.entity.name].ATTRIBUTES.health
-        } else {
-          INTERFACE.target = false
-        }
-        INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
-        INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.healthMax
-        INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.energy
-        INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.energyMax
-        if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
-        else INTERFACE.targetLocked = false
-      }
-      if (GLOBAL.context === "scene") this.overlay = false
-      else this.overlay = true
-    }, "INTERFACE")
-  },
   process() {
+    this.floatDamage = SETTINGS.general.floatDamage
+    this.showKeys = SETTINGS.general.showKeys
+    if (GLOBAL.context === "world") {
+      if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
+        INTERFACE.target = true
+        INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
+        INTERFACE.targetMaxHealth =
+          ENTITIES.collection[SH.hero.TARGET.entity.name].ATTRIBUTES.health
+      } else {
+        INTERFACE.target = false
+      }
+      INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
+      INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.healthMax
+      INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.energy
+      INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.energyMax
+      if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
+      else INTERFACE.targetLocked = false
+    }
+    if (GLOBAL.context === "scene") this.overlay = false
+    else this.overlay = true
     this.damageOverlays.forEach((overlay, index) => {
       if (LOOP.elapsedMS > overlay.startMS + this.damageLifetimeMS) {
         this.damageOverlays.splice(index, 1)
@@ -74,9 +74,20 @@ const inter: Inter = {
       overlay.screen.x = x + overlay.screen.offsetX
       overlay.screen.y = y + overlay.screen.offsetY
       const elapsed = LOOP.elapsedMS - overlay.startMS
-      const halfLifeMS = this.damageLifetimeMS / 2
-      if (elapsed > halfLifeMS) {
-        overlay.opacity = 1 - (elapsed - halfLifeMS) / halfLifeMS
+      const timeToScale = this.damageLifetimeMS * 0.3
+      const timeToAppear = this.damageLifetimeMS * 0.15
+      const timeToStartDissapear = this.damageLifetimeMS * 0.8
+      const timeToDissapear = this.damageLifetimeMS * 0.2 // based on 0.8
+      if (elapsed < timeToAppear) {
+        overlay.screen.opacity = elapsed / timeToAppear
+      }
+      if (elapsed > timeToStartDissapear) {
+        overlay.screen.opacity =
+          1 - (elapsed - timeToStartDissapear) / timeToDissapear
+      }
+      if (elapsed < timeToScale) {
+        const scaleDiff = overlay.screen.scale - 1 // to achieve 1 and not 0
+        overlay.screen.scale = 1 + scaleDiff * (1 - elapsed / timeToScale)
       }
     })
   },

@@ -66,7 +66,7 @@ class Target {
       }
       // when lock is used to lock a new TARGET immidiately
       if (GLOBAL.lastActiveDevice !== "gamepad") {
-        if (!GLOBAL.hoverId || SETTINGS.gameplay.easyFight) return
+        if (!GLOBAL.hoverId || SETTINGS.general.easyFight) return
         SH.hero.TARGET.id = GLOBAL.hoverId
         SH.hero.TARGET.locked = true
       }
@@ -85,7 +85,7 @@ class Target {
       !hero.STATE.track &&
       !hero.STATE.cast &&
       lastHero.STATE.track &&
-      !SETTINGS.gameplay.keepLock
+      !SETTINGS.general.keepLock
     ) {
       hero.TARGET.locked = false
     }
@@ -98,7 +98,7 @@ class Target {
       this.checkTargetDistance(entity, id)
       if (entity.STATE.active !== "track" && !entity.TARGET.locked) {
         if (
-          !SETTINGS.gameplay.easyFight &&
+          !SETTINGS.general.easyFight &&
           entity.HERO &&
           GLOBAL.lastActiveDevice !== "gamepad"
         ) {
@@ -126,7 +126,7 @@ class Target {
     }
   }
   targetByMouse() {
-    if (SETTINGS.gameplay.easyFight && !GLOBAL.hoverId) return
+    if (SETTINGS.general.easyFight && !GLOBAL.hoverId) return
     SH.hero.TARGET.id = GLOBAL.hoverId
   }
   private checkTargetDistance(entity, id) {

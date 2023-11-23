@@ -44,7 +44,7 @@ class Cast {
     entity.TARGET.locked = false
     entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
     if (entity.HERO) {
-      if (!SETTINGS.gameplay.easyFight) {
+      if (!SETTINGS.general.easyFight) {
         entity.STATE.track = false
       } else {
         // 📜 make strictly next frame and not just 20ms
@@ -98,7 +98,7 @@ class Cast {
     }
     if (
       entity.HERO &&
-      !SETTINGS.gameplay.easyFight &&
+      !SETTINGS.general.easyFight &&
       // here we have new target but not easyFight
       entity.TARGET.id !== entity.TARGET.attackedId
     ) {

@@ -20,9 +20,9 @@ class Save {
         mobs: PROGRESS.mobs,
       },
       settings: {
-        audio: SETTINGS.audio,
-        gameplay: SETTINGS.gameplay,
-        interface: SETTINGS.interface,
+        audio: SETTINGS.general,
+        gameplay: SETTINGS.general,
+        interface: SETTINGS.general,
         worldInputEvents: SETTINGS.worldInputEvents,
         sceneInputEvents: SETTINGS.sceneInputEvents,
         interfaceInputEvents: SETTINGS.interfaceInputEvents,
@@ -41,9 +41,9 @@ class Save {
     INVENTORY.gear = this.save.inventory.gear
     PROGRESS.scenes = this.save.progress.scenes
     PROGRESS.mobs = this.save.progress.mobs
-    SETTINGS.audio = this.save.settings.audio
-    SETTINGS.gameplay = this.save.settings.gameplay
-    SETTINGS.interface = this.save.settings.interface
+    SETTINGS.general = this.save.settings.audio
+    SETTINGS.general = this.save.settings.gameplay
+    SETTINGS.general = this.save.settings.interface
     SETTINGS.worldInputEvents = this.save.settings.worldInputEvents
     SETTINGS.sceneInputEvents = this.save.settings.sceneInputEvents
     SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents
@@ -59,9 +59,9 @@ class Save {
     this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
     this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)
     this.save.progress.mobs = _.cloneDeep(PROGRESS.mobs)
-    this.save.audio = _.cloneDeep(SETTINGS.audio)
-    this.save.gameplay = _.cloneDeep(SETTINGS.gameplay)
-    this.save.interface = _.cloneDeep(SETTINGS.interface)
+    this.save.audio = _.cloneDeep(SETTINGS.general)
+    this.save.gameplay = _.cloneDeep(SETTINGS.general)
+    this.save.interface = _.cloneDeep(SETTINGS.general)
     this.save.worldInputEvents = _.cloneDeep(SETTINGS.worldInputEvents)
     this.save.sceneInputEvents = _.cloneDeep(SETTINGS.sceneInputEvents)
     this.save.interfaceInputEvents = _.cloneDeep(SETTINGS.interfaceInputEvents)
@@ -73,6 +73,10 @@ class Save {
       this.update()
       this.lastUpdateMS = LOOP.elapsedMS
     }
+  }
+  reset() {
+    this.stringifyLocal("save", SAVE.startSave)
+    location.reload()
   }
   private parseLocal(key: string) {
     const data = localStorage.getItem(key)

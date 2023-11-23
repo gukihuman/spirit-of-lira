@@ -16,6 +16,11 @@ const inventory: AnyObject = {
 function initEvents() {
   EVENTS.onSingle("toggleInventory", () => {
     INTERFACE.inventory = !INTERFACE.inventory
+    INTERFACE.settings = false
+  })
+  EVENTS.onSingle("toggleSettings", () => {
+    INTERFACE.settings = !INTERFACE.settings
+    INTERFACE.inventory = false
   })
   EVENTS.on("equip", (data) => {
     const { singular, plural } = getType(data.name)

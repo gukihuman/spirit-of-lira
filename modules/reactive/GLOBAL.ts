@@ -21,10 +21,14 @@ const global = {
     this.mouseOfScreen = COORD.mouseOfScreen()
     this.mousePosition = COORD.mousePosition()
     if (GLOBAL.context === "world") {
-      if (INTERFACE.inventory) GLOBAL.context = "interface"
+      if (INTERFACE.inventory || INTERFACE.settings) {
+        GLOBAL.context = "interface"
+      }
     }
     if (GLOBAL.context === "interface") {
-      if (!INTERFACE.inventory) GLOBAL.context = "world"
+      if (!INTERFACE.inventory && !INTERFACE.settings) {
+        GLOBAL.context = "world"
+      }
     }
   },
 }
