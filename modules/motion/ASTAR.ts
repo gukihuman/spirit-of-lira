@@ -49,6 +49,7 @@ class Astar {
 
           const possiblePath = this.findPath(startTile, endTile, entity)
           if (possiblePath) entity.MOVE.path = possiblePath
+          else return
 
           entity.MOVE.destination = _.cloneDeep(entity.POSITION)
           if (entity.MOVE.path.length <= 1 && entity.MOVE.destination) {
@@ -65,7 +66,19 @@ class Astar {
     })
     executes.forEach((func) => func())
   }
-
+  addNeighbor(y, x, entity) {
+    const collision = GLOBAL.collision
+    if (
+      COLLISION.getArrayElement([y, x]) === 0 ||
+      COLLISION.getArrayElement([y, x]) === 1 ||
+      !collision
+    ) {
+      if (COLLISION.getArrayOfEntitiesElement([y, x]) !== 2 || entity.HERO) {
+        return true
+      }
+    }
+    return false
+  }
   getAllNeighbors(node, entity) {
     const cardinalNeighbors = this.getCardinalNeighbors(node, entity)
     const diagonalNeighbors = this.getDiagonalNeighbors(node, entity)
@@ -73,88 +86,39 @@ class Astar {
   }
   getCardinalNeighbors(node, entity) {
     const neighbors: any = []
-    const collision = GLOBAL.collision
 
     // Add neighbor left
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y, node.x - 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y, node.x - 1]) === 0 ||
-          COLLISION.getArrayElement([node.y, node.x - 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y, node.x - 1, entity)) {
       neighbors.push({ x: node.x - 1, y: node.y })
     }
     // Add neighbor right
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y, node.x + 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y, node.x + 1]) === 0 ||
-          COLLISION.getArrayElement([node.y, node.x + 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y, node.x + 1, entity)) {
       neighbors.push({ x: node.x + 1, y: node.y })
     }
     // Add neighbor above
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x]) !== 2 &&
-        (COLLISION.getArrayElement([node.y - 1, node.x]) === 0 ||
-          COLLISION.getArrayElement([node.y - 1, node.x]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y - 1, node.x, entity)) {
       neighbors.push({ x: node.x, y: node.y - 1 })
     }
-
     // Add neighbor below
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x]) !== 2 &&
-        (COLLISION.getArrayElement([node.y + 1, node.x]) === 0 ||
-          COLLISION.getArrayElement([node.y + 1, node.x]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y + 1, node.x, entity)) {
       neighbors.push({ x: node.x, y: node.y + 1 })
     }
+
     return neighbors
   }
   getDiagonalNeighbors(node, entity) {
     const neighbors: any = []
-    const collision = GLOBAL.collision
 
-    // Top left
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x - 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 0 ||
-          COLLISION.getArrayElement([node.y - 1, node.x - 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y - 1, node.x - 1, entity)) {
       neighbors.push({ x: node.x - 1, y: node.y - 1 })
     }
-
-    // Top right
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y - 1, node.x + 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 0 ||
-          COLLISION.getArrayElement([node.y - 1, node.x + 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y - 1, node.x + 1, entity)) {
       neighbors.push({ x: node.x + 1, y: node.y - 1 })
     }
-
-    // Bottom left
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x - 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 0 ||
-          COLLISION.getArrayElement([node.y + 1, node.x - 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y + 1, node.x - 1, entity)) {
       neighbors.push({ x: node.x - 1, y: node.y + 1 })
     }
-
-    // Bottom right
-    if (
-      (COLLISION.getArrayOfEntitiesElement([node.y + 1, node.x + 1]) !== 2 &&
-        (COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 0 ||
-          COLLISION.getArrayElement([node.y + 1, node.x + 1]) === 1)) ||
-      !collision
-    ) {
+    if (this.addNeighbor(node.y + 1, node.x + 1, entity)) {
       neighbors.push({ x: node.x + 1, y: node.y + 1 })
     }
 
@@ -195,7 +159,7 @@ class Astar {
     while (this.openList.length > 0) {
       maxSteps--
 
-      if (performance.now() - t0 >= this.maxTime) return []
+      if (performance.now() - t0 >= this.maxTime) return null
       let current = this.getLowestF(this.openList)
 
       if (maxSteps < 0) {
@@ -205,7 +169,7 @@ class Astar {
           this.setFinalDestinationToWalkable(endPos, entity)
           entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsedMS
         }
-        let path = this.reconstructPath(current, startPos)
+        let path = this.reconstructPath(current, startPos, entity)
         return this.refinePath(path, entity)
       }
 
@@ -214,7 +178,7 @@ class Astar {
 
       if (current.x === endPos.x && current.y === endPos.y) {
         if (this.clean) return [endPos]
-        let path = this.reconstructPath(current, startPos)
+        let path = this.reconstructPath(current, startPos, entity)
         return this.refinePath(path, entity)
       }
 
@@ -371,7 +335,7 @@ class Astar {
     }, openList[0])
   }
 
-  reconstructPath(endNode, startPos) {
+  reconstructPath(endNode, startPos, entity) {
     let path: number[] = []
     let current = endNode
 

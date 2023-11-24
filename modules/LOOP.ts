@@ -1,5 +1,5 @@
 class Loop {
-  fps = CONFIG.maxFPS // precisely updated each loop
+  fps = CONFIG.maxFPS // precisely updated each loop, here is just defalt
   elapsedMS = 0
   get elapsedSec() {
     return Math.floor(this.elapsedMS / 1000)
