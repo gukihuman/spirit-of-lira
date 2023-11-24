@@ -28,6 +28,8 @@ const inter: Inter = {
   damageLifetimeMS: 1200,
   inventory: false,
   settings: false,
+  settingsTabList: ["general", "gamepad", "keyboard", "info"],
+  settingsTabIndex: 0,
   target: false,
   targetLocked: false,
   targetHealth: 0,
@@ -44,9 +46,11 @@ const inter: Inter = {
   heroMaxEnergy: 0,
   reset: false,
   process() {
+    if (GLOBAL.context === "scene") this.overlay = false
+    else this.overlay = true
     this.floatDamage = SETTINGS.general.floatDamage
     this.showKeys = SETTINGS.general.showKeys
-    if (GLOBAL.context === "world") {
+    if (GLOBAL.context !== "scene") {
       if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
         INTERFACE.target = true
         INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
@@ -62,8 +66,31 @@ const inter: Inter = {
       if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
       else INTERFACE.targetLocked = false
     }
-    if (GLOBAL.context === "scene") this.overlay = false
-    else this.overlay = true
+    this.switchSettingsTab()
+    this.processFloatDamage()
+  },
+  init() {
+    EVENTS.onSingle("switchSettingsTabLeft", () => {
+      const last = this.settingsTabList.length - 1
+      this.settingsTabIndex--
+      if (this.settingsTabIndex < 0) this.settingsTabIndex = last
+    })
+    EVENTS.onSingle("switchSettingsTabRight", () => {
+      const last = this.settingsTabList.length - 1
+      this.settingsTabIndex++
+      if (this.settingsTabIndex > last) this.settingsTabIndex = 0
+    })
+  },
+  switchSettingsTab() {
+    if (!this.settings) return
+    if (INPUT.gamepad.justPressed.includes("LB")) {
+      EVENTS.emitSingle("switchSettingsTabLeft")
+    }
+    if (INPUT.gamepad.justPressed.includes("RB")) {
+      EVENTS.emitSingle("switchSettingsTabRight")
+    }
+  },
+  processFloatDamage() {
     this.damageOverlays.forEach((overlay, index) => {
       if (LOOP.elapsedMS > overlay.startMS + this.damageLifetimeMS) {
         this.damageOverlays.splice(index, 1)

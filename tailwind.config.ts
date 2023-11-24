@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         tan: "#cfc391",
         chestnut: "#a0492d",
+        "royal-brown": "#533c31",
         "dark-gunmetal": "#1a202a",
         "space-cadet": "#243551",
         "jelly-bean-blue": "#438a86",

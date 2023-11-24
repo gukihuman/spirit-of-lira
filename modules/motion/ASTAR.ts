@@ -66,12 +66,12 @@ class Astar {
     executes.forEach((func) => func())
   }
 
-  getAllNeighbors(node) {
-    const diagonalNeighbors = this.getDiagonalNeighbors(node)
-    const cardinalNeighbors = this.getCardinalNeighbors(node)
+  getAllNeighbors(node, entity) {
+    const cardinalNeighbors = this.getCardinalNeighbors(node, entity)
+    const diagonalNeighbors = this.getDiagonalNeighbors(node, entity)
     return diagonalNeighbors.concat(cardinalNeighbors)
   }
-  getCardinalNeighbors(node) {
+  getCardinalNeighbors(node, entity) {
     const neighbors: any = []
     const collision = GLOBAL.collision
 
@@ -114,7 +114,7 @@ class Astar {
     }
     return neighbors
   }
-  getDiagonalNeighbors(node) {
+  getDiagonalNeighbors(node, entity) {
     const neighbors: any = []
     const collision = GLOBAL.collision
 
@@ -206,7 +206,7 @@ class Astar {
           entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsedMS
         }
         let path = this.reconstructPath(current, startPos)
-        return this.refinePath(path)
+        return this.refinePath(path, entity)
       }
 
       this.openList = this.openList.filter((p) => p !== current)
@@ -215,10 +215,10 @@ class Astar {
       if (current.x === endPos.x && current.y === endPos.y) {
         if (this.clean) return [endPos]
         let path = this.reconstructPath(current, startPos)
-        return this.refinePath(path)
+        return this.refinePath(path, entity)
       }
 
-      let neighbors = this.getAllNeighbors(current)
+      let neighbors = this.getAllNeighbors(current, entity)
       if (neighbors.length < 8) this.clean = false
 
       neighbors.forEach((neighbor) => {
@@ -227,7 +227,7 @@ class Astar {
         ) {
           return
         }
-        let secondNeighbors = this.getAllNeighbors(neighbor)
+        let secondNeighbors = this.getAllNeighbors(neighbor, entity)
 
         let g = current.g
         if (
@@ -260,7 +260,7 @@ class Astar {
     return []
   }
 
-  refinePath(path) {
+  refinePath(path, entity) {
     //
     const indexes: number[] = []
 
@@ -270,7 +270,7 @@ class Astar {
       let tile = path[i]
       if (!tile) continue
 
-      let neighbors = this.getAllNeighbors(tile)
+      let neighbors = this.getAllNeighbors(tile, entity)
 
       // all neighbors are walkable
       if (neighbors.length === 8) {
@@ -380,7 +380,7 @@ class Astar {
     let max = 300
     while (current && max > 0) {
       path.unshift(current) // add to front
-      const neighbors = this.getAllNeighbors(current)
+      const neighbors = this.getAllNeighbors(current, entity)
 
       let closest
       _.reverse(neighbors)

@@ -11,7 +11,7 @@ transition: div(
 const viewport = ref(null)
 const classes = computed(() => {
   return {
-    blur: INTERFACE.inventory,
+    blur: GLOBAL.context !== "world",
     "opacity-0": GLOBAL.context === "scene",
   }
 })
