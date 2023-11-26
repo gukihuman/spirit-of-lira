@@ -1,14 +1,15 @@
 <template lang="pug">
-fullscreen
-  loading
-  tn: game-window(v-show="!GLOBAL.loading" :class="gameWindowClasses")
-    viewport
-    tn: overlay(v-show="INTERFACE.overlay")
-    tn: inventory(v-show="INTERFACE.inventory")
-    tn: settings(v-show="INTERFACE.settings")
-    tn(name="scene"): scene(v-show="GLOBAL.context === 'scene'")
-    tn: audiomessage(v-if="!GLOBAL.firstUserGesture")
-    cursor(v-if="GLOBAL.firstUserGesture")
+fullscreen(mark="fullscreen")
+  loading(mark="loading")
+  tn: game-window(mark="game-window"
+    v-show="!GLOBAL.loading" :class="gameWindowClasses")
+    viewport(mark="viewport")
+    tn: overlay(mark="overlay" v-show="INTERFACE.overlay")
+    tn: inventory(mark="inventory" v-show="INTERFACE.inventory")
+    tn: settings(mark="settings" v-show="INTERFACE.settings")
+    tn(type="long"): scene(mark="scene" v-show="GLOBAL.context === 'scene'")
+    tn: audiomessage(mark="audiomessage" v-if="!GLOBAL.firstUserGesture")
+    cursor(mark="cursor" v-if="GLOBAL.firstUserGesture")
 </template>
 <script setup lang="ts">
 const gameWindowClasses = computed(() => {
@@ -17,12 +18,12 @@ const gameWindowClasses = computed(() => {
 </script>
 
 <style>
-.scene-enter-active,
-.scene-leave-active {
+.long-enter-active,
+.long-leave-active {
   transition: opacity 1000ms ease;
 }
-.scene-enter-from,
-.scene-leave-to {
+.long-enter-from,
+.long-leave-to {
   opacity: 0;
 }
 .fast-enter-active,
@@ -33,12 +34,12 @@ const gameWindowClasses = computed(() => {
 .fast-leave-to {
   opacity: 0;
 }
-.v-enter-active,
-.v-leave-active {
+.default-enter-active,
+.default-leave-active {
   transition: opacity 200ms ease;
 }
-.v-enter-from,
-.v-leave-to {
+.default-enter-from,
+.default-leave-to {
   opacity: 0;
 }
 /* disable scrollbar */

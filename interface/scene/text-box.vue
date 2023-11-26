@@ -9,7 +9,7 @@ div(class="absolute" :style="textBoxStyle")
   )
     div(class="w-full h-full rounded-3xl bg-gradient-to-b from-dark-gunmetal to-space-cadet")
   //- text
-  transition(name="fast"): div(
+  transition(type="fast"): div(
     v-if="ACTIVE_SCENE.showText"
     class="my-7 mx-11 leading-10 font-semibold text-[28px] text-slate-300"
   )

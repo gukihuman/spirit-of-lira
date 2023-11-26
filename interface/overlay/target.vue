@@ -7,7 +7,7 @@ div(class="absolute relative top-[20px] left-[757px]")
     draggable="false"
     :style="health"
   )
-  transition(name="fast")
+  transition(type="fast")
     img(
       :src="ASSETS.webps['target-lock']"
       class="absolute"

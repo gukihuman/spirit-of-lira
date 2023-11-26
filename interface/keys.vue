@@ -1,35 +1,22 @@
 <template lang="pug">
-div(
-  v-if="INTERFACE.showKeys"
-  class="absolute w-[50px] flex justify-center items-center mt-[25px] pointer-events-none transition duration-1000 ease-in-out"
-  :class="iconClass"
-)
-  img(
-    :src="image"
-    draggable="false"
-    class="absolute object-none"
-    :class="imageClass"
-    :style="imageStyle"
-  )
-  p(
-    class="absolute z-10 text-tan text-[22px] font-semibold ml-[1px] mb-[2px] points-events-none opacity-[.9]"
-    :class="textClass"
-  ) {{ text }}
+div(v-if="INTERFACE.showKeys"
+  class="absolute w-[50px] mt-[25px] transition duration-1000 ease-in-out"
+  class="flex justify-center items-center pointer-events-none"
+  :class="iconClass")
+  img(:src="image" draggable="false" class="absolute object-none"
+    :class="imageClass" :style="imageStyle")
+  p(class="absolute z-10 ml-[1px] mb-[2px] opacity-[.9]"
+    class="text-tan text-[22px] font-semibold points-events-none"
+    :class="textClass") {{ text }}
 </template>
 <script setup lang="ts">
 const props = defineProps(["inputEvent"])
 const iconClass = computed(() => {
-  if (GLOBAL.context === "scene") {
-    return {
-      "hue-rotate-180": true,
-    }
-  }
+  if (GLOBAL.context === "scene") return { "hue-rotate-180": true }
   return {}
 })
 const imageStyle = computed(() => {
-  return {
-    transition: "filter 1000ms ease-in-out",
-  }
+  return { transition: "filter 1000ms ease-in-out" }
 })
 const image = computed(() => {
   const key = findKey()
@@ -79,17 +66,14 @@ const imageClass = computed(() => {
 })
 const textClass = computed(() => {
   const key = findKey()
-  if (!key) return
-  if (GLOBAL.lastActiveDevice === "gamepad") {
-    return { "mb-0": true }
-  } else if (textMap[key]) {
-    return { "mb-[1px]": true }
-  }
+  if (!key) return {}
+  if (GLOBAL.lastActiveDevice === "gamepad") return { "mb-0": true }
+  else if (textMap[key]) return { "mb-[1px]": true }
   return {}
 })
 const text = computed(() => {
   const key = findKey()
-  if (!key) return
+  if (!key) return {}
   return textMap[key] ? textMap[key] : key
 })
 const textMap = {

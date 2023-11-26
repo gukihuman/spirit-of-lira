@@ -40,7 +40,7 @@ div(
             :src="ASSETS.webps['bulb-scene-off']"
             )
         //- focus frame
-        transition(name="fast"): focus-frame(:index="index")
+        transition(type="fast"): focus-frame(:index="index")
         //- transparent border
         div(class="absolute rounded-3xl w-full h-full bg-gradient-to-b from-dark-gunmetal to-space-cadet opacity-[0.20]")
         //- internal choice box

@@ -1,6 +1,6 @@
 <template lang="pug">
 transition(
-  name=name
+  name=type
   :enter-active-class="enterActiveClass"
   :leave-active-class="leaveActiveClass"
   :enter-from-class="enterFromClass"
@@ -11,21 +11,21 @@ transition(
 </template>
 <script setup lang="ts">
 const props = defineProps({
-  name: { type: String, default: "v" },
+  type: { type: String, default: "default" },
   mode: { type: String, default: "out-in" },
 })
 
 // Setting default `enterActiveClass` value
 const enterActiveClass = computed(() => {
-  return props.name + "-enter-active"
+  return props.type + "-enter-active"
 })
 const leaveActiveClass = computed(() => {
-  return props.name + "-leave-active"
+  return props.type + "-leave-active"
 })
 const enterFromClass = computed(() => {
-  return props.name + "-enter-from"
+  return props.type + "-enter-from"
 })
 const leaveToClass = computed(() => {
-  return props.name + "-leave-to"
+  return props.type + "-leave-to"
 })
 </script>
