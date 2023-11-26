@@ -1,13 +1,13 @@
 <template lang="pug">
 fullscreen
   loading
-  transition: game-window(v-show="!GLOBAL.loading" :class="gameWindowClasses")
+  tn: game-window(v-show="!GLOBAL.loading" :class="gameWindowClasses")
     viewport
-    transition: overlay(v-show="INTERFACE.overlay")
-    transition: inventory(v-show="INTERFACE.inventory")
-    transition: settings(v-show="INTERFACE.settings")
-    transition(name="scene"): scene(v-show="GLOBAL.context === 'scene'")
-    transition: audiomessage(v-if="!GLOBAL.firstUserGesture")
+    tn: overlay(v-show="INTERFACE.overlay")
+    tn: inventory(v-show="INTERFACE.inventory")
+    tn: settings(v-show="INTERFACE.settings")
+    tn(name="scene"): scene(v-show="GLOBAL.context === 'scene'")
+    tn: audiomessage(v-if="!GLOBAL.firstUserGesture")
     cursor(v-if="GLOBAL.firstUserGesture")
 </template>
 <script setup lang="ts">
