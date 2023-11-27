@@ -1,42 +1,50 @@
 <template lang="pug">
-div()
+div
   div(
-    v-for="(overlay, index) in INTERFACE.damageOverlays"
-    :key="index"
+    v-for="(overlay, index) in INTERFACE.damageOverlays" :key="index"
     class="absolute w-[100px] h-[100px] flex justify-center items-center"
     :style="damageStyle(overlay)"
   )
     p(
-      v-if="!overlay.hero"
-      class="absolute z-10 font-hat text-[36px] font-black blur-[0.6px] brightness-[0.3] saturate-[0.1] opacity-[0.7] "
-      :style="textStyle(overlay, true)"
+      class="absolute z-10 font-hat font-black blur-[1px]"
+      :style="textShadowStyle(overlay)"
     ) {{ overlay.damage }}
     p(
-      v-if="overlay.hero"
-      class="absolute z-10 font-hat text-[36px] font-black blur-[1px] brightness-[10] saturate-[0.1] opacity-[0.7]"
-      :style="textStyle(overlay, true)"
-    ) {{ overlay.damage }}
-    p(
-      class="absolute z-10 font-hat text-[36px] font-black"
+      class="absolute z-10 font-hat font-black"
       :style="textStyle(overlay)"
     ) {{ overlay.damage }}
 </template>
 <script setup lang="ts">
-const textStyle = computed(() => {
+const textShadowStyle = computed(() => {
   return (overlay, shadow = false) => {
     const styleObject = {
-      color: "#d6ecec",
-    }
-    if (shadow) {
-      _.merge(styleObject, { "text-stroke": "10px #d6ecec" })
+      "font-size": "32px",
+      "text-stroke": "10px #d6ecec",
+      "text-stroke-color": "black",
+      opacity: "0.4",
     }
     if (overlay.hero) {
       _.merge(styleObject, {
+        "font-size": "34px",
+        "text-stroke": "10px #531500",
+        "text-stroke-color": "white",
+        opacity: "0.3",
+      })
+    }
+    return styleObject
+  }
+})
+const textStyle = computed(() => {
+  return (overlay) => {
+    const styleObject = {
+      "font-size": "32px",
+      color: "#d6ecd9",
+    }
+    if (overlay.hero) {
+      _.merge(styleObject, {
+        "font-size": "34px",
         color: "#531500",
       })
-      if (shadow) {
-        _.merge(styleObject, { "text-stroke": "10px #531500" })
-      }
     }
     return styleObject
   }

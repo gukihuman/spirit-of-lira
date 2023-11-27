@@ -81,26 +81,13 @@ class Coordinates {
   tileToCoordinate(tile: number) {
     return tile * 20
   }
-  // isWalkable(x: number, y: number) {
-  //   let tileX = this.coordinateToTile(x)
-  //   let tileY = this.coordinateToTile(y)
-  //   if (
-  //     COLLISION.array[tileY] === undefined ||
-  //     !COLLISION.array[tileY][tileX] === undefined
-  //   ) {
-  //     return
-  //   }
-  //   return (
-  //     COLLISION.array[tileY][tileX] !== 2 && COLLISION.array[tileY][tileX] !== 3
-  //   )
-  // }
-  isWalkable(x: number, y: number) {
+  isWalkable(x: number, y: number, mobs = true) {
     let tileX = this.coordinateToTile(x)
     let tileY = this.coordinateToTile(y)
     return (
       COLLISION.getArrayElement([tileY, tileX]) !== 2 &&
       COLLISION.getArrayElement([tileY, tileX]) !== 3 &&
-      COLLISION.getArrayOfEntitiesElement([tileY, tileX]) !== 2
+      (COLLISION.getArrayOfEntitiesElement([tileY, tileX]) !== 2 || !mobs)
     )
   }
   isGreenTile(tile: { x: number; y: number }) {

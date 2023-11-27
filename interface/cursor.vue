@@ -36,7 +36,7 @@ const cursor = computed(() => {
   if (INTERFACE.buttonHover) return true
   return (
     !GLOBAL.hoverId &&
-    COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
+    COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
   )
 })
 const cursorNo = computed(() => {
@@ -45,7 +45,7 @@ const cursorNo = computed(() => {
   if (INTERFACE.buttonHover) return false
   return (
     !GLOBAL.hoverId &&
-    !COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y)
+    !COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
   )
 })
 const cursorCast = computed(() => {
