@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  class="relative w-[250px] h-[85px] opacity-[0.8] overflow-hidden transition-all duration-[200ms] ease-in-out z-50"
+  class="relative w-[250px] h-[85px] overflow-hidden transition-all duration-[200ms] ease-in-out z-50"
   :class="tabStyle"
   @click="INTERFACE.settingsTabIndex = index"
 )

@@ -5,10 +5,8 @@ div(v-show="INTERFACE.settings" class="z-30")
   img(mark="settings-bg" :src="ASSETS.webps['settings-bg']" class="absolute")
   tn: div(mark="settings-gamepad-icons"
     v-if="GLOBAL.lastActiveDevice === 'gamepad'")
-    img(:src="ASSETS.webps['gamepad-lb']"
-      class="absolute object-none left-[390px] top-[145px]")
-    img(:src="ASSETS.webps['gamepad-rb']"
-      class="absolute object-none left-[1450px] top-[145px]")
+    hotkey-icon(static="LB" class="left-[390px] top-[145px]")
+    hotkey-icon(static="RB" class="left-[1450px] top-[145px]")
   div(mark="settings-tabs" class="flex justify-center items-center"
     class="absolute w-[1165px] h-[85px] left-[360px] top-[145px]")
     settings-tab(mark="settings-tab"

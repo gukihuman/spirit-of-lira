@@ -34,13 +34,13 @@ class GukiConfig {
       // <- rest of the logic
     },
     modulesProcess: {
+      INPUT_UPDATE: 6, // at least SETTINGS and INTERFACE depends on it
       STATE: 5,
       SPRITE_UPDATE: 4,
       ACTIVE_SCENE: 3,
       DEVMODE: 3, // between STATE and LAST
       INTERFACE: 3, // before LAST
       LAST: 2,
-      INPUT_UPDATE: 1, // at least SETTINGS depends on it
       // <- rest of the logic here
       ASTAR: -1, // check logic in EVENTS before it is empty4
       EVENTS: -2, // runs all logic for collected events and empty itself

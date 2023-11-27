@@ -39,6 +39,10 @@ const inter: Inter = {
   currentSettingsTab: "general", // updated automatically
   settingsFocus: { columnIndex: 0, settingIndex: 0 },
   showAnySettingsPanel: false, // used to delay when switching
+  editHotkeyMode: false,
+  showButtonIcon: true,
+  preventEditHotkeyMode: false, // for now only when new action on gamepad
+  preventEditHotkeyModeCast: false, // Up, Down, Left, Right, RB, LB with Cast
 
   target: false,
   targetLocked: false,
@@ -82,18 +86,211 @@ const inter: Inter = {
     this.updateShowAnySettingsPanel()
     this.resetSettingsFocus()
     this.updateSettingsFocus()
+    if (this.editHotkeyMode) this.updateInEditHotkeyMode()
   },
   init() {
     EVENTS.onSingle("switchSettingsTabLeft", () => {
+      if (INTERFACE.editHotkeyMode) return
       const last = this.settingsTabList.length - 1
       this.settingsTabIndex--
       if (this.settingsTabIndex < 0) this.settingsTabIndex = last
     })
     EVENTS.onSingle("switchSettingsTabRight", () => {
+      if (INTERFACE.editHotkeyMode) return
       const last = this.settingsTabList.length - 1
       this.settingsTabIndex++
       if (this.settingsTabIndex > last) this.settingsTabIndex = 0
     })
+    EVENTS.onSingle("editHotkey", () => {
+      if (
+        INTERFACE.settings &&
+        (this.currentSettingsTab === "gamepad" ||
+          this.currentSettingsTab === "keyboard")
+      ) {
+        this.editHotkeyMode = true
+      }
+    })
+  },
+  updateInEditHotkeyMode() {
+    if (
+      this.currentSettingsTab === "gamepad" &&
+      INPUT.gamepad.justPressed.length > 0
+    ) {
+      // make function that gonna work for both the keyboard and gamepad
+      let events: string[] = []
+      const pressedKey = INPUT.gamepad.justPressed[0]
+      let newKeySetted = false
+      function checkPressedKeyAction(setting: string) {
+        const preventActionKeys = ["Up", "Down", "Left", "Right", "RB", "LB"]
+        if (
+          !setting.includes("Cast") &&
+          preventActionKeys.includes(pressedKey)
+        ) {
+          INTERFACE.preventEditHotkeyModeCast = true
+          return false
+        }
+        return true
+      }
+      let setting = ""
+      if (HOTKEYS.gamepad.includes(pressedKey)) {
+        if (this.settingsFocus.columnIndex === 0) {
+          setting = _.keys(SETTINGS.gamepadLeftColumn)[
+            this.settingsFocus.settingIndex
+          ]
+          if (checkPressedKeyAction(setting)) {
+            events = SETTINGS.gamepadLeftColumn[setting]
+          }
+        } else {
+          setting = _.keys(SETTINGS.gamepadRightColumn)[
+            this.settingsFocus.settingIndex
+          ]
+          if (checkPressedKeyAction(setting)) {
+            events = SETTINGS.gamepadRightColumn[setting]
+          }
+        }
+      }
+      function findPreviousEvents(pressedKey) {
+        let previousEvents: string[] = []
+        _.entries(SETTINGS.interfaceInputEvents.gamepad).forEach(
+          ([key, value]) => {
+            if (value === pressedKey) previousEvents.push(key)
+          }
+        )
+        _.entries(SETTINGS.worldInputEvents.gamepad).forEach(([key, value]) => {
+          if (value === pressedKey) previousEvents.push(key)
+        })
+        _.entries(SETTINGS.sceneInputEvents.gamepad).forEach(([key, value]) => {
+          if (value === pressedKey) previousEvents.push(key)
+        })
+        return previousEvents
+      }
+      let preventEditHotkey = false
+      function cleanPrevious(previousEvents, placeToClean) {
+        previousEvents.forEach((event) => {
+          if (event === "editHotkey" && setting !== "Action") {
+            preventEditHotkey = true
+          }
+          if (placeToClean.gamepad[event] && !preventEditHotkey) {
+            placeToClean.gamepad[event] = ""
+          }
+        })
+      }
+      let foundPlace: AnyObject[] = []
+      events.forEach((event) => {
+        if (SETTINGS.interfaceInputEvents.gamepad[event] !== undefined) {
+          foundPlace.push(SETTINGS.interfaceInputEvents)
+          newKeySetted = true
+        }
+        if (SETTINGS.worldInputEvents.gamepad[event] !== undefined) {
+          foundPlace.push(SETTINGS.worldInputEvents)
+          newKeySetted = true
+        }
+        if (SETTINGS.sceneInputEvents.gamepad[event] !== undefined) {
+          foundPlace.push(SETTINGS.sceneInputEvents)
+          newKeySetted = true
+        }
+      })
+      if (newKeySetted) {
+        const previousEvents = findPreviousEvents(pressedKey)
+        cleanPrevious(previousEvents, SETTINGS.interfaceInputEvents)
+        cleanPrevious(previousEvents, SETTINGS.worldInputEvents)
+        cleanPrevious(previousEvents, SETTINGS.sceneInputEvents)
+        if (preventEditHotkey) {
+          this.preventEditHotkeyMode = true
+          return
+        }
+        events.forEach((event) => {
+          foundPlace.forEach((place) => {
+            place.gamepad[event] = pressedKey
+          })
+        })
+        this.showButtonIcon = false
+        // 📜 make literal next frame not just 50ms
+        setTimeout(() => {
+          this.editHotkeyMode = false
+          this.showButtonIcon = true
+          this.preventEditHotkeyMode = false
+          this.preventEditHotkeyModeCast = false
+        }, 50)
+      }
+    } else if (
+      this.currentSettingsTab === "keyboard" &&
+      INPUT.keyboard.justPressed.length > 0
+    ) {
+      let events: string[] = []
+      const pressedKey = INPUT.keyboard.justPressed[0]
+      let newKeySetted = false
+      if (HOTKEYS.keyboard.includes(INPUT.keyboard.justPressed[0])) {
+        if (this.settingsFocus.columnIndex === 0) {
+          const setting = _.keys(SETTINGS.keyboardLeftColumn)[
+            this.settingsFocus.settingIndex
+          ]
+          events = SETTINGS.keyboardLeftColumn[setting]
+        } else {
+          const setting = _.keys(SETTINGS.keyboardRightColumn)[
+            this.settingsFocus.settingIndex
+          ]
+          events = SETTINGS.keyboardRightColumn[setting]
+        }
+      }
+      function findPreviousEvents(pressedKey) {
+        let previousEvents: string[] = []
+        _.entries(SETTINGS.interfaceInputEvents.keyboard).forEach(
+          ([key, value]) => {
+            if (value === pressedKey) previousEvents.push(key)
+          }
+        )
+        _.entries(SETTINGS.worldInputEvents.keyboard).forEach(
+          ([key, value]) => {
+            if (value === pressedKey) previousEvents.push(key)
+          }
+        )
+        _.entries(SETTINGS.sceneInputEvents.keyboard).forEach(
+          ([key, value]) => {
+            if (value === pressedKey) previousEvents.push(key)
+          }
+        )
+        return previousEvents
+      }
+      function cleanPrevious(previousEvents, placeToClean) {
+        previousEvents.forEach((event) => {
+          if (placeToClean.keyboard[event]) placeToClean.keyboard[event] = ""
+        })
+      }
+      let foundPlace: AnyObject[] = []
+      events.forEach((event) => {
+        if (SETTINGS.interfaceInputEvents.keyboard[event] !== undefined) {
+          foundPlace.push(SETTINGS.interfaceInputEvents)
+          newKeySetted = true
+        }
+        if (SETTINGS.worldInputEvents.keyboard[event] !== undefined) {
+          foundPlace.push(SETTINGS.worldInputEvents)
+          newKeySetted = true
+        }
+        if (SETTINGS.sceneInputEvents.keyboard[event] !== undefined) {
+          foundPlace.push(SETTINGS.sceneInputEvents)
+          newKeySetted = true
+        }
+      })
+      if (newKeySetted) {
+        const previousEvents = findPreviousEvents(pressedKey)
+        cleanPrevious(previousEvents, SETTINGS.interfaceInputEvents)
+        cleanPrevious(previousEvents, SETTINGS.worldInputEvents)
+        cleanPrevious(previousEvents, SETTINGS.sceneInputEvents)
+        events.forEach((event) => {
+          foundPlace.forEach((place) => {
+            place.keyboard[event] = pressedKey
+          })
+        })
+        // 📜 make literal next frame not just 50ms
+        this.showButtonIcon = false
+        setTimeout(() => {
+          this.editHotkeyMode = false
+          this.showButtonIcon = true
+          this.preventEditHotkeyMode = false
+        }, 50)
+      }
+    }
   },
   updateCurrentSettingsTab() {
     this.currentSettingsTab = this.settingsTabList[this.settingsTabIndex]
@@ -118,13 +315,13 @@ const inter: Inter = {
     }
   },
   updateSettingsFocus() {
-    const currentTab = INTERFACE.settingsTabList[INTERFACE.settingsTabIndex]
+    if (INTERFACE.editHotkeyMode) return
     let leftColumnLength = 0
     let rightColumnLength = 0
-    if (currentTab === "keyboard") {
+    if (this.currentSettingsTab === "keyboard") {
       leftColumnLength = _.keys(SETTINGS.keyboardLeftColumn).length
       rightColumnLength = _.keys(SETTINGS.keyboardRightColumn).length
-    } else if (currentTab === "gamepad") {
+    } else if (this.currentSettingsTab === "gamepad") {
       leftColumnLength = _.keys(SETTINGS.gamepadLeftColumn).length
       rightColumnLength = _.keys(SETTINGS.gamepadRightColumn).length
     }

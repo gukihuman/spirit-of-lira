@@ -1,4 +1,13 @@
 class Settings {
+  gamepadLeftColumn = {
+    Action: ["talk", "reset", "continue", "editHotkey"],
+    Close: ["quitScene", "quitInterface"],
+    Cast: ["cast1"],
+  }
+  gamepadRightColumn = {
+    "Toggle Fullscreen": ["toggleFullscreen"],
+    "Toggle Settings": ["toggleSettings"],
+  }
   keyboardLeftColumn = {
     Action: ["talk", "reset", "continue"],
     Close: ["quitScene", "quitInterface"],
@@ -8,15 +17,6 @@ class Settings {
     "Toggle Fullscreen": ["toggleFullscreen"],
     "Toggle Settings": ["toggleSettings"],
     "Auto Move": ["autoMove"],
-  }
-  gamepadLeftColumn = {
-    Action: ["talk", "reset", "continue"],
-    Close: ["quitScene", "quitInterface"],
-    Cast: ["cast1"],
-  }
-  gamepadRightColumn = {
-    "Toggle Fullscreen": ["toggleFullscreen"],
-    "Toggle Settings": ["toggleSettings"],
   }
   general = {
     music: 0.0, // 0.8
@@ -42,6 +42,7 @@ class Settings {
       // toggleInventory: "B",
       toggleSettings: "Menu",
       quitInterface: "B",
+      editHotkey: "A",
     },
   }
   worldInputEvents = {
@@ -99,12 +100,16 @@ class Settings {
   }
   init() {
     LOOP.add(() => {
-      this.emitEvents()
+      if (!INTERFACE.editHotkeyMode) this.emitEvents()
     }, "SETTINGS")
     EVENTS.onSingle("quitInterface", () => {
-      GLOBAL.context = "world"
-      INTERFACE.inventory = false
-      INTERFACE.settings = false
+      // 📜 make next frame not 20ms
+      setTimeout(() => {
+        if (INTERFACE.editHotkeyMode) return
+        GLOBAL.context = "world"
+        INTERFACE.inventory = false
+        INTERFACE.settings = false
+      }, 20)
     })
     EVENTS.onSingle("previousOption", () => {
       if (ACTIVE_SCENE.focusedChoiceIndex === null) return

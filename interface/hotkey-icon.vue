@@ -1,16 +1,20 @@
 <template lang="pug">
-div(v-if="INTERFACE.showKeys"
+div(v-if="INTERFACE.showKeys || props.static"
   class="absolute w-[50px] mt-[25px] transition duration-1000 ease-in-out"
   class="flex justify-center items-center pointer-events-none"
   :class="iconClass")
-  img(:src="image" class="absolute object-none"
+  img(:src="image" class="absolute object-none opacity-[0.5]"
     :class="imageClass" :style="imageStyle")
-  p(class="absolute z-10 ml-[1px] mb-[2px] opacity-[.9]"
+  p(class="absolute z-10 ml-[1px] mb-[2px] opacity-[0.9]"
     class="text-tan text-[22px] font-semibold points-events-none"
-    :class="textClass") {{ text }}
+    :class="textClass") {{ _.capitalize(text) }}
 </template>
 <script setup lang="ts">
-const props = defineProps(["inputEvent"])
+const props = defineProps({
+  inputEvent: { type: String, default: "" },
+  static: { type: String, default: "" },
+  device: { type: String, default: "" },
+})
 const iconClass = computed(() => {
   if (GLOBAL.context === "scene") return { "hue-rotate-180": true }
   return {}
@@ -20,8 +24,10 @@ const imageStyle = computed(() => {
 })
 const image = computed(() => {
   const hotkey = findKey()
-  if (!hotkey) return
-  if (GLOBAL.lastActiveDevice === "gamepad") {
+  if (
+    (GLOBAL.lastActiveDevice === "gamepad" && !props.device) ||
+    (props.device && props.device === "gamepad")
+  ) {
     if (
       hotkey.includes("Down") ||
       hotkey.includes("Right") ||
@@ -49,33 +55,49 @@ const image = computed(() => {
 })
 const imageClass = computed(() => {
   const hotkey = findKey()
-  if (!hotkey) return
   const classObject = {
     "rotate-90": hotkey === "ArrowRight" || hotkey === "Right",
     "rotate-180": hotkey === "ArrowDown" || hotkey === "Down",
     "-rotate-90": hotkey === "ArrowLeft" || hotkey === "Left",
+    "opacity-100": hotkey,
   }
   if (GLOBAL.context === "scene") {
     _.merge(classObject, {
       "saturate-[.6]": true,
       "brightness-[.85]": true,
       "contrast-[1.2]": true,
+      "opacity-100": hotkey,
     })
   }
   return classObject
 })
 const textClass = computed(() => {
   const hotkey = findKey()
-  if (!hotkey) return {}
   if (GLOBAL.lastActiveDevice === "gamepad") return { "mb-0": true }
   else if (textMap[hotkey]) return { "mb-[1px]": true }
   return {}
 })
 const text = computed(() => {
   const hotkey = findKey()
-  if (!hotkey) return {}
   return textMap[hotkey] ? textMap[hotkey] : hotkey
 })
+function findKey() {
+  if (props.static) return props.static
+  let hotkey = ""
+  if (
+    (GLOBAL.lastActiveDevice === "gamepad" && !props.device) ||
+    (props.device && props.device === "gamepad")
+  ) {
+    hotkey = SETTINGS.worldInputEvents.gamepad[props.inputEvent] || hotkey
+    hotkey = SETTINGS.sceneInputEvents.gamepad[props.inputEvent] || hotkey
+    hotkey = SETTINGS.interfaceInputEvents.gamepad[props.inputEvent] || hotkey
+  } else {
+    hotkey = SETTINGS.worldInputEvents.keyboard[props.inputEvent] || hotkey
+    hotkey = SETTINGS.sceneInputEvents.keyboard[props.inputEvent] || hotkey
+    hotkey = SETTINGS.interfaceInputEvents.keyboard[props.inputEvent] || hotkey
+  }
+  return hotkey
+}
 const textMap = {
   // keyboard
   Control: "Ct",
@@ -104,16 +126,5 @@ const textMap = {
   Down: " ",
   Left: " ",
   Right: " ",
-}
-function findKey() {
-  let hotkey
-  if (GLOBAL.lastActiveDevice === "gamepad") {
-    hotkey = SETTINGS.worldInputEvents.gamepad[props.inputEvent]
-    hotkey = hotkey || SETTINGS.sceneInputEvents.gamepad[props.inputEvent]
-  } else {
-    hotkey = SETTINGS.worldInputEvents.keyboard[props.inputEvent]
-    hotkey = hotkey || SETTINGS.sceneInputEvents.keyboard[props.inputEvent]
-  }
-  return hotkey
 }
 </script>
