@@ -17,9 +17,14 @@ declare global {
     }
     startMS: number
   }
+  type SettingsFocus = {
+    columnIndex: 0 | 1
+    settingIndex: number
+  }
 }
 interface Inter extends AnyObject {
   damageOverlays: DamageOverlay[]
+  settingsFocus: SettingsFocus
 }
 const inter: Inter = {
   overlay: true,
@@ -27,10 +32,14 @@ const inter: Inter = {
   floatDamage: true,
   damageLifetimeMS: 1200,
   inventory: false,
+
   settings: false,
   settingsTabList: ["general", "gamepad", "keyboard", "info"],
   settingsTabIndex: 0,
+  currentSettingsTab: "general", // updated automatically
+  settingsFocus: { columnIndex: 0, settingIndex: 0 },
   showAnySettingsPanel: false, // used to delay when switching
+
   target: false,
   targetLocked: false,
   targetHealth: 0,
@@ -69,7 +78,10 @@ const inter: Inter = {
     }
     this.switchSettingsTab()
     this.processFloatDamage()
+    this.updateCurrentSettingsTab()
     this.updateShowAnySettingsPanel()
+    this.resetSettingsFocus()
+    this.updateSettingsFocus()
   },
   init() {
     EVENTS.onSingle("switchSettingsTabLeft", () => {
@@ -83,6 +95,9 @@ const inter: Inter = {
       if (this.settingsTabIndex > last) this.settingsTabIndex = 0
     })
   },
+  updateCurrentSettingsTab() {
+    this.currentSettingsTab = this.settingsTabList[this.settingsTabIndex]
+  },
   updateShowAnySettingsPanel() {
     if (GLOBAL.context !== "interface") this.showAnySettingsPanel = false
     if (GLOBAL.context === "interface" && LAST.context !== "interface") {
@@ -91,6 +106,62 @@ const inter: Inter = {
     if (this.settingsTabIndex !== LAST.settingsTabIndex) {
       this.showAnySettingsPanel = false
       this.debouncedShowAnySettingsPanel()
+    }
+  },
+  resetSettingsFocus() {
+    if (
+      (GLOBAL.context === "interface" && LAST.context !== "interface") ||
+      this.settingsTabIndex !== LAST.settingsTabIndex
+    ) {
+      this.settingsFocus.columnIndex = 0
+      this.settingsFocus.settingIndex = 0
+    }
+  },
+  updateSettingsFocus() {
+    const currentTab = INTERFACE.settingsTabList[INTERFACE.settingsTabIndex]
+    let leftColumnLength = 0
+    let rightColumnLength = 0
+    if (currentTab === "keyboard") {
+      leftColumnLength = _.keys(SETTINGS.keyboardLeftColumn).length
+      rightColumnLength = _.keys(SETTINGS.keyboardRightColumn).length
+    } else if (currentTab === "gamepad") {
+      leftColumnLength = _.keys(SETTINGS.gamepadLeftColumn).length
+      rightColumnLength = _.keys(SETTINGS.gamepadRightColumn).length
+    }
+    let maxSettingIndex = 0
+    if (this.settingsFocus.columnIndex === 0) {
+      maxSettingIndex = leftColumnLength - 1
+    } else {
+      maxSettingIndex = rightColumnLength - 1
+    }
+    if (INPUT.gamepad.justPressed.includes("Down")) {
+      this.settingsFocus.settingIndex++
+      if (this.settingsFocus.settingIndex > maxSettingIndex) {
+        this.settingsFocus.settingIndex = 0
+      }
+    }
+    if (INPUT.gamepad.justPressed.includes("Up")) {
+      this.settingsFocus.settingIndex--
+      if (this.settingsFocus.settingIndex < 0) {
+        this.settingsFocus.settingIndex = maxSettingIndex
+      }
+    }
+    // left and right are the same while there is only two columns
+    if (
+      INPUT.gamepad.justPressed.includes("Right") ||
+      INPUT.gamepad.justPressed.includes("Left")
+    ) {
+      if (
+        this.settingsFocus.columnIndex === 0 &&
+        rightColumnLength - 1 >= this.settingsFocus.settingIndex
+      ) {
+        this.settingsFocus.columnIndex = 1
+      } else if (
+        this.settingsFocus.columnIndex === 1 &&
+        leftColumnLength - 1 >= this.settingsFocus.settingIndex
+      ) {
+        this.settingsFocus.columnIndex = 0
+      }
     }
   },
   debouncedShowAnySettingsPanel: _.debounce(() => {

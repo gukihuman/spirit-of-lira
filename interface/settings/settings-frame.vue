@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="absolute h-[150px]")
+div(class="absolute h-[150px]" v-if="GLOBAL.lastActiveDevice === 'gamepad'")
   img(:src="ASSETS.webps['settings-frame-shadow']"
   class="absolute h-full opacity-50")
   div(class="absolute h-full w-[80%] overflow-hidden")

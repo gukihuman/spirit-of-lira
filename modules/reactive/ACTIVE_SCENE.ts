@@ -65,9 +65,10 @@ const activeScene: activeScene = {
         setTimeout(() => EVENTS.emitSingle("continue"), 20)
       }
     })
-    EVENTS.onSingle("quit", () => {
+    EVENTS.onSingle("quitScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
+      INTERFACE.settings = false
       this.name = ""
     })
     EVENTS.onSingle("endScene", () => {

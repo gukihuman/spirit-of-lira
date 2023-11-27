@@ -10,7 +10,7 @@ div(v-show="GLOBAL.context === 'scene'" class="z-30 relative")
     dialogue(layer="layerTwo")
   div(:style="style" class="absolute left-[35px] top-[1005px] flex gap-10"
     v-if="GLOBAL.context === 'scene' && ACTIVE_SCENE.name !== 'a0-adult-check'")
-    quit
+    quitScene
     navigate
 
   div(mark="adult-check-bg"

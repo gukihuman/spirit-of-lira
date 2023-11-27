@@ -7,7 +7,7 @@ class Damage {
       if (weapon) weaponDamage = ITEMS.collection.weapons[weapon].damage
       damage = weaponDamage
     }
-    // entity.TARGET.entity.ATTRIBUTES.health -= damage
+    entity.TARGET.entity.ATTRIBUTES.health -= damage
     const randomXstart = (Math.random() - 0.5) * 20 // -10 to 10
     const randomYstart = (Math.random() - 0.5) * 6 // -3 to 3
     const randomX = randomXstart * 1.5 // continue to -15 to 15 in a second

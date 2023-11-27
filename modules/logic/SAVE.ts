@@ -3,6 +3,7 @@ class Save {
   save: AnyObject = {}
   updatePeriodMS = 1000
   lastUpdateMS = 0
+  preventUpdate = false // for now only when reset in initialized
   init() {
     const storageSave = this.parseLocal("save") || this.save
     this.startSave = {
@@ -52,6 +53,7 @@ class Save {
     SH.resetDestination() // update final destination otherwise hero run at the start
   }
   update() {
+    if (this.preventUpdate) return
     // clone deep is important especially with pinia stores
     this.save.hero.POSITION = _.cloneDeep(SH.hero.POSITION)
     this.save.hero.health = _.cloneDeep(SH.hero.ATTRIBUTES.health)
@@ -75,6 +77,7 @@ class Save {
     }
   }
   reset() {
+    this.preventUpdate = true
     this.stringifyLocal("save", SAVE.startSave)
     location.reload()
   }

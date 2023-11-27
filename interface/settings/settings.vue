@@ -13,8 +13,10 @@ div(v-show="INTERFACE.settings" class="z-30")
     class="absolute w-[1165px] h-[85px] left-[360px] top-[145px]")
     settings-tab(mark="settings-tab"
       v-for="i in [0, 1, 2, 3]" key="i" :index="i")
-  tn(type="swipe"): hotkeys(mark="hotkeys-keyboard" device="keyboard"
-    v-if="INTERFACE.showAnySettingsPanel")
-  tn(type="swipe"): hotkeys(mark="hetkeys-gamepad" device="gamepad"
-    v-if="INTERFACE.showAnySettingsPanel")
+  div(mark="settings-panel"
+    class="absolute w-[1150px] h-[620px] top-[210px] left-[372px]")
+    tn(type="swipe"): hotkeys(mark="hotkeys-keyboard" device="keyboard"
+      v-if="INTERFACE.showAnySettingsPanel")
+    tn(type="swipe"): hotkeys(mark="hetkeys-gamepad" device="gamepad"
+      v-if="INTERFACE.showAnySettingsPanel")
 </template>

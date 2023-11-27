@@ -1,4 +1,23 @@
 class Settings {
+  keyboardLeftColumn = {
+    Action: ["talk", "reset", "continue"],
+    Close: ["quitScene", "quitInterface"],
+    Cast: ["cast1"],
+  }
+  keyboardRightColumn = {
+    "Toggle Fullscreen": ["toggleFullscreen"],
+    "Toggle Settings": ["toggleSettings"],
+    "Auto Move": ["autoMove"],
+  }
+  gamepadLeftColumn = {
+    Action: ["talk", "reset", "continue"],
+    Close: ["quitScene", "quitInterface"],
+    Cast: ["cast1"],
+  }
+  gamepadRightColumn = {
+    "Toggle Fullscreen": ["toggleFullscreen"],
+    "Toggle Settings": ["toggleSettings"],
+  }
   general = {
     music: 0.0, // 0.8
     sound: 0.8, // 0.8
@@ -16,11 +35,13 @@ class Settings {
       toggleFullscreen: "f",
       // toggleInventory: "i",
       toggleSettings: "r",
+      quitInterface: "q",
     },
     gamepad: {
       toggleFullscreen: "Start",
       // toggleInventory: "B",
       toggleSettings: "Menu",
+      quitInterface: "B",
     },
   }
   worldInputEvents = {
@@ -54,17 +75,18 @@ class Settings {
   sceneInputEvents = {
     keyboard: {
       continue: "e", // Space
-      quit: "q",
+      quitScene: "q",
       toggleFullscreen: "f",
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
     },
     mouse: {
       mouseContinue: 0,
+      quitScene: 2,
     },
     gamepad: {
       continue: "A",
-      quit: "B",
+      quitScene: "B",
       toggleFullscreen: "Start",
       previousOption: "Down",
       nextOption: "Up",
@@ -79,6 +101,11 @@ class Settings {
     LOOP.add(() => {
       this.emitEvents()
     }, "SETTINGS")
+    EVENTS.onSingle("quitInterface", () => {
+      GLOBAL.context = "world"
+      INTERFACE.inventory = false
+      INTERFACE.settings = false
+    })
     EVENTS.onSingle("previousOption", () => {
       if (ACTIVE_SCENE.focusedChoiceIndex === null) return
       if (!ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].choices) return
