@@ -12,7 +12,7 @@ div(
     img(:src="ASSETS.webps['settings-tab-shadow']"
       draggable="false" class="absolute")
     div(class="flex items-center justify-center w-full h-full pt-[22px]")
-      p(class="z-10 text-royal-brown text-[24px] font-semibold transition-all duration-[200ms] ease-in-out" :class="listTextStyle") {{ _.capitalize(INTERFACE.settingsTabList[index]) }}
+      p(class="z-10 text-royal-brown text-[25px] font-bold transition-all duration-[200ms] ease-in-out" :class="listTextStyle") {{ _.capitalize(INTERFACE.settingsTabList[index]) }}
 </template>
 <script setup lang="ts">
 const props = defineProps(["index"])

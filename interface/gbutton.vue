@@ -13,7 +13,7 @@ div(
       draggable="false"
       class="absolute object-none"
     )
-  keys(class="top-[60px] left-[25px]" :inputEvent="inputEvent")
+  hotkey-icon(class="top-[60px] left-[25px]" :inputEvent="inputEvent")
 </template>
 <script setup lang="ts">
 const props = defineProps(["type"]) // like toggleFullscreen

@@ -6,6 +6,7 @@ class Last {
   sceneName = ""
   loopSec = -1
   context = ""
+  settingsTabIndex = 0
   init() {
     LOOP.add(() => {
       this.entities = LIBRARY.cloneMapDeep(WORLD.entities)
@@ -14,6 +15,7 @@ class Last {
       this.scenePart = ACTIVE_SCENE.part
       this.sceneName = ACTIVE_SCENE.name
       this.loopSec = LOOP.elapsedSec
+      this.settingsTabIndex = INTERFACE.settingsTabIndex
       if (
         (GLOBAL.context === "scene" && LAST.context !== "scene") ||
         (GLOBAL.context !== "scene" && LAST.context === "scene")

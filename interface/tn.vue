@@ -12,7 +12,7 @@ transition(
 <script setup lang="ts">
 const props = defineProps({
   type: { type: String, default: "default" },
-  mode: { type: String, default: "out-in" },
+  mode: { type: String, default: "in-out" },
 })
 
 // Setting default `enterActiveClass` value

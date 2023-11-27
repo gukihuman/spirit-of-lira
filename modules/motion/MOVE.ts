@@ -25,8 +25,9 @@ class Move {
   init() {
     EVENTS.onSingle("mouseMove", () => this.mouseMove())
     EVENTS.onSingle("gamepadMove", () => this.gamepadMove())
-    EVENTS.onSingle("autoMouseMove", () => {
-      GLOBAL.autoMouseMove = !GLOBAL.autoMouseMove
+    EVENTS.onSingle("autoMove", () => {
+      if (!GLOBAL.firstUserGesture) return
+      GLOBAL.autoMove = !GLOBAL.autoMove
     })
   }
   process() {
@@ -35,7 +36,7 @@ class Move {
       if (!entity.MOVE) return
       this.move(entity)
     })
-    if (GLOBAL.autoMouseMove) EVENTS.emitSingle("mouseMove")
+    if (GLOBAL.autoMove) EVENTS.emitSingle("mouseMove")
     this.checkGamepadAxes()
   }
   private checkGamepadAxes() {

@@ -38,6 +38,7 @@ class GukiConfig {
       SPRITE_UPDATE: 4,
       ACTIVE_SCENE: 3,
       DEVMODE: 3, // between STATE and LAST
+      INTERFACE: 3, // before LAST
       LAST: 2,
       INPUT_UPDATE: 1, // at least SETTINGS depends on it
       // <- rest of the logic here

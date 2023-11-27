@@ -30,6 +30,7 @@ const inter: Inter = {
   settings: false,
   settingsTabList: ["general", "gamepad", "keyboard", "info"],
   settingsTabIndex: 0,
+  showAnySettingsPanel: false, // used to delay when switching
   target: false,
   targetLocked: false,
   targetHealth: 0,
@@ -68,6 +69,7 @@ const inter: Inter = {
     }
     this.switchSettingsTab()
     this.processFloatDamage()
+    this.updateShowAnySettingsPanel()
   },
   init() {
     EVENTS.onSingle("switchSettingsTabLeft", () => {
@@ -81,6 +83,19 @@ const inter: Inter = {
       if (this.settingsTabIndex > last) this.settingsTabIndex = 0
     })
   },
+  updateShowAnySettingsPanel() {
+    if (GLOBAL.context !== "interface") this.showAnySettingsPanel = false
+    if (GLOBAL.context === "interface" && LAST.context !== "interface") {
+      this.showAnySettingsPanel = true
+    }
+    if (this.settingsTabIndex !== LAST.settingsTabIndex) {
+      this.showAnySettingsPanel = false
+      this.debouncedShowAnySettingsPanel()
+    }
+  },
+  debouncedShowAnySettingsPanel: _.debounce(() => {
+    INTERFACE.showAnySettingsPanel = true
+  }, 100),
   switchSettingsTab() {
     if (!this.settings) return
     if (INPUT.gamepad.justPressed.includes("LB")) {

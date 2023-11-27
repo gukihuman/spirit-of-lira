@@ -8,7 +8,7 @@ const global = {
   editMode: false,
   collision: true,
   firstMouseMove: false,
-  autoMouseMove: false,
+  autoMove: false,
   sceneContextChangedMS: 0,
   firstUserGesture: false,
   mouseOfScreen: { x: -30, y: -30 },

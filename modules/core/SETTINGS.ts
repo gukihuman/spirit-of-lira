@@ -11,25 +11,37 @@ class Settings {
     showKeys: true,
     floatDamage: true,
   }
-  worldInputEvents = {
+  interfaceInputEvents = {
     keyboard: {
-      decide: "o",
-      cast1: "g",
-      cast2: "",
-      cast3: "",
-      autoMouseMove: "e",
       toggleFullscreen: "f",
       // toggleInventory: "i",
-      toggleSettings: "w",
-      lockTarget: "u",
-      talk: "t",
-      reset: "t",
+      toggleSettings: "r",
+    },
+    gamepad: {
+      toggleFullscreen: "Start",
+      // toggleInventory: "B",
+      toggleSettings: "Menu",
+    },
+  }
+  worldInputEvents = {
+    keyboard: {
+      talk: "e", // primeary
+      reset: "e", // primary
+      cast1: " ",
+      cast2: "",
+      cast3: "",
+      autoMove: "q",
+      toggleFullscreen: "f",
+      // toggleInventory: "i",
+      toggleSettings: "r",
     },
     mouse: {
       decide: 0,
       lockTarget: 2,
     },
     gamepad: {
+      talk: "A",
+      reset: "A",
       cast1: "X",
       cast2: "",
       cast3: "",
@@ -37,39 +49,25 @@ class Settings {
       // toggleInventory: "B",
       toggleSettings: "Menu",
       lockTarget: "LB",
-      talk: "RB",
-      reset: "RB",
     },
   }
   sceneInputEvents = {
     keyboard: {
-      continue: " ", // Space
+      continue: "e", // Space
+      quit: "q",
+      toggleFullscreen: "f",
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
-      toggleFullscreen: "f",
-      quitScene: "t",
     },
     mouse: {
       mouseContinue: 0,
     },
     gamepad: {
       continue: "A",
+      quit: "B",
+      toggleFullscreen: "Start",
       previousOption: "Down",
       nextOption: "Up",
-      toggleFullscreen: "Start",
-      quitScene: "B",
-    },
-  }
-  interfaceInputEvents = {
-    keyboard: {
-      toggleFullscreen: "f",
-      // toggleInventory: "i",
-      toggleSettings: "w",
-    },
-    gamepad: {
-      toggleFullscreen: "Start",
-      // toggleInventory: "B",
-      toggleSettings: "Menu",
     },
   }
   inputOther = {
@@ -180,12 +178,13 @@ class Settings {
       })
       // overwrite default
       if (
-        INPUT.mouse.pressed.includes(this.worldInputEvents.mouse.decide) ||
-        INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.decide)
+        INPUT.mouse.pressed.includes(this.worldInputEvents.mouse.decide)
+        // INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.decide)
       ) {
+        if (!GLOBAL.firstUserGesture) return
         if (LOOP.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
           EVENTS.emitSingle("decide")
-          GLOBAL.autoMouseMove = false
+          GLOBAL.autoMove = false
         }
       }
       if (
@@ -208,7 +207,7 @@ class Settings {
       ) {
         EVENTS.emitSingle("cast3")
       }
-      if (GLOBAL.lastActiveDevice === "gamepad") GLOBAL.autoMouseMove = false
+      if (GLOBAL.lastActiveDevice === "gamepad") GLOBAL.autoMove = false
     }
   }
 }

@@ -119,7 +119,7 @@ class Target {
     }
     if (
       GLOBAL.lastActiveDevice !== "gamepad" &&
-      !GLOBAL.autoMouseMove &&
+      !GLOBAL.autoMove &&
       !SH.hero.TARGET.locked
     ) {
       this.targetByMouse()

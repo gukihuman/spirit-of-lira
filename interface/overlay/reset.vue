@@ -14,5 +14,5 @@ div(
       class="absolute object-none"
     )
     p(class="absolute z-10 text-tan text-[25px] font-semibold mb-2 points-events-none") Reset
-  keys(class="top-[30px] left-[87px]" inputEvent="reset")
+  hotkey-icon(class="top-[30px] left-[87px]" inputEvent="reset")
 </template>

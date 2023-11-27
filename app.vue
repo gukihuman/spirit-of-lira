@@ -1,22 +1,20 @@
 <template lang="pug">
 fullscreen(mark="fullscreen")
   loading(mark="loading")
-  tn: game-window(mark="game-window"
-    v-show="!GLOBAL.loading" :class="gameWindowClasses")
+  tn: game-window(mark="game-window" :class="classObject")
     viewport(mark="viewport")
-    tn: overlay(mark="overlay" v-show="INTERFACE.overlay")
-    tn: inventory(mark="inventory" v-show="INTERFACE.inventory")
-    tn: settings(mark="settings" v-show="INTERFACE.settings")
-    tn(type="long"): scene(mark="scene" v-show="GLOBAL.context === 'scene'")
-    tn: audiomessage(mark="audiomessage" v-if="!GLOBAL.firstUserGesture")
+    tn: overlay(mark="overlay")
+    tn: inventory(mark="inventory")
+    tn: settings(mark="settings")
+    tn(type="long"): scene(mark="scene")
+    tn: audiomessage(mark="audiomessage")
     cursor(mark="cursor" v-if="GLOBAL.firstUserGesture")
 </template>
 <script setup lang="ts">
-const gameWindowClasses = computed(() => {
+const classObject = computed(() => {
   return { "cursor-none": GLOBAL.firstUserGesture }
 })
 </script>
-
 <style>
 .long-enter-active,
 .long-leave-active {
@@ -25,6 +23,18 @@ const gameWindowClasses = computed(() => {
 .long-enter-from,
 .long-leave-to {
   opacity: 0;
+}
+.swipe-enter-active,
+.swipe-leave-active {
+  transition: all 200ms ease;
+}
+.swipe-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.swipe-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
 }
 .fast-enter-active,
 .fast-leave-active {

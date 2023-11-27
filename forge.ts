@@ -6,7 +6,7 @@ const TexturePacker = "C:\\Program Files\\CodeAndWeb\\TexturePacker\\bin"
 process.env.PATH = `${process.env.PATH};${TexturePacker}`
 // 📜 add caching
 
-const padding = 36
+const padding = 44
 const secondPadding = 24
 
 const entitiesInputRelative = "whales/entities/forge"

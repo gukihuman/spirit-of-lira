@@ -1,4 +1,4 @@
-class Keys {
+class Hotkeys {
   mouse = [0, 1, 2, 3, 4] // left, middle, right, back, forward
   gamepad = [
     "A",
@@ -84,4 +84,4 @@ class Keys {
     "z",
   ]
 }
-export const KEYS = new Keys()
+export const HOTKEYS = new Hotkeys()

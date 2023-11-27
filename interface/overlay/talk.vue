@@ -15,7 +15,7 @@ div(
       class="absolute object-none"
     )
     p(class="absolute z-10 text-tan text-[25px] font-semibold mb-2 points-events-none") Talk
-  keys(class="top-[30px] left-[87px]" inputEvent="talk")
+  hotkey-icon(class="top-[30px] left-[87px]" inputEvent="talk")
 </template>
 <script setup lang="ts">
 const style = computed(() => {
