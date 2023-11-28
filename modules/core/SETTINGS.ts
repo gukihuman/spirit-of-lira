@@ -1,4 +1,23 @@
+type Focus = {
+  columnIndex: 0 | 1
+  settingIndex: number
+}
+interface Echo extends AnyObject {
+  focus: Focus
+}
 class Settings {
+  tabList = ["general", "gamepad", "keyboard", "info"]
+  echo: Echo = {
+    show: false,
+    tabIndex: 0,
+    currentTab: "general", // updated automatically
+    focus: { columnIndex: 0, settingIndex: 0 },
+    showPanel: false, // used to delay when switching
+    editHotkeyMode: false,
+    showButtonIcon: true,
+    preventEditHotkeyMode: false, // for now only when new action on gamepad
+    preventEditHotkeyModeCast: false, // Up, Down, Left, Right, RB, LB forcast
+  }
   gamepadLeftColumn = {
     Action: ["talk", "reset", "continue", "editHotkey"],
     Close: ["quitScene", "quitInterface"],
@@ -17,9 +36,6 @@ class Settings {
     "Toggle Fullscreen": ["toggleFullscreen"],
     "Toggle Settings": ["toggleSettings"],
     "Auto Move": ["autoMove"],
-  }
-  echo = {
-    show: false,
   }
   general = {
     music: 0.0, // 0.8
@@ -103,12 +119,12 @@ class Settings {
   }
   init() {
     LOOP.add(() => {
-      if (!INTERFACE.editHotkeyMode) this.emitEvents()
+      if (!SETTINGS.echo.editHotkeyMode) this.emitEvents()
     }, "SETTINGS")
     EVENTS.onSingle("quitInterface", () => {
       // 📜 make next frame not 20ms
       setTimeout(() => {
-        if (INTERFACE.editHotkeyMode) return
+        if (SETTINGS.echo.editHotkeyMode) return
         GLOBAL.context = "world"
         INTERFACE.inventory = false
         SETTINGS.echo.show = false
@@ -246,4 +262,4 @@ class Settings {
     }
   }
 }
-export const SETTINGS = MUSEUM.storeEcho(new Settings())
+export const SETTINGS = LIBRARY.storeEcho(new Settings())

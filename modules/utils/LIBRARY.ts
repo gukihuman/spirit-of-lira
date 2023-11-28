@@ -53,15 +53,9 @@ class Library {
   sortedKeys(object) {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
-  generateRandomString(length = 10) {
-    let result = ""
-    for (let i = 0; i < length; i++) {
-      // Generate a random number between 0 and 9
-      const randomNumber = _.random(0, 9)
-      // Convert the number to a string and add it to the result
-      result += randomNumber.toString()
-    }
-    return result
+  storeEcho(module: AnyObject) {
+    if (module.echo) module.echo = this.store(module.echo)
+    return module
   }
   /** transform an object into reactive pinia store, ignores but saves fns */
   store(object: AnyObject) {
@@ -89,7 +83,14 @@ class Library {
     })
     return storeObject
   }
-
+  generateRandomString(length = 10) {
+    let result = ""
+    for (let i = 0; i < length; i++) {
+      const randomNumber = _.random(0, 9)
+      result += randomNumber.toString()
+    }
+    return result
+  }
   /**
    * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache in Spirit of Lira is handled separatly with binding to entity name.
    * @param spritesheet - instance of PIXI.Spritesheet

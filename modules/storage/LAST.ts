@@ -15,7 +15,7 @@ class Last {
       this.scenePart = ACTIVE_SCENE.part
       this.sceneName = ACTIVE_SCENE.name
       this.loopSec = LOOP.elapsedSec
-      this.settingsTabIndex = INTERFACE.settingsTabIndex
+      this.settingsTabIndex = SETTINGS.echo.tabIndex
       if (
         (GLOBAL.context === "scene" && LAST.context !== "scene") ||
         (GLOBAL.context !== "scene" && LAST.context === "scene")

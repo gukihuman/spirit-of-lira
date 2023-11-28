@@ -14,7 +14,7 @@ div(v-show="SETTINGS.echo.show" class="z-30")
   div(mark="settings-panel"
     class="absolute w-[1150px] h-[620px] top-[210px] left-[372px]")
     tn(type="swipe"): hotkeys(mark="hotkeys-keyboard" device="keyboard"
-      v-if="INTERFACE.showAnySettingsPanel")
+      v-if="SETTINGS.echo.showPanel")
     tn(type="swipe"): hotkeys(mark="hetkeys-gamepad" device="gamepad"
-      v-if="INTERFACE.showAnySettingsPanel")
+      v-if="SETTINGS.echo.showPanel")
 </template>

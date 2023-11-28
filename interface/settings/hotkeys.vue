@@ -17,21 +17,21 @@ div(v-if="resolveTab" class="absolute w-full h-full flex justify-center")
         div(class="absolute hover:brightness-125 w-[60px] h-[60px] left-[385px] top-[42px] hover:scale-[1.1] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
           @click="EVENTS.emitSingle('editHotkey')")
           tn: hotkey-icon(mark="buttonIcon" :device="props.device"
-            v-if="resolveIcon(columnIndex, settingIndex, true) && INTERFACE.showButtonIcon"
+            v-if="resolveIcon(columnIndex, settingIndex, true) && SETTINGS.echo.showButtonIcon"
             class="scale-[1.3] mt-[30px]"
             :inputEvent="resolveEvent(columnIndex, settingIndex, setting)")
         tn: hotkey-icon(inputEvent="editHotkey" class="left-[450px] top-[48px]"
-          v-if="resolveIcon(columnIndex, settingIndex) && INTERFACE.showButtonIcon")
+          v-if="resolveIcon(columnIndex, settingIndex) && SETTINGS.echo.showButtonIcon")
   p(mark="hotkeys-message"
-    v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && INTERFACE.editHotkeyMode"
+    v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.editHotkeyMode"
     class="text-tan bottom-[20px] text-[22px] font-semibold"
     class="absolute opacity-[0.8]") keyboard edit activated by gamepad, keyboard press is needed
   p(mark="hotkeys-message"
-    v-if="INTERFACE.preventEditHotkeyMode"
+    v-if="SETTINGS.echo.preventEditHotkeyMode"
     class="text-tan bottom-[20px] text-[22px] font-semibold"
     class="absolute opacity-[0.8]") this button is reserved for main action
   p(mark="hotkeys-message"
-    v-if="INTERFACE.preventEditHotkeyModeCast"
+    v-if="SETTINGS.echo.preventEditHotkeyModeCast"
     class="text-tan bottom-[20px] text-[22px] font-semibold"
     class="absolute opacity-[0.8]") Up, Down, Left, Right, RB, LB can be used only with Cast
 </template>
@@ -52,27 +52,27 @@ const resolveIcon = computed(() => {
     if (GLOBAL.lastActiveDevice !== "gamepad" && !button) return false
     if (!button) {
       return (
-        INTERFACE.settingsFocus.columnIndex === columnIndex &&
-        INTERFACE.settingsFocus.settingIndex === settingIndex
+        SETTINGS.echo.focus.columnIndex === columnIndex &&
+        SETTINGS.echo.focus.settingIndex === settingIndex
       )
     }
-    if (button && INTERFACE.editHotkeyMode) {
+    if (button && SETTINGS.echo.editHotkeyMode) {
       return (
-        INTERFACE.settingsFocus.columnIndex !== columnIndex ||
-        INTERFACE.settingsFocus.settingIndex !== settingIndex
+        SETTINGS.echo.focus.columnIndex !== columnIndex ||
+        SETTINGS.echo.focus.settingIndex !== settingIndex
       )
     }
     return true
   }
 })
 const resolveTab = computed(() => {
-  return INTERFACE.settingsTabList[INTERFACE.settingsTabIndex] === props.device
+  return SETTINGS.tabList[SETTINGS.echo.tabIndex] === props.device
 })
 const resolveFocus = computed(() => {
   return (columnIndex, settingIndex) => {
     return (
-      INTERFACE.settingsFocus.columnIndex === columnIndex &&
-      INTERFACE.settingsFocus.settingIndex === settingIndex
+      SETTINGS.echo.focus.columnIndex === columnIndex &&
+      SETTINGS.echo.focus.settingIndex === settingIndex
     )
   }
 })
