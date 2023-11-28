@@ -18,6 +18,9 @@ class Settings {
     "Toggle Settings": ["toggleSettings"],
     "Auto Move": ["autoMove"],
   }
+  echo = {
+    show: false,
+  }
   general = {
     music: 0.0, // 0.8
     sound: 0.8, // 0.8
@@ -108,7 +111,7 @@ class Settings {
         if (INTERFACE.editHotkeyMode) return
         GLOBAL.context = "world"
         INTERFACE.inventory = false
-        INTERFACE.settings = false
+        SETTINGS.echo.show = false
       }, 20)
     })
     EVENTS.onSingle("previousOption", () => {
@@ -243,4 +246,4 @@ class Settings {
     }
   }
 }
-export const SETTINGS = new Settings()
+export const SETTINGS = MUSEUM.storeEcho(new Settings())

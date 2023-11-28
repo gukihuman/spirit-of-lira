@@ -53,7 +53,7 @@ class Library {
   sortedKeys(object) {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
-  generateRandomString(length) {
+  generateRandomString(length = 10) {
     let result = ""
     for (let i = 0; i < length; i++) {
       // Generate a random number between 0 and 9
@@ -73,14 +73,14 @@ class Library {
       }
     })
     const storeObject: AnyObject = {}
-    storeObject.STATE = defineStore(this.generateRandomString(10), {
+    storeObject.state = defineStore(this.generateRandomString(), {
       state: () => object,
     })
     _.forEach(object, (value, key) => {
       Object.defineProperty(storeObject, key, {
-        get: () => storeObject.STATE()[key],
+        get: () => storeObject.state()[key],
         set: (value) => {
-          storeObject.STATE()[key] = value
+          storeObject.state()[key] = value
         },
       })
     })

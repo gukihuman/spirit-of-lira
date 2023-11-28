@@ -19,7 +19,6 @@ async function start() {
   // timeout to make initial loading transition work
   setTimeout(() => (GLOBAL.loading = false), 1)
 }
-
 async function initModules() {
   CONFIG.init() // prepare priority
   const processes: { [name: string]: () => void } = {}

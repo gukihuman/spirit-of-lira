@@ -16,10 +16,10 @@ const inventory: AnyObject = {
 function initEvents() {
   EVENTS.onSingle("toggleInventory", () => {
     INTERFACE.inventory = !INTERFACE.inventory
-    INTERFACE.settings = false
+    SETTINGS.echo.show = false
   })
   EVENTS.onSingle("toggleSettings", () => {
-    INTERFACE.settings = !INTERFACE.settings
+    SETTINGS.echo.show = !SETTINGS.echo.show
     INTERFACE.inventory = false
   })
   EVENTS.on("equip", (data) => {

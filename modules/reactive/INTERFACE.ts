@@ -103,7 +103,7 @@ const inter: Inter = {
     })
     EVENTS.onSingle("editHotkey", () => {
       if (
-        INTERFACE.settings &&
+        SETTINGS.echo.show &&
         (this.currentSettingsTab === "gamepad" ||
           this.currentSettingsTab === "keyboard")
       ) {

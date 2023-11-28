@@ -68,7 +68,7 @@ const activeScene: activeScene = {
     EVENTS.onSingle("quitScene", () => {
       GLOBAL.context = "world"
       INTERFACE.inventory = false
-      INTERFACE.settings = false
+      SETTINGS.echo.show = false
       this.name = ""
     })
     EVENTS.onSingle("endScene", () => {

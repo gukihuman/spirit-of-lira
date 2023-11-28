@@ -16,5 +16,43 @@ class Museum {
       if (satisfied) fn(entity, id)
     })
   }
+  storeEcho(module: AnyObject) {
+    if (module.echo) module.echo = this.store(module.echo)
+    return module
+  }
+  /** transform an object into reactive pinia store, ignores but saves fns */
+  private store(object: AnyObject) {
+    const functions = {}
+    _.forEach(object, (value, key) => {
+      if (typeof value === "function") {
+        functions[key] = value
+        delete object[key]
+      }
+    })
+    const storeObject: AnyObject = {}
+    storeObject.state = defineStore(this.generateRandomString(), {
+      state: () => object,
+    })
+    _.forEach(object, (value, key) => {
+      Object.defineProperty(storeObject, key, {
+        get: () => storeObject.state()[key],
+        set: (value) => {
+          storeObject.state()[key] = value
+        },
+      })
+    })
+    _.forEach(functions, (value, key) => {
+      storeObject[key] = value
+    })
+    return storeObject
+  }
+  generateRandomString(length = 10) {
+    let result = ""
+    for (let i = 0; i < length; i++) {
+      const randomNumber = _.random(0, 9)
+      result += randomNumber.toString()
+    }
+    return result
+  }
 }
 export const MUSEUM = new Museum()
