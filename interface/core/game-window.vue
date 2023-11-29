@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-show="!GLOBAL.loading" :style="style"
+div(v-show="!CONTEXT.echo.loading" :style="style"
   class="absolute bg-gray-700 absolute overflow-hidden")
   slot
 </template>

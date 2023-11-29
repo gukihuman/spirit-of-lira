@@ -1,6 +1,3 @@
-declare global {
-  type Context = "world" | "scene" | "interface"
-}
 class World {
   app: Application | null = null // init after window DOM object exist
   entities: Map<number, any> = new Map()
