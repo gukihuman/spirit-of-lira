@@ -63,4 +63,4 @@ function getType(name: string) {
   }
   return { singular, plural }
 }
-export const INVENTORY = LIBRARY.store(inventory)
+export const INVENTORY = LIBRARY.resonateObject(inventory)

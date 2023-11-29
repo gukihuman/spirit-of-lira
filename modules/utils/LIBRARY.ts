@@ -53,12 +53,13 @@ class Library {
   sortedKeys(object) {
     return _.sortBy(_.keys(object), (key) => -object[key])
   }
-  storeEcho(module: AnyObject) {
-    if (module.echo) module.echo = this.store(module.echo)
+  /** transform an echo property of a given module into reactive pinia store */
+  resonate(module: AnyObject) {
+    if (module.echo) module.echo = this.resonateObject(module.echo)
     return module
   }
   /** transform an object into reactive pinia store, ignores but saves fns */
-  store(object: AnyObject) {
+  resonateObject(object: AnyObject) {
     const functions = {}
     _.forEach(object, (value, key) => {
       if (typeof value === "function") {

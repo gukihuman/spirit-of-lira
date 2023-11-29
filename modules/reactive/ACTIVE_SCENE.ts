@@ -201,4 +201,4 @@ const activeScene: activeScene = {
     layer.brightness = SCENE.options[layer.images[0]]?.brightness || 1
   },
 }
-export const ACTIVE_SCENE = LIBRARY.store(activeScene)
+export const ACTIVE_SCENE = LIBRARY.resonateObject(activeScene)

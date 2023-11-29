@@ -385,4 +385,4 @@ const inter: Inter = {
     })
   },
 }
-export const INTERFACE = LIBRARY.store(inter)
+export const INTERFACE = LIBRARY.resonateObject(inter)

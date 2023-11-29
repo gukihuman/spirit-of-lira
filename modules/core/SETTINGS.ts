@@ -262,4 +262,4 @@ class Settings {
     }
   }
 }
-export const SETTINGS = LIBRARY.storeEcho(new Settings())
+export const SETTINGS = LIBRARY.resonate(new Settings())

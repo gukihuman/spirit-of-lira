@@ -4,4 +4,4 @@ const progress = {
     bunbo: 0, // adds even if killed not by hero for now
   },
 }
-export const PROGRESS = LIBRARY.store(progress)
+export const PROGRESS = LIBRARY.resonateObject(progress)
