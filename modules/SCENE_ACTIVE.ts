@@ -47,7 +47,7 @@ const activeScene: activeScene = {
     LOOP.add(() => {
       if (!CONTEXT.echo.scene) return
       this.updateData()
-    }, "ACTIVE_SCENE")
+    }, "SCENE_ACTIVE")
 
     // this is alternative to startScene event at start (also no transition)
     if (!PROGRESS.scenes.includes("a0")) {
@@ -159,30 +159,30 @@ const activeScene: activeScene = {
     }
   },
   getSteps() {
-    if (!SCENE.steps[ACTIVE_SCENE.name]) return
-    const step = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex]
+    if (!SCENE.steps[SCENE_ACTIVE.name]) return
+    const step = SCENE.steps[SCENE_ACTIVE.name][SCENE_ACTIVE.stepIndex]
     if (!step) return
     let nextStep
     if (step.choices.length === 0) {
-      nextStep = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex + 1]
+      nextStep = SCENE.steps[SCENE_ACTIVE.name][SCENE_ACTIVE.stepIndex + 1]
       return { step, nextStep }
     }
-    ACTIVE_SCENE.nextSceneName =
+    SCENE_ACTIVE.nextSceneName =
       step.choices[this.focusedChoiceIndex].nextSceneName
     if (
-      !ACTIVE_SCENE.nextSceneName ||
-      ACTIVE_SCENE.name === ACTIVE_SCENE.nextSceneName
+      !SCENE_ACTIVE.nextSceneName ||
+      SCENE_ACTIVE.name === SCENE_ACTIVE.nextSceneName
     ) {
-      nextStep = SCENE.steps[ACTIVE_SCENE.name][ACTIVE_SCENE.stepIndex + 1]
+      nextStep = SCENE.steps[SCENE_ACTIVE.name][SCENE_ACTIVE.stepIndex + 1]
     } else {
-      nextStep = SCENE.steps[ACTIVE_SCENE.nextSceneName][0]
+      nextStep = SCENE.steps[SCENE_ACTIVE.nextSceneName][0]
     }
     return { step, nextStep }
   },
   updateData() {
     let layer, nextlayer
-    layer = ACTIVE_SCENE.layerOne
-    nextlayer = ACTIVE_SCENE.layerTwo
+    layer = SCENE_ACTIVE.layerOne
+    nextlayer = SCENE_ACTIVE.layerTwo
     const steps = this.getSteps()
     if (!steps) return
     const { step, nextStep } = steps
@@ -198,4 +198,4 @@ const activeScene: activeScene = {
     layer.brightness = SCENE.options[layer.images[0]]?.brightness || 1
   },
 }
-export const ACTIVE_SCENE = LIBRARY.resonateObject(activeScene)
+export const SCENE_ACTIVE = LIBRARY.resonateObject(activeScene)

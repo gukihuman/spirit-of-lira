@@ -62,7 +62,7 @@ class Aud {
       this.currentMusicId = this.play("green-forest", 0, "music")
     }
     if (!this.musicPlaying && CONTEXT.echo.scene) {
-      const sceneName = ACTIVE_SCENE.name.split("-")[0]
+      const sceneName = SCENE_ACTIVE.name.split("-")[0]
       if (sceneName === "n1") {
         if (!this.initialMusicPlayed) {
           // always 1 at start

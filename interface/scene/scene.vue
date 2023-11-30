@@ -5,16 +5,16 @@ div(v-show="CONTEXT.echo.scene" class="z-30 relative")
   div(mark="layer-one")
     images(layer="layerOne")
     dialogue(layer="layerOne")
-  tn: div(mark="layer-two" v-if="ACTIVE_SCENE.activeLayer === 'layerTwo'")
+  tn: div(mark="layer-two" v-if="SCENE_ACTIVE.activeLayer === 'layerTwo'")
     images(layer="layerTwo")
     dialogue(layer="layerTwo")
   div(:style="style" class="absolute left-[35px] top-[1005px] flex gap-10"
-    v-if="ACTIVE_SCENE.name !== 'a0-adult-check'")
+    v-if="SCENE_ACTIVE.name !== 'a0-adult-check'")
     quitScene
     navigate
 
   div(mark="adult-check-bg"
-    v-if="ACTIVE_SCENE.name === 'a0-adult-check' && ACTIVE_SCENE.stepIndex < 2"
+    v-if="SCENE_ACTIVE.name === 'a0-adult-check' && SCENE_ACTIVE.stepIndex < 2"
     class="-z-10 w-full h-[1080px] bg-slate-800 relative pointer-events-none"
     class="flex justify-center items-center")
     p(class="w-[500px] h-[80px] mt-[-310px]"
@@ -31,8 +31,8 @@ const transitionSpeed = computed(() => {
 const style = computed(() => {
   return {
     filter: `
-      hue-rotate(${ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].hue}deg) 
-      brightness(${ACTIVE_SCENE[ACTIVE_SCENE.activeLayer].brightness})
+      hue-rotate(${SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].hue}deg) 
+      brightness(${SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].brightness})
     `,
   }
 })

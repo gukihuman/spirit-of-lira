@@ -26,9 +26,9 @@ class GukiConfig {
       ENTITIES: 5,
       WORLD: 4,
       SH: 4,
-      SAVE: 3, // before ACTIVE_SCENE but after WORLD
+      SAVE: 3, // before SCENE_ACTIVE but after WORLD
       SCENE: 2,
-      ACTIVE_SCENE: 1,
+      SCENE_ACTIVE: 1,
       COLLISION: 2,
       ASTAR: 1,
       // <- rest of the logic
@@ -37,9 +37,9 @@ class GukiConfig {
       INPUT_UPDATE: 6, // at least SETTINGS and INTERFACE depends on it
       STATE: 5,
       SPRITE_UPDATE: 4,
-      ACTIVE_SCENE: 3,
+      SCENE_ACTIVE: 3,
       DEVMODE: 3, // between STATE and LAST
-      INTERFACE: 3, // before LAST
+      SETTINGS: 3, // before LAST
       LAST: 2,
       // <- rest of the logic here
       ASTAR: -1, // check logic in EVENTS before it is empty4

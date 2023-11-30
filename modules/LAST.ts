@@ -28,8 +28,8 @@ class Last {
     this.entities = LIBRARY.clone(WORLD.entities)
     this.hero = _.cloneDeep(SH.hero)
     this.hover = _.cloneDeep(WORLD.hover)
-    this.scenePart = ACTIVE_SCENE.part
-    this.sceneName = ACTIVE_SCENE.name
+    this.scenePart = SCENE_ACTIVE.part
+    this.sceneName = SCENE_ACTIVE.name
     this.loopSec = LOOP.elapsedSec
     this.settingsTabIndex = SETTINGS.echo.tabIndex
     if (
