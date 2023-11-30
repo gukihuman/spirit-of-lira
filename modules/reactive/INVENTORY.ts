@@ -15,12 +15,25 @@ const inventory: AnyObject = {
 }
 function initEvents() {
   EVENTS.onSingle("toggleInventory", () => {
-    INTERFACE.inventory = !INTERFACE.inventory
-    SETTINGS.echo.show = false
+    if (CONTEXT.echo.world?.interface?.inventory) {
+      CONTEXT.set("world")
+    } else {
+      CONTEXT.set("world", "interface")
+    }
   })
   EVENTS.onSingle("toggleSettings", () => {
-    SETTINGS.echo.show = !SETTINGS.echo.show
-    INTERFACE.inventory = false
+    if (CONTEXT.echo.world?.interface?.settings) {
+      CONTEXT.set("world")
+    } else {
+      CONTEXT.set("world", "interface", "settings")
+    }
+  })
+  EVENTS.onSingle("toggleSkills", () => {
+    if (CONTEXT.echo.world?.interface?.skills) {
+      CONTEXT.set("world")
+    } else {
+      CONTEXT.set("world", "interface", "skills")
+    }
   })
   EVENTS.on("equip", (data) => {
     const { singular, plural } = getType(data.name)

@@ -43,11 +43,11 @@ const inter: Inter = {
   heroMaxEnergy: 0,
   reset: false,
   process() {
-    if (GLOBAL.context === "scene") this.overlay = false
+    if (CONTEXT.echo.scene) this.overlay = false
     else this.overlay = true
     this.floatDamage = SETTINGS.general.floatDamage
     this.showKeys = SETTINGS.general.showKeys
-    if (GLOBAL.context !== "scene") {
+    if (CONTEXT.echo.world) {
       if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
         INTERFACE.target = true
         INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
@@ -279,8 +279,8 @@ const inter: Inter = {
     SETTINGS.echo.currentTab = SETTINGS.tabList[SETTINGS.echo.tabIndex]
   },
   updateShowAnySettingsPanel() {
-    if (GLOBAL.context !== "interface") SETTINGS.echo.showPanel = false
-    if (GLOBAL.context === "interface" && LAST.context !== "interface") {
+    if (!CONTEXT.echo.world.interface) SETTINGS.echo.showPanel = false
+    if (CONTEXT.echo.world.interface && !CONTEXT.last.echo.world.interface) {
       SETTINGS.echo.showPanel = true
     }
     if (SETTINGS.echo.tabIndex !== LAST.settingsTabIndex) {
@@ -290,7 +290,7 @@ const inter: Inter = {
   },
   resetSettingsFocus() {
     if (
-      (GLOBAL.context === "interface" && LAST.context !== "interface") ||
+      (CONTEXT.echo.world.interface && !CONTEXT.last.echo.world.interface) ||
       SETTINGS.echo.tabIndex !== LAST.settingsTabIndex
     ) {
       SETTINGS.echo.focus.columnIndex = 0

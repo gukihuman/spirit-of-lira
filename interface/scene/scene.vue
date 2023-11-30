@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-show="GLOBAL.context === 'scene'" class="z-30 relative")
+div(v-show="CONTEXT.echo.scene" class="z-30 relative")
   //- layer one always on - content switched when layer two fully appears
   //- then layer two immidealtly turns off again and preloads next step
   div(mark="layer-one")
@@ -9,7 +9,7 @@ div(v-show="GLOBAL.context === 'scene'" class="z-30 relative")
     images(layer="layerTwo")
     dialogue(layer="layerTwo")
   div(:style="style" class="absolute left-[35px] top-[1005px] flex gap-10"
-    v-if="GLOBAL.context === 'scene' && ACTIVE_SCENE.name !== 'a0-adult-check'")
+    v-if="ACTIVE_SCENE.name !== 'a0-adult-check'")
     quitScene
     navigate
 

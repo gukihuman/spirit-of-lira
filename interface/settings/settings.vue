@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-show="SETTINGS.echo.show" class="z-30")
+div(v-show="CONTEXT.echo.world?.interface?.settings" class="z-30")
   div(mark="settings-dim"
     class="absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900")
   img(mark="settings-bg" :src="ASSETS.webps['settings-bg']" class="absolute")

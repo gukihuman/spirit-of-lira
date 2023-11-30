@@ -50,7 +50,7 @@ class Aud {
     this.musicGain.gain.value = SETTINGS.general.music
     if (
       !this.musicPlaying &&
-      (GLOBAL.context === "world" || GLOBAL.context === "interface")
+      (CONTEXT.echo.world || CONTEXT.echo.world.interface)
     ) {
       if (!this.initialMusicPlayed) {
         // always 1 at start
@@ -61,7 +61,7 @@ class Aud {
       if (Math.random() > 1 / this.averageSilenceSec) return // once per second
       this.currentMusicId = this.play("green-forest", 0, "music")
     }
-    if (!this.musicPlaying && GLOBAL.context === "scene") {
+    if (!this.musicPlaying && CONTEXT.echo.scene) {
       const sceneName = ACTIVE_SCENE.name.split("-")[0]
       if (sceneName === "n1") {
         if (!this.initialMusicPlayed) {

@@ -31,7 +31,7 @@ class Move {
     })
   }
   process() {
-    if (GLOBAL.context === "scene") return
+    if (CONTEXT.echo.scene) return
     WORLD.entities.forEach((entity) => {
       if (!entity.MOVE) return
       this.move(entity)
@@ -50,8 +50,8 @@ class Move {
       this.gamepadAxesMoved = false
     }
   }
-  // TODO anything
   mouseMove() {
+    if (CONTEXT.echo.world?.interface) return
     if (INTERFACE.buttonHover) return
     SH.hero.STATE.track = false
     SH.hero.STATE.cast = false

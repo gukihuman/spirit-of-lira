@@ -45,19 +45,19 @@ const activeScene: activeScene = {
   },
   init() {
     LOOP.add(() => {
-      if (GLOBAL.context !== "scene") return
+      if (!CONTEXT.echo.scene) return
       this.updateData()
     }, "ACTIVE_SCENE")
 
     // this is alternative to startScene event at start (also no transition)
     if (!PROGRESS.scenes.includes("a0")) {
-      GLOBAL.context = "scene"
+      CONTEXT.set("scene")
       this.name = "a0-adult-check"
       EVENTS.emitSingle("continue") // trigger choices appearance :)
     }
     EVENTS.on("startScene", (options) => {
       if (!options.name) return
-      GLOBAL.context = "scene"
+      CONTEXT.set("scene")
       this.name = options.name
       this.nextSceneName = options.name // used each continue
       this.stepIndex = 0
@@ -66,9 +66,7 @@ const activeScene: activeScene = {
       }
     })
     EVENTS.onSingle("quitScene", () => {
-      GLOBAL.context = "world"
-      INTERFACE.inventory = false
-      SETTINGS.echo.show = false
+      CONTEXT.set("world")
       this.name = ""
     })
     EVENTS.onSingle("endScene", () => {
@@ -76,8 +74,7 @@ const activeScene: activeScene = {
         PROGRESS.scenes.push(this.name.split("-")[0])
       }
       SAVE.update()
-      GLOBAL.context = "world"
-      INTERFACE.inventory = false
+      CONTEXT.set("world")
       setTimeout(() => (this.name = ""), 1000)
     })
     EVENTS.onSingle("mouseContinue", () => {

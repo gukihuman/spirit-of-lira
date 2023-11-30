@@ -1,13 +1,10 @@
 <template lang="pug">
 div(class="absolute z-10 overflow-hidden w-full h-full")
-  float-damage(mark="float-damage"
-    v-if="INTERFACE.floatDamage && GLOBAL.context === 'world'")
-  tn: talk(mark="talk"
-    v-show="INTERFACE.talk && GLOBAL.context === 'world'")
-  tn: reset(mark="reset"
-    v-show="INTERFACE.reset && GLOBAL.context === 'world'")
-  tn(type="fast"): target(mark="target"
-    v-show="INTERFACE.target && GLOBAL.context === 'world'")
+  div(v-show="CONTEXT.echo.world.gameplay")
+    float-damage(mark="float-damage" v-if="INTERFACE.floatDamage")
+    tn: talk(mark="talk" v-show="INTERFACE.talk")
+    tn: reset(mark="reset" v-show="INTERFACE.reset")
+    tn(type="fast"): target(mark="target" v-show="INTERFACE.target")
   bars-panel(mark="bars-panel")
   tn: div(mark="button-settings" class="absolute top-[7px] left-[7px]")
     gbutton(type="settings")

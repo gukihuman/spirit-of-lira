@@ -26,16 +26,21 @@ class Library {
   logWarning(message: string) {
     console.log("❗ " + this.timeNow() + ": " + message)
   }
-  cloneMapDeep(map: Map<any, any>) {
-    const clonedMap = new Map()
-    map.forEach((value, key) => {
-      if (value instanceof Map) {
-        clonedMap.set(key, this.cloneMapDeep(value))
-      } else {
-        clonedMap.set(key, _.cloneDeep(value))
-      }
-    })
-    return clonedMap
+  /** also works with maps */
+  clone(arg: any) {
+    if (arg instanceof Map) {
+      const clonedMap = new Map()
+      arg.forEach((value, key) => {
+        if (value instanceof Map) {
+          clonedMap.set(key, this.clone(value))
+        } else {
+          clonedMap.set(key, _.cloneDeep(value))
+        }
+      })
+      return clonedMap
+    } else {
+      return _.cloneDeep(arg)
+    }
   }
   deadZoneExceed(deadZone: number, INPUT: any) {
     const axes: number[] = [INPUT.gamepad.axes[0], INPUT.gamepad.axes[1]]

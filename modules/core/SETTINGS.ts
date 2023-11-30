@@ -8,7 +8,6 @@ interface Echo extends AnyObject {
 class Settings {
   tabList = ["general", "gamepad", "keyboard", "info"]
   echo: Echo = {
-    show: false,
     tabIndex: 0,
     currentTab: "general", // updated automatically
     focus: { columnIndex: 0, settingIndex: 0 },
@@ -125,9 +124,7 @@ class Settings {
       // 📜 make next frame not 20ms
       setTimeout(() => {
         if (SETTINGS.echo.editHotkeyMode) return
-        GLOBAL.context = "world"
-        INTERFACE.inventory = false
-        SETTINGS.echo.show = false
+        CONTEXT.set("world")
       }, 20)
     })
     EVENTS.onSingle("previousOption", () => {
@@ -192,7 +189,8 @@ class Settings {
       EVENTS.emitSingle("gamepadMove")
     }
     if (INTERFACE.inputFocus) return
-    if (GLOBAL.context === "scene" || LAST.context === "scene") {
+    // 📜 why do we need check last here?? some order of events or smth i guess
+    if (CONTEXT.echo.scene || CONTEXT.last.echo.scene) {
       _.forEach(this.sceneInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {
@@ -210,7 +208,7 @@ class Settings {
         EVENTS.emitSingle("continue")
       }
     }
-    if (GLOBAL.context === "interface" || LAST.context === "interface") {
+    if (CONTEXT.echo.world.interface || CONTEXT.last.echo.world.interface) {
       _.forEach(this.interfaceInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {
@@ -219,7 +217,7 @@ class Settings {
         })
       })
     }
-    if (GLOBAL.context === "world" || LAST.context === "world") {
+    if (CONTEXT.echo.world || CONTEXT.last.echo.world) {
       _.forEach(this.worldInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {

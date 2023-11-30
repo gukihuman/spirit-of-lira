@@ -21,9 +21,7 @@ class Save {
         mobs: PROGRESS.mobs,
       },
       settings: {
-        audio: SETTINGS.general,
-        gameplay: SETTINGS.general,
-        interface: SETTINGS.general,
+        general: SETTINGS.general,
         worldInputEvents: SETTINGS.worldInputEvents,
         sceneInputEvents: SETTINGS.sceneInputEvents,
         interfaceInputEvents: SETTINGS.interfaceInputEvents,
@@ -42,9 +40,7 @@ class Save {
     INVENTORY.gear = this.save.inventory.gear
     PROGRESS.scenes = this.save.progress.scenes
     PROGRESS.mobs = this.save.progress.mobs
-    SETTINGS.general = this.save.settings.audio
-    SETTINGS.general = this.save.settings.gameplay
-    SETTINGS.general = this.save.settings.interface
+    SETTINGS.general = this.save.settings.general
     SETTINGS.worldInputEvents = this.save.settings.worldInputEvents
     SETTINGS.sceneInputEvents = this.save.settings.sceneInputEvents
     SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents

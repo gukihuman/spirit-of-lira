@@ -1,6 +1,5 @@
 const global = {
   version: "0.1.0",
-  context: "world",
   gameWindowScale: 1,
   fullscreen: false,
   loading: true,
@@ -20,16 +19,6 @@ const global = {
     this.elapsedMS = LOOP.elapsedMS
     this.mouseOfScreen = COORD.mouseOfScreen()
     this.mousePosition = COORD.mousePosition()
-    if (GLOBAL.context === "world") {
-      if (INTERFACE.inventory || SETTINGS.echo.show) {
-        GLOBAL.context = "interface"
-      }
-    }
-    if (GLOBAL.context === "interface") {
-      if (!INTERFACE.inventory && !SETTINGS.echo.show) {
-        GLOBAL.context = "world"
-      }
-    }
   },
 }
 

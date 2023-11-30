@@ -32,7 +32,7 @@ const cursorStyle = computed(() => {
 })
 const cursor = computed(() => {
   if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (GLOBAL.context === "interface" || GLOBAL.context === "scene") return true
+  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) return true
   if (INTERFACE.buttonHover) return true
   return (
     !GLOBAL.hoverId &&
@@ -41,7 +41,7 @@ const cursor = computed(() => {
 })
 const cursorNo = computed(() => {
   if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (GLOBAL.context === "interface" || GLOBAL.context === "scene") return false
+  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) return false
   if (INTERFACE.buttonHover) return false
   return (
     !GLOBAL.hoverId &&
@@ -50,7 +50,7 @@ const cursorNo = computed(() => {
 })
 const cursorCast = computed(() => {
   if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (GLOBAL.context === "interface" || GLOBAL.context === "scene") {
+  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) {
     return false
   }
   if (INTERFACE.buttonHover) return false

@@ -11,7 +11,7 @@ class Destination {
         this.counter = 0
         this.setRandomDestination(entity, id)
       }
-      if (GLOBAL.context === "scene") {
+      if (CONTEXT.echo.scene) {
         entity.MOVE.randomDestinationMS = LOOP.elapsedMS
       }
     })

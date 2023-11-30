@@ -138,7 +138,7 @@ class Cast {
     entity.SKILLS.delayedLogicDone = true
   }
   process() {
-    if (GLOBAL.context === "scene") return
+    if (CONTEXT.echo.scene) return
     MUSEUM.processEntity(["STATE", "SKILLS"], (entity, id) => {
       this.stopAttackSoundsIfNotCast(entity, id)
       if (!entity.STATE.cast) {

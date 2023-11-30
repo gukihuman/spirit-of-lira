@@ -6,7 +6,7 @@ div
     :style="damageStyle(overlay)"
   )
     p(
-      class="absolute z-10 font-hat font-black blur-[1px]"
+      class="absolute z-10 font-hat font-black blur-[1px] opacity-[0.35]"
       :style="textShadowStyle(overlay)"
     ) {{ overlay.damage }}
     p(
@@ -21,14 +21,12 @@ const textShadowStyle = computed(() => {
       "font-size": "32px",
       "text-stroke": "10px #d6ecec",
       "text-stroke-color": "black",
-      opacity: "0.4",
     }
     if (overlay.hero) {
       _.merge(styleObject, {
         "font-size": "34px",
         "text-stroke": "10px #531500",
         "text-stroke-color": "white",
-        opacity: "0.3",
       })
     }
     return styleObject
