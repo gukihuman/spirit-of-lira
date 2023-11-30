@@ -1,40 +1,44 @@
 type Focus = {
   columnIndex: 0 | 1
-  settingIndex: number
+  rowIndex: number
 }
 interface Echo extends AnyObject {
   focus: Focus
+  preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
   tabList = ["general", "gamepad", "keyboard", "info"]
   echo: Echo = {
     tabIndex: 0,
     currentTab: "general", // updated automatically
-    focus: { columnIndex: 0, settingIndex: 0 },
+    focus: { columnIndex: 0, rowIndex: 0 },
     showPanel: false, // used to delay when switching
     editHotkeyMode: false,
     showButtonIcon: true,
-    preventEditHotkeyMode: false, // for now only when new action on gamepad
-    preventEditHotkeyModeCast: false, // Up, Down, Left, Right, RB, LB forcast
+    preventEditHotkeyMode: null,
   }
-  gamepadLeftColumn = {
-    Action: ["talk", "reset", "continue", "editHotkey"],
-    Close: ["quitScene", "quitInterface"],
-    Cast: ["cast1"],
+  gamepad = {
+    leftColumn: {
+      Action: ["talk", "reset", "continue", "editHotkey"],
+      Close: ["quitScene", "quitInterface"],
+      Cast: ["cast1"],
+    },
+    rightColumn: {
+      "Toggle Fullscreen": ["toggleFullscreen"],
+      "Toggle Settings": ["toggleSettings"],
+    },
   }
-  gamepadRightColumn = {
-    "Toggle Fullscreen": ["toggleFullscreen"],
-    "Toggle Settings": ["toggleSettings"],
-  }
-  keyboardLeftColumn = {
-    Action: ["talk", "reset", "continue"],
-    Close: ["quitScene", "quitInterface"],
-    Cast: ["cast1"],
-  }
-  keyboardRightColumn = {
-    "Toggle Fullscreen": ["toggleFullscreen"],
-    "Toggle Settings": ["toggleSettings"],
-    "Auto Move": ["autoMove"],
+  keyboard = {
+    leftColumn: {
+      Action: ["talk", "reset", "continue"],
+      Close: ["quitScene", "quitInterface"],
+      Cast: ["cast1"],
+    },
+    rightColumn: {
+      "Toggle Fullscreen": ["toggleFullscreen"],
+      "Toggle Settings": ["toggleSettings"],
+      "Auto Move": ["autoMove"],
+    },
   }
   general = {
     music: 0.0, // 0.8
@@ -122,179 +126,100 @@ class Settings {
     this.updateShowAnySettingsPanel()
     this.resetSettingsFocus()
     this.updateSettingsFocus()
-    if (this.echo.editHotkeyMode) this.updateInEditHotkeyMode()
+    if (this.echo.editHotkeyMode) {
+      this.updateHotkey("gamepad")
+      this.updateHotkey("keyboard")
+    }
   }
-  updateInEditHotkeyMode() {
+  private checkGamepadKeys = (device, setting, pressedKey) => {
+    if (device !== "gamepad") return true
+    const preventKeys = ["Up", "Down", "Left", "Right", "RB", "LB"]
+    // allow only with Cast
+    if (!setting.includes("Cast") && preventKeys.includes(pressedKey)) {
+      this.echo.preventEditHotkeyMode = "cast_only"
+      return false
+    }
+    return true
+  }
+  private findPreviousEvents = (pressedKey, places, device) => {
+    let previousEvents: string[] = []
+    places.forEach((place) => {
+      _.entries(place[device]).forEach(([key, value]) => {
+        if (value === pressedKey) previousEvents.push(key)
+      })
+    })
+    return previousEvents
+  }
+  private updateHotkey(device: "keyboard" | "gamepad") {
     if (
-      this.echo.currentTab === "gamepad" &&
-      INPUT.gamepad.justPressed.length > 0
+      this.echo.currentTab !== device ||
+      INPUT[device].justPressed.length === 0
     ) {
-      // make function that gonna work for both the keyboard and gamepad
-      let events: string[] = []
-      const pressedKey = INPUT.gamepad.justPressed[0]
-      let newKeySetted = false
-      const checkPressedKeyAction = (setting: string) => {
-        const preventActionKeys = ["Up", "Down", "Left", "Right", "RB", "LB"]
-        if (
-          !setting.includes("Cast") &&
-          preventActionKeys.includes(pressedKey)
-        ) {
-          this.echo.preventEditHotkeyModeCast = true
-          return false
+      return
+    }
+    let events: string[] = []
+    const pressedKey = INPUT[device].justPressed[0]
+    let newKeySetted = false
+    let setting = ""
+    if (HOTKEYS[device].includes(pressedKey)) {
+      if (this.echo.focus.columnIndex === 0) {
+        setting = _.keys(this[device].leftColumn)[this.echo.focus.rowIndex]
+        if (this.checkGamepadKeys(device, setting, pressedKey)) {
+          events = this[device].leftColumn[setting]
         }
-        return true
-      }
-      let setting = ""
-      if (HOTKEYS.gamepad.includes(pressedKey)) {
-        if (this.echo.focus.columnIndex === 0) {
-          setting = _.keys(this.gamepadLeftColumn)[this.echo.focus.settingIndex]
-          if (checkPressedKeyAction(setting)) {
-            events = this.gamepadLeftColumn[setting]
-          }
-        } else {
-          setting = _.keys(this.gamepadRightColumn)[
-            this.echo.focus.settingIndex
-          ]
-          if (checkPressedKeyAction(setting)) {
-            events = this.gamepadRightColumn[setting]
-          }
+      } else {
+        setting = _.keys(this[device].rightColumn)[this.echo.focus.rowIndex]
+        if (this.checkGamepadKeys(device, setting, pressedKey)) {
+          events = this[device].rightColumn[setting]
         }
       }
-      const findPreviousEvents = (pressedKey) => {
-        let previousEvents: string[] = []
-        _.entries(this.interfaceInputEvents.gamepad).forEach(([key, value]) => {
-          if (value === pressedKey) previousEvents.push(key)
-        })
-        _.entries(this.worldInputEvents.gamepad).forEach(([key, value]) => {
-          if (value === pressedKey) previousEvents.push(key)
-        })
-        _.entries(this.sceneInputEvents.gamepad).forEach(([key, value]) => {
-          if (value === pressedKey) previousEvents.push(key)
-        })
-        return previousEvents
-      }
-      let preventEditHotkey = false
-      function cleanPrevious(previousEvents, placeToClean) {
-        previousEvents.forEach((event) => {
-          if (event === "editHotkey" && setting !== "Action") {
-            preventEditHotkey = true
-          }
-          if (placeToClean.gamepad[event] && !preventEditHotkey) {
-            placeToClean.gamepad[event] = ""
-          }
-        })
-      }
-      let foundPlace: AnyObject[] = []
-      events.forEach((event) => {
-        if (this.interfaceInputEvents.gamepad[event] !== undefined) {
-          foundPlace.push(this.interfaceInputEvents)
-          newKeySetted = true
+    }
+    let preventEditHotkey = false
+    function cleanPrevious(previousEvents, placeToClean) {
+      previousEvents.forEach((event) => {
+        if (event === "editHotkey" && setting !== "Action") {
+          preventEditHotkey = true
         }
-        if (this.worldInputEvents.gamepad[event] !== undefined) {
-          foundPlace.push(this.worldInputEvents)
-          newKeySetted = true
+        if (placeToClean[device][event] && !preventEditHotkey) {
+          placeToClean[device][event] = ""
         }
-        if (this.sceneInputEvents.gamepad[event] !== undefined) {
-          foundPlace.push(this.sceneInputEvents)
+      })
+    }
+    const places = [
+      this.interfaceInputEvents,
+      this.worldInputEvents,
+      this.sceneInputEvents,
+    ]
+    const foundPlaces: AnyObject[] = []
+    events.forEach((event) => {
+      places.forEach((place) => {
+        if (place[device][event] !== undefined) {
+          foundPlaces.push(place)
           newKeySetted = true
         }
       })
-      if (newKeySetted) {
-        const previousEvents = findPreviousEvents(pressedKey)
-        cleanPrevious(previousEvents, this.interfaceInputEvents)
-        cleanPrevious(previousEvents, this.worldInputEvents)
-        cleanPrevious(previousEvents, this.sceneInputEvents)
-        if (preventEditHotkey) {
-          this.echo.preventEditHotkeyMode = true
-          return
-        }
-        events.forEach((event) => {
-          foundPlace.forEach((place) => {
-            place.gamepad[event] = pressedKey
-          })
-        })
-        this.echo.showButtonIcon = false
-        // 📜 make literal next frame not just 50ms
-        setTimeout(() => {
-          this.echo.editHotkeyMode = false
-          this.echo.showButtonIcon = true
-          this.echo.preventEditHotkeyMode = false
-          this.echo.preventEditHotkeyModeCast = false
-        }, 50)
-      }
-    } else if (
-      this.echo.currentTab === "keyboard" &&
-      INPUT.keyboard.justPressed.length > 0
-    ) {
-      let events: string[] = []
-      const pressedKey = INPUT.keyboard.justPressed[0]
-      let newKeySetted = false
-      if (HOTKEYS.keyboard.includes(INPUT.keyboard.justPressed[0])) {
-        if (this.echo.focus.columnIndex === 0) {
-          const setting = _.keys(this.keyboardLeftColumn)[
-            this.echo.focus.settingIndex
-          ]
-          events = this.keyboardLeftColumn[setting]
-        } else {
-          const setting = _.keys(this.keyboardRightColumn)[
-            this.echo.focus.settingIndex
-          ]
-          events = this.keyboardRightColumn[setting]
-        }
-      }
-      const findPreviousEvents = (pressedKey) => {
-        let previousEvents: string[] = []
-        _.entries(this.interfaceInputEvents.keyboard).forEach(
-          ([key, value]) => {
-            if (value === pressedKey) previousEvents.push(key)
-          }
-        )
-        _.entries(this.worldInputEvents.keyboard).forEach(([key, value]) => {
-          if (value === pressedKey) previousEvents.push(key)
-        })
-        _.entries(this.sceneInputEvents.keyboard).forEach(([key, value]) => {
-          if (value === pressedKey) previousEvents.push(key)
-        })
-        return previousEvents
-      }
-      function cleanPrevious(previousEvents, placeToClean) {
-        previousEvents.forEach((event) => {
-          if (placeToClean.keyboard[event]) placeToClean.keyboard[event] = ""
-        })
-      }
-      let foundPlace: AnyObject[] = []
-      events.forEach((event) => {
-        if (this.interfaceInputEvents.keyboard[event] !== undefined) {
-          foundPlace.push(this.interfaceInputEvents)
-          newKeySetted = true
-        }
-        if (this.worldInputEvents.keyboard[event] !== undefined) {
-          foundPlace.push(this.worldInputEvents)
-          newKeySetted = true
-        }
-        if (this.sceneInputEvents.keyboard[event] !== undefined) {
-          foundPlace.push(this.sceneInputEvents)
-          newKeySetted = true
-        }
+    })
+    if (newKeySetted) {
+      const previousEvents = this.findPreviousEvents(pressedKey, places, device)
+      places.forEach((place) => {
+        cleanPrevious(previousEvents, place)
       })
-      if (newKeySetted) {
-        const previousEvents = findPreviousEvents(pressedKey)
-        cleanPrevious(previousEvents, this.interfaceInputEvents)
-        cleanPrevious(previousEvents, this.worldInputEvents)
-        cleanPrevious(previousEvents, this.sceneInputEvents)
-        events.forEach((event) => {
-          foundPlace.forEach((place) => {
-            place.keyboard[event] = pressedKey
-          })
-        })
-        // 📜 make literal next frame not just 50ms
-        this.echo.showButtonIcon = false
-        setTimeout(() => {
-          this.echo.editHotkeyMode = false
-          this.echo.showButtonIcon = true
-          this.echo.preventEditHotkeyMode = false
-        }, 50)
+      if (preventEditHotkey) {
+        this.echo.preventEditHotkeyMode = "empty_action"
+        return
       }
+      events.forEach((event) => {
+        foundPlaces.forEach((place) => {
+          place[device][event] = pressedKey
+        })
+      })
+      this.echo.showButtonIcon = false
+      // 📜 make literal next frame not just 50ms
+      setTimeout(() => {
+        this.echo.editHotkeyMode = false
+        this.echo.showButtonIcon = true
+        this.echo.preventEditHotkeyMode = null
+      }, 50)
     }
   }
   updateCurrentSettingsTab() {
@@ -322,7 +247,7 @@ class Settings {
       this.echo.tabIndex !== LAST.settingsTabIndex
     ) {
       this.echo.focus.columnIndex = 0
-      this.echo.focus.settingIndex = 0
+      this.echo.focus.rowIndex = 0
     }
   }
   updateSettingsFocus() {
@@ -330,11 +255,11 @@ class Settings {
     let leftColumnLength = 0
     let rightColumnLength = 0
     if (this.echo.currentTab === "keyboard") {
-      leftColumnLength = _.keys(this.keyboardLeftColumn).length
-      rightColumnLength = _.keys(this.keyboardRightColumn).length
+      leftColumnLength = _.keys(this.keyboard.leftColumn).length
+      rightColumnLength = _.keys(this.keyboard.rightColumn).length
     } else if (this.echo.currentTab === "gamepad") {
-      leftColumnLength = _.keys(this.gamepadLeftColumn).length
-      rightColumnLength = _.keys(this.gamepadRightColumn).length
+      leftColumnLength = _.keys(this.gamepad.leftColumn).length
+      rightColumnLength = _.keys(this.gamepad.rightColumn).length
     }
     let maxSettingIndex = 0
     if (this.echo.focus.columnIndex === 0) {
@@ -343,15 +268,15 @@ class Settings {
       maxSettingIndex = rightColumnLength - 1
     }
     if (INPUT.gamepad.justPressed.includes("Down")) {
-      this.echo.focus.settingIndex++
-      if (this.echo.focus.settingIndex > maxSettingIndex) {
-        this.echo.focus.settingIndex = 0
+      this.echo.focus.rowIndex++
+      if (this.echo.focus.rowIndex > maxSettingIndex) {
+        this.echo.focus.rowIndex = 0
       }
     }
     if (INPUT.gamepad.justPressed.includes("Up")) {
-      this.echo.focus.settingIndex--
-      if (this.echo.focus.settingIndex < 0) {
-        this.echo.focus.settingIndex = maxSettingIndex
+      this.echo.focus.rowIndex--
+      if (this.echo.focus.rowIndex < 0) {
+        this.echo.focus.rowIndex = maxSettingIndex
       }
     }
     // left and right are the same while there is only two columns
@@ -361,12 +286,12 @@ class Settings {
     ) {
       if (
         this.echo.focus.columnIndex === 0 &&
-        rightColumnLength - 1 >= this.echo.focus.settingIndex
+        rightColumnLength - 1 >= this.echo.focus.rowIndex
       ) {
         this.echo.focus.columnIndex = 1
       } else if (
         this.echo.focus.columnIndex === 1 &&
-        leftColumnLength - 1 >= this.echo.focus.settingIndex
+        leftColumnLength - 1 >= this.echo.focus.rowIndex
       ) {
         this.echo.focus.columnIndex = 0
       }
@@ -447,6 +372,27 @@ class Settings {
         }
       }
       SCENE_ACTIVE.focusedChoiceIndex = possibleIndex
+    })
+    EVENTS.onSingle("switchSettingsTabLeft", () => {
+      if (SETTINGS.echo.editHotkeyMode) return
+      const last = SETTINGS.tabList.length - 1
+      SETTINGS.echo.tabIndex--
+      if (SETTINGS.echo.tabIndex < 0) SETTINGS.echo.tabIndex = last
+    })
+    EVENTS.onSingle("switchSettingsTabRight", () => {
+      if (SETTINGS.echo.editHotkeyMode) return
+      const last = SETTINGS.tabList.length - 1
+      SETTINGS.echo.tabIndex++
+      if (SETTINGS.echo.tabIndex > last) SETTINGS.echo.tabIndex = 0
+    })
+    EVENTS.onSingle("editHotkey", () => {
+      if (!CONTEXT.echo.world?.interface?.settings) return
+      if (
+        SETTINGS.echo.currentTab === "gamepad" ||
+        SETTINGS.echo.currentTab === "keyboard"
+      ) {
+        SETTINGS.echo.editHotkeyMode = true
+      }
     })
   }
   emitEvents() {

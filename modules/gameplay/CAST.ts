@@ -3,6 +3,7 @@ class Cast {
   attackSoundIds: any = []
   heroSwordAttackCastStage: 0 | 1 = 0 // animation stage
   private cast(slot = "slot1") {
+    if (!CONTEXT.echo.world?.gameplay) return
     EVENTS.emit("cast", {
       entity: SH.hero,
       slot: slot,

@@ -64,29 +64,6 @@ const inter: Inter = {
     }
     this.processFloatDamage()
   },
-  init() {
-    EVENTS.onSingle("switchSettingsTabLeft", () => {
-      if (SETTINGS.echo.editHotkeyMode) return
-      const last = SETTINGS.tabList.length - 1
-      SETTINGS.echo.tabIndex--
-      if (SETTINGS.echo.tabIndex < 0) SETTINGS.echo.tabIndex = last
-    })
-    EVENTS.onSingle("switchSettingsTabRight", () => {
-      if (SETTINGS.echo.editHotkeyMode) return
-      const last = SETTINGS.tabList.length - 1
-      SETTINGS.echo.tabIndex++
-      if (SETTINGS.echo.tabIndex > last) SETTINGS.echo.tabIndex = 0
-    })
-    EVENTS.onSingle("editHotkey", () => {
-      if (
-        SETTINGS.echo.show &&
-        (SETTINGS.echo.currentTab === "gamepad" ||
-          SETTINGS.echo.currentTab === "keyboard")
-      ) {
-        SETTINGS.echo.editHotkeyMode = true
-      }
-    })
-  },
 
   processFloatDamage() {
     this.damageOverlays.forEach((overlay, index) => {
