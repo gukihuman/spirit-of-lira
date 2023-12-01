@@ -4,6 +4,7 @@ div(v-if="INTERFACE.showKeys || props.static"
   class="flex justify-center items-center pointer-events-none"
   :class="iconClass")
   img(:src="image" class="absolute object-none opacity-[0.5]"
+    draggable="false"
     :class="imageClass" :style="imageStyle")
   p(class="absolute z-10 ml-[1px] mb-[2px] opacity-[0.9]"
     class="text-tan text-[22px] font-semibold points-events-none"

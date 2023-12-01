@@ -1,35 +1,34 @@
-type RootKeys = keyof Root
+declare global {
+  type ContextRoot = keyof Root
+  type ContextWorld = keyof World
+  type ContextInter = keyof Inter
+  type ContextSettings = keyof Settings
+  type ContextSkills = keyof Skills
+}
 type Root = {
   loading: boolean
   scene: boolean
   world: World | boolean
 }
-type WorldKeys = keyof World
 type World = {
   gameplay: boolean
   interface: Inter | boolean
 }
-type InterKeys = keyof Inter
 type Inter = {
   inventory: boolean
   settings: Settings | boolean
   skills: Skills | boolean
 }
-type SettingsKeys = keyof Settings
 type Settings = {
   general: boolean
   gamepad: boolean
   keyboard: boolean
   info: boolean
 }
-type SkillsKeys = keyof Skills
 type Skills = {
   sword: boolean
   bow: boolean
   magic: boolean
-}
-type Last = {
-  echo: Root
 }
 class Context {
   // correct resonate require full object declaration
@@ -62,10 +61,10 @@ class Context {
     },
   }
   set(
-    level1: RootKeys,
-    level2?: WorldKeys,
-    level3?: InterKeys,
-    level4?: SettingsKeys | SkillsKeys
+    level1: ContextRoot,
+    level2?: ContextWorld,
+    level3?: ContextInter,
+    level4?: ContextSettings | ContextSkills
   ) {
     this.echo.loading = false
     this.echo.scene = false

@@ -7,12 +7,19 @@ interface Echo extends AnyObject {
   preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
-  tabList = ["general", "gamepad", "keyboard", "info"]
+  context_list: ContextSettings[] = ["general", "gamepad", "keyboard", "info"]
+  get context_index() {
+    return this.context_list.findIndex((context) => {
+      return CONTEXT.echo.world?.interface?.settings?.[context]
+    })
+  }
+  last = { context_index: 0 }
+  get context() {
+    return this.context_list[this.context_index]
+  }
   echo: Echo = {
-    tabIndex: 0,
-    currentTab: "general", // updated automatically
     focus: { columnIndex: 0, rowIndex: 0 },
-    showPanel: false, // used to delay when switching
+    show_panel: false, // switching delay
     editHotkeyMode: false,
     showButtonIcon: true,
     preventEditHotkeyMode: null,
@@ -121,9 +128,8 @@ class Settings {
     },
   }
   process() {
-    this.switchSettingsTab()
-    this.updateCurrentSettingsTab()
-    this.updateShowAnySettingsPanel()
+    this.switchSettingsTabInputs()
+    this.updateShowSettingsPanel()
     this.resetSettingsFocus()
     this.updateSettingsFocus()
     if (this.echo.editHotkeyMode) {
@@ -152,7 +158,7 @@ class Settings {
   }
   private updateHotkey(device: "keyboard" | "gamepad") {
     if (
-      this.echo.currentTab !== device ||
+      !CONTEXT.echo.world?.interface?.settings?.[device] ||
       INPUT[device].justPressed.length === 0
     ) {
       return
@@ -222,29 +228,26 @@ class Settings {
       }, 50)
     }
   }
-  updateCurrentSettingsTab() {
-    this.echo.currentTab = this.tabList[this.echo.tabIndex]
-  }
-  updateShowAnySettingsPanel() {
-    if (!CONTEXT.echo.world?.interface?.settings) this.echo.showPanel = false
+  updateShowSettingsPanel() {
+    if (!CONTEXT.echo.world?.interface?.settings) this.echo.show_panel = false
     if (
       CONTEXT.echo.world?.interface?.settings &&
       !CONTEXT.last.echo.world?.interface?.settings
     ) {
-      this.echo.showPanel = true
+      this.echo.show_panel = true
     }
-    if (this.echo.tabIndex !== LAST.settingsTabIndex) {
-      this.echo.showPanel = false
+    if (this.context_index !== this.last.context_index) {
+      this.echo.show_panel = false
       this.debouncedShowAnySettingsPanel()
     }
   }
   debouncedShowAnySettingsPanel = _.debounce(() => {
-    this.echo.showPanel = true
+    this.echo.show_panel = true
   }, 100)
   resetSettingsFocus() {
     if (
       (CONTEXT.echo.world.interface && !CONTEXT.last.echo.world.interface) ||
-      this.echo.tabIndex !== LAST.settingsTabIndex
+      this.context_index !== this.last.context_index
     ) {
       this.echo.focus.columnIndex = 0
       this.echo.focus.rowIndex = 0
@@ -254,10 +257,10 @@ class Settings {
     if (this.echo.editHotkeyMode) return
     let leftColumnLength = 0
     let rightColumnLength = 0
-    if (this.echo.currentTab === "keyboard") {
+    if (CONTEXT.echo.world?.interface?.settings?.keyboard) {
       leftColumnLength = _.keys(this.keyboard.leftColumn).length
       rightColumnLength = _.keys(this.keyboard.rightColumn).length
-    } else if (this.echo.currentTab === "gamepad") {
+    } else {
       leftColumnLength = _.keys(this.gamepad.leftColumn).length
       rightColumnLength = _.keys(this.gamepad.rightColumn).length
     }
@@ -297,7 +300,7 @@ class Settings {
       }
     }
   }
-  switchSettingsTab() {
+  switchSettingsTabInputs() {
     if (!CONTEXT.echo.world?.interface?.settings) return
     if (INPUT.gamepad.justPressed.includes("LB")) {
       EVENTS.emitSingle("switchSettingsTabLeft")
@@ -375,21 +378,25 @@ class Settings {
     })
     EVENTS.onSingle("switchSettingsTabLeft", () => {
       if (SETTINGS.echo.editHotkeyMode) return
-      const last = SETTINGS.tabList.length - 1
-      SETTINGS.echo.tabIndex--
-      if (SETTINGS.echo.tabIndex < 0) SETTINGS.echo.tabIndex = last
+      const last = SETTINGS.context_list.length - 1
+      SETTINGS.context_index--
+      if (SETTINGS.context_index < 0) SETTINGS.context_index = last
+      const context = SETTINGS.context_list[SETTINGS.context_index]
+      CONTEXT.set("world", "interface", "settings", context)
     })
     EVENTS.onSingle("switchSettingsTabRight", () => {
       if (SETTINGS.echo.editHotkeyMode) return
-      const last = SETTINGS.tabList.length - 1
-      SETTINGS.echo.tabIndex++
-      if (SETTINGS.echo.tabIndex > last) SETTINGS.echo.tabIndex = 0
+      const last = SETTINGS.context_list.length - 1
+      SETTINGS.context_index++
+      if (SETTINGS.context_index > last) SETTINGS.context_index = 0
+      const context = SETTINGS.context_list[SETTINGS.context_index]
+      CONTEXT.set("world", "interface", "settings", context)
     })
     EVENTS.onSingle("editHotkey", () => {
       if (!CONTEXT.echo.world?.interface?.settings) return
       if (
-        SETTINGS.echo.currentTab === "gamepad" ||
-        SETTINGS.echo.currentTab === "keyboard"
+        CONTEXT.echo.world?.interface?.settings?.keyboard ||
+        CONTEXT.echo.world?.interface?.settings?.gamepad
       ) {
         SETTINGS.echo.editHotkeyMode = true
       }

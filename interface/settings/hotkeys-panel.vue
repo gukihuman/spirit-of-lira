@@ -1,5 +1,6 @@
 <template lang="pug">
-div(v-if="resolveTab" class="absolute w-full h-full flex justify-center")
+div(v-if="resolve_show_panel"
+class="absolute w-full h-full flex justify-center")
   div(mark="hotkeys-column"
     v-for="(column, columnIndex) in columns" :key="columnIndex"
     class="w-[580px] h-[620px] flex flex-col items-center mx-[-25px]")
@@ -14,13 +15,14 @@ div(v-if="resolveTab" class="absolute w-full h-full flex justify-center")
         p(mark="hotkeys-title"
           class="text-royal-brown text-[22px] font-bold"
           class="z-[20] ml-[125px] mt-[53px]") {{ setting }}
-        div(@click="handleClick(columnIndex, rowIndex)" class="absolute hover:brightness-125 w-[60px] h-[60px] left-[385px] top-[42px] hover:scale-[1.1] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out")
+        div(@click="handleClick(columnIndex, rowIndex)"
+        class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out" :class="button_class")
           tn: hotkey-icon(mark="buttonIcon" :device="props.device"
-            v-if="resolveIcon(columnIndex, rowIndex, true) && SETTINGS.echo.showButtonIcon"
-            class="scale-[1.3] mt-[30px]"
-            :inputEvent="resolveEvent(columnIndex, rowIndex, setting)")
+          v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
+          class="scale-[1.3] mt-[30px]"
+          :inputEvent="resolveEvent(columnIndex, rowIndex, setting)")
         tn: hotkey-icon(inputEvent="editHotkey" class="left-[450px] top-[48px]"
-          v-if="resolveIcon(columnIndex, rowIndex) && SETTINGS.echo.showButtonIcon")
+          v-if="resolve_show_button_icon(columnIndex, rowIndex)")
   p(mark="hotkeys-message"
     v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.editHotkeyMode"
     class="text-tan bottom-[20px] text-[22px] font-semibold"
@@ -35,12 +37,19 @@ div(v-if="resolveTab" class="absolute w-full h-full flex justify-center")
     class="absolute opacity-[0.8]") Up, Down, Left, Right, RB, LB can be used only with Cast
 </template>
 <script setup lang="ts">
-const props = defineProps(["device"])
+const props = defineProps({ device: { type: String } }) // keyboard | gamepad
 const handleClick = (columnIndex, rowIndex) => {
+  if (!CONTEXT.echo.world?.interface?.settings?.keyboard) return
   SETTINGS.echo.focus.columnIndex = columnIndex
   SETTINGS.echo.focus.rowIndex = rowIndex
   EVENTS.emitSingle("editHotkey")
 }
+const button_class = computed(() => {
+  const condition = CONTEXT.echo.world?.interface?.settings?.keyboard
+  return {
+    "hover:scale-[1.1] hover:brightness-125": condition,
+  }
+})
 const resolveEvent = computed(() => {
   return (columnIndex, rowIndex, setting) => {
     let columns = [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
@@ -51,8 +60,9 @@ const resolveEvent = computed(() => {
     return events[0]
   }
 })
-const resolveIcon = computed(() => {
+const resolve_show_button_icon = computed(() => {
   return (columnIndex, rowIndex, button = false) => {
+    if (!SETTINGS.echo.showButtonIcon) return
     if (GLOBAL.lastActiveDevice !== "gamepad" && !button) return false
     if (!button) {
       return (
@@ -69,8 +79,11 @@ const resolveIcon = computed(() => {
     return true
   }
 })
-const resolveTab = computed(() => {
-  return SETTINGS.tabList[SETTINGS.echo.tabIndex] === props.device
+const resolve_show_panel = computed(() => {
+  if (!SETTINGS.echo.show_panel) return
+  if (props.device === "keyboard") {
+    return CONTEXT.echo.world?.interface?.settings?.keyboard
+  } else return CONTEXT.echo.world?.interface?.settings?.gamepad
 })
 const resolveFocus = computed(() => {
   return (columnIndex, rowIndex) => {

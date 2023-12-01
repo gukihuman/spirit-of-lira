@@ -5,12 +5,11 @@ class Last {
   scenePart = ""
   sceneName = ""
   loopSec = -1
-  settingsTabIndex = 0
   process() {
     for (const name of CONFIG.modules) {
       const module = globalThis[name]
       if (module.last) {
-        _.keys(module.last).forEach((key) => {
+        Object.getOwnPropertyNames(module.last).forEach((key) => {
           if (key === "echo") {
             // getOwnPropertyNams includes getters and setters
             const echoKeys = Object.getOwnPropertyNames(module.last.echo)
@@ -31,7 +30,6 @@ class Last {
     this.scenePart = SCENE_ACTIVE.part
     this.sceneName = SCENE_ACTIVE.name
     this.loopSec = LOOP.elapsedSec
-    this.settingsTabIndex = SETTINGS.echo.tabIndex
     if (
       (CONTEXT.echo.scene && !CONTEXT.last.echo.scene) ||
       (!CONTEXT.echo.scene && CONTEXT.last.echo.scene)

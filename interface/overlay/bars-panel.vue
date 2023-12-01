@@ -13,7 +13,7 @@ div(class="absolute relative top-[950px] left-[520px]")
     class="absolute left-[460px] top-3 h-[60px] object-left object-cover transition-all duration-150 ease-in-out"
     :style="energy"
   )
-  //- img(:src="ASSETS.webps['bars-panel-exp']" class="absolute")
+  //- img(:src="ASSETS.webps['bars-panel-exp']" draggable="false" class="absolute")
   div(class="absolute z-10 w-[60px] h-[60px] top-[11px] left-[399px] flex items-center justify-center")
     p(class="absolute font-hat text-chestnut text-[30px] font-black blur-[3px] brightness-[2.8] saturate-[0.4] scale-[1.1] ") 1
     p(class="font-hat text-chestnut text-[30px] font-black brightness-[0.7]") 1
