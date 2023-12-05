@@ -8,7 +8,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "forge": "ts-node forge.ts"
+    "forge": "ts-node forge.ts",
+    "sprout": "ssh -i satyr-remix-gukihuman.pem -L 7860:localhost:7860 ubuntu@62.68.147.127",
+    "sprout-send": "scp -i satyr-remix-gukihuman.pem satyr-remix.ipynb ubuntu@62.68.147.127:satyr-remix.ipynb",
+    "sprout-setup": "ssh -i satyr-remix-gukihuman.pem ubuntu@62.68.147.127 \"bash -c 'jupyter nbconvert --execute --to notebook --inplace satyr-remix.ipynb'\"",
+    "sprout-launch": "ssh -t -i satyr-remix-gukihuman.pem -L 7860:localhost:7860 ubuntu@62.68.147.127 \"bash -c 'cd ~/stable-diffusion-webui && python3 launch.py'\"",
+    "sprout-clone": "scp -i satyr-remix-gukihuman.pem -r ubuntu@62.68.147.127:~/stable-diffusion-webui/outputs/img2img-images/* ./sprout/",
+    "sprout-clean": "ssh -i satyr-remix-gukihuman.pem ubuntu@62.68.147.127 \"bash -c 'cd ~/stable-diffusion-webui/outputs/img2img-images && rm -rf ./*'\""
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.1.3",

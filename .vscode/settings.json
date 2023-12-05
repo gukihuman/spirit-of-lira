@@ -13,7 +13,10 @@
     "vitest.config.ts": true,
     ".prettierignore": true,
     "public": true,
-    "desktop.ini": true
+    "desktop.ini": true,
+    "satyr-remix-gukihuman.pem": true,
+    "satyr-remix-commands.txt": true,
+    "satyr-remix.ipynb": true
   },
   "workspace.isHidden": false,
   "folder-path-color.folders": [

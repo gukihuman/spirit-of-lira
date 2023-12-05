@@ -24,29 +24,6 @@ class Settings {
     showButtonIcon: true,
     preventEditHotkeyMode: null,
   }
-  gamepad = {
-    leftColumn: {
-      Action: ["talk", "reset", "continue", "editHotkey"],
-      Close: ["quitScene", "quitInterface"],
-      Cast: ["cast1"],
-    },
-    rightColumn: {
-      "Toggle Fullscreen": ["toggleFullscreen"],
-      "Toggle Settings": ["toggleSettings"],
-    },
-  }
-  keyboard = {
-    leftColumn: {
-      Action: ["talk", "reset", "continue"],
-      Close: ["quitScene", "quitInterface"],
-      Cast: ["cast1"],
-    },
-    rightColumn: {
-      "Toggle Fullscreen": ["toggleFullscreen"],
-      "Toggle Settings": ["toggleSettings"],
-      "Auto Move": ["autoMove"],
-    },
-  }
   general = {
     music: 0.0, // 0.8
     sound: 0.8, // 0.8
@@ -125,6 +102,29 @@ class Settings {
   inputOther = {
     gamepad: {
       deadZone: 0.15,
+    },
+  }
+  gamepad = {
+    leftColumn: {
+      Action: ["talk", "reset", "continue", "editHotkey"],
+      Close: ["quitScene", "quitInterface"],
+      Cast: ["cast1"],
+    },
+    rightColumn: {
+      "Toggle Fullscreen": ["toggleFullscreen"],
+      "Toggle Settings": ["toggleSettings"],
+    },
+  }
+  keyboard = {
+    leftColumn: {
+      Action: ["talk", "reset", "continue"],
+      Close: ["quitScene", "quitInterface"],
+      Cast: ["cast1"],
+    },
+    rightColumn: {
+      "Toggle Fullscreen": ["toggleFullscreen"],
+      "Toggle Settings": ["toggleSettings"],
+      "Auto Move": ["autoMove"],
     },
   }
   process() {
