@@ -53,12 +53,15 @@ class Context {
       },
     },
   }
-  last = {
-    echo: {
-      scene: false,
-      world: false,
-    },
-  }
+  lastCheck = ["echo"] // do some type check with last together
+  last: AnyObject = {}
+  // 📜 remove if not needed
+  // last = {
+  //   echo: {
+  //     scene: false,
+  //     world: false,
+  //   },
+  // }
   set(
     level1: ContextRoot,
     level2?: ContextWorld,

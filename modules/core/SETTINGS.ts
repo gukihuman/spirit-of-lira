@@ -7,13 +7,14 @@ interface Echo extends AnyObject {
   preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
+  lastCheck = ["context_index"] // do some type check with last together
+  last: AnyObject = {}
   context_list: ContextSettings[] = ["general", "gamepad", "keyboard", "info"]
   get context_index() {
     return this.context_list.findIndex((context) => {
       return CONTEXT.echo.world?.interface?.settings?.[context]
     })
   }
-  last = { context_index: 0 }
   get context() {
     return this.context_list[this.context_index]
   }
@@ -25,7 +26,7 @@ class Settings {
     preventEditHotkeyMode: null,
   }
   general = {
-    music: 0.0, // 0.8
+    music: 0.8, // 0.8
     sound: 0.8, // 0.8
     // auto attack after kill and also autotarget for mouse like on gamepad
     easyFight: false,
@@ -231,7 +232,7 @@ class Settings {
     if (!CONTEXT.echo.world?.interface?.settings) this.echo.show_panel = false
     if (
       CONTEXT.echo.world?.interface?.settings &&
-      !CONTEXT.last.echo.world?.interface?.settings
+      !CONTEXT.last.echo?.world?.interface?.settings
     ) {
       this.echo.show_panel = true
     }
@@ -245,7 +246,7 @@ class Settings {
   }, 100)
   resetSettingsFocus() {
     if (
-      (CONTEXT.echo.world.interface && !CONTEXT.last.echo.world.interface) ||
+      (CONTEXT.echo.world.interface && !CONTEXT.last.echo?.world?.interface) ||
       this.context_index !== this.last.context_index
     ) {
       this.echo.focus.columnIndex = 0
@@ -407,7 +408,7 @@ class Settings {
     }
     if (INTERFACE.inputFocus) return
     // 📜 why do we need check last here?? some order of events or smth i guess
-    if (CONTEXT.echo.scene || CONTEXT.last.echo.scene) {
+    if (CONTEXT.echo.scene || CONTEXT.last.echo?.scene) {
       _.forEach(this.sceneInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {
@@ -425,7 +426,7 @@ class Settings {
         EVENTS.emitSingle("continue")
       }
     }
-    if (CONTEXT.echo.world.interface || CONTEXT.last.echo.world.interface) {
+    if (CONTEXT.echo.world.interface || CONTEXT.last.echo?.world?.interface) {
       _.forEach(this.interfaceInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {
@@ -434,7 +435,7 @@ class Settings {
         })
       })
     }
-    if (CONTEXT.echo.world || CONTEXT.last.echo.world) {
+    if (CONTEXT.echo.world || CONTEXT.last.echo?.world) {
       _.forEach(this.worldInputEvents, (settingList, device) => {
         _.forEach(settingList, (button, setting) => {
           if (INPUT[device].justPressed.includes(button)) {

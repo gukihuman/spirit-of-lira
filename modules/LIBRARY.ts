@@ -180,7 +180,7 @@ class Library {
       })
     }
   }
-  isPureObject(item) {
+  isObject(item) {
     if (typeof item === "object" && item !== null && !Array.isArray(item)) {
       return true
     }

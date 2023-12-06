@@ -1,3 +1,5 @@
+const soundAmplifier = 1.5
+const musicAmplifier = 1.4
 class Aud {
   private averageSilenceSec = 60
   private audioContext
@@ -8,7 +10,12 @@ class Aud {
   private musicGain
   private musicPlaying = false
   private initialMusicPlayed = false
+  private initialN1MusicPlayed = false
+  private allIdleIds: string[] = []
   currentMusicId
+  sceneName = ""
+  lastCheck = ["sceneName"] // do some type check with last together
+  last: AnyObject = {}
   async init() {
     this.audioContext = new AudioContext()
     this.soundGain = this.audioContext.createGain()
@@ -24,21 +31,36 @@ class Aud {
     EVENTS.onSingle("sceneContextChanged", () => {
       this.stop(this.currentMusicId, 1000, "music")
       this.musicPlaying = false
-      this.initialMusicPlayed = false
+      this.initialN1MusicPlayed = false
+
+      this.allIdleIds.forEach((id) => {
+        this.stop(id)
+      })
+      this.allIdleIds = []
     })
   }
 
   startIdleMobs() {
+    if (!CONTEXT.echo.world) return
     MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
       if (COORD.distance(entity.POSITION, SH.hero.POSITION) > 1500) return
       if (Math.random() > 0.5 * LOOP.deltaSec) return
       // 📜 mb add move state :)
       if (entity.STATE.active === "idle") {
-        this.play(entity.name + "-idle")
+        const id = this.play(entity.name + "-idle")
+        if (!id) return
+        this.allIdleIds.push(id)
       }
     })
   }
   process() {
+    this.sceneName = SCENE_ACTIVE.name
+    const sceneName = this.sceneName.split("-")[0] // n0 | n1 | b0 ...
+    const lastSceneName = this.last.sceneName.split("-")[0]
+    if (sceneName === "n1" && lastSceneName !== "n1") {
+      this.stop(this.currentMusicId, 1000, "music")
+    }
+
     if (!LOOP.newSec) return
     this.startIdleMobs()
     if (this.audioContext.STATE === "suspended") {
@@ -46,14 +68,10 @@ class Aud {
     } else {
       GLOBAL.firstUserGesture = true // sometimes works so no need to gesture
     }
-    this.soundGain.gain.value = SETTINGS.general.sound
-    this.musicGain.gain.value = SETTINGS.general.music
-    if (
-      !this.musicPlaying &&
-      (CONTEXT.echo.world || CONTEXT.echo.world.interface)
-    ) {
+    this.soundGain.gain.value = SETTINGS.general.sound * soundAmplifier
+    this.musicGain.gain.value = SETTINGS.general.music * musicAmplifier
+    if (!this.musicPlaying && CONTEXT.echo.world) {
       if (!this.initialMusicPlayed) {
-        // always 1 at start
         this.currentMusicId = this.play("green-forest-1", 0, "music")
         if (this.currentMusicId) this.initialMusicPlayed = true
         return
@@ -62,17 +80,19 @@ class Aud {
       this.currentMusicId = this.play("green-forest", 0, "music")
     }
     if (!this.musicPlaying && CONTEXT.echo.scene) {
-      const sceneName = SCENE_ACTIVE.name.split("-")[0]
       if (sceneName === "n1") {
-        if (!this.initialMusicPlayed) {
-          // always 1 at start
-          this.currentMusicId = this.play("n1-1", 0, "music")
-          if (this.currentMusicId) this.initialMusicPlayed = true
+        if (!this.initialN1MusicPlayed) {
+          this.currentMusicId = this.play("n-1", 0, "music")
+          if (this.currentMusicId) this.initialN1MusicPlayed = true
           return
         } else {
-          this.currentMusicId = this.play("n1-2", 0, "music")
+          this.currentMusicId = this.play("n-2", 0, "music")
           return
         }
+      }
+      if (_.startsWith(sceneName, "n")) {
+        this.currentMusicId = this.play("n-2", 0, "music")
+        return
       }
       this.currentMusicId = this.play(sceneName, 0, "music")
     }

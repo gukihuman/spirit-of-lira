@@ -99,7 +99,7 @@ const activeScene: activeScene = {
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice
-      if (INTERFACE.skipHover) return
+      if (INTERFACE.skipHover || INTERFACE.buttonHover) return
       else EVENTS.emitSingle("continue")
     })
     EVENTS.onSingle("continue", () => {

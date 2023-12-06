@@ -6,13 +6,22 @@ class Last {
   sceneName = ""
   loopSec = -1
   process() {
+    if (
+      (CONTEXT.echo.scene && !CONTEXT.last.echo?.scene) ||
+      (!CONTEXT.echo.scene && CONTEXT.last.echo?.scene)
+    ) {
+      EVENTS.emitSingle("sceneContextChanged")
+    }
     for (const name of CONFIG.modules) {
       const module = globalThis[name]
-      if (module.last) {
-        Object.getOwnPropertyNames(module.last).forEach((key) => {
+      if (module.lastCheck && module.last) {
+        // 📜 remove if not needed
+        // Object.getOwnPropertyNames(module.last).forEach((key) => {
+        module.lastCheck.forEach((key) => {
           if (key === "echo") {
             // getOwnPropertyNams includes getters and setters
-            const echoKeys = Object.getOwnPropertyNames(module.last.echo)
+            const echoKeys = Object.getOwnPropertyNames(module.echo)
+            module.last.echo = {}
             echoKeys.forEach((echoKey) => {
               if (echoKey === "state") return
               module.last.echo[echoKey] = LIBRARY.clone(module.echo[echoKey])
@@ -30,12 +39,6 @@ class Last {
     this.scenePart = SCENE_ACTIVE.part
     this.sceneName = SCENE_ACTIVE.name
     this.loopSec = LOOP.elapsedSec
-    if (
-      (CONTEXT.echo.scene && !CONTEXT.last.echo.scene) ||
-      (!CONTEXT.echo.scene && CONTEXT.last.echo.scene)
-    ) {
-      EVENTS.emitSingle("sceneContextChanged")
-    }
   }
 }
 export const LAST = new Last()

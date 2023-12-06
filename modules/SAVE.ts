@@ -89,7 +89,7 @@ class Save {
     let resolved = {}
     _.forEach(start, (value, key) => {
       if (storage.hasOwnProperty(key)) {
-        if (LIBRARY.isPureObject(value)) {
+        if (LIBRARY.isObject(value)) {
           resolved[key] = this.resolveSaves(value, storage[key])
         } else if (typeof value === typeof storage[key]) {
           resolved[key] = storage[key]
