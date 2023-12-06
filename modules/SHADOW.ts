@@ -22,7 +22,7 @@ class Shadow {
       shadow.drawCircle(0, 0, width)
       shadow.endFill()
       shadow.scale = { x: 1, y: 0.5 }
-      shadow.alpha = 0.08
+      shadow.alpha = CONFIG.shadow_alpha
       shadow.blendMode = PIXI.BLEND_MODES.MULTIPLY
       const blurFilter = new PIXI.filters.BlurFilter()
       blurFilter.blur = 10

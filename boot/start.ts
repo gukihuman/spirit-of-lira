@@ -16,8 +16,18 @@ async function start() {
   await CREATOR.create("mousepoint")
   checkGesture()
 
-  // timeout to make initial loading transition work
-  setTimeout(() => CONTEXT.set("world"), 1)
+  if (!PROGRESS.scenes.includes("a0")) {
+    EVENTS.emit("startScene", { name: "a0-adult-check", instantChoices: true })
+    setTimeout(() => (GLOBAL.loading = false), 250)
+  } else if (!PROGRESS.scenes.includes("n1")) {
+    // timeout to make transition work
+    EVENTS.emit("startScene", { name: "n1-start" })
+    setTimeout(() => (GLOBAL.loading = false), 250)
+  } else {
+    // timeout to make transition work
+    CONTEXT.set("world")
+    setTimeout(() => (GLOBAL.loading = false), 1)
+  }
 }
 async function initModules() {
   CONFIG.init() // prepare priority

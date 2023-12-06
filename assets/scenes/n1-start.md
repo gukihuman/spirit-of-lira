@@ -64,12 +64,12 @@ I guess I do...
 ...
 > Very nice. I'm impressed.
 Um... Are you happy?
-> Not quite. Can you sit back as you were?
 >> Yeah. Good girl. (n1-end)
+> Not quite. Can you sit back as you were?
 # n1-lira-arms-down, n1-lira-blush, n1-lira-eyes-at-viewer
 Well, here. Happy?
-> Now raise your arms again.
 >> Yeah. Good girl. (n1-end)
+> Now raise your arms again.
 Again!?
 > You already did it, second time should be easy.
 # n1-lira-arms-raised
@@ -80,8 +80,8 @@ Do you think so?
 > Absolutely.
 ...
 Thanks. Well, can we be done now?
-> Put your arms down.
 >> Yeah. Good girl. (n1-end)
+> Put your arms down.
 Oh god...
 # n1-lira-arms-down, n1-lira-blush, n1-lira-eyes-at-viewer
 ...

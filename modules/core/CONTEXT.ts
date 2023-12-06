@@ -6,7 +6,7 @@ declare global {
   type ContextSkills = keyof Skills
 }
 type Root = {
-  loading: boolean
+  empty: boolean
   scene: boolean
   world: World | boolean
 }
@@ -33,7 +33,7 @@ type Skills = {
 class Context {
   // correct resonate require full object declaration
   echo: Root = {
-    loading: true,
+    empty: true,
     scene: false,
     world: {
       gameplay: false,
@@ -55,7 +55,6 @@ class Context {
   }
   last = {
     echo: {
-      loading: false,
       scene: false,
       world: false,
     },
@@ -66,10 +65,10 @@ class Context {
     level3?: ContextInter,
     level4?: ContextSettings | ContextSkills
   ) {
-    this.echo.loading = false
+    this.echo.empty = false
     this.echo.scene = false
     this.echo.world = false
-    if (level1 === "loading") this.echo.loading = true
+    if (level1 === "empty") this.echo.empty = true
     if (level1 === "scene") this.echo.scene = true
     if (level1 === "world") {
       this.echo.world = {

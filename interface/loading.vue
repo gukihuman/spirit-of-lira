@@ -8,14 +8,12 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
     div(class="flex gap-2 mb-4 ml-1")
       p(class="text-slate-400 text-[15px] font-semibold mb-2") gamepad supported
       div(class="-mt-[15px] -ml-[5px]")
-        img(
-          class="opacity-[.85]"
-          :src="ASSETS.webps['gamepad']"
-          draggable="false"
-          class="w-[60px] saturate-[.2]"
-        )
-  transition: div(
+        img(class="opacity-[.85]"
+        :src="ASSETS.webps['gamepad']"
+        draggable="false"
+        class="w-[60px] saturate-[.2]")
+  tn: div(
     class="absolute w-full h-full bg-slate-800"
-    v-show="!CONTEXT.echo.loading"
+    v-show="!GLOBAL.loading"
   )
 </template>

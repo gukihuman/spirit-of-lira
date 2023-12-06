@@ -69,5 +69,6 @@ class GukiConfig {
     transitionSpeed: 700,
     skipDelay: 300,
   }
+  shadow_alpha = 0.12
 }
 export const CONFIG = new GukiConfig()

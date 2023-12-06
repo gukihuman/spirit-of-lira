@@ -1,5 +1,5 @@
 <template lang="pug">
-div(@click="CONTEXT.set('world', 'interface', 'settings', context)"
+div(@click="handleClick"
 class="relative w-[250px] h-[85px] overflow-hidden transition-all duration-[200ms] ease-in-out z-50" :class="tab_style")
   div(class="mt-[-15px] w-full h-full")
     img(mark="settings-tab-bg" draggable="false"
@@ -16,6 +16,10 @@ class="relative w-[250px] h-[85px] overflow-hidden transition-all duration-[200m
 </template>
 <script setup lang="ts">
 const props = defineProps(["context"]) // SETTINGS.context_list
+const handleClick = () => {
+  if (SETTINGS.echo.editHotkeyMode) return
+  CONTEXT.set("world", "interface", "settings", props.context)
+}
 let inactive = computed(() => {
   return !CONTEXT.echo.world?.interface?.settings?.[props.context]
 })

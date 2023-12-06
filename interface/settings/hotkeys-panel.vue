@@ -2,19 +2,19 @@
 div(v-if="resolve_show_panel"
 class="absolute w-full h-full flex justify-center")
   div(mark="hotkeys-column"
-    v-for="(column, columnIndex) in columns" :key="columnIndex"
-    class="w-[580px] h-[620px] flex flex-col items-center mx-[-25px]")
+  v-for="(column, columnIndex) in columns" :key="columnIndex"
+  class="w-[580px] h-[620px] flex flex-col items-center mx-[-25px]")
     div(mark="hotkeys-setting"
-      v-for="(events, setting, rowIndex) in column" key="rowIndex"
-      class="w-[580px] h-[100px]")
+    v-for="(events, setting, rowIndex) in column" key="rowIndex"
+    class="w-[580px] h-[100px]")
       tn: settings-frame(mark="settings-frame"
-        v-if="resolveFocus(columnIndex, rowIndex)" class="w-[580px]")
+      v-if="resolveFocus(columnIndex, rowIndex)" class="w-[580px]")
       div(class="absolute w-fit h-fit z-[10]")
         settings-scroll(mark="settings-scroll"
-          class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]")
+        class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]")
         p(mark="hotkeys-title"
-          class="text-royal-brown text-[22px] font-bold"
-          class="z-[20] ml-[125px] mt-[53px]") {{ setting }}
+        class="text-royal-brown text-[22px] font-bold"
+        class="z-[20] ml-[125px] mt-[53px]") {{ setting }}
         div(@click="handleClick(columnIndex, rowIndex)"
         class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out" :class="button_class")
           tn: hotkey-icon(mark="buttonIcon" :device="props.device"
@@ -24,17 +24,17 @@ class="absolute w-full h-full flex justify-center")
         tn: hotkey-icon(inputEvent="editHotkey" class="left-[450px] top-[48px]"
           v-if="resolve_show_button_icon(columnIndex, rowIndex)")
   p(mark="hotkeys-message"
-    v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.editHotkeyMode"
-    class="text-tan bottom-[20px] text-[22px] font-semibold"
-    class="absolute opacity-[0.8]") keyboard edit activated by gamepad, keyboard press is needed
+  v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.editHotkeyMode"
+  class="text-tan bottom-[20px] text-[22px] font-semibold"
+  class="absolute opacity-[0.8]") keyboard edit activated by gamepad, keyboard press is needed
   p(mark="hotkeys-message"
-    v-if="SETTINGS.echo.preventEditHotkeyMode === 'empty_action'"
-    class="text-tan bottom-[20px] text-[22px] font-semibold"
-    class="absolute opacity-[0.8]") this button is reserved for main action
+  v-if="SETTINGS.echo.preventEditHotkeyMode === 'empty_action'"
+  class="text-tan bottom-[20px] text-[22px] font-semibold"
+  class="absolute opacity-[0.8]") this button is reserved for main action
   p(mark="hotkeys-message"
-    v-if="SETTINGS.echo.preventEditHotkeyMode === 'cast_only'"
-    class="text-tan bottom-[20px] text-[22px] font-semibold"
-    class="absolute opacity-[0.8]") Up, Down, Left, Right, RB, LB can be used only with Cast
+  v-if="SETTINGS.echo.preventEditHotkeyMode === 'cast_only'"
+  class="text-tan bottom-[20px] text-[22px] font-semibold"
+  class="absolute opacity-[0.8]") Up, Down, Left, Right, RB, LB can be used only with Cast
 </template>
 <script setup lang="ts">
 const props = defineProps({ device: { type: String } }) // keyboard | gamepad

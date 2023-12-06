@@ -1,15 +1,11 @@
 <template lang="pug">
-
-transition: div(
-  ref="viewport"
-  class="absolute transition duration-[200ms] opacity-100"
-  :class="classes"
-)
-
+div(ref="viewport" :class="class_object"
+  v-show="CONTEXT.echo.world || CONTEXT.echo.scene"
+  class="absolute transition duration-[200ms] opacity-100")
 </template>
 <script setup lang="ts">
 const viewport = ref(null)
-const classes = computed(() => {
+const class_object = computed(() => {
   return {
     blur: CONTEXT.echo.world?.interface,
     "opacity-0": CONTEXT.echo.scene,

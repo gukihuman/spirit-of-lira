@@ -49,12 +49,13 @@ const activeScene: activeScene = {
       this.updateData()
     }, "SCENE_ACTIVE")
 
-    // this is alternative to startScene event at start (also no transition)
-    if (!PROGRESS.scenes.includes("a0")) {
-      CONTEXT.set("scene")
-      this.name = "a0-adult-check"
-      EVENTS.emitSingle("continue") // trigger choices appearance :)
-    }
+    // // this is alternative to startScene event at start (also no transition)
+    // if (!PROGRESS.scenes.includes("a0")) {
+    //   CONTEXT.set("scene")
+    //   setTimeout(() => CONTEXT.set("scene"), 20)
+    //   this.name = "a0-adult-check"
+    //   EVENTS.emitSingle("continue") // trigger choices appearance :)
+    // }
     EVENTS.on("startScene", (options) => {
       if (!options.name) return
       CONTEXT.set("scene")
@@ -65,17 +66,36 @@ const activeScene: activeScene = {
         setTimeout(() => EVENTS.emitSingle("continue"), 20)
       }
     })
-    EVENTS.onSingle("quitScene", () => {
-      CONTEXT.set("world")
-      this.name = ""
+    EVENTS.onSingle("skipScene", () => {
+      if (this.name === "a0-adult-check") return
+      EVENTS.emitSingle("endScene")
     })
     EVENTS.onSingle("endScene", () => {
       if (!PROGRESS.scenes.includes(this.name.split("-")[0])) {
         PROGRESS.scenes.push(this.name.split("-")[0])
       }
+      SH.resetDestination()
       SAVE.update()
       CONTEXT.set("world")
       setTimeout(() => (this.name = ""), 1000)
+    })
+    EVENTS.onSingle("resolveAdultCheckEndScene", () => {
+      if (!PROGRESS.scenes.includes("n1")) {
+        if (!PROGRESS.scenes.includes(this.name.split("-")[0])) {
+          PROGRESS.scenes.push(this.name.split("-")[0])
+        }
+        SAVE.update()
+        CONTEXT.set("empty")
+        setTimeout(() => {
+          this.name = "" // some styling binded to scene name
+          EVENTS.emit("startScene", { name: "n1-start" })
+        }, 500)
+      } else EVENTS.emitSingle("endScene")
+    })
+
+    EVENTS.onSingle("keepAdultCheck", () => {
+      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "a0"), 20)
+      SAVE.update()
     })
     EVENTS.onSingle("mouseContinue", () => {
       if (this.showChoiceBox) return // handled by direct click event on choice
@@ -119,7 +139,7 @@ const activeScene: activeScene = {
         }
         this.focusedChoiceIndex = possibleIndex
       }
-      if (this.focusedChoiceIndex === null) return
+      if (step.choices.length > 0 && this.focusedChoiceIndex === null) return
       if (nextStep) {
         if (nextStep.text !== step.text) this.showText = false
         let delay = 50
@@ -143,10 +163,6 @@ const activeScene: activeScene = {
         this.stepIndex = -1
         this.name = this.nextSceneName
       }
-    })
-    EVENTS.onSingle("keepAdultCheck", () => {
-      setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "a0"), 20)
-      SAVE.update()
     })
   },
   runChoiceEvent(step) {

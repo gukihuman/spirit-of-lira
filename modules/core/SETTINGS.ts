@@ -48,17 +48,17 @@ class Settings {
       // toggleInventory: "B",
       toggleSettings: "Menu",
       quitInterface: "B",
-      editHotkey: "A",
+      editHotkey: "A", // action
     },
   }
   worldInputEvents = {
     keyboard: {
-      talk: "e", // primeary
-      reset: "e", // primary
-      cast1: " ",
+      talk: " ", // action
+      reset: " ", // action
+      cast1: "e",
       cast2: "",
       cast3: "",
-      autoMove: "q",
+      autoMove: "w",
       toggleFullscreen: "f",
       // toggleInventory: "i",
       toggleSettings: "r",
@@ -68,8 +68,8 @@ class Settings {
       lockTarget: 2,
     },
     gamepad: {
-      talk: "A",
-      reset: "A",
+      talk: "A", // action
+      reset: "A", // action
       cast1: "X",
       cast2: "",
       cast3: "",
@@ -81,19 +81,18 @@ class Settings {
   }
   sceneInputEvents = {
     keyboard: {
-      continue: "e", // Space
-      quitScene: "q",
+      continue: " ", // action
+      skipScene: "q",
       toggleFullscreen: "f",
       previousOption: "ArrowDown",
       nextOption: "ArrowUp",
     },
     mouse: {
       mouseContinue: 0,
-      quitScene: 2,
     },
     gamepad: {
-      continue: "A",
-      quitScene: "B",
+      continue: "A", // action
+      skipScene: "B",
       toggleFullscreen: "Start",
       previousOption: "Down",
       nextOption: "Up",
@@ -107,7 +106,7 @@ class Settings {
   gamepad = {
     leftColumn: {
       Action: ["talk", "reset", "continue", "editHotkey"],
-      Close: ["quitScene", "quitInterface"],
+      Close: ["skipScene", "quitInterface"],
       Cast: ["cast1"],
     },
     rightColumn: {
@@ -118,7 +117,7 @@ class Settings {
   keyboard = {
     leftColumn: {
       Action: ["talk", "reset", "continue"],
-      Close: ["quitScene", "quitInterface"],
+      Close: ["skipScene", "quitInterface"],
       Cast: ["cast1"],
     },
     rightColumn: {

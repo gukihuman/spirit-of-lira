@@ -62,6 +62,7 @@ class Scene {
         // choice lines doesnt immideately create a step, this is where we push step with all collected choices and previous text
         let createChoiceStep = () => {
           if (step.choices.length > 0) {
+            _.reverse(step.choices)
             this.steps[key].push(_.cloneDeep(step))
             step.choices = []
           }

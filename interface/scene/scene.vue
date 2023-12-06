@@ -10,8 +10,13 @@ div(v-show="CONTEXT.echo.scene" class="z-30 relative")
     dialogue(layer="layerTwo")
   div(:style="style" class="absolute left-[35px] top-[1005px] flex gap-10"
     v-if="SCENE_ACTIVE.name !== 'a0-adult-check'")
-    quitScene
+    skipScene
     navigate
+  tn: div(mark="button-fullscreen"
+  v-if="SCENE_ACTIVE.name !== 'a0-adult-check'"
+  class="absolute top-[7px] right-[7px] saturate-[0.4] opacity-[0.8]")
+    gbutton(type="fullscreen"
+    :icon_hue="160 + SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].hue")
 
   div(mark="adult-check-bg"
     v-if="SCENE_ACTIVE.name === 'a0-adult-check' && SCENE_ACTIVE.stepIndex < 2"

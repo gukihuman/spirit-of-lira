@@ -1,7 +1,7 @@
 <template lang="pug">
 fullscreen(mark="fullscreen")
   loading(mark="loading")
-  tn: game-window(mark="game-window" :class="classObject")
+  tn(type="long"): game-window(mark="game-window" :class="classObject")
     viewport(mark="viewport")
     tn: overlay(mark="overlay")
     tn: inventory(mark="inventory")
@@ -51,6 +51,9 @@ const classObject = computed(() => {
 .default-enter-from,
 .default-leave-to {
   opacity: 0;
+}
+body {
+  background-color: #1e293b;
 }
 /* disable scrollbar */
 ::-webkit-scrollbar {

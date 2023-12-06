@@ -1,5 +1,6 @@
 <template lang="pug">
-div(class="absolute z-10 overflow-hidden w-full h-full")
+div(class="absolute z-10 overflow-hidden w-full h-full"
+v-show="CONTEXT.echo.world")
   div(v-show="CONTEXT.echo.world.gameplay")
     float-damage(mark="float-damage" v-if="INTERFACE.floatDamage")
     tn: talk(mark="talk" v-show="INTERFACE.talk")

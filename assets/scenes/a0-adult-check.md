@@ -1,8 +1,8 @@
 # a0-solid-dark
 
+> I'm an adult. Let's start. {keepAdultCheck, resolveAdultCheckEndScene}
+> Sure, I'm 18+. Don't ask again. {resolveAdultCheckEndScene}
 > Damn, I'll come back later.
-> Sure, I'm 18+. Don't ask again. {endScene}
-> I'm an adult. Let's start. {keepAdultCheck, endScene}
 
 
 

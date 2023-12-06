@@ -65,8 +65,7 @@ class Dead {
       if (timeTillRemove < 500) {
         entity.POSITION.y += 0.5 * (60 / LOOP.fps)
       }
-      // 0.08 is defaul shadow alpha
-      shadow.alpha = (timeTillRemove / 500) * 0.08
+      shadow.alpha = (timeTillRemove / 500) * CONFIG.shadow_alpha
     })
   }
 }
