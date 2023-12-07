@@ -15,8 +15,6 @@ class Last {
     for (const name of CONFIG.modules) {
       const module = globalThis[name]
       if (module.lastCheck && module.last) {
-        // 📜 remove if not needed
-        // Object.getOwnPropertyNames(module.last).forEach((key) => {
         module.lastCheck.forEach((key) => {
           if (key === "echo") {
             // getOwnPropertyNams includes getters and setters

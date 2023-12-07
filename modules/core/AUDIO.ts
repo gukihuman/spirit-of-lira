@@ -40,6 +40,21 @@ class Aud {
     })
   }
 
+  river_positions: Position[] = [
+    { x: 7166, y: 7133 },
+    { x: 7424, y: 7163 },
+    { x: 7638, y: 6955 },
+    { x: 7840, y: 6695 },
+    { x: 7956, y: 6431 },
+    { x: 8005, y: 6169 },
+    { x: 8177, y: 5931 },
+    { x: 8226, y: 5701 },
+    { x: 6897, y: 7555 },
+    { x: 6695, y: 7731 },
+    { x: 6484, y: 7870 },
+    { x: 6230, y: 7955 },
+    { x: 5959, y: 8017 },
+  ]
   startIdleMobs() {
     if (!CONTEXT.echo.world) return
     MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {

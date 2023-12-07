@@ -16,6 +16,22 @@ class Dead {
       const container = SPRITE.getContainer(SH.heroId)
       if (!container) return
       container.setParent(WORLD.sortable)
+      container.alpha = 0
+      const fadeInStart = 100 // otherwise there is a dead state flickers
+      const fadeInDuration = 500
+      const totalDuration = fadeInStart + fadeInDuration
+      const updateInterval = 7
+      let elapsed = 0
+      const intervalId = setInterval(() => {
+        elapsed += updateInterval
+        if (elapsed > fadeInStart && elapsed < totalDuration) {
+          const fractionComplete = (elapsed - fadeInStart) / fadeInDuration
+          container.alpha = fractionComplete
+        } else if (elapsed > totalDuration) {
+          container.alpha = 1
+          clearInterval(intervalId)
+        }
+      }, 7)
       SPRITE.fillWeaponLayers()
     })
   }
