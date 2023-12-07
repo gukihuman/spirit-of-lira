@@ -40,7 +40,6 @@ const inter: Inter = {
   heroMaxHealth: 0,
   heroEnergy: 0,
   heroMaxEnergy: 0,
-  reset: false,
   process() {
     if (CONTEXT.echo.scene) this.overlay = false
     else this.overlay = true

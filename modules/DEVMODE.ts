@@ -11,6 +11,8 @@ class DevMode {
         console.log(WORLD.hover)
       }
       globalThis.reset = () => SAVE.reset()
+      globalThis.kill = () => (SH.hero.ATTRIBUTES.health -= Infinity)
+
       globalThis.log = () => {
         return INTERFACE.damageOverlays
       }

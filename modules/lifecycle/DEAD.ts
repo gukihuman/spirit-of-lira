@@ -1,7 +1,7 @@
 class Dead {
   init() {
     EVENTS.onSingle("reset", () => {
-      if (SH.hero.STATE.active !== "dead") return
+      if (SH.hero.STATE.active !== "dead" || !GLOBAL.reset) return
       SH.hero.STATE.cast = false
       SH.hero.STATE.track = false
       SH.hero.STATE.idle = true
@@ -12,7 +12,7 @@ class Dead {
       SH.hero.TARGET.id = null
       SH.hero.TARGET.locked = false
       SH.resetDestination()
-      INTERFACE.reset = false
+      GLOBAL.reset = false
       const container = SPRITE.getContainer(SH.heroId)
       if (!container) return
       container.setParent(WORLD.sortable)
@@ -42,12 +42,12 @@ class Dead {
       entity.TARGET.id = null
       entity.TARGET.locked = false
       SPRITE.emptyWeaponLayers()
-      INTERFACE.reset = true
       const lastEntity = LAST.entities.get(id)
       if (
         entity.STATE.active === "dead" &&
         lastEntity.STATE.active !== "dead"
       ) {
+        setTimeout(() => (GLOBAL.reset = true), 2500)
         SAVE.update()
         setTimeout(() => {
           if (entity.STATE.active !== "dead") return
