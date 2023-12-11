@@ -18,5 +18,5 @@ v-show="GAME_STATE.echo.world")
     v-if="GLOBAL.lastActiveDevice === 'gamepad'"
     class="absolute w-[100px] h-[100px] bottom-[20px] left-[45px]"
     class="flex items-center justify-center")
-    img(:src="ASSETS.webps.gamepad" draggable="false")
+    img(:src="ASSETS.webp_paths.gamepad" draggable="false")
 </template>

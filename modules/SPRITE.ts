@@ -80,7 +80,7 @@ class Spr {
             if (_.random() > 0.5) animation.scale.x = -1
         }
         const animation = this.getLayer(id, "animation")
-        const webpImage = ASSETS.webps[entity.name]
+        const webpImage = ASSETS.webp_paths[entity.name]
         if (!animation || !webpImage) return
         const texture = PIXI.Texture.from(webpImage)
         const sprite = new PIXI.Sprite(texture)

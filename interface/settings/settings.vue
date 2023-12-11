@@ -3,7 +3,7 @@ div(v-show="GAME_STATE.echo.world?.interface?.settings" class="z-30")
   div(mark="settings-dim"
   class="absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900")
   img(mark="settings-bg" draggable="false"
-  :src="ASSETS.webps['settings-bg']" class="absolute")
+  :src="ASSETS.webp_paths['settings-bg']" class="absolute")
   tn: div(mark="settings-gamepad-icons"
   v-if="GLOBAL.lastActiveDevice === 'gamepad'")
     hotkey-icon(static="LB" class="left-[390px] top-[145px]")

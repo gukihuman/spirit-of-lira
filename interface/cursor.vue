@@ -1,26 +1,16 @@
 <template lang="pug">
-div(
-  class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none" :style="cursorStyle"
-  v-if="GLOBAL.firstUserGesture"
-  )
-  img(
-      v-show="cursor"
-      :src="ASSETS.webps.cursor"
-      draggable="false"
-      class="absolute"
-    )
-  img(
-      v-show="cursorNo"
-      :src="ASSETS.webps['cursor-no']"
-      draggable="false"
-      class="absolute"
-    )
-  img(
-      v-show="cursorCast"
-      :src="ASSETS.webps['cursor-cast']"
-      draggable="false"
-      class="absolute"
-    )
+div(v-if="GLOBAL.firstUserGesture"
+:style="cursorStyle"
+class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none")
+    img(v-show="cursor"
+        :src="ASSETS.get_webp_path('cursor')"
+        draggable="false" class="absolute")
+    img(v-show="cursorNo"
+        :src="ASSETS.get_webp_path('cursor-no')"
+        draggable="false" class="absolute")
+    img(v-show="cursorCast"
+        :src="ASSETS.get_webp_path('cursor-cast')"
+        draggable="false" class="absolute")
 </template>
 <script setup lang="ts">
 const cursorStyle = computed(() => {

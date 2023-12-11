@@ -23,7 +23,7 @@ div(
             v-if="choice.arrow"
             class="scale-[1] m-[2px]"
             draggable="false"
-            :src="ASSETS.webps['arrow-icon']"
+            :src="ASSETS.webp_paths['arrow-icon']"
             )
         //- bulb icons
         div(
@@ -34,13 +34,13 @@ div(
             v-if="PROGRESS.scenes.includes(choice.bulbScene)"
             class="scale-[1] m-[2px]"
             draggable="false"
-            :src="ASSETS.webps['bulb-scene-on']"
+            :src="ASSETS.webp_paths['bulb-scene-on']"
             )
           img(
             v-if="!PROGRESS.scenes.includes(choice.bulbScene)"
             class="scale-[1] m-[2px]"
             draggable="false"
-            :src="ASSETS.webps['bulb-scene-off']"
+            :src="ASSETS.webp_paths['bulb-scene-off']"
             )
         //- focus frame
         transition(type="fast"): focus-frame(:index="index")

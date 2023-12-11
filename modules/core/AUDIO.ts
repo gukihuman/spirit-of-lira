@@ -2,14 +2,15 @@ type AudioType = "sound" | "music"
 type Echo = { state: AudioContextState }
 const sound_amplifier = 1.5
 const music_amplifier = 1.4
-const average_silence_sec = 40 // between music in world gameplay
+const average_silence_sec = 40 // between music at world.gameplay
 class Audio {
+    echo: Echo = { state: "suspended" }
     private context: AudioContext | null = null
     private sound_gain: GainNode | null = null
     private music_gain: GainNode | null = null
-    private audioBuffers: { [key: string]: AudioBuffer } = {}
+    private buffers: { [key: string]: AudioBuffer } = {}
     private sources: { [key: string]: AudioBufferSourceNode } = {}
-    private musicPlaying = false
+    private music_playing = false
     private initialMusicPlayed = false
     private initialN1MusicPlayed = false
     private all_idle_ids: string[] = []
@@ -20,18 +21,18 @@ class Audio {
     async init() {
         this.context = new AudioContext()
         this.sound_gain = this.context.createGain()
-        this.sound_gain.connect(this.context.destination)
         this.music_gain = this.context.createGain()
+        this.sound_gain.connect(this.context.destination)
         this.music_gain.connect(this.context.destination)
-        for (const name in ASSETS.audios) {
-            const response = await fetch(ASSETS.audios[name])
+        for (const [file_name, mp3_path] of _.entries(ASSETS.mp3_paths)) {
+            const response = await fetch(mp3_path)
             const arrayBuffer = await response.arrayBuffer()
             const audioBuffer = await this.context.decodeAudioData(arrayBuffer)
-            this.audioBuffers[name] = audioBuffer
+            this.buffers[file_name] = audioBuffer
         }
         EVENTS.onSingle("sceneContextChanged", () => {
             this.stop(this.currentMusicId, 1000, "music")
-            this.musicPlaying = false
+            this.music_playing = false
             this.initialN1MusicPlayed = false
 
             this.all_idle_ids.forEach((id) => this.stop(id))
@@ -67,7 +68,6 @@ class Audio {
             }
         })
     }
-    echo: Echo = { state: "suspended" }
     process() {
         if (!this.context || !this.sound_gain || !this.music_gain) return
 
@@ -83,7 +83,7 @@ class Audio {
         this.startIdleMobs()
         this.sound_gain.gain.value = SETTINGS.general.sound * sound_amplifier
         this.music_gain.gain.value = SETTINGS.general.music * music_amplifier
-        if (!this.musicPlaying && GAME_STATE.echo.world) {
+        if (!this.music_playing && GAME_STATE.echo.world) {
             if (!this.initialMusicPlayed) {
                 this.currentMusicId = this.play("green-forest-1", 0, "music")
                 if (this.currentMusicId) this.initialMusicPlayed = true
@@ -92,7 +92,7 @@ class Audio {
             if (Math.random() > 1 / average_silence_sec) return // once per second
             this.currentMusicId = this.play("green-forest", 0, "music")
         }
-        if (!this.musicPlaying && GAME_STATE.echo.scene) {
+        if (!this.music_playing && GAME_STATE.echo.scene) {
             if (scene_name === "n1") {
                 if (!this.initialN1MusicPlayed) {
                     this.currentMusicId = this.play("n-1", 0, "music")
@@ -110,15 +110,15 @@ class Audio {
             this.currentMusicId = this.play(scene_name, 0, "music")
         }
     }
-    play(name, delay = 0, type: AudioType = "sound") {
+    play(name: string, delay = 0, type: AudioType = "sound") {
         if (!this.context || !this.sound_gain || !this.music_gain) return
 
-        const matching_buffers = _.filter(this.audioBuffers, (buffer, key) =>
+        const matching_buffers = _.filter(this.buffers, (buffer, key) =>
             key.includes(name)
         )
         if (_.isEmpty(matching_buffers)) return
         if (type === "music" && this.currentMusicId) return
-        if (type === "music") this.musicPlaying = true
+        if (type === "music") this.music_playing = true
         const source = this.context.createBufferSource()
         const buffer = _.sample(matching_buffers)
         if (!buffer) return
@@ -134,12 +134,14 @@ class Audio {
         if (type === "music")
             source.onended = () => {
                 this.currentMusicId = undefined
-                this.musicPlaying = false
+                this.music_playing = false
             }
         source.start(this.context.currentTime + delay / 1000) // Add delay
         return id
     }
     stop(id, fadeDuration = 100, type = "sound") {
+        if (!this.context || !this.sound_gain || !this.music_gain) return
+
         if (!this.sources[id]) return
         const gainNode = this.context.createGain()
         if (type === "sound") this.sources[id].disconnect(this.sound_gain)

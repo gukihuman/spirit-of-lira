@@ -3,7 +3,7 @@ div
   img(
       v-for="(value, index) in SCENE_ACTIVE[props.layer].images"
       :key="index"
-      :src="ASSETS.webps[value]"
+      :src="ASSETS.webp_paths[value]"
       draggable="false"
       class="absolute -z-10"
     )

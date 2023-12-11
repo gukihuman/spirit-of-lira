@@ -9,7 +9,7 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
       p(class="text-slate-400 text-[15px] font-semibold mb-2")
         | gamepad supported
       div(class="-mt-[15px] -ml-[5px]")
-        img(:src="ASSETS.webps['gamepad']" draggable="false"
+        img(:src="ASSETS.webp_paths['gamepad']" draggable="false"
         class="opacity-[.85] w-[60px] saturate-[.2]")
 
   //- used to cover loading above after its ended

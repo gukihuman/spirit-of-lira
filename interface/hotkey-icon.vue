@@ -35,23 +35,23 @@ const image = computed(() => {
             hotkey.includes("Left") ||
             hotkey.includes("Up")
         ) {
-            return ASSETS.webps["gamepad-cross"]
+            return ASSETS.get_webp_path("gamepad-cross")
         }
-        if (hotkey.includes("LB")) return ASSETS.webps["gamepad-lb"]
-        if (hotkey.includes("RB")) return ASSETS.webps["gamepad-rb"]
-        if (hotkey.includes("LT")) return ASSETS.webps["gamepad-lt"]
-        if (hotkey.includes("RT")) return ASSETS.webps["gamepad-rt"]
-        if (hotkey.includes("LS")) return ASSETS.webps["gamepad-ls"]
-        if (hotkey.includes("RS")) return ASSETS.webps["gamepad-rs"]
-        if (hotkey.includes("Start")) return ASSETS.webps["gamepad-start"]
-        if (hotkey.includes("Menu")) return ASSETS.webps["gamepad-menu"]
-        return ASSETS.webps["gamepad-empty"]
+        if (hotkey.includes("LB")) return ASSETS.get_webp_path("gamepad-lb")
+        if (hotkey.includes("RB")) return ASSETS.get_webp_path("gamepad-rb")
+        if (hotkey.includes("LT")) return ASSETS.get_webp_path("gamepad-lt")
+        if (hotkey.includes("RT")) return ASSETS.get_webp_path("gamepad-rt")
+        if (hotkey.includes("LS")) return ASSETS.get_webp_path("gamepad-ls")
+        if (hotkey.includes("RS")) return ASSETS.get_webp_path("gamepad-rs")
+        if (hotkey.includes("Start")) return ASSETS.get_webp_path("gamepad-start")
+        if (hotkey.includes("Menu")) return ASSETS.get_webp_path("gamepad-menu")
+        return ASSETS.get_webp_path("gamepad-empty")
     } else {
         if (hotkey.includes("Arrow")) {
-            return ASSETS.webps["keyboard-arrow"]
+            return ASSETS.get_webp_path("keyboard-arrow")
         }
-        if (textMap[hotkey]) return ASSETS.webps["keyboard-empty-wide"]
-        return ASSETS.webps["keyboard-empty"]
+        if (textMap[hotkey]) return ASSETS.get_webp_path("keyboard-empty-wide")
+        return ASSETS.get_webp_path("keyboard-empty")
     }
 })
 const imageClass = computed(() => {

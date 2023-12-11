@@ -10,7 +10,7 @@ div(
     @mouseleave="INTERFACE.buttonHover = false"
     )
     img(
-      :src="ASSETS.webps.talk"
+      :src="ASSETS.webp_paths.talk"
       draggable="false"
       class="absolute object-none"
     )
@@ -19,9 +19,9 @@ div(
 </template>
 <script setup lang="ts">
 const style = computed(() => {
-  return {
-    left: INTERFACE.talkPosition.x + "px",
-    top: INTERFACE.talkPosition.y + "px",
-  }
+    return {
+        left: INTERFACE.talkPosition.x + "px",
+        top: INTERFACE.talkPosition.y + "px",
+    }
 })
 </script>

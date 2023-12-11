@@ -9,7 +9,7 @@ div(
     @mouseleave="INTERFACE.buttonHover = false"
     )
     img(
-      :src="ASSETS.webps.talk"
+      :src="ASSETS.webp_paths.talk"
       draggable="false"
       class="absolute object-none"
     )
