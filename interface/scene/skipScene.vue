@@ -10,7 +10,7 @@ div(
     )
     p(
       class="absolute z-10 text-tan text-[23px] mt-[6px] font-semibold mb-2 points-events-none transition duration-1000 ease-in-out opacity-[1]"
-      :class="CONTEXT.echo.scene ? { 'hue-rotate-180': true } : {}"
+      :class="GAME_STATE.echo.scene ? { 'hue-rotate-180': true } : {}"
     ) Skip
   hotkey-icon(class="top-[10px] left-[66px]" inputEvent="skipScene")
 </template>

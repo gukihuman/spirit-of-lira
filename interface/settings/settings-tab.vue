@@ -17,23 +17,23 @@ class="relative w-[250px] h-[85px] overflow-hidden transition-all duration-[200m
 <script setup lang="ts">
 const props = defineProps(["context"]) // SETTINGS.context_list
 const handleClick = () => {
-  if (SETTINGS.echo.editHotkeyMode) return
-  CONTEXT.set("world", "interface", "settings", props.context)
+    if (SETTINGS.echo.editHotkeyMode) return
+    GAME_STATE.set("world", "interface", "settings", props.context)
 }
 let inactive = computed(() => {
-  return !CONTEXT.echo.world?.interface?.settings?.[props.context]
+    return !GAME_STATE.echo.world?.interface?.settings?.[props.context]
 })
 const tab_style = computed(() => {
-  return {
-    "opacity-[0.5]": inactive.value,
-    "hover:brightness-[1.15]": inactive.value,
-    "hover:opacity-[0.6]": inactive.value,
-  }
+    return {
+        "opacity-[0.5]": inactive.value,
+        "hover:brightness-[1.15]": inactive.value,
+        "hover:opacity-[0.6]": inactive.value,
+    }
 })
 const list_style = computed(() => {
-  return { "mt-[-12px]": inactive.value }
+    return { "mt-[-12px]": inactive.value }
 })
 const text_style = computed(() => {
-  return { "mt-[-24px]": inactive.value }
+    return { "mt-[-24px]": inactive.value }
 })
 </script>

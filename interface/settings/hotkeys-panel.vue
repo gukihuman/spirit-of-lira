@@ -39,64 +39,70 @@ class="absolute w-full h-full flex justify-center")
 <script setup lang="ts">
 const props = defineProps({ device: { type: String } }) // keyboard | gamepad
 const handleClick = (columnIndex, rowIndex) => {
-  if (!CONTEXT.echo.world?.interface?.settings?.keyboard) return
-  SETTINGS.echo.focus.columnIndex = columnIndex
-  SETTINGS.echo.focus.rowIndex = rowIndex
-  EVENTS.emitSingle("editHotkey")
+    if (!GAME_STATE.echo.world?.interface?.settings?.keyboard) return
+    SETTINGS.echo.focus.columnIndex = columnIndex
+    SETTINGS.echo.focus.rowIndex = rowIndex
+    EVENTS.emitSingle("editHotkey")
 }
 const button_class = computed(() => {
-  const condition = CONTEXT.echo.world?.interface?.settings?.keyboard
-  return {
-    "hover:scale-[1.1] hover:brightness-125": condition,
-  }
+    const condition = GAME_STATE.echo.world?.interface?.settings?.keyboard
+    return {
+        "hover:scale-[1.1] hover:brightness-125": condition,
+    }
 })
 const resolveEvent = computed(() => {
-  return (columnIndex, rowIndex, setting) => {
-    let columns = [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
-    if (props.device === "keyboard") {
-      columns = [SETTINGS.keyboard.leftColumn, SETTINGS.keyboard.rightColumn]
+    return (columnIndex, rowIndex, setting) => {
+        let columns = [
+            SETTINGS.gamepad.leftColumn,
+            SETTINGS.gamepad.rightColumn,
+        ]
+        if (props.device === "keyboard") {
+            columns = [
+                SETTINGS.keyboard.leftColumn,
+                SETTINGS.keyboard.rightColumn,
+            ]
+        }
+        const events = columns[columnIndex][setting]
+        return events[0]
     }
-    const events = columns[columnIndex][setting]
-    return events[0]
-  }
 })
 const resolve_show_button_icon = computed(() => {
-  return (columnIndex, rowIndex, button = false) => {
-    if (!SETTINGS.echo.showButtonIcon) return
-    if (GLOBAL.lastActiveDevice !== "gamepad" && !button) return false
-    if (!button) {
-      return (
-        SETTINGS.echo.focus.columnIndex === columnIndex &&
-        SETTINGS.echo.focus.rowIndex === rowIndex
-      )
+    return (columnIndex, rowIndex, button = false) => {
+        if (!SETTINGS.echo.showButtonIcon) return
+        if (GLOBAL.lastActiveDevice !== "gamepad" && !button) return false
+        if (!button) {
+            return (
+                SETTINGS.echo.focus.columnIndex === columnIndex &&
+                SETTINGS.echo.focus.rowIndex === rowIndex
+            )
+        }
+        if (button && SETTINGS.echo.editHotkeyMode) {
+            return (
+                SETTINGS.echo.focus.columnIndex !== columnIndex ||
+                SETTINGS.echo.focus.rowIndex !== rowIndex
+            )
+        }
+        return true
     }
-    if (button && SETTINGS.echo.editHotkeyMode) {
-      return (
-        SETTINGS.echo.focus.columnIndex !== columnIndex ||
-        SETTINGS.echo.focus.rowIndex !== rowIndex
-      )
-    }
-    return true
-  }
 })
 const resolve_show_panel = computed(() => {
-  if (!SETTINGS.echo.show_panel) return
-  if (props.device === "keyboard") {
-    return CONTEXT.echo.world?.interface?.settings?.keyboard
-  } else return CONTEXT.echo.world?.interface?.settings?.gamepad
+    if (!SETTINGS.echo.show_panel) return
+    if (props.device === "keyboard") {
+        return GAME_STATE.echo.world?.interface?.settings?.keyboard
+    } else return GAME_STATE.echo.world?.interface?.settings?.gamepad
 })
 const resolveFocus = computed(() => {
-  return (columnIndex, rowIndex) => {
-    return (
-      SETTINGS.echo.focus.columnIndex === columnIndex &&
-      SETTINGS.echo.focus.rowIndex === rowIndex
-    )
-  }
+    return (columnIndex, rowIndex) => {
+        return (
+            SETTINGS.echo.focus.columnIndex === columnIndex &&
+            SETTINGS.echo.focus.rowIndex === rowIndex
+        )
+    }
 })
 const columns = computed(() => {
-  if (props.device === "keyboard") {
-    return [SETTINGS.keyboard.leftColumn, SETTINGS.keyboard.rightColumn]
-  }
-  return [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
+    if (props.device === "keyboard") {
+        return [SETTINGS.keyboard.leftColumn, SETTINGS.keyboard.rightColumn]
+    }
+    return [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
 })
 </script>

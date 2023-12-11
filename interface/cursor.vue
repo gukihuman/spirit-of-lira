@@ -24,36 +24,36 @@ div(
 </template>
 <script setup lang="ts">
 const cursorStyle = computed(() => {
-  const imageOffset = { x: 51, y: 47 }
-  return {
-    left: _.round(GLOBAL.mouseOfScreen.x - imageOffset.x) + "px",
-    top: _.round(GLOBAL.mouseOfScreen.y - imageOffset.y) + "px",
-  }
+    const imageOffset = { x: 51, y: 47 }
+    return {
+        left: _.round(GLOBAL.mouseOfScreen.x - imageOffset.x) + "px",
+        top: _.round(GLOBAL.mouseOfScreen.y - imageOffset.y) + "px",
+    }
 })
 const cursor = computed(() => {
-  if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) return true
-  if (INTERFACE.buttonHover) return true
-  return (
-    !GLOBAL.hoverId &&
-    COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
-  )
+    if (GLOBAL.lastActiveDevice === "gamepad") return false
+    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.scene) return true
+    if (INTERFACE.buttonHover) return true
+    return (
+        !GLOBAL.hoverId &&
+        COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
+    )
 })
 const cursorNo = computed(() => {
-  if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) return false
-  if (INTERFACE.buttonHover) return false
-  return (
-    !GLOBAL.hoverId &&
-    !COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
-  )
+    if (GLOBAL.lastActiveDevice === "gamepad") return false
+    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.scene) return false
+    if (INTERFACE.buttonHover) return false
+    return (
+        !GLOBAL.hoverId &&
+        !COORD.isWalkable(GLOBAL.mousePosition.x, GLOBAL.mousePosition.y, false)
+    )
 })
 const cursorCast = computed(() => {
-  if (GLOBAL.lastActiveDevice === "gamepad") return false
-  if (CONTEXT.echo.world.interface || CONTEXT.echo.scene) {
-    return false
-  }
-  if (INTERFACE.buttonHover) return false
-  return GLOBAL.hoverId
+    if (GLOBAL.lastActiveDevice === "gamepad") return false
+    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.scene) {
+        return false
+    }
+    if (INTERFACE.buttonHover) return false
+    return GLOBAL.hoverId
 })
 </script>

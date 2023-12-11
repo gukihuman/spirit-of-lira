@@ -6,14 +6,12 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
       span 18+ only
     p(class="text-slate-300 text-2xl font-semibold mb-4") loading...
     div(class="flex gap-2 mb-4 ml-1")
-      p(class="text-slate-400 text-[15px] font-semibold mb-2") gamepad supported
+      p(class="text-slate-400 text-[15px] font-semibold mb-2")
+        | gamepad supported
       div(class="-mt-[15px] -ml-[5px]")
-        img(class="opacity-[.85]"
-        :src="ASSETS.webps['gamepad']"
-        draggable="false"
-        class="w-[60px] saturate-[.2]")
-  tn: div(
-    class="absolute w-full h-full bg-slate-800"
-    v-show="!GLOBAL.loading"
-  )
+        img(:src="ASSETS.webps['gamepad']" draggable="false"
+        class="opacity-[.85] w-[60px] saturate-[.2]")
+
+  //- used to cover loading above after its ended
+  tn: div(v-show="!GLOBAL.loading" class="absolute w-full h-full bg-slate-800")
 </template>

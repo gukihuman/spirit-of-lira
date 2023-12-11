@@ -5,10 +5,10 @@ type Jsons = { [key: string]: AnyObject }
 // automatically loads from assets folder by load.ts
 class Assets {
   // key is a name of the file
-  // for audios, webps, mds - value is a path to the file
-  mds: Mds = {}
+  // value is a path to the file for audios, webps, mds
   audios: Audios = {}
   webps: Webps = {}
-  jsons: Jsons = {} // for jsons - value is a parsed json object
+  mds: Mds = {}
+  jsons: Jsons = {} // value is a parsed json object for jsons
 }
 export const ASSETS = new Assets()

@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-show="CONTEXT.echo.scene" class="z-30 relative")
+div(v-show="GAME_STATE.echo.scene" class="z-30 relative")
   //- layer one always on - content switched when layer two fully appears
   //- then layer two immidealtly turns off again and preloads next step
   div(mark="layer-one")
@@ -31,28 +31,28 @@ div(v-show="CONTEXT.echo.scene" class="z-30 relative")
 </template>
 <script setup lang="ts">
 const transitionSpeed = computed(() => {
-  return `opacity ${CONFIG.scene.transitionSpeed}ms ease`
+    return `opacity ${CONFIG.scene.transitionSpeed}ms ease`
 })
 const style = computed(() => {
-  return {
-    filter: `
+    return {
+        filter: `
       hue-rotate(${SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].hue}deg) 
       brightness(${SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].brightness})
     `,
-  }
+    }
 })
 </script>
 <style scoped>
 .default-enter-active {
-  transition: v-bind(transitionSpeed);
+    transition: v-bind(transitionSpeed);
 }
 .default-leave-active {
-  transition: opacity 0ms ease;
+    transition: opacity 0ms ease;
 }
 .default-enter-from {
-  opacity: 0;
+    opacity: 0;
 }
 .default-leave-to {
-  opacity: 1;
+    opacity: 1;
 }
 </style>

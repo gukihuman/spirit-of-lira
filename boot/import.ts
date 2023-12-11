@@ -13,10 +13,10 @@ export const _ = lodash
 import * as mathjs from "mathjs"
 export const MATHJS = mathjs
 
-import { v4 as uuidv4 } from "uuid"
-const unique = { string: uuidv4 }
 type Unique = {
   /** @returns unique string like "6d4ca6fc-9dd7-4822-8324-fc5319c2f71" */
   string: () => string
 }
+import { v4 as uuidv4 } from "uuid"
+const unique: Unique = { string: uuidv4 }
 export const UNIQUE: Unique = unique
