@@ -12,7 +12,7 @@ class Audio {
     private musicPlaying = false
     private initialMusicPlayed = false
     private initialN1MusicPlayed = false
-    private allIdleIds: string[] = []
+    private all_idle_ids: string[] = []
     currentMusicId
     scene_name = ""
     last_check = ["scene_name"] // do some type check with last together
@@ -34,8 +34,8 @@ class Audio {
             this.musicPlaying = false
             this.initialN1MusicPlayed = false
 
-            this.allIdleIds.forEach((id) => this.stop(id))
-            this.allIdleIds = []
+            this.all_idle_ids.forEach((id) => this.stop(id))
+            this.all_idle_ids = []
         })
     }
 
@@ -63,7 +63,7 @@ class Audio {
             if (entity.STATE.active === "idle") {
                 const id = this.play(entity.name + "-idle")
                 if (!id) return
-                this.allIdleIds.push(id)
+                this.all_idle_ids.push(id)
             }
         })
     }
