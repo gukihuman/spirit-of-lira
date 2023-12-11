@@ -34,9 +34,7 @@ class Audio {
             this.musicPlaying = false
             this.initialN1MusicPlayed = false
 
-            this.allIdleIds.forEach((id) => {
-                this.stop(id)
-            })
+            this.allIdleIds.forEach((id) => this.stop(id))
             this.allIdleIds = []
         })
     }
