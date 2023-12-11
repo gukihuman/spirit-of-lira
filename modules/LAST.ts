@@ -39,7 +39,7 @@ class Last {
         this.hover = _.cloneDeep(WORLD.hover)
         this.scenePart = SCENE_ACTIVE.part
         this.sceneName = SCENE_ACTIVE.name
-        this.loopSec = LOOP.elapsedSec
+        this.loopSec = LOOP.elapsed_sec
     }
 }
 export const LAST = new Last()

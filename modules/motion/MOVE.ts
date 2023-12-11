@@ -14,7 +14,7 @@ class Move {
         trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
         inject(entity, id) {
             entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
-            entity.MOVE.randomDestinationMS = LOOP.elapsedMS - 10_000
+            entity.MOVE.randomDestinationMS = LOOP.elapsed - 10_000
         },
     }
 
@@ -77,12 +77,11 @@ class Move {
     }
     private gamepadMoveTries = 0
     gamepadMove() {
-        const elapsedMS = LOOP.elapsedMS
+        const elapsed = LOOP.elapsed
         if (
             SH.hero.STATE.active === "track" &&
-            elapsedMS <
-                SH.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
-            elapsedMS > this.lastMobKilledMS + this.preventGamepadMoveMS
+            elapsed < SH.hero.STATE.lastChangeMS + this.preventGamepadMoveMS &&
+            elapsed > this.lastMobKilledMS + this.preventGamepadMoveMS
         ) {
             return
         }

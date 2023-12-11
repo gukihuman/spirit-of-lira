@@ -21,15 +21,14 @@ async function start() {
             name: "a0-adult-check",
             instantChoices: true,
         })
-        setTimeout(() => (GLOBAL.loading = false), 250)
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
     } else if (!PROGRESS.scenes.includes("n1")) {
-        // timeout to make transition work
         EVENTS.emit("startScene", { name: "n1-start" })
-        setTimeout(() => (GLOBAL.loading = false), 250)
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
     } else {
-        // timeout to make transition work
         GAME_STATE.set("world")
-        setTimeout(() => (GLOBAL.loading = false), 1)
+        // delay to make transition work
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
     }
 }
 async function initModules() {

@@ -1,5 +1,3 @@
-import { g } from "vitest/dist/index-40ebba2b"
-
 type Choice = {
     text?: string
     nextSceneName?: string
@@ -32,14 +30,14 @@ const activeScene: activeScene = {
     activeLayer: "layerOne",
     showChoiceBox: false,
     showText: true,
-    lastContinueMS: 0,
+    lastContinueMS: -Infinity, // 0 not allow to continue on adult check :)
     focusedChoiceIndex: null,
     process() {
         SCENE.menuScenes.forEach((menuScene) => {
             if (!LAST.sceneName) return
             if (LAST.sceneName === this.name) return
             if (LAST.sceneName.includes(menuScene)) {
-                this.leaveMenuMS = LOOP.elapsedMS
+                this.leaveMenuMS = LOOP.elapsed
             }
         })
     },
@@ -48,14 +46,6 @@ const activeScene: activeScene = {
             if (!GAME_STATE.echo.scene) return
             this.updateData()
         }, "SCENE_ACTIVE")
-
-        // // this is alternative to startScene event at start (also no transition)
-        // if (!PROGRESS.scenes.includes("a0")) {
-        //   GAME_STATE.set("scene")
-        //   setTimeout(() => GAME_STATE.set("scene"), 20)
-        //   this.name = "a0-adult-check"
-        //   EVENTS.emitSingle("continue") // trigger choices appearance :)
-        // }
         EVENTS.on("startScene", (options) => {
             if (!options.name) return
             GAME_STATE.set("scene")
@@ -63,7 +53,7 @@ const activeScene: activeScene = {
             this.nextSceneName = options.name // used each continue
             this.stepIndex = 0
             if (options.instantChoices) {
-                setTimeout(() => EVENTS.emitSingle("continue"), 20)
+                TIME.run_after_iterations(() => EVENTS.emitSingle("continue"))
             }
         })
         EVENTS.onSingle("skipScene", () => {
@@ -86,7 +76,7 @@ const activeScene: activeScene = {
                 }
                 SAVE.update()
                 GAME_STATE.set("empty")
-                setTimeout(() => {
+                TIME.run_after(() => {
                     this.name = "" // some styling binded to scene name
                     EVENTS.emit("startScene", { name: "n1-start" })
                 }, 500)
@@ -94,7 +84,9 @@ const activeScene: activeScene = {
         })
 
         EVENTS.onSingle("keepAdultCheck", () => {
-            setTimeout(() => _.remove(PROGRESS.scenes, (s) => s === "a0"), 20)
+            TIME.run_after_iterations(() =>
+                _.remove(PROGRESS.scenes, (s) => s === "a0")
+            )
             SAVE.update()
         })
         EVENTS.onSingle("mouseContinue", () => {
@@ -103,9 +95,9 @@ const activeScene: activeScene = {
             else EVENTS.emitSingle("continue")
         })
         EVENTS.onSingle("continue", () => {
-            if (this.lastContinueMS + CONFIG.scene.skipDelay > LOOP.elapsedMS)
+            if (this.lastContinueMS + CONFIG.scene.skipDelay > LOOP.elapsed)
                 return
-            this.lastContinueMS = LOOP.elapsedMS
+            this.lastContinueMS = LOOP.elapsed
             const steps = this.getSteps()
             if (!steps) return
             const { step, nextStep } = steps

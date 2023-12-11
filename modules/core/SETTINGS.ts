@@ -31,9 +31,8 @@ class Settings {
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,
-        // keepLock is about keeping lock after stop attacking
-        // attack target is always locked anyway, coding is hard in that matter
-        keepLock: true, // ❗ currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking
+        // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
+        keepLock: true,
         showKeys: true,
         floatDamage: true,
     }
@@ -228,12 +227,11 @@ class Settings {
                 })
             })
             this.echo.showButtonIcon = false
-            // 📜 make literal next frame not just 50ms
-            setTimeout(() => {
+            TIME.run_after_iterations(() => {
                 this.echo.editHotkeyMode = false
                 this.echo.showButtonIcon = true
                 this.echo.preventEditHotkeyMode = null
-            }, 50)
+            })
         }
     }
     updateShowSettingsPanel() {
@@ -322,13 +320,12 @@ class Settings {
     init() {
         LOOP.add(() => {
             if (!this.echo.editHotkeyMode) this.emitEvents()
-        }, "this")
+        }, "SETTINGS")
         EVENTS.onSingle("quitInterface", () => {
-            // 📜 make next frame not 20ms
-            setTimeout(() => {
+            TIME.run_after_iterations(() => {
                 if (this.echo.editHotkeyMode) return
                 GAME_STATE.set("world")
-            }, 20)
+            })
         })
         EVENTS.onSingle("previousOption", () => {
             if (SCENE_ACTIVE.focusedChoiceIndex === null) return
@@ -464,7 +461,7 @@ class Settings {
                 // INPUT.keyboard.pressed.includes(this.worldInputEvents.keyboard.decide)
             ) {
                 if (!GLOBAL.firstUserGesture) return
-                if (LOOP.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
+                if (LOOP.elapsed > GLOBAL.sceneContextChangedMS + 500) {
                     EVENTS.emitSingle("decide")
                     GLOBAL.autoMove = false
                 }
@@ -477,7 +474,7 @@ class Settings {
                     this.worldInputEvents.keyboard.cast1
                 )
             ) {
-                if (LOOP.elapsedMS > GLOBAL.sceneContextChangedMS + 500) {
+                if (LOOP.elapsed > GLOBAL.sceneContextChangedMS + 500) {
                     EVENTS.emitSingle("cast1")
                 }
             }

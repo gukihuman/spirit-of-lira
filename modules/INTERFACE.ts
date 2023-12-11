@@ -68,15 +68,15 @@ const inter: Inter = {
 
     processFloatDamage() {
         this.damageOverlays.forEach((overlay, index) => {
-            if (LOOP.elapsedMS > overlay.startMS + this.damageLifetimeMS) {
+            if (LOOP.elapsed > overlay.startMS + this.damageLifetimeMS) {
                 this.damageOverlays.splice(index, 1)
             }
             const { x, y } = COORD.coordinateToScreen(overlay.x, overlay.y)
-            overlay.screen.offsetX += overlay.screen.randomX * LOOP.deltaSec
-            overlay.screen.offsetY += overlay.screen.randomY * LOOP.deltaSec
+            overlay.screen.offsetX += overlay.screen.randomX * LOOP.delta_sec
+            overlay.screen.offsetY += overlay.screen.randomY * LOOP.delta_sec
             overlay.screen.x = x + overlay.screen.offsetX
             overlay.screen.y = y + overlay.screen.offsetY
-            const elapsed = LOOP.elapsedMS - overlay.startMS
+            const elapsed = LOOP.elapsed - overlay.startMS
             const timeToScale = this.damageLifetimeMS * 0.3
             const timeToAppear = this.damageLifetimeMS * 0.15
             const timeToStartDissapear = this.damageLifetimeMS * 0.8

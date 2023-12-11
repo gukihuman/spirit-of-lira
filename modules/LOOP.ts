@@ -1,38 +1,46 @@
+const hold_frames = 20
+const last_frames_fps: number[] = []
 class Loop {
-  fps = CONFIG.maxFPS // precisely updated each loop, here is just defalt
-  elapsedMS = 0
-  get elapsedSec() {
-    return Math.floor(this.elapsedMS / 1000)
-  }
-  /** @returns 1/60 for 60 fps, 1/144 for 144 fps with delta correction */
-  get deltaSec() {
-    if (!WORLD.app) return 1 / 60
-    return WORLD.app.ticker.deltaMS / 16.66 / 60
-  }
-  newSec = false
-  /** name is used to find priority in CONFIG.process, if exists */
-  add = (fn: () => void, name?: string) => {
-    if (!WORLD.app) return
-    if (name && CONFIG && CONFIG.priority.modulesProcess[name]) {
-      WORLD.app.ticker.add(fn, undefined, CONFIG.priority.modulesProcess[name])
-      return
+    iterations = 0
+    // precisely updated each loop, CONFIG.max_fps is assigned just in case
+    fps = CONFIG.max_fps
+    /** ms */
+    elapsed = 0
+    get elapsed_sec() {
+        return Math.floor(this.elapsed / 1000)
     }
-    WORLD.app.ticker.add(fn)
-  }
-  init() {
-    const holdFrames = 20
-    const lastFramesFPS: number[] = []
-    this.add(() => {
-      if (!WORLD.app) return
-      lastFramesFPS.push(WORLD.app.ticker.FPS)
-      if (lastFramesFPS.length > holdFrames) lastFramesFPS.shift()
-      this.fps = _.mean(lastFramesFPS)
-      this.elapsedMS += WORLD.app.ticker.deltaMS
-      if (LAST.loopSec !== this.elapsedSec) this.newSec = true
-      else this.newSec = false
-    })
-    if (!WORLD.app) return
-    WORLD.app.ticker.maxFPS = CONFIG.maxFPS
-  }
+    /** @returns 1/60 for 60 fps, 1/144 for 144 fps with delta correction */
+    get delta_sec() {
+        if (!WORLD.app) return 1 / 60
+        return WORLD.app.ticker.deltaMS / 16.66 / 60
+    }
+    last_check = ["new_sec"]
+    new_sec = false
+    init() {
+        if (WORLD.app) WORLD.app.ticker.maxFPS = CONFIG.max_fps
+    }
+    process() {
+        if (!WORLD.app) return
+        last_frames_fps.push(WORLD.app.ticker.FPS)
+        if (last_frames_fps.length > hold_frames) last_frames_fps.shift()
+        this.iterations++
+        this.fps = _.mean(last_frames_fps)
+        this.elapsed += WORLD.app.ticker.deltaMS
+        if (LAST.loopSec !== this.elapsed_sec) this.new_sec = true
+        else this.new_sec = false
+    }
+    /** name is used to find priority in CONFIG.process, if exists */
+    add = (fn: () => void, name?: string) => {
+        if (!WORLD.app) return
+        if (name && CONFIG && CONFIG.priority.modulesProcess[name]) {
+            WORLD.app.ticker.add(
+                fn,
+                undefined,
+                CONFIG.priority.modulesProcess[name]
+            )
+            return
+        }
+        WORLD.app.ticker.add(fn)
+    }
 }
 export const LOOP = new Loop()

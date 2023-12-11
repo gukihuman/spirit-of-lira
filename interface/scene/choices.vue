@@ -66,136 +66,142 @@ div(
 const props = defineProps(["layer"])
 let preventClick = false
 const resolveChoiceTransition = computed(() => {
-  return (index) => {
-    let name = "unfocused"
-    if (SCENE_ACTIVE.focusedChoiceIndex === index) name = "focused"
-    return name
-  }
+    return (index) => {
+        let name = "unfocused"
+        if (SCENE_ACTIVE.focusedChoiceIndex === index) name = "focused"
+        return name
+    }
 })
 const mouseover = (index, choice) => {
-  if (hasCondition.value(choice) && satisfied.value(choice)) {
-    SCENE_ACTIVE.focusedChoiceIndex = index
-  }
-  if (!hasCondition.value(choice)) SCENE_ACTIVE.focusedChoiceIndex = index
+    if (hasCondition.value(choice) && satisfied.value(choice)) {
+        SCENE_ACTIVE.focusedChoiceIndex = index
+    }
+    if (!hasCondition.value(choice)) SCENE_ACTIVE.focusedChoiceIndex = index
 }
 const click = (index) => EVENTS.emitSingle("continue")
 // otherwise there some random frame somehow apperas causing flickering
 let accumulate = 0
 const mainStyle = computed(() => {
-  const marginX = (CONFIG.scene.textBoxWidth - CONFIG.scene.choiceBoxWidth) / 2
-  const start = {
-    "justify-content": "end",
-    "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
-    "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
-    width: `${CONFIG.scene.choiceBoxWidth}px`,
-    height: `${SCENE_ACTIVE[props.layer].y}px`,
-  }
-  const center = {
-    "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
-    "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
-    width: `${CONFIG.scene.choiceBoxWidth}px`,
-    height: "1080px",
-  }
-  let finalStyle = center
-  if (
-    !SCENE.menuScenes.includes(SCENE_ACTIVE.name.split("-")[0]) &&
-    SCENE_ACTIVE.leaveMenuMS + 1000 < GLOBAL.elapsedMS
-  ) {
-    accumulate++
-    if (accumulate > 10) finalStyle = start
-  } else {
-    accumulate = 0
-    finalStyle = center
-  }
-  return finalStyle
+    const marginX =
+        (CONFIG.scene.textBoxWidth - CONFIG.scene.choiceBoxWidth) / 2
+    const start = {
+        "justify-content": "end",
+        "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
+        "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
+        width: `${CONFIG.scene.choiceBoxWidth}px`,
+        height: `${SCENE_ACTIVE[props.layer].y}px`,
+    }
+    const center = {
+        "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
+        "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
+        width: `${CONFIG.scene.choiceBoxWidth}px`,
+        height: "1080px",
+    }
+    let finalStyle = center
+    if (
+        !SCENE.menuScenes.includes(SCENE_ACTIVE.name.split("-")[0]) &&
+        SCENE_ACTIVE.leaveMenuMS + 1000 < GLOBAL.elapsed
+    ) {
+        accumulate++
+        if (accumulate > 10) finalStyle = start
+    } else {
+        accumulate = 0
+        finalStyle = center
+    }
+    if (SCENE_ACTIVE.name === "a0-adult-check") {
+        finalStyle = start
+    }
+    return finalStyle
 })
 const choiceBoxStyle = computed(() => {
-  return {
-    width: `${CONFIG.scene.choiceBoxWidth}px`,
-    "min-height": `${CONFIG.scene.choiceBoxHeight}px`,
-  }
+    return {
+        width: `${CONFIG.scene.choiceBoxWidth}px`,
+        "min-height": `${CONFIG.scene.choiceBoxHeight}px`,
+    }
 })
 const choiceBoxClass = computed(() => {
-  return (choice) => {
-    if (!choice.bulb) return
-    const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
-    if (!condition) return
-    return {
-      "pointer-events-none": !condition.getCondition(),
+    return (choice) => {
+        if (!choice.bulb) return
+        const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
+        if (!condition) return
+        return {
+            "pointer-events-none": !condition.getCondition(),
+        }
     }
-  }
 })
 const conditionText = computed(() => {
-  return (choice) => {
-    if (!choice.bulb) return
-    const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
-    if (satisfied.value(choice)) return "✔ " + condition.getText()
-    return condition.getText()
-  }
+    return (choice) => {
+        if (!choice.bulb) return
+        const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
+        if (satisfied.value(choice)) return "✔ " + condition.getText()
+        return condition.getText()
+    }
 })
 const hasCondition = computed(() => {
-  return (choice) => {
-    if (!choice.bulb) return false
-    const condition: Condition | null = SCENE.sceneConditions[choice.bulbScene]
-    if (condition) return true
-    return false
-  }
+    return (choice) => {
+        if (!choice.bulb) return false
+        const condition: Condition | null =
+            SCENE.sceneConditions[choice.bulbScene]
+        if (condition) return true
+        return false
+    }
 })
 const done = computed(() => {
-  return (choice) => {
-    if (!choice.bulb) return true
-    if (PROGRESS.scenes.includes(choice.bulbScene)) return true
-    return false
-  }
+    return (choice) => {
+        if (!choice.bulb) return true
+        if (PROGRESS.scenes.includes(choice.bulbScene)) return true
+        return false
+    }
 })
 const satisfied = computed(() => {
-  return (choice) => {
-    if (!choice.bulb) return false
-    const condition: Condition | null = SCENE.sceneConditions[choice.bulbScene]
-    if (!condition) return false
-    return condition.getCondition()
-  }
+    return (choice) => {
+        if (!choice.bulb) return false
+        const condition: Condition | null =
+            SCENE.sceneConditions[choice.bulbScene]
+        if (!condition) return false
+        return condition.getCondition()
+    }
 })
 const internalChoiceBoxStyle = computed(() => {
-  return (index) => {
-    let opacity = CONFIG.scene.unfocusedChoiceBoxOpacity
-    if (index === SCENE_ACTIVE.focusedChoiceIndex) {
-      opacity = CONFIG.scene.focusedChoiceBoxOpacity
+    return (index) => {
+        let opacity = CONFIG.scene.unfocusedChoiceBoxOpacity
+        if (index === SCENE_ACTIVE.focusedChoiceIndex) {
+            opacity = CONFIG.scene.focusedChoiceBoxOpacity
+        }
+        return {
+            opacity: `${opacity}`,
+            padding: `${CONFIG.scene.border}px`,
+        }
     }
-    return {
-      opacity: `${opacity}`,
-      padding: `${CONFIG.scene.border}px`,
-    }
-  }
 })
 const focusedTransitionSpeed = computed(() => {
-  return `all ${CONFIG.scene.transitionSpeed / 2}ms ease-out`
+    return `all ${CONFIG.scene.transitionSpeed / 2}ms ease-out`
 })
 // time must be the same as focused leave, to not mess with layout so instead uses bezier that leave quicly */
 const unfocusedTransitionSpeed = computed(() => {
-  return `all ${
-    CONFIG.scene.transitionSpeed / 2
-  }ms cubic-bezier(0.37, 0.9, 0.31, 1.65)`
+    return `all ${
+        CONFIG.scene.transitionSpeed / 2
+    }ms cubic-bezier(0.37, 0.9, 0.31, 1.65)`
 })
 </script>
 <style>
 .focused-enter-from,
 .unfocused-enter-from,
 .unfocused-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 .focused-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
+    opacity: 0;
+    transform: translateX(20px);
 }
 .unfocused-enter-active,
 .focused-enter-active {
-  transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
 }
 .focused-leave-active {
-  transition: v-bind(focusedTransitionSpeed);
+    transition: v-bind(focusedTransitionSpeed);
 }
 .unfocused-leave-active {
-  transition: v-bind(unfocusedTransitionSpeed);
+    transition: v-bind(unfocusedTransitionSpeed);
 }
 </style>

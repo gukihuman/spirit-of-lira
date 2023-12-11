@@ -48,12 +48,12 @@ class Cast {
             if (!SETTINGS.general.easyFight) {
                 entity.STATE.track = false
             } else {
-                // 📜 make strictly next frame and not just 20ms
-                setTimeout(() => {
-                    entity.TARGET.locked = true // its new target by easyFight here
-                }, 20)
+                TIME.run_after_iterations(() => {
+                    // its new target by easyFight here
+                    entity.TARGET.locked = true
+                })
             }
-            MOVE.lastMobKilledMS = LOOP.elapsedMS // prevent gamepad move on delay
+            MOVE.lastMobKilledMS = LOOP.elapsed // prevent gamepad move on delay
         }
     }
     private revengeLogic(entity, id, skill) {
@@ -85,7 +85,7 @@ class Cast {
         const targetHealth = entity.TARGET.entity.ATTRIBUTES.health
         if (targetHealth <= 0) this.targetDiesLogic(entity, id)
         if (skill.logic) skill.logic(entity, id)
-        entity.SKILLS.castAndDelayMS = LOOP.elapsedMS + skill.delayMS
+        entity.SKILLS.castAndDelayMS = LOOP.elapsed + skill.delayMS
         entity.SKILLS.delayedLogicDone = false
     }
     private delayedLogic(entity, id, skill) {
@@ -147,12 +147,12 @@ class Cast {
                 return
             }
             const skill = entity.SKILLS.data[entity.SKILLS.active]
-            const elapsedMS = LOOP.elapsedMS
+            const elapsed = LOOP.elapsed
             const delayMS = entity.SKILLS.delayMS
             // if target is dead
             if (
                 !entity.TARGET.id &&
-                elapsedMS > entity.SKILLS.castAndDelayMS + delayMS
+                elapsed > entity.SKILLS.castAndDelayMS + delayMS
             ) {
                 entity.STATE.cast = false
                 return
@@ -161,14 +161,14 @@ class Cast {
             if (!lastEntity) return
             // start casting
             if (entity.STATE.cast && !lastEntity.STATE.cast) {
-                entity.SKILLS.castStartMS = LOOP.elapsedMS
+                entity.SKILLS.castStartMS = LOOP.elapsed
                 entity.SKILLS.castAndDelayMS =
-                    LOOP.elapsedMS - skill.castMS + skill.firstCastMS
+                    LOOP.elapsed - skill.castMS + skill.firstCastMS
                 entity.SKILLS.firstCastState = true
             }
-            if (elapsedMS > entity.SKILLS.castAndDelayMS + skill.castMS) {
+            if (elapsed > entity.SKILLS.castAndDelayMS + skill.castMS) {
                 if (
-                    LOOP.elapsedMS <
+                    LOOP.elapsed <
                     // 1.5 is just to find time between first and second cast :)
                     entity.SKILLS.castStartMS + skill.firstCastMS * 1.5
                 ) {
@@ -183,7 +183,7 @@ class Cast {
             }
             if (
                 !entity.SKILLS.delayedLogicDone &&
-                elapsedMS > entity.SKILLS.castAndDelayMS
+                elapsed > entity.SKILLS.castAndDelayMS
             ) {
                 this.delayedLogic(entity, id, skill)
                 entity.SKILLS.audioDone = false
@@ -205,7 +205,7 @@ class Cast {
         }
         if (!sprite) return
         sprite.animationSpeed =
-            (1 / (CONFIG.maxFPS / 10)) * entity.ATTRIBUTES.attackSpeed
+            (1 / (CONFIG.max_fps / 10)) * entity.ATTRIBUTES.attackSpeed
     }
     private playAudioEffect(entity) {
         let soundId: any
