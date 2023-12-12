@@ -78,8 +78,8 @@ class Entities {
             process(entity: { POSITION: any }, id: number) {
                 let position = entity.POSITION
                 if (!position) return
-                if (SH.hero.STATE.active === "dead") {
-                    SH.resetDestination()
+                if (HERO.entity.STATE.active === "dead") {
+                    HERO.reset_destination()
                     return
                 }
 
@@ -89,14 +89,14 @@ class Entities {
                     return
                 }
 
-                const finaldestination = SH.hero.MOVE.finaldestination
-                if (!finaldestination) {
+                const final_destination = HERO.entity.MOVE.final_destination
+                if (!final_destination) {
                     position.x = -30
                     position.y = -30
                     return
                 }
-                position.x = finaldestination.x
-                position.y = finaldestination.y
+                position.x = final_destination.x
+                position.y = final_destination.y
 
                 if (!COORD.isWalkable(position.x, position.y)) {
                     position.x = -30
@@ -105,14 +105,14 @@ class Entities {
 
                 const displacement = COORD.vectorFromPoints(
                     position,
-                    SH.hero.POSITION
+                    HERO.entity.POSITION
                 )
                 const distance = displacement.distance
-                const speedPerTick = COORD.speedPerTick(SH.hero)
+                const speedPerTick = COORD.speedPerTick(HERO.entity)
 
                 // hide
                 // 📜 change tracked to track state, implement track state
-                if (distance < speedPerTick || SH.hero.STATE.track) {
+                if (distance < speedPerTick || HERO.entity.STATE.track) {
                     position.x = -30
                     position.y = -30
                     return

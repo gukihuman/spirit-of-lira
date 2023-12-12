@@ -46,21 +46,22 @@ const inter: Inter = {
         this.floatDamage = SETTINGS.general.floatDamage
         this.showKeys = SETTINGS.general.showKeys
         if (GAME_STATE.echo.world) {
-            if (SH.hero.TARGET.id && SH.hero.TARGET.entity) {
+            if (HERO.entity.TARGET.id && HERO.entity.TARGET.entity) {
                 INTERFACE.target = true
-                INTERFACE.targetHealth = SH.hero.TARGET.entity.ATTRIBUTES.health
+                INTERFACE.targetHealth =
+                    HERO.entity.TARGET.entity.ATTRIBUTES.health
                 INTERFACE.targetMaxHealth =
                     ENTITIES.collection[
-                        SH.hero.TARGET.entity.name
+                        HERO.entity.TARGET.entity.name
                     ].ATTRIBUTES.health
             } else {
                 INTERFACE.target = false
             }
-            INTERFACE.heroHealth = SH.hero.ATTRIBUTES.health
-            INTERFACE.heroMaxHealth = SH.hero.ATTRIBUTES.healthMax
-            INTERFACE.heroEnergy = SH.hero.ATTRIBUTES.energy
-            INTERFACE.heroMaxEnergy = SH.hero.ATTRIBUTES.energyMax
-            if (SH.hero.TARGET.locked) INTERFACE.targetLocked = true
+            INTERFACE.heroHealth = HERO.entity.ATTRIBUTES.health
+            INTERFACE.heroMaxHealth = HERO.entity.ATTRIBUTES.healthMax
+            INTERFACE.heroEnergy = HERO.entity.ATTRIBUTES.energy
+            INTERFACE.heroMaxEnergy = HERO.entity.ATTRIBUTES.energyMax
+            if (HERO.entity.TARGET.locked) INTERFACE.targetLocked = true
             else INTERFACE.targetLocked = false
         }
         this.processFloatDamage()

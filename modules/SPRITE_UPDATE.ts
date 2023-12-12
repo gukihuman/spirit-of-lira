@@ -40,9 +40,13 @@ class SpriteUpdate {
     }
     private updateCoordinates(entity, container) {
         container.x =
-            entity.POSITION.x - SH.hero.POSITION.x + CONFIG.viewport.width / 2
+            entity.POSITION.x -
+            HERO.entity.POSITION.x +
+            CONFIG.viewport.width / 2
         container.y =
-            entity.POSITION.y - SH.hero.POSITION.y + CONFIG.viewport.height / 2
+            entity.POSITION.y -
+            HERO.entity.POSITION.y +
+            CONFIG.viewport.height / 2
     }
     private updateVisibility(entity, id) {
         if (entity.MOVE) {
@@ -70,15 +74,15 @@ class SpriteUpdate {
         }
     }
     private updateItems() {
-        const heroSpriteName = this.getHeroCastSprite(SH.hero, SH.heroId)
-        const heroAnimation = SPRITE.getAnimation(SH.heroId, heroSpriteName)
-        const frontWeapon = SPRITE.getLayer(SH.heroId, "frontWeapon")
-        const backWeapon = SPRITE.getLayer(SH.heroId, "backWeapon")
+        const heroSpriteName = this.getHeroCastSprite(HERO.entity, HERO.id)
+        const heroAnimation = SPRITE.getAnimation(HERO.id, heroSpriteName)
+        const frontWeapon = SPRITE.getLayer(HERO.id, "frontWeapon")
+        const backWeapon = SPRITE.getLayer(HERO.id, "backWeapon")
         if (!heroAnimation || !frontWeapon || !backWeapon) return
         // syncronize all weapon sprites in cast state
         // turn visibility on for cast and off for non-attack
         // 📜 check if skill is neutral to not update and leave weapon idle
-        if (SH.hero.SPRITE.active === heroSpriteName) {
+        if (HERO.entity.SPRITE.active === heroSpriteName) {
             frontWeapon.children.forEach((child) => {
                 const sprite = child as AnimatedSprite
                 sprite.gotoAndPlay(heroAnimation.currentFrame)
@@ -148,7 +152,7 @@ class SpriteUpdate {
         if (!entity.MOVE || !entity.SKILLS) return
         if (entity.STATE.active !== "cast") return
         if (entity.HERO) {
-            entity.SPRITE.active = this.getHeroCastSprite(SH.hero, SH.heroId)
+            entity.SPRITE.active = this.getHeroCastSprite(HERO.entity, HERO.id)
         } else {
             entity.SPRITE.active = "attack"
         }

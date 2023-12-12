@@ -64,7 +64,7 @@ const activeScene: activeScene = {
             if (!PROGRESS.scenes.includes(this.name.split("-")[0])) {
                 PROGRESS.scenes.push(this.name.split("-")[0])
             }
-            SH.resetDestination()
+            HERO.reset_destination()
             SAVE.update()
             GAME_STATE.set("world")
             setTimeout(() => (this.name = ""), 1000)

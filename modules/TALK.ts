@@ -11,7 +11,7 @@ class Talk {
     process() {
         MUSEUM.processEntity(["TALK"], (entity) => {
             if (
-                COORD.distance(entity.POSITION, SH.hero.POSITION) <
+                COORD.distance(entity.POSITION, HERO.entity.POSITION) <
                 entity.TALK.distance
             ) {
                 this.talkEntity = entity
@@ -19,7 +19,7 @@ class Talk {
         })
         if (!this.talkEntity) return
         if (
-            COORD.distance(this.talkEntity.POSITION, SH.hero.POSITION) <
+            COORD.distance(this.talkEntity.POSITION, HERO.entity.POSITION) <
             this.talkEntity.TALK.distance
         ) {
             INTERFACE.talk = true
@@ -33,12 +33,12 @@ class Talk {
             INTERFACE.talkPosition = {
                 x:
                     this.talkEntity.POSITION.x -
-                    SH.hero.POSITION.x +
+                    HERO.entity.POSITION.x +
                     CONFIG.viewport.width / 2 +
                     this.talkEntity.TALK.x,
                 y:
                     this.talkEntity.POSITION.y -
-                    SH.hero.POSITION.y +
+                    HERO.entity.POSITION.y +
                     CONFIG.viewport.height / 2 +
                     this.talkEntity.TALK.y,
             }
@@ -53,7 +53,7 @@ class Talk {
     }
     emit() {
         if (!this.talkEntity) return
-        if (SH.hero.STATE.active === "dead") return
+        if (HERO.entity.STATE.active === "dead") return
         if (GLOBAL.sceneContextChangedMS + 1000 > LOOP.elapsed) return
         EVENTS.emit("startScene", {
             name: this.talkEntity.TALK.scene,

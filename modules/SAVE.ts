@@ -9,8 +9,8 @@ class Save {
         this.startSave = {
             version: GLOBAL.version,
             hero: {
-                POSITION: SH.hero.POSITION,
-                health: SH.hero.ATTRIBUTES.health,
+                POSITION: HERO.entity.POSITION,
+                health: HERO.entity.ATTRIBUTES.health,
             },
             inventory: {
                 bag: INVENTORY.bag,
@@ -34,8 +34,8 @@ class Save {
         this.save = this.resolveSaves(this.startSave, storageSave)
 
         // 📜 do some logic to declare this in one place - not in update too
-        SH.hero.POSITION = this.save.hero.POSITION
-        SH.hero.ATTRIBUTES.health = this.save.hero.health
+        HERO.entity.POSITION = this.save.hero.POSITION
+        HERO.entity.ATTRIBUTES.health = this.save.hero.health
         INVENTORY.bag = this.save.inventory.bag
         INVENTORY.gear = this.save.inventory.gear
         PROGRESS.scenes = this.save.progress.scenes
@@ -46,13 +46,13 @@ class Save {
         SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents
         SETTINGS.inputOther = this.save.settings.inputOther
 
-        SH.resetDestination() // update final destination otherwise hero run at the start
+        HERO.reset_destination() // update final destination otherwise hero run at the start
     }
     update() {
         if (this.preventUpdate) return
         // clone deep is important especially with pinia stores
-        this.save.hero.POSITION = _.cloneDeep(SH.hero.POSITION)
-        this.save.hero.health = _.cloneDeep(SH.hero.ATTRIBUTES.health)
+        this.save.hero.POSITION = _.cloneDeep(HERO.entity.POSITION)
+        this.save.hero.health = _.cloneDeep(HERO.entity.ATTRIBUTES.health)
         this.save.inventory.bag = _.cloneDeep(INVENTORY.bag)
         this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
         this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)

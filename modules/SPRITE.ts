@@ -144,18 +144,18 @@ class Spr {
     }
 
     async item(name: string, type: "weapon" | "cloth") {
-        if (!WORLD.app || !SH.heroId || !this.getContainer(SH.heroId)) return
+        if (!WORLD.app || !HERO.id || !this.getContainer(HERO.id)) return
         const spritesheet = await this.getSpritesheet(name)
         if (!spritesheet) return
         let backWeapon
         let frontWeapon
         let cloth
         if (type === "cloth") {
-            cloth = this.getLayer(SH.heroId, "cloth")
+            cloth = this.getLayer(HERO.id, "cloth")
         }
         if (type === "weapon") {
-            backWeapon = this.getLayer(SH.heroId, "backWeapon")
-            frontWeapon = this.getLayer(SH.heroId, "frontWeapon")
+            backWeapon = this.getLayer(HERO.id, "backWeapon")
+            frontWeapon = this.getLayer(HERO.id, "frontWeapon")
         }
         _.forOwn(spritesheet.animations, (arrayOfwebpImages, stateName) => {
             const animatedSprite = new PIXI.AnimatedSprite(arrayOfwebpImages)
@@ -176,13 +176,13 @@ class Spr {
         })
     }
     emptyWeaponLayers() {
-        const backWeapon = this.getLayer(SH.heroId, "backWeapon") as Container
-        const frontWeapon = this.getLayer(SH.heroId, "frontWeapon") as Container
+        const backWeapon = this.getLayer(HERO.id, "backWeapon") as Container
+        const frontWeapon = this.getLayer(HERO.id, "frontWeapon") as Container
         backWeapon.removeChildren()
         frontWeapon.removeChildren()
     }
     emptyClothLayer() {
-        const cloth = this.getLayer(SH.heroId, "cloth") as Container
+        const cloth = this.getLayer(HERO.id, "cloth") as Container
         cloth.removeChildren()
     }
     fillWeaponLayers() {

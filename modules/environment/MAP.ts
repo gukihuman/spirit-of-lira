@@ -21,7 +21,7 @@ class Ma {
     }
     process() {
         this.loadCloseChunks()
-        const heroPosition = SH.hero.POSITION
+        const heroPosition = HERO.entity.POSITION
         if (!heroPosition) return
         // update coordinates
         this.chunkSprites.forEach((sprite, chunk) => {
@@ -37,8 +37,8 @@ class Ma {
         })
     }
     private async loadCloseChunks() {
-        if (!SH.hero) return
-        const heroPosition = SH.hero.POSITION
+        if (!HERO.entity) return
+        const heroPosition = HERO.entity.POSITION
         const startY = COORD.coordinateToChunk(heroPosition.y) - 1
         const startX = COORD.coordinateToChunk(heroPosition.x) - 2
         this.closeChunks = []

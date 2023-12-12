@@ -1,19 +1,21 @@
 class Dead {
     init() {
         EVENTS.onSingle("reset", () => {
-            if (SH.hero.STATE.active !== "dead" || !GLOBAL.reset) return
-            SH.hero.STATE.cast = false
-            SH.hero.STATE.track = false
-            SH.hero.STATE.idle = true
-            SH.hero.STATE.active = "idle"
-            SH.hero.ATTRIBUTES.health = SH.hero.ATTRIBUTES.healthMax
-            SH.hero.ATTRIBUTES.energy = SH.hero.ATTRIBUTES.energyMax
-            SH.hero.POSITION = _.cloneDeep(ENTITIES.collection.lira.POSITION)
-            SH.hero.TARGET.id = null
-            SH.hero.TARGET.locked = false
-            SH.resetDestination()
+            if (HERO.entity.STATE.active !== "dead" || !GLOBAL.reset) return
+            HERO.entity.STATE.cast = false
+            HERO.entity.STATE.track = false
+            HERO.entity.STATE.idle = true
+            HERO.entity.STATE.active = "idle"
+            HERO.entity.ATTRIBUTES.health = HERO.entity.ATTRIBUTES.healthMax
+            HERO.entity.ATTRIBUTES.energy = HERO.entity.ATTRIBUTES.energyMax
+            HERO.entity.POSITION = _.cloneDeep(
+                ENTITIES.collection.lira.POSITION
+            )
+            HERO.entity.TARGET.id = null
+            HERO.entity.TARGET.locked = false
+            HERO.reset_destination()
             GLOBAL.reset = false
-            const container = SPRITE.getContainer(SH.heroId)
+            const container = SPRITE.getContainer(HERO.id)
             if (!container) return
             container.setParent(WORLD.sortable)
             container.alpha = 0

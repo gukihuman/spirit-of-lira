@@ -5,7 +5,7 @@ class Cast {
     private cast(slot = "slot1") {
         if (!GAME_STATE.echo.world?.gameplay) return
         EVENTS.emit("cast", {
-            entity: SH.hero,
+            entity: HERO.entity,
             slot: slot,
         })
     }
@@ -13,11 +13,11 @@ class Cast {
         EVENTS.onSingle("decide", () => {
             if (INTERFACE.buttonHover) return
             if (GLOBAL.hoverId) {
-                if (GLOBAL.hoverId !== SH.hero.TARGET.id) {
-                    SH.hero.TARGET.id = GLOBAL.hoverId
-                    SH.hero.STATE.idle = true
-                    SH.hero.STATE.cast = false
-                    SH.hero.STATE.active = "idle"
+                if (GLOBAL.hoverId !== HERO.entity.TARGET.id) {
+                    HERO.entity.TARGET.id = GLOBAL.hoverId
+                    HERO.entity.STATE.idle = true
+                    HERO.entity.STATE.cast = false
+                    HERO.entity.STATE.active = "idle"
                 }
                 EVENTS.emitSingle("cast1")
                 EVENTS.emitSingle("lockTarget")
@@ -43,7 +43,7 @@ class Cast {
     private targetDiesLogic(entity, id) {
         entity.TARGET.id = undefined
         entity.TARGET.locked = false
-        entity.MOVE.finaldestination = _.cloneDeep(entity.POSITION)
+        entity.MOVE.final_destination = _.cloneDeep(entity.POSITION)
         if (entity.HERO) {
             if (!SETTINGS.general.easyFight) {
                 entity.STATE.track = false
@@ -117,7 +117,7 @@ class Cast {
         let spriteName = "attack"
         if (entity.HERO) {
             // "attack-sword"
-            spriteName = SPRITE_UPDATE.getHeroCastSprite(SH.hero, SH.heroId)
+            spriteName = SPRITE_UPDATE.getHeroCastSprite(HERO.entity, HERO.id)
         }
         sprite = SPRITE.getAnimation(id, spriteName)
         if (!sprite) return
@@ -196,10 +196,10 @@ class Cast {
         if (entity.HERO) {
             // "attack-sword"
             const spriteName = SPRITE_UPDATE.getHeroCastSprite(
-                SH.hero,
-                SH.heroId
+                HERO.entity,
+                HERO.id
             )
-            sprite = SPRITE.getAnimation(SH.heroId, spriteName)
+            sprite = SPRITE.getAnimation(HERO.id, spriteName)
         } else {
             sprite = SPRITE.getAnimation(id, "attack")
         }

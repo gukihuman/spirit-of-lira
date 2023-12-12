@@ -35,7 +35,7 @@ class Last {
         }
         // 📜 old ones, rework and remove :)
         this.entities = LIBRARY.clone(WORLD.entities)
-        this.hero = _.cloneDeep(SH.hero)
+        this.hero = _.cloneDeep(HERO.entity)
         this.hover = _.cloneDeep(WORLD.hover)
         this.scenePart = SCENE_ACTIVE.part
         this.sceneName = SCENE_ACTIVE.name

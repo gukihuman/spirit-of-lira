@@ -54,15 +54,17 @@ class Coordinates {
     mousePosition() {
         const mousePosition = COORD.mouseOfScreen()
         return this.vector(
-            (mousePosition.x += SH.hero.POSITION.x - CONFIG.viewport.width / 2),
-            (mousePosition.y += SH.hero.POSITION.y - CONFIG.viewport.height / 2)
+            (mousePosition.x +=
+                HERO.entity.POSITION.x - CONFIG.viewport.width / 2),
+            (mousePosition.y +=
+                HERO.entity.POSITION.y - CONFIG.viewport.height / 2)
         )
     }
     coordinateToScreen(x: number, y: number) {
-        if (!SH.hero.POSITION) return { x: 0, y: 0 }
+        if (!HERO.entity.POSITION) return { x: 0, y: 0 }
         return {
-            x: x - SH.hero.POSITION.x + CONFIG.viewport.width / 2,
-            y: y - SH.hero.POSITION.y + CONFIG.viewport.height / 2,
+            x: x - HERO.entity.POSITION.x + CONFIG.viewport.width / 2,
+            y: y - HERO.entity.POSITION.y + CONFIG.viewport.height / 2,
         }
     }
     coordinateToChunk(coordinate: number) {

@@ -9,7 +9,7 @@ class Astar {
         WORLD.entities.forEach((entity, id) => {
             executes.push(() => {
                 if (entity.MOVE) {
-                    if (!entity.MOVE.finaldestination) return
+                    if (!entity.MOVE.final_destination) return
                     if (_.round(LOOP.elapsed / 100) % _.random(1, 5) !== 0) {
                         return
                     }
@@ -19,10 +19,10 @@ class Astar {
                     }
                     let endTile = {
                         x: COORD.coordinateToTile(
-                            entity.MOVE.finaldestination.x
+                            entity.MOVE.final_destination.x
                         ),
                         y: COORD.coordinateToTile(
-                            entity.MOVE.finaldestination.y
+                            entity.MOVE.final_destination.y
                         ),
                     }
 
@@ -70,9 +70,9 @@ class Astar {
                         entity.MOVE.destination
                     ) {
                         entity.MOVE.destination.x =
-                            entity.MOVE.finaldestination.x
+                            entity.MOVE.final_destination.x
                         entity.MOVE.destination.y =
-                            entity.MOVE.finaldestination.y
+                            entity.MOVE.final_destination.y
                     } else if (
                         entity.MOVE.path.length > 0 &&
                         entity.MOVE.destination
@@ -328,10 +328,10 @@ class Astar {
             }
         }
         if (closestTile) {
-            entity.MOVE.finaldestination.x = COORD.tileToCoordinate(
+            entity.MOVE.final_destination.x = COORD.tileToCoordinate(
                 closestTile.x
             )
-            entity.MOVE.finaldestination.y = COORD.tileToCoordinate(
+            entity.MOVE.final_destination.y = COORD.tileToCoordinate(
                 closestTile.y
             )
         }

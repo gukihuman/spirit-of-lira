@@ -20,8 +20,10 @@ class Destination {
         EVENTS.onSingle("sceneContextChanged", () => {
             GLOBAL.sceneContextChangedMS = LOOP.elapsed
             TIME.run_after_iterations(() => {
-                SH.hero.MOVE.finaldestination = _.cloneDeep(SH.hero.POSITION)
-                SH.hero.TARGET.id = undefined
+                HERO.entity.MOVE.final_destination = _.cloneDeep(
+                    HERO.entity.POSITION
+                )
+                HERO.entity.TARGET.id = undefined
             })
         })
     }
@@ -34,8 +36,8 @@ class Destination {
             if (this.counter < 10) this.setRandomDestination(entity, id)
             return
         }
-        entity.MOVE.finaldestination.x = possibleX
-        entity.MOVE.finaldestination.y = possibleY
+        entity.MOVE.final_destination.x = possibleX
+        entity.MOVE.final_destination.y = possibleY
         entity.MOVE.randomDestinationMS = LOOP.elapsed
     }
 }

@@ -58,7 +58,8 @@ class Audio {
     startIdleMobs() {
         if (!GAME_STATE.echo.world) return
         MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
-            if (COORD.distance(entity.POSITION, SH.hero.POSITION) > 1500) return
+            if (COORD.distance(entity.POSITION, HERO.entity.POSITION) > 1500)
+                return
             if (Math.random() > 0.5 * LOOP.delta_sec) return
             // 📜 mb add move state :)
             if (entity.STATE.active === "idle") {
