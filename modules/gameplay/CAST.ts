@@ -157,7 +157,7 @@ class Cast {
                 entity.STATE.cast = false
                 return
             }
-            const lastEntity = LAST.entities.get(id)
+            const lastEntity = WORLD.last.entities.get(id)
             if (!lastEntity) return
             // start casting
             if (entity.STATE.cast && !lastEntity.STATE.cast) {

@@ -1,4 +1,3 @@
-type AddName<T> = T & { name: string }
 class Entities {
     collection = {
         lira: {

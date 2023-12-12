@@ -28,10 +28,6 @@ class La {
                 }
             })
         }
-        // 📜 old ones, rework and remove :)
-        this.entities = LIBRARY.clone(WORLD.entities)
     }
-    // 📜 old ones, rework and remove :)
-    entities: Map<number, any> = new Map()
 }
 export const LAST = new La()

@@ -5,8 +5,8 @@ class Flip {
             (entity, id) => {
                 if (entity.STATE.active === "dead") return
                 if (LOOP.elapsed - entity.SPRITE.lastFlipMS < 200) return
-                if (!LAST.entities.get(id)) return
-                const previousX = LAST.entities.get(id).POSITION.x
+                if (!WORLD.last.entities.get(id)) return
+                const previousX = WORLD.last.entities.get(id).POSITION.x
                 const container = SPRITE.getContainer(id)
                 if (!container) return
                 let before = 1

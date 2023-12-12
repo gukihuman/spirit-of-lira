@@ -91,7 +91,7 @@ class Target {
         }
     }
     private updateKeepTrack(hero, id) {
-        const lastHero = LAST.entities.get(id)
+        const lastHero = WORLD.last.entities.get(id)
         if (!lastHero) return
         if (
             !hero.STATE.track &&

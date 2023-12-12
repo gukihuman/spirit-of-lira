@@ -45,7 +45,7 @@ class Dead {
             entity.TARGET.id = null
             entity.TARGET.locked = false
             SPRITE.emptyWeaponLayers()
-            const lastEntity = LAST.entities.get(id)
+            const lastEntity = WORLD.last.entities.get(id)
             if (
                 entity.STATE.active === "dead" &&
                 lastEntity.STATE.active !== "dead"
@@ -66,7 +66,7 @@ class Dead {
                 if (entity.ATTRIBUTES.health > 0) return
                 entity.STATE.active = "dead"
                 entity.TARGET.id = undefined
-                const lastEntity = LAST.entities.get(id)
+                const lastEntity = WORLD.last.entities.get(id)
                 if (
                     entity.STATE.active === "dead" &&
                     lastEntity.STATE.active !== "dead"

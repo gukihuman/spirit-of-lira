@@ -31,7 +31,7 @@ class State {
         })
     }
     private checkStill(entity, id) {
-        const lastEntity = LAST.entities.get(id)
+        const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
         if (
             entity.POSITION.x === lastEntity.POSITION.x &&
@@ -41,7 +41,7 @@ class State {
         } else entity.STATE.still = false
     }
     private updateLastChangeMS(entity, id) {
-        const lastEntity = LAST.entities.get(id)
+        const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
         if (entity.STATE.active !== lastEntity.STATE.active) {
             WORLD.entities.get(id).STATE.lastChangeMS = LOOP.elapsed
