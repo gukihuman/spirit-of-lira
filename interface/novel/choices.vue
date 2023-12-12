@@ -2,12 +2,12 @@
 //- choice section
 div(
   class="absolute flex flex-col-reverse justify-center gap-[15px]"
-  :class="SCENE.echo.name !== 'a0-adult-check' ? 'animate-translate-y-menu' : 'animate-fade-in'"
+  :class="NOVEL.echo.active_md !== 'a0' ? 'animate-translate-y-menu' : 'animate-fade-in'"
   :style="mainStyle"
 )
   //- choice boxes
   div(
-    v-for="(choice, index) in SCENE.echo[props.layer].choices"
+    v-for="(choice, index) in NOVEL.echo[props.layer].choices"
     :key="index"
     class="relative hover:scale-[1.03] transition duration-300 ease-in-out"
     :class="choiceBoxClass(choice)"
@@ -16,7 +16,7 @@ div(
     @click="click(index)"
   )
     transition(:name="resolveChoiceTransition(index)")
-      div(v-if="SCENE.echo.showChoiceBox")
+      div(v-if="NOVEL.echo.showChoiceBox")
         //- arrow icon
         div(class="absolute z-50 w-full h-full flex justify-end items-end bottom-[12px] right-[10px] opacity-[0.8]")
           img(
@@ -34,13 +34,13 @@ div(
             v-if="PROGRESS.scenes.includes(choice.bulbScene)"
             class="scale-[1] m-[2px]"
             draggable="false"
-            :src="ASSETS.webp_paths['bulb-scene-on']"
+            :src="ASSETS.webp_paths['bulb-novel-on']"
             )
           img(
             v-if="!PROGRESS.scenes.includes(choice.bulbScene)"
             class="scale-[1] m-[2px]"
             draggable="false"
-            :src="ASSETS.webp_paths['bulb-scene-off']"
+            :src="ASSETS.webp_paths['bulb-novel-off']"
             )
         //- focus frame
         transition(type="fast"): focus-frame(:index="index")
@@ -68,39 +68,39 @@ let preventClick = false
 const resolveChoiceTransition = computed(() => {
     return (index) => {
         let name = "unfocused"
-        if (SCENE.echo.focusedChoiceIndex === index) name = "focused"
+        if (NOVEL.echo.focusedChoiceIndex === index) name = "focused"
         return name
     }
 })
 const mouseover = (index, choice) => {
     if (hasCondition.value(choice) && satisfied.value(choice)) {
-        SCENE.echo.focusedChoiceIndex = index
+        NOVEL.echo.focusedChoiceIndex = index
     }
-    if (!hasCondition.value(choice)) SCENE.echo.focusedChoiceIndex = index
+    if (!hasCondition.value(choice)) NOVEL.echo.focusedChoiceIndex = index
 }
 const click = (index) => EVENTS.emitSingle("continue")
 // otherwise there some random frame somehow apperas causing flickering
 let accumulate = 0
 const mainStyle = computed(() => {
     const marginX =
-        (CONFIG.scene.textBoxWidth - CONFIG.scene.choiceBoxWidth) / 2
+        (CONFIG.novel.textBoxWidth - CONFIG.novel.choiceBoxWidth) / 2
     const start = {
         "justify-content": "end",
-        "margin-left": `${SCENE.echo[props.layer].x + marginX}px`,
-        "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
-        width: `${CONFIG.scene.choiceBoxWidth}px`,
-        height: `${SCENE.echo[props.layer].y}px`,
+        "margin-left": `${NOVEL.echo[props.layer].x + marginX}px`,
+        "padding-bottom": `${CONFIG.novel.choiceSectionMarginY}px`,
+        width: `${CONFIG.novel.choiceBoxWidth}px`,
+        height: `${NOVEL.echo[props.layer].y}px`,
     }
     const center = {
-        "margin-left": `${SCENE.echo[props.layer].x + marginX}px`,
-        "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
-        width: `${CONFIG.scene.choiceBoxWidth}px`,
+        "margin-left": `${NOVEL.echo[props.layer].x + marginX}px`,
+        "padding-bottom": `${CONFIG.novel.choiceSectionMarginY}px`,
+        width: `${CONFIG.novel.choiceBoxWidth}px`,
         height: "1080px",
     }
     let finalStyle = center
     if (
-        !SCENE.menu_scenes.includes(SCENE.echo.name.split("-")[0]) &&
-        SCENE.echo.leaveMenuMS + 1000 < GLOBAL.elapsed
+        !NOVEL.menu_scenes.includes(NOVEL.echo.active_scene) &&
+        NOVEL.echo.leaveMenuMS + 1000 < GLOBAL.elapsed
     ) {
         accumulate++
         if (accumulate > 10) finalStyle = start
@@ -108,21 +108,21 @@ const mainStyle = computed(() => {
         accumulate = 0
         finalStyle = center
     }
-    if (SCENE.echo.name === "a0-adult-check") {
+    if (NOVEL.echo.active_md === "a0") {
         finalStyle = start
     }
     return finalStyle
 })
 const choiceBoxStyle = computed(() => {
     return {
-        width: `${CONFIG.scene.choiceBoxWidth}px`,
-        "min-height": `${CONFIG.scene.choiceBoxHeight}px`,
+        width: `${CONFIG.novel.choiceBoxWidth}px`,
+        "min-height": `${CONFIG.novel.choiceBoxHeight}px`,
     }
 })
 const choiceBoxClass = computed(() => {
     return (choice) => {
         if (!choice.bulb) return
-        const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
+        const condition: Condition = NOVEL.sceneConditions[choice.bulbScene]
         if (!condition) return
         return {
             "pointer-events-none": !condition.getCondition(),
@@ -132,7 +132,7 @@ const choiceBoxClass = computed(() => {
 const conditionText = computed(() => {
     return (choice) => {
         if (!choice.bulb) return
-        const condition: Condition = SCENE.sceneConditions[choice.bulbScene]
+        const condition: Condition = NOVEL.sceneConditions[choice.bulbScene]
         if (satisfied.value(choice)) return "✔ " + condition.getText()
         return condition.getText()
     }
@@ -141,7 +141,7 @@ const hasCondition = computed(() => {
     return (choice) => {
         if (!choice.bulb) return false
         const condition: Condition | null =
-            SCENE.sceneConditions[choice.bulbScene]
+            NOVEL.sceneConditions[choice.bulbScene]
         if (condition) return true
         return false
     }
@@ -157,30 +157,30 @@ const satisfied = computed(() => {
     return (choice) => {
         if (!choice.bulb) return false
         const condition: Condition | null =
-            SCENE.sceneConditions[choice.bulbScene]
+            NOVEL.sceneConditions[choice.bulbScene]
         if (!condition) return false
         return condition.getCondition()
     }
 })
 const internalChoiceBoxStyle = computed(() => {
     return (index) => {
-        let opacity = CONFIG.scene.unfocusedChoiceBoxOpacity
-        if (index === SCENE.echo.focusedChoiceIndex) {
-            opacity = CONFIG.scene.focusedChoiceBoxOpacity
+        let opacity = CONFIG.novel.unfocusedChoiceBoxOpacity
+        if (index === NOVEL.echo.focusedChoiceIndex) {
+            opacity = CONFIG.novel.focusedChoiceBoxOpacity
         }
         return {
             opacity: `${opacity}`,
-            padding: `${CONFIG.scene.border}px`,
+            padding: `${CONFIG.novel.border}px`,
         }
     }
 })
 const focusedTransitionSpeed = computed(() => {
-    return `all ${CONFIG.scene.transitionSpeed / 2}ms ease-out`
+    return `all ${CONFIG.novel.transitionSpeed / 2}ms ease-out`
 })
 // time must be the same as focused leave, to not mess with layout so instead uses bezier that leave quicly */
 const unfocusedTransitionSpeed = computed(() => {
     return `all ${
-        CONFIG.scene.transitionSpeed / 2
+        CONFIG.novel.transitionSpeed / 2
     }ms cubic-bezier(0.37, 0.9, 0.31, 1.65)`
 })
 </script>

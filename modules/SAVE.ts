@@ -23,7 +23,7 @@ class Save {
             settings: {
                 general: SETTINGS.general,
                 worldInputEvents: SETTINGS.worldInputEvents,
-                sceneInputEvents: SETTINGS.sceneInputEvents,
+                novelInputEvents: SETTINGS.novelInputEvents,
                 interfaceInputEvents: SETTINGS.interfaceInputEvents,
                 inputOther: SETTINGS.inputOther,
             },
@@ -42,7 +42,7 @@ class Save {
         PROGRESS.mobs = this.save.progress.mobs
         SETTINGS.general = this.save.settings.general
         SETTINGS.worldInputEvents = this.save.settings.worldInputEvents
-        SETTINGS.sceneInputEvents = this.save.settings.sceneInputEvents
+        SETTINGS.novelInputEvents = this.save.settings.novelInputEvents
         SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents
         SETTINGS.inputOther = this.save.settings.inputOther
 
@@ -61,7 +61,7 @@ class Save {
         this.save.gameplay = _.cloneDeep(SETTINGS.general)
         this.save.interface = _.cloneDeep(SETTINGS.general)
         this.save.worldInputEvents = _.cloneDeep(SETTINGS.worldInputEvents)
-        this.save.sceneInputEvents = _.cloneDeep(SETTINGS.sceneInputEvents)
+        this.save.novelInputEvents = _.cloneDeep(SETTINGS.novelInputEvents)
         this.save.interfaceInputEvents = _.cloneDeep(
             SETTINGS.interfaceInputEvents
         )

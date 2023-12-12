@@ -4,24 +4,19 @@ declare global {
         getCondition: () => boolean
     }
 }
-interface sceneConditions extends AnyObject {
-    [file_name: string]: Condition
+type PlainTextsObject = { [md_file_name: string]: string }
+interface Echo extends AnyObject {
+    focusedChoiceIndex: number | null
 }
-type sceneOptions = {
+interface sceneConditions extends AnyObject {
+    [tag: string]: Condition
+}
+type StyleAdjustmentsByWebp = { [webp_file_name: string]: StyleAdjustments }
+type StyleAdjustments = {
     x?: number
     y?: number
     hue?: number
     brightness?: number
-}
-type Options = { [file_name: string]: sceneOptions }
-type PlainTextsObject = { [file_name: string]: string }
-type ChoiceObject = {
-    text?: string
-    nextSceneName?: string
-    choiceEvents?: string // events separated by comma like "event1, event2"
-    arrow?: boolean
-    bulb?: boolean
-    bulbScene?: string
 }
 type SceneLayer = {
     images?: string[]
@@ -37,12 +32,41 @@ interface activeScene extends AnyObject {
     activeLayer: "layerOne" | "layerTwo"
     focusedChoiceIndex: number | null
 }
-interface Echo extends AnyObject {
-    focusedChoiceIndex: number | null
+type Steps = { [md_file_name: string]: Step[] }
+type Step = {
+    images: string[]
+    text: ""
+    choices: ChoiceObject[]
 }
-class Scene {
+type ChoiceObject = {
+    text?: string
+    nextSceneName?: string
+    choiceEvents?: string // events separated by comma like "event1, event2"
+    arrow?: boolean
+    bulb?: boolean
+    bulbScene?: string
+}
+class Novel {
+    menu_scenes: string[] = []
+    mds_plain_texts: PlainTextsObject = {}
+    mds_steps: Steps = {}
+    style_adjustments_by_webp: StyleAdjustmentsByWebp = {
+        a0: { x: 610, y: 750, brightness: 1.1 }, // 📜 remove blank dependence
+        "n1-lira-no-light": { hue: -30 },
+        "n1-lira-arms-down": { hue: -30 },
+        "n1-lira-arms-raised": { hue: -30 },
+        "n1-nighty": { x: 370, y: 700 },
+        "n1-nighty-close": { x: 950 },
+    }
+    sceneConditions: sceneConditions = {
+        b1: {
+            getText: () => `Kill bunbos ${PROGRESS.mobs.bunbo} / 20`,
+            getCondition: () => PROGRESS.mobs.bunbo >= 20,
+        },
+    }
     echo: Echo = {
-        name: "",
+        active_md: "",
+        active_scene: "",
         leaveMenuMS: 0,
         nextSceneName: "",
         stepIndex: 0,
@@ -54,31 +78,23 @@ class Scene {
         lastContinueMS: -Infinity, // 0 not allow to continue on adult check :)
         focusedChoiceIndex: null,
     }
-    mds_plain_texts: PlainTextsObject = {}
-    menu_scenes: string[] = []
-    options: Options = {
-        "n1-lira-no-light": { hue: -30 },
-        "n1-lira-arms-down": { hue: -30 },
-        "n1-lira-arms-raised": { hue: -30 },
-        "n1-nighty": { x: 370, y: 700 },
-        "n1-nighty-close": { x: 950 },
-        "a0-solid-dark": { x: 610, y: 750, brightness: 1.1 },
+    last = {
+        echo: this.echo,
     }
-    sceneConditions: sceneConditions = {
-        b1: {
-            getText: () => `Kill bunbos ${PROGRESS.mobs.bunbo} / 20`,
-            getCondition: () => PROGRESS.mobs.bunbo >= 20,
-        },
-    }
-    steps = {}
     async init() {
-        for (const [file_name, path] of _.entries(ASSETS.md_paths)) {
-            const response = await fetch(path)
-            this.mds_plain_texts[file_name] = await response.text()
+        for (const md_file_name in ASSETS.md_paths) {
+            const tag = md_file_name.split("-")[0]
+            if (tag === "a0") continue
+            if (tag.includes("0")) this.menu_scenes.push(tag)
         }
 
-        _.forEach(this.mds_plain_texts, (value, file_name) => {
-            this.steps[file_name] = []
+        for (const [md_file_name, path] of _.entries(ASSETS.md_paths)) {
+            const response = await fetch(path)
+            this.mds_plain_texts[md_file_name] = await response.text()
+        }
+
+        _.forEach(this.mds_plain_texts, (value, md_file_name) => {
+            this.mds_steps[md_file_name] = []
             let lineArray
             if (value.includes("\r\n")) {
                 lineArray = value.split("\r\n")
@@ -86,7 +102,7 @@ class Scene {
                 lineArray = value.split("\n") // for vercel environment
             }
             let images: string[] = []
-            const step: AnyObject = {
+            const step: Step = {
                 images: [],
                 text: "",
                 choices: [],
@@ -102,7 +118,7 @@ class Scene {
                 let createChoiceStep = () => {
                     if (step.choices.length > 0) {
                         _.reverse(step.choices)
-                        this.steps[file_name].push(_.cloneDeep(step))
+                        this.mds_steps[md_file_name].push(_.cloneDeep(step))
                         step.choices = []
                     }
                 }
@@ -166,18 +182,17 @@ class Scene {
                 createChoiceStep()
                 step.text = line
                 step.images = images
-                this.steps[file_name].push(_.cloneDeep(step))
+                this.mds_steps[md_file_name].push(_.cloneDeep(step))
             })
         })
-
         LOOP.add(() => {
-            if (!GAME_STATE.echo.scene) return
+            if (!GAME_STATE.echo.novel) return
             this.updateData()
-        }, "SCENE.echo")
+        }, "NOVEL")
         EVENTS.on("startScene", (options) => {
             if (!options.name) return
-            GAME_STATE.set("scene")
-            this.echo.name = options.name
+            GAME_STATE.set("novel")
+            this.echo.active_md = options.name
             this.echo.nextSceneName = options.name // used each continue
             this.echo.stepIndex = 0
             if (options.instantChoices) {
@@ -185,32 +200,31 @@ class Scene {
             }
         })
         EVENTS.onSingle("skipScene", () => {
-            if (this.echo.name === "a0-adult-check") return
+            if (this.echo.active_md === "a0") return
             EVENTS.emitSingle("endScene")
         })
         EVENTS.onSingle("endScene", () => {
-            if (!PROGRESS.scenes.includes(this.echo.name.split("-")[0])) {
-                PROGRESS.scenes.push(this.echo.name.split("-")[0])
+            if (!PROGRESS.scenes.includes(this.echo.active_scene)) {
+                PROGRESS.scenes.push(this.echo.active_scene)
             }
             HERO.reset_destination()
             SAVE.update()
             GAME_STATE.set("world")
-            setTimeout(() => (this.echo.name = ""), 1000)
+            setTimeout(() => (this.echo.active_md = ""), 1000)
         })
         EVENTS.onSingle("resolveAdultCheckEndScene", () => {
             if (!PROGRESS.scenes.includes("n1")) {
-                if (!PROGRESS.scenes.includes(this.echo.name.split("-")[0])) {
-                    PROGRESS.scenes.push(this.echo.name.split("-")[0])
+                if (!PROGRESS.scenes.includes(this.echo.active_scene)) {
+                    PROGRESS.scenes.push(this.echo.active_scene)
                 }
                 SAVE.update()
                 GAME_STATE.set("empty")
                 TIME.run_after(() => {
-                    this.echo.name = "" // some styling binded to scene name
+                    this.echo.active_md = "" // styling need to be changed in between 1000 transition and it is binded to active_md
                     EVENTS.emit("startScene", { name: "n1-start" })
                 }, 500)
             } else EVENTS.emitSingle("endScene")
         })
-
         EVENTS.onSingle("keepAdultCheck", () => {
             TIME.run_after_iterations(() =>
                 _.remove(PROGRESS.scenes, (s) => s === "a0")
@@ -224,7 +238,7 @@ class Scene {
         })
         EVENTS.onSingle("continue", () => {
             if (
-                this.echo.lastContinueMS + CONFIG.scene.skipDelay >
+                this.echo.lastContinueMS + CONFIG.novel.skipDelay >
                 LOOP.elapsed
             )
                 return
@@ -251,7 +265,7 @@ class Scene {
                         break
                     }
                     const condition: Condition | undefined =
-                        SCENE.sceneConditions[choice.bulbScene]
+                        NOVEL.sceneConditions[choice.bulbScene]
                     if (!condition) {
                         possibleIndex = i
                         break
@@ -272,7 +286,7 @@ class Scene {
                 if (nextStep.text !== step.text) this.echo.showText = false
                 let delay = 50
                 if (!_.isEqual(step.images, nextStep.images)) {
-                    delay = CONFIG.scene.transitionSpeed * 0.5
+                    delay = CONFIG.novel.transitionSpeed * 0.5
                     this.echo.activeLayer = "layerTwo"
                     setTimeout(() => {
                         this.echo.activeLayer = "layerOne"
@@ -284,26 +298,28 @@ class Scene {
                 }, delay)
             }
             if (
-                this.echo.name === this.echo.nextSceneName ||
+                this.echo.active_md === this.echo.nextSceneName ||
                 !this.echo.nextSceneName
             ) {
                 if (
                     this.echo.stepIndex >=
-                    SCENE.steps[this.echo.name].length - 1
+                    NOVEL.mds_steps[this.echo.active_md].length - 1
                 ) {
                     EVENTS.emitSingle("endScene")
                 }
             } else {
                 this.echo.stepIndex = -1
-                this.echo.name = this.echo.nextSceneName
+                this.echo.active_md = this.echo.nextSceneName
             }
         })
     }
     process() {
-        SCENE.menu_scenes.forEach((menuScene) => {
-            if (!LAST.sceneName) return
-            if (LAST.sceneName === this.echo.name) return
-            if (LAST.sceneName.includes(menuScene)) {
+        this.echo.active_scene = this.echo.active_md.split("-")[0]
+
+        NOVEL.menu_scenes.forEach((menu_scene) => {
+            if (!this.last.echo.active_scene) return
+            if (this.last.echo.active_scene === this.echo.active_md) return
+            if (this.last.echo.active_scene.includes(menu_scene)) {
                 this.echo.leaveMenuMS = LOOP.elapsed
             }
         })
@@ -320,31 +336,33 @@ class Scene {
         }
     }
     getSteps() {
-        if (!SCENE.steps[SCENE.echo.name]) return
-        const step = SCENE.steps[SCENE.echo.name][SCENE.echo.stepIndex]
+        if (!NOVEL.mds_steps[NOVEL.echo.active_md]) return
+        const step = NOVEL.mds_steps[NOVEL.echo.active_md][NOVEL.echo.stepIndex]
         if (!step) return
         let nextStep
         if (step.choices.length === 0) {
-            nextStep = SCENE.steps[SCENE.echo.name][SCENE.echo.stepIndex + 1]
+            nextStep =
+                NOVEL.mds_steps[NOVEL.echo.active_md][NOVEL.echo.stepIndex + 1]
             return { step, nextStep }
         }
-        if (!this.echo.focusedChoiceIndex) return
-        SCENE.echo.nextSceneName =
+        if (this.echo.focusedChoiceIndex === null) return
+        NOVEL.echo.nextSceneName =
             step.choices[this.echo.focusedChoiceIndex].nextSceneName
         if (
-            !SCENE.echo.nextSceneName ||
-            SCENE.echo.name === SCENE.echo.nextSceneName
+            !NOVEL.echo.nextSceneName ||
+            NOVEL.echo.active_md === NOVEL.echo.nextSceneName
         ) {
-            nextStep = SCENE.steps[SCENE.echo.name][SCENE.echo.stepIndex + 1]
+            nextStep =
+                NOVEL.mds_steps[NOVEL.echo.active_md][NOVEL.echo.stepIndex + 1]
         } else {
-            nextStep = SCENE.steps[SCENE.echo.nextSceneName][0]
+            nextStep = NOVEL.mds_steps[NOVEL.echo.nextSceneName][0]
         }
         return { step, nextStep }
     }
     updateData() {
         let layer, nextlayer
-        layer = SCENE.echo.layerOne
-        nextlayer = SCENE.echo.layerTwo
+        layer = NOVEL.echo.layerOne
+        nextlayer = NOVEL.echo.layerTwo
         const steps = this.getSteps()
         if (!steps) return
         const { step, nextStep } = steps
@@ -354,10 +372,12 @@ class Scene {
     updateLayerData(layer, step) {
         layer.images = step.images
         layer.text = step.text
-        layer.x = SCENE.options[layer.images[0]]?.x || 950
-        layer.y = SCENE.options[layer.images[0]]?.y || 620
-        layer.hue = SCENE.options[layer.images[0]]?.hue || 0
-        layer.brightness = SCENE.options[layer.images[0]]?.brightness || 1
+        layer.x = NOVEL.style_adjustments_by_webp[layer.images[0]]?.x || 950
+        layer.y = NOVEL.style_adjustments_by_webp[layer.images[0]]?.y || 620
+        layer.hue = NOVEL.style_adjustments_by_webp[layer.images[0]]?.hue || 0
+        layer.brightness =
+            NOVEL.style_adjustments_by_webp[layer.images[0]]?.brightness || 1
     }
 }
-export const SCENE = LIBRARY.resonate(new Scene())
+
+export const NOVEL = LIBRARY.resonate(new Novel())

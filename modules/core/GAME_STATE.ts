@@ -1,11 +1,13 @@
-type RootStates = keyof Root
-type WorldStates = keyof World
-type InterfaceStates = keyof Inter
-type SettingsStates = keyof Settings
-type SkillsStates = keyof Skills
+declare global {
+    type RootStates = keyof Root
+    type WorldStates = keyof World
+    type InterfaceStates = keyof Inter
+    type SettingsStates = keyof Settings
+    type SkillsStates = keyof Skills
+}
 type Root = {
     empty: boolean
-    scene: boolean
+    novel: boolean
     world: World | boolean
 }
 type World = {
@@ -32,7 +34,7 @@ class GameState {
     // correct resonate require full object declaration
     echo: Root = {
         empty: true,
-        scene: false,
+        novel: false,
         world: {
             gameplay: false,
             interface: {
@@ -51,8 +53,9 @@ class GameState {
             },
         },
     }
-    last_check = ["echo"] // do some type check with last together
-    last: AnyObject = {}
+    last = {
+        echo: this.echo,
+    }
     set(
         level1: RootStates,
         level2?: WorldStates,
@@ -60,10 +63,10 @@ class GameState {
         level4?: SettingsStates | SkillsStates
     ) {
         this.echo.empty = false
-        this.echo.scene = false
+        this.echo.novel = false
         this.echo.world = false
         if (level1 === "empty") this.echo.empty = true
-        if (level1 === "scene") this.echo.scene = true
+        if (level1 === "novel") this.echo.novel = true
         if (level1 === "world") {
             this.echo.world = {
                 gameplay: false,

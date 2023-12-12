@@ -26,8 +26,8 @@ class GukiConfig {
             ENTITIES: 5,
             WORLD: 4,
             HERO: 4,
-            SAVE: 3, // before SCENE but after WORLD
-            SCENE: 2,
+            SAVE: 3, // before NOVEL but after WORLD
+            NOVEL: 2,
             COLLISION: 2,
             ASTAR: 1,
             // <- rest of the logic
@@ -36,7 +36,7 @@ class GukiConfig {
             INPUT_UPDATE: 6, // at least SETTINGS and INTERFACE depends on it
             STATE: 5,
             SPRITE_UPDATE: 4,
-            SCENE: 3,
+            NOVEL: 3,
             DEVMODE: 3, // between STATE and LAST
             SETTINGS: 3, // before LAST
             LAST: 2,
@@ -56,7 +56,7 @@ class GukiConfig {
         height: 1080,
     }
     max_fps = 60
-    scene = {
+    novel = {
         textBoxWidth: 700,
         textBoxHeight: 220,
         choiceBoxWidth: 550,

@@ -31,7 +31,7 @@ class Move {
         })
     }
     process() {
-        if (GAME_STATE.echo.scene) return
+        if (GAME_STATE.echo.novel) return
         WORLD.entities.forEach((entity) => {
             if (!entity.MOVE) return
             this.move(entity)

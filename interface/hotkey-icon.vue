@@ -17,7 +17,7 @@ const props = defineProps({
     device: { type: String, default: "" },
 })
 const iconClass = computed(() => {
-    if (GAME_STATE.echo.scene) return { "hue-rotate-180": true }
+    if (GAME_STATE.echo.novel) return { "hue-rotate-180": true }
     return {}
 })
 const imageStyle = computed(() => {
@@ -43,7 +43,8 @@ const image = computed(() => {
         if (hotkey.includes("RT")) return ASSETS.get_webp_path("gamepad-rt")
         if (hotkey.includes("LS")) return ASSETS.get_webp_path("gamepad-ls")
         if (hotkey.includes("RS")) return ASSETS.get_webp_path("gamepad-rs")
-        if (hotkey.includes("Start")) return ASSETS.get_webp_path("gamepad-start")
+        if (hotkey.includes("Start"))
+            return ASSETS.get_webp_path("gamepad-start")
         if (hotkey.includes("Menu")) return ASSETS.get_webp_path("gamepad-menu")
         return ASSETS.get_webp_path("gamepad-empty")
     } else {
@@ -62,7 +63,7 @@ const imageClass = computed(() => {
         "-rotate-90": hotkey === "ArrowLeft" || hotkey === "Left",
         "opacity-100": hotkey,
     }
-    if (GAME_STATE.echo.scene) {
+    if (GAME_STATE.echo.novel) {
         _.merge(classObject, {
             "saturate-[.6]": true,
             "brightness-[.85]": true,
@@ -90,12 +91,12 @@ function findKey() {
         (props.device && props.device === "gamepad")
     ) {
         hotkey = SETTINGS.worldInputEvents.gamepad[props.inputEvent] || hotkey
-        hotkey = SETTINGS.sceneInputEvents.gamepad[props.inputEvent] || hotkey
+        hotkey = SETTINGS.novelInputEvents.gamepad[props.inputEvent] || hotkey
         hotkey =
             SETTINGS.interfaceInputEvents.gamepad[props.inputEvent] || hotkey
     } else {
         hotkey = SETTINGS.worldInputEvents.keyboard[props.inputEvent] || hotkey
-        hotkey = SETTINGS.sceneInputEvents.keyboard[props.inputEvent] || hotkey
+        hotkey = SETTINGS.novelInputEvents.keyboard[props.inputEvent] || hotkey
         hotkey =
             SETTINGS.interfaceInputEvents.keyboard[props.inputEvent] || hotkey
     }

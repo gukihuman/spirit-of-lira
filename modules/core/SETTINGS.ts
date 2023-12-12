@@ -7,8 +7,7 @@ interface Echo extends AnyObject {
     preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
-    last_check = ["context_index"] // do some type check with last together
-    last: AnyObject = {}
+    last: Last = ["context_index"]
     context_list: SettingsStates[] = ["general", "gamepad", "keyboard", "info"]
     get context_index() {
         return this.context_list.findIndex((context) => {
@@ -79,7 +78,7 @@ class Settings {
             lockTarget: "LB",
         },
     }
-    sceneInputEvents = {
+    novelInputEvents = {
         keyboard: {
             continue: " ", // action
             skipScene: "q",
@@ -197,7 +196,7 @@ class Settings {
         const places = [
             this.interfaceInputEvents,
             this.worldInputEvents,
-            this.sceneInputEvents,
+            this.novelInputEvents,
         ]
         const foundPlaces: AnyObject[] = []
         events.forEach((event) => {
@@ -328,12 +327,12 @@ class Settings {
             })
         })
         EVENTS.onSingle("previousOption", () => {
-            if (SCENE.echo.focusedChoiceIndex === null) return
-            if (!SCENE.echo[SCENE.echo.activeLayer].choices) return
-            const choices = SCENE.echo[SCENE.echo.activeLayer].choices
+            if (NOVEL.echo.focusedChoiceIndex === null) return
+            if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
+            const choices = NOVEL.echo[NOVEL.echo.activeLayer].choices
             let possibleIndex: number | null = null
-            // 📜 maybe merge with "continue" in SCENE.echo
-            let startIndex = SCENE.echo.focusedChoiceIndex - 1
+            // 📜 maybe merge with "continue" in NOVEL.echo
+            let startIndex = NOVEL.echo.focusedChoiceIndex - 1
             if (startIndex < 0) startIndex += choices.length
             for (let i = startIndex; i < choices.length; i--) {
                 if (i < 0) i += choices.length
@@ -343,7 +342,7 @@ class Settings {
                     break
                 }
                 const condition: Condition | undefined =
-                    SCENE.sceneConditions[choice.bulbScene]
+                    NOVEL.sceneConditions[choice.bulbScene]
                 if (!condition) {
                     possibleIndex = i
                     break
@@ -353,15 +352,15 @@ class Settings {
                     break
                 }
             }
-            SCENE.echo.focusedChoiceIndex = possibleIndex
+            NOVEL.echo.focusedChoiceIndex = possibleIndex
         })
         EVENTS.onSingle("nextOption", () => {
-            if (SCENE.echo.focusedChoiceIndex === null) return
-            if (!SCENE.echo[SCENE.echo.activeLayer].choices) return
-            const choices = SCENE.echo[SCENE.echo.activeLayer].choices
+            if (NOVEL.echo.focusedChoiceIndex === null) return
+            if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
+            const choices = NOVEL.echo[NOVEL.echo.activeLayer].choices
             let possibleIndex: number | null = null
-            // 📜 maybe merge with "continue" in SCENE.echo
-            let startIndex = SCENE.echo.focusedChoiceIndex + 1
+            // 📜 maybe merge with "continue" in NOVEL.echo
+            let startIndex = NOVEL.echo.focusedChoiceIndex + 1
             if (startIndex >= choices.length) startIndex -= choices.length
             for (let i = startIndex; i < choices.length; i++) {
                 if (i >= choices.length) i -= choices.length
@@ -371,7 +370,7 @@ class Settings {
                     break
                 }
                 const condition: Condition | undefined =
-                    SCENE.sceneConditions[choice.bulbScene]
+                    NOVEL.sceneConditions[choice.bulbScene]
                 if (!condition) {
                     possibleIndex = i
                     break
@@ -381,7 +380,7 @@ class Settings {
                     break
                 }
             }
-            SCENE.echo.focusedChoiceIndex = possibleIndex
+            NOVEL.echo.focusedChoiceIndex = possibleIndex
         })
         EVENTS.onSingle("switchSettingsTabLeft", () => {
             if (SETTINGS.echo.editHotkeyMode) return
@@ -415,8 +414,8 @@ class Settings {
         }
         if (INTERFACE.inputFocus) return
         // 📜 why do we need check last here?? some order of events or smth i guess
-        if (GAME_STATE.echo.scene || GAME_STATE.last.echo?.scene) {
-            _.forEach(this.sceneInputEvents, (settingList, device) => {
+        if (GAME_STATE.echo.novel || GAME_STATE.last.echo.novel) {
+            _.forEach(this.novelInputEvents, (settingList, device) => {
                 _.forEach(settingList, (button, setting) => {
                     if (INPUT[device].justPressed.includes(button)) {
                         EVENTS.emitSingle(setting)
@@ -426,10 +425,10 @@ class Settings {
             // overwrite default
             if (
                 INPUT.keyboard.pressed.includes(
-                    this.sceneInputEvents.keyboard.continue
+                    this.novelInputEvents.keyboard.continue
                 ) ||
                 INPUT.gamepad.pressed.includes(
-                    this.sceneInputEvents.gamepad.continue
+                    this.novelInputEvents.gamepad.continue
                 )
             ) {
                 EVENTS.emitSingle("continue")

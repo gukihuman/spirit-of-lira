@@ -15,22 +15,19 @@ class Audio {
     private initialN1MusicPlayed = false
     private all_idle_ids: string[] = []
     currentMusicId
-    scene_name = ""
-    last_check = ["scene_name"] // do some type check with last together
-    last: AnyObject = {}
     async init() {
         this.context = new AudioContext()
         this.sound_gain = this.context.createGain()
         this.music_gain = this.context.createGain()
         this.sound_gain.connect(this.context.destination)
         this.music_gain.connect(this.context.destination)
-        for (const [file_name, mp3_path] of _.entries(ASSETS.mp3_paths)) {
+        for (const [mp3_file_name, mp3_path] of _.entries(ASSETS.mp3_paths)) {
             const response = await fetch(mp3_path)
             const arrayBuffer = await response.arrayBuffer()
             const audioBuffer = await this.context.decodeAudioData(arrayBuffer)
-            this.buffers[file_name] = audioBuffer
+            this.buffers[mp3_file_name] = audioBuffer
         }
-        EVENTS.onSingle("sceneContextChanged", () => {
+        EVENTS.onSingle("novel-state-changed", () => {
             this.stop(this.currentMusicId, 1000, "music")
             this.music_playing = false
             this.initialN1MusicPlayed = false
@@ -73,14 +70,14 @@ class Audio {
         if (!this.context || !this.sound_gain || !this.music_gain) return
 
         this.echo.state = this.context.state
-        this.scene_name = SCENE.echo.name
-        const scene_name = this.scene_name.split("-")[0] // n0 | n1 | b0 ...
-        const lastSceneName = this.last.scene_name.split("-")[0]
-        if (scene_name === "n1" && lastSceneName !== "n1") {
+        if (
+            NOVEL.echo.active_scene === "n1" &&
+            NOVEL.last.echo.active_scene !== "n1"
+        ) {
             this.stop(this.currentMusicId, 1000, "music")
         }
 
-        if (!LOOP.new_sec) return
+        if (!LOOP.new_second_just_began) return
         this.startIdleMobs()
         this.sound_gain.gain.value = SETTINGS.general.sound * sound_amplifier
         this.music_gain.gain.value = SETTINGS.general.music * music_amplifier
@@ -93,8 +90,8 @@ class Audio {
             if (Math.random() > 1 / average_silence_sec) return // once per second
             this.currentMusicId = this.play("green-forest", 0, "music")
         }
-        if (!this.music_playing && GAME_STATE.echo.scene) {
-            if (scene_name === "n1") {
+        if (!this.music_playing && GAME_STATE.echo.novel) {
+            if (NOVEL.echo.active_scene === "n1") {
                 if (!this.initialN1MusicPlayed) {
                     this.currentMusicId = this.play("n-1", 0, "music")
                     if (this.currentMusicId) this.initialN1MusicPlayed = true
@@ -104,11 +101,11 @@ class Audio {
                     return
                 }
             }
-            if (_.startsWith(scene_name, "n")) {
+            if (_.startsWith(NOVEL.echo.active_scene, "n")) {
                 this.currentMusicId = this.play("n-2", 0, "music")
                 return
             }
-            this.currentMusicId = this.play(scene_name, 0, "music")
+            this.currentMusicId = this.play(NOVEL.echo.active_scene, 0, "music")
         }
     }
     play(name: string, delay = 0, type: AudioType = "sound") {

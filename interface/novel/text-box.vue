@@ -10,7 +10,7 @@ div(class="absolute" :style="textBoxStyle")
     div(class="w-full h-full rounded-3xl bg-gradient-to-b from-dark-gunmetal to-space-cadet")
   //- text
   transition(type="fast"): div(
-    v-if="SCENE.echo.showText"
+    v-if="NOVEL.echo.showText"
     class="my-7 mx-11 leading-10 font-semibold text-[28px] text-slate-300"
   )
     span(
@@ -32,7 +32,7 @@ const addPauses = (array, arrayWithPauses) => {
     })
 }
 const textArray = computed(() => {
-    let text = SCENE.echo[props.layer].text
+    let text = NOVEL.echo[props.layer].text
     if (!text) return
     let array: string[] = [].concat(text.split(" "))
     let arrayWithPauses: string[] = []
@@ -41,19 +41,19 @@ const textArray = computed(() => {
 })
 const textBoxStyle = computed(() => {
     return {
-        "margin-left": `${SCENE.echo[props.layer].x}px`,
-        "margin-top": `${SCENE.echo[props.layer].y}px`,
-        width: `${CONFIG.scene.textBoxWidth}px`,
-        height: `${CONFIG.scene.textBoxHeight}px`,
+        "margin-left": `${NOVEL.echo[props.layer].x}px`,
+        "margin-top": `${NOVEL.echo[props.layer].y}px`,
+        width: `${CONFIG.novel.textBoxWidth}px`,
+        height: `${CONFIG.novel.textBoxHeight}px`,
     }
 })
 const internalTextBoxStyle = computed(() => {
-    return { padding: `${CONFIG.scene.border}px` }
+    return { padding: `${CONFIG.novel.border}px` }
 })
 const wordStyle = computed(() => {
     return (index) => {
-        const duration = `${(0.8 - CONFIG.scene.textSpeed / 180).toFixed(1)}s`
-        const delay = `${((index / 10) * (100 - CONFIG.scene.textSpeed)) / 25}s`
+        const duration = `${(0.8 - CONFIG.novel.textSpeed / 180).toFixed(1)}s`
+        const delay = `${((index / 10) * (100 - CONFIG.novel.textSpeed)) / 25}s`
         return {
             animation: `fade-in ${duration} ${delay} forwards cubic-bezier(0.11, 0, 0.5, 0)`,
             filter: "blur(1px)",

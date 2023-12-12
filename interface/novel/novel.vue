@@ -1,25 +1,25 @@
 <template lang="pug">
-div(v-show="GAME_STATE.echo.scene" class="z-30 relative")
+div(v-show="GAME_STATE.echo.novel" class="z-30 relative")
   //- layer one always on - content switched when layer two fully appears
   //- then layer two immidealtly turns off again and preloads next step
   div(mark="layer-one")
     images(layer="layerOne")
     dialogue(layer="layerOne")
-  tn: div(mark="layer-two" v-if="SCENE.echo.activeLayer === 'layerTwo'")
+  tn: div(mark="layer-two" v-if="NOVEL.echo.activeLayer === 'layerTwo'")
     images(layer="layerTwo")
     dialogue(layer="layerTwo")
   div(:style="style" class="absolute left-[35px] top-[1005px] flex gap-10"
-    v-if="SCENE.echo.name !== 'a0-adult-check'")
+    v-if="NOVEL.echo.active_md !== 'a0'")
     skipScene
     navigate
   tn: div(mark="button-fullscreen"
-  v-if="SCENE.echo.name !== 'a0-adult-check'"
+  v-if="NOVEL.echo.active_md !== 'a0'"
   class="absolute top-[7px] right-[7px] saturate-[0.4] opacity-[0.8]")
     gbutton(type="fullscreen"
-    :icon_hue="160 + SCENE.echo[SCENE.echo.activeLayer].hue")
+    :icon_hue="160 + NOVEL.echo[NOVEL.echo.activeLayer].hue")
 
   div(mark="adult-check-bg"
-    v-if="SCENE.echo.name === 'a0-adult-check' && SCENE.echo.stepIndex < 2"
+    v-if="NOVEL.echo.active_md === 'a0' && NOVEL.echo.stepIndex < 2"
     class="-z-10 w-full h-[1080px] bg-slate-800 relative pointer-events-none"
     class="flex justify-center items-center")
     p(class="w-[500px] h-[80px] mt-[-310px]"
@@ -31,13 +31,13 @@ div(v-show="GAME_STATE.echo.scene" class="z-30 relative")
 </template>
 <script setup lang="ts">
 const transitionSpeed = computed(() => {
-    return `opacity ${CONFIG.scene.transitionSpeed}ms ease`
+    return `opacity ${CONFIG.novel.transitionSpeed}ms ease`
 })
 const style = computed(() => {
     return {
         filter: `
-      hue-rotate(${SCENE.echo[SCENE.echo.activeLayer].hue}deg) 
-      brightness(${SCENE.echo[SCENE.echo.activeLayer].brightness})
+      hue-rotate(${NOVEL.echo[NOVEL.echo.activeLayer].hue}deg) 
+      brightness(${NOVEL.echo[NOVEL.echo.activeLayer].brightness})
     `,
     }
 })

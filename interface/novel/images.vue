@@ -1,7 +1,7 @@
 <template lang="pug">
 div
   img(
-      v-for="(value, index) in SCENE.echo[props.layer].images"
+      v-for="(value, index) in NOVEL.echo[props.layer].images"
       :key="index"
       :src="ASSETS.webp_paths[value]"
       draggable="false"

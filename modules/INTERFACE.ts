@@ -41,7 +41,7 @@ const inter: Inter = {
     heroEnergy: 0,
     heroMaxEnergy: 0,
     process() {
-        if (GAME_STATE.echo.scene) this.overlay = false
+        if (GAME_STATE.echo.novel) this.overlay = false
         else this.overlay = true
         this.floatDamage = SETTINGS.general.floatDamage
         this.showKeys = SETTINGS.general.showKeys

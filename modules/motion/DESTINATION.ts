@@ -11,13 +11,13 @@ class Destination {
                 this.counter = 0
                 this.setRandomDestination(entity, id)
             }
-            if (GAME_STATE.echo.scene) {
+            if (GAME_STATE.echo.novel) {
                 entity.MOVE.randomDestinationMS = LOOP.elapsed
             }
         })
     }
     init() {
-        EVENTS.onSingle("sceneContextChanged", () => {
+        EVENTS.onSingle("novel-state-changed", () => {
             GLOBAL.sceneContextChangedMS = LOOP.elapsed
             TIME.run_after_iterations(() => {
                 HERO.entity.MOVE.final_destination = _.cloneDeep(

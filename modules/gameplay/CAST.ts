@@ -139,7 +139,7 @@ class Cast {
         entity.SKILLS.delayedLogicDone = true
     }
     process() {
-        if (GAME_STATE.echo.scene) return
+        if (GAME_STATE.echo.novel) return
         MUSEUM.processEntity(["STATE", "SKILLS"], (entity, id) => {
             this.stopAttackSoundsIfNotCast(entity, id)
             if (!entity.STATE.cast) {

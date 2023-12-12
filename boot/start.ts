@@ -2,6 +2,15 @@ export default defineNuxtPlugin(async (app) => {
     app.hook("app:mounted", () => start())
 })
 async function start() {
+    const loading_text_element = document.getElementById("loading-text")
+    const loading_texts = ["loading", "loading.", "loading..", "loading..."]
+    let loading_text_index = 0
+    const loading_animation = setInterval(() => {
+        loading_text_index = (loading_text_index + 1) % loading_texts.length
+        const active_text = loading_texts[loading_text_index]
+        if (loading_text_element) loading_text_element.innerText = active_text
+    }, 300)
+
     if (!REFS.viewport) {
         LIBRARY.logWarning("viewport not found (starter)")
         return
@@ -11,27 +20,6 @@ async function start() {
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())
 
-    await initModules()
-
-    await CREATOR.create("mousepoint")
-    checkGesture()
-
-    if (!PROGRESS.scenes.includes("a0")) {
-        EVENTS.emit("startScene", {
-            name: "a0-adult-check",
-            instantChoices: true,
-        })
-        TIME.run_after_iterations(() => (GLOBAL.loading = false))
-    } else if (!PROGRESS.scenes.includes("n1")) {
-        EVENTS.emit("startScene", { name: "n1-start" })
-        TIME.run_after_iterations(() => (GLOBAL.loading = false))
-    } else {
-        GAME_STATE.set("world")
-        // delay to make transition work
-        TIME.run_after_iterations(() => (GLOBAL.loading = false))
-    }
-}
-async function initModules() {
     CONFIG.init() // prepare priority
     const processes: { [name: string]: () => void } = {}
     const sortedPriority = LIBRARY.sortedKeys(CONFIG.priority.modulesInit)
@@ -44,8 +32,9 @@ async function initModules() {
     _.forEach(processes, (process, name) => {
         LOOP.add(() => process(), name)
     })
-}
-function checkGesture() {
+
+    await CREATOR.create("mousepoint")
+
     const listener = () => {
         GLOBAL.firstUserGesture = true
         removeEventListener("keydown", listener)
@@ -53,4 +42,21 @@ function checkGesture() {
     }
     addEventListener("keydown", listener)
     addEventListener("mousedown", listener)
+
+    TIME.run_after(() => clearInterval(loading_animation), 500)
+
+    if (!PROGRESS.scenes.includes("a0")) {
+        EVENTS.emit("startScene", {
+            name: "a0",
+            instantChoices: true,
+        })
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
+    } else if (!PROGRESS.scenes.includes("n1")) {
+        EVENTS.emit("startScene", { name: "n1-start" })
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
+    } else {
+        GAME_STATE.set("world")
+        // delay to make transition work
+        TIME.run_after_iterations(() => (GLOBAL.loading = false))
+    }
 }

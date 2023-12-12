@@ -82,6 +82,8 @@ class Library {
                 set: (value) => {
                     storeObject._pinia_store()[key] = value
                 },
+                enumerable: true,
+                configurable: true,
             })
         })
         _.forEach(functions, (value, key) => {
