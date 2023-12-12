@@ -13,7 +13,7 @@ div(
 const condition = computed(() => {
   return (
     AUDIO.echo.context_state === "suspended" &&
-    SCENE_ACTIVE.name !== "a0-adult-check"
+    SCENE.echo.name !== "a0-adult-check"
   )
 })
 </script>

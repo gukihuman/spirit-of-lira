@@ -2,12 +2,12 @@
 //- choice section
 div(
   class="absolute flex flex-col-reverse justify-center gap-[15px]"
-  :class="SCENE_ACTIVE.name !== 'a0-adult-check' ? 'animate-translate-y-menu' : 'animate-fade-in'"
+  :class="SCENE.echo.name !== 'a0-adult-check' ? 'animate-translate-y-menu' : 'animate-fade-in'"
   :style="mainStyle"
 )
   //- choice boxes
   div(
-    v-for="(choice, index) in SCENE_ACTIVE[props.layer].choices"
+    v-for="(choice, index) in SCENE.echo[props.layer].choices"
     :key="index"
     class="relative hover:scale-[1.03] transition duration-300 ease-in-out"
     :class="choiceBoxClass(choice)"
@@ -16,7 +16,7 @@ div(
     @click="click(index)"
   )
     transition(:name="resolveChoiceTransition(index)")
-      div(v-if="SCENE_ACTIVE.showChoiceBox")
+      div(v-if="SCENE.echo.showChoiceBox")
         //- arrow icon
         div(class="absolute z-50 w-full h-full flex justify-end items-end bottom-[12px] right-[10px] opacity-[0.8]")
           img(
@@ -68,15 +68,15 @@ let preventClick = false
 const resolveChoiceTransition = computed(() => {
     return (index) => {
         let name = "unfocused"
-        if (SCENE_ACTIVE.focusedChoiceIndex === index) name = "focused"
+        if (SCENE.echo.focusedChoiceIndex === index) name = "focused"
         return name
     }
 })
 const mouseover = (index, choice) => {
     if (hasCondition.value(choice) && satisfied.value(choice)) {
-        SCENE_ACTIVE.focusedChoiceIndex = index
+        SCENE.echo.focusedChoiceIndex = index
     }
-    if (!hasCondition.value(choice)) SCENE_ACTIVE.focusedChoiceIndex = index
+    if (!hasCondition.value(choice)) SCENE.echo.focusedChoiceIndex = index
 }
 const click = (index) => EVENTS.emitSingle("continue")
 // otherwise there some random frame somehow apperas causing flickering
@@ -86,21 +86,21 @@ const mainStyle = computed(() => {
         (CONFIG.scene.textBoxWidth - CONFIG.scene.choiceBoxWidth) / 2
     const start = {
         "justify-content": "end",
-        "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
+        "margin-left": `${SCENE.echo[props.layer].x + marginX}px`,
         "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
         width: `${CONFIG.scene.choiceBoxWidth}px`,
-        height: `${SCENE_ACTIVE[props.layer].y}px`,
+        height: `${SCENE.echo[props.layer].y}px`,
     }
     const center = {
-        "margin-left": `${SCENE_ACTIVE[props.layer].x + marginX}px`,
+        "margin-left": `${SCENE.echo[props.layer].x + marginX}px`,
         "padding-bottom": `${CONFIG.scene.choiceSectionMarginY}px`,
         width: `${CONFIG.scene.choiceBoxWidth}px`,
         height: "1080px",
     }
     let finalStyle = center
     if (
-        !SCENE.menuScenes.includes(SCENE_ACTIVE.name.split("-")[0]) &&
-        SCENE_ACTIVE.leaveMenuMS + 1000 < GLOBAL.elapsed
+        !SCENE.menu_scenes.includes(SCENE.echo.name.split("-")[0]) &&
+        SCENE.echo.leaveMenuMS + 1000 < GLOBAL.elapsed
     ) {
         accumulate++
         if (accumulate > 10) finalStyle = start
@@ -108,7 +108,7 @@ const mainStyle = computed(() => {
         accumulate = 0
         finalStyle = center
     }
-    if (SCENE_ACTIVE.name === "a0-adult-check") {
+    if (SCENE.echo.name === "a0-adult-check") {
         finalStyle = start
     }
     return finalStyle
@@ -165,7 +165,7 @@ const satisfied = computed(() => {
 const internalChoiceBoxStyle = computed(() => {
     return (index) => {
         let opacity = CONFIG.scene.unfocusedChoiceBoxOpacity
-        if (index === SCENE_ACTIVE.focusedChoiceIndex) {
+        if (index === SCENE.echo.focusedChoiceIndex) {
             opacity = CONFIG.scene.focusedChoiceBoxOpacity
         }
         return {

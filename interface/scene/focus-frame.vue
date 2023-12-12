@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-  v-if="SCENE_ACTIVE.focusedChoiceIndex !== null && index === SCENE_ACTIVE.focusedChoiceIndex"
+  v-if="SCENE.echo.focusedChoiceIndex !== null && index === SCENE.echo.focusedChoiceIndex"
   class="absolute w-[104%] h-full ml-[-2%] -z-50"
 )
   div(

@@ -73,7 +73,7 @@ class Audio {
         if (!this.context || !this.sound_gain || !this.music_gain) return
 
         this.echo.state = this.context.state
-        this.scene_name = SCENE_ACTIVE.name
+        this.scene_name = SCENE.echo.name
         const scene_name = this.scene_name.split("-")[0] // n0 | n1 | b0 ...
         const lastSceneName = this.last.scene_name.split("-")[0]
         if (scene_name === "n1" && lastSceneName !== "n1") {

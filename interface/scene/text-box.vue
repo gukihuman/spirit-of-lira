@@ -10,7 +10,7 @@ div(class="absolute" :style="textBoxStyle")
     div(class="w-full h-full rounded-3xl bg-gradient-to-b from-dark-gunmetal to-space-cadet")
   //- text
   transition(type="fast"): div(
-    v-if="SCENE_ACTIVE.showText"
+    v-if="SCENE.echo.showText"
     class="my-7 mx-11 leading-10 font-semibold text-[28px] text-slate-300"
   )
     span(
@@ -32,7 +32,7 @@ const addPauses = (array, arrayWithPauses) => {
     })
 }
 const textArray = computed(() => {
-    let text = SCENE_ACTIVE[props.layer].text
+    let text = SCENE.echo[props.layer].text
     if (!text) return
     let array: string[] = [].concat(text.split(" "))
     let arrayWithPauses: string[] = []
@@ -41,8 +41,8 @@ const textArray = computed(() => {
 })
 const textBoxStyle = computed(() => {
     return {
-        "margin-left": `${SCENE_ACTIVE[props.layer].x}px`,
-        "margin-top": `${SCENE_ACTIVE[props.layer].y}px`,
+        "margin-left": `${SCENE.echo[props.layer].x}px`,
+        "margin-top": `${SCENE.echo[props.layer].y}px`,
         width: `${CONFIG.scene.textBoxWidth}px`,
         height: `${CONFIG.scene.textBoxHeight}px`,
     }

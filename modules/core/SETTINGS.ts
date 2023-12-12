@@ -328,12 +328,12 @@ class Settings {
             })
         })
         EVENTS.onSingle("previousOption", () => {
-            if (SCENE_ACTIVE.focusedChoiceIndex === null) return
-            if (!SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].choices) return
-            const choices = SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].choices
+            if (SCENE.echo.focusedChoiceIndex === null) return
+            if (!SCENE.echo[SCENE.echo.activeLayer].choices) return
+            const choices = SCENE.echo[SCENE.echo.activeLayer].choices
             let possibleIndex: number | null = null
-            // 📜 maybe merge with "continue" in SCENE_ACTIVE
-            let startIndex = SCENE_ACTIVE.focusedChoiceIndex - 1
+            // 📜 maybe merge with "continue" in SCENE.echo
+            let startIndex = SCENE.echo.focusedChoiceIndex - 1
             if (startIndex < 0) startIndex += choices.length
             for (let i = startIndex; i < choices.length; i--) {
                 if (i < 0) i += choices.length
@@ -353,15 +353,15 @@ class Settings {
                     break
                 }
             }
-            SCENE_ACTIVE.focusedChoiceIndex = possibleIndex
+            SCENE.echo.focusedChoiceIndex = possibleIndex
         })
         EVENTS.onSingle("nextOption", () => {
-            if (SCENE_ACTIVE.focusedChoiceIndex === null) return
-            if (!SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].choices) return
-            const choices = SCENE_ACTIVE[SCENE_ACTIVE.activeLayer].choices
+            if (SCENE.echo.focusedChoiceIndex === null) return
+            if (!SCENE.echo[SCENE.echo.activeLayer].choices) return
+            const choices = SCENE.echo[SCENE.echo.activeLayer].choices
             let possibleIndex: number | null = null
-            // 📜 maybe merge with "continue" in SCENE_ACTIVE
-            let startIndex = SCENE_ACTIVE.focusedChoiceIndex + 1
+            // 📜 maybe merge with "continue" in SCENE.echo
+            let startIndex = SCENE.echo.focusedChoiceIndex + 1
             if (startIndex >= choices.length) startIndex -= choices.length
             for (let i = startIndex; i < choices.length; i++) {
                 if (i >= choices.length) i -= choices.length
@@ -381,7 +381,7 @@ class Settings {
                     break
                 }
             }
-            SCENE_ACTIVE.focusedChoiceIndex = possibleIndex
+            SCENE.echo.focusedChoiceIndex = possibleIndex
         })
         EVENTS.onSingle("switchSettingsTabLeft", () => {
             if (SETTINGS.echo.editHotkeyMode) return
