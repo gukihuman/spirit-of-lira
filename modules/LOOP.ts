@@ -15,6 +15,9 @@ class Loop {
         return WORLD.app.ticker.deltaMS / 16.66 / 60
     }
     new_second_just_began = false
+    get same_second_still_ongoing() {
+        return !this.new_second_just_began
+    }
     last = {
         new_second_just_began: this.new_second_just_began,
         elapsed_seconds: this.elapsed_seconds,

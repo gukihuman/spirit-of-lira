@@ -67,6 +67,7 @@ class Novel {
     echo: Echo = {
         active_md: "",
         active_scene: "",
+        active_girl: "",
         leaveMenuMS: 0,
         nextSceneName: "",
         stepIndex: 0,
@@ -78,9 +79,7 @@ class Novel {
         lastContinueMS: -Infinity, // 0 not allow to continue on adult check :)
         focusedChoiceIndex: null,
     }
-    last = {
-        echo: this.echo,
-    }
+    last = { echo: this.echo }
     async init() {
         for (const md_file_name in ASSETS.md_paths) {
             const tag = md_file_name.split("-")[0]
@@ -196,7 +195,7 @@ class Novel {
             this.echo.nextSceneName = options.name // used each continue
             this.echo.stepIndex = 0
             if (options.instantChoices) {
-                TIME.run_after_iterations(() => EVENTS.emitSingle("continue"))
+                TIME.run_next_iteration(() => EVENTS.emitSingle("continue"))
             }
         })
         EVENTS.onSingle("skipScene", () => {
@@ -219,14 +218,14 @@ class Novel {
                 }
                 SAVE.update()
                 GAME_STATE.set("empty")
-                TIME.run_after(() => {
+                TIME.run_after(500, () => {
                     this.echo.active_md = "" // styling need to be changed in between 1000 transition and it is binded to active_md
                     EVENTS.emit("startScene", { name: "n1-start" })
-                }, 500)
+                })
             } else EVENTS.emitSingle("endScene")
         })
         EVENTS.onSingle("keepAdultCheck", () => {
-            TIME.run_after_iterations(() =>
+            TIME.run_next_iteration(() =>
                 _.remove(PROGRESS.scenes, (s) => s === "a0")
             )
             SAVE.update()
@@ -315,7 +314,13 @@ class Novel {
     }
     process() {
         this.echo.active_scene = this.echo.active_md.split("-")[0]
-
+        if (_.startsWith(this.echo.active_scene, "n")) {
+            this.echo.active_girl = "nighty"
+        } else if (_.startsWith(this.echo.active_scene, "b")) {
+            this.echo.active_girl = "bunny"
+        } else {
+            this.echo.active_girl = ""
+        }
         NOVEL.menu_scenes.forEach((menu_scene) => {
             if (!this.last.echo.active_scene) return
             if (this.last.echo.active_scene === this.echo.active_md) return
@@ -323,6 +328,9 @@ class Novel {
                 this.echo.leaveMenuMS = LOOP.elapsed
             }
         })
+        if (this.echo.active_scene !== this.last.echo.active_scene) {
+            EVENTS.emitSingle("active scene changed")
+        }
     }
     runChoiceEvent(step) {
         if (step.choices.length === 0) return

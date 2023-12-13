@@ -18,7 +18,7 @@ class Collision {
     }
     process() {
         this.arrayOfEntities = MATHJS.sparse()
-        MUSEUM.processEntity(["MOVE", "NONHERO"], (entity) => {
+        MUSEUM.process_entity(["MOVE", "NONHERO"], (entity) => {
             let y = COORD.coordinateToTile(entity.POSITION.y)
             let x = COORD.coordinateToTile(entity.POSITION.x)
             this.arrayOfEntities.set([y, x], 2)
@@ -104,7 +104,7 @@ class Collision {
         })
 
         // draw paths
-        MUSEUM.processEntity("MOVE", (entity) => {
+        MUSEUM.process_entity("MOVE", (entity) => {
             if (!entity.MOVE.path) return
             entity.MOVE.path.forEach((tile) => {
                 if (!tile || !GLOBAL.collision) return

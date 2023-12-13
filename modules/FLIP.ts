@@ -1,6 +1,6 @@
 class Flip {
     process() {
-        MUSEUM.processEntity(
+        MUSEUM.process_entity(
             ["MOVE", "POSITION", "STATE", "TARGET"],
             (entity, id) => {
                 if (entity.STATE.active === "dead") return

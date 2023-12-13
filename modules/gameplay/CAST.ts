@@ -48,7 +48,7 @@ class Cast {
             if (!SETTINGS.general.easyFight) {
                 entity.STATE.track = false
             } else {
-                TIME.run_after_iterations(() => {
+                TIME.run_next_iteration(() => {
                     // its new target by easyFight here
                     entity.TARGET.locked = true
                 })
@@ -140,7 +140,7 @@ class Cast {
     }
     process() {
         if (GAME_STATE.echo.novel) return
-        MUSEUM.processEntity(["STATE", "SKILLS"], (entity, id) => {
+        MUSEUM.process_entity(["STATE", "SKILLS"], (entity, id) => {
             this.stopAttackSoundsIfNotCast(entity, id)
             if (!entity.STATE.cast) {
                 this.reset(entity, id)
@@ -217,13 +217,13 @@ class Cast {
         } else {
             audioDelay = skill.castMS + skill.audioStartMS
         }
-        if (entity.HERO) soundId = AUDIO.play("sword-hit", audioDelay)
-        else soundId = AUDIO.play("bunbo-bite", audioDelay)
+        if (entity.HERO) soundId = AUDIO.play_sound("sword-hit", audioDelay)
+        else soundId = AUDIO.play_sound("bunbo-bite", audioDelay)
         entity.SKILLS.attackSoundId = soundId
     }
     stopAttackSoundsIfNotCast(entity, id) {
         if (entity.SKILLS.attackSoundId && entity.STATE.active !== "cast") {
-            AUDIO.stop(entity.SKILLS.attackSoundId, 30)
+            AUDIO.stop_sound(entity.SKILLS.attackSoundId, 30)
             entity.SKILLS.audioDone = false
             entity.SKILLS.attackSoundId = null
         }

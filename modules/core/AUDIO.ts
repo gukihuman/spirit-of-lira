@@ -2,163 +2,196 @@ type AudioType = "sound" | "music"
 type Echo = { state: AudioContextState }
 const sound_amplifier = 1.5
 const music_amplifier = 1.4
-const average_silence_sec = 40 // between music at world.gameplay
+const average_silence_seconds = 40 // between music at world.gameplay
+
+let context: AudioContext | undefined = undefined
+const buffers: { [key: string]: AudioBuffer } = {}
+const sources: { [key: string]: AudioBufferSourceNode } = {}
+let sound_node: GainNode | undefined = undefined
+let music_node: GainNode | undefined = undefined
+
+let active_music_token: Token | undefined = undefined
+let world_welcome_music_played = false
+let novel_welcome_music_played = false
+const close_mobs: Entity[] = []
+const mobs_sounds_tokens: Token[] = []
+
+type LoopSoundsTokensObject = { [mp3_file_name: string]: TokensObject }
+type TokensObject = {
+    sound: (Token | undefined)[]
+    time: (Token | undefined)[]
+}
+let loop_sounds_tokens: LoopSoundsTokensObject = {}
+
+const river_positions: Position[] = [
+    { x: 7166, y: 7133 },
+    { x: 7424, y: 7163 },
+    { x: 7638, y: 6955 },
+    { x: 7840, y: 6695 },
+    { x: 7956, y: 6431 },
+    { x: 8005, y: 6169 },
+    { x: 8177, y: 5931 },
+    { x: 8226, y: 5701 },
+    { x: 6897, y: 7555 },
+    { x: 6695, y: 7731 },
+    { x: 6484, y: 7870 },
+    { x: 6230, y: 7955 },
+    { x: 5959, y: 8017 },
+]
 class Audio {
     echo: Echo = { state: "suspended" }
-    private context: AudioContext | null = null
-    private sound_gain: GainNode | null = null
-    private music_gain: GainNode | null = null
-    private buffers: { [key: string]: AudioBuffer } = {}
-    private sources: { [key: string]: AudioBufferSourceNode } = {}
-    private music_playing = false
-    private initialMusicPlayed = false
-    private initialN1MusicPlayed = false
-    private all_idle_ids: string[] = []
-    currentMusicId
     async init() {
-        this.context = new AudioContext()
-        this.sound_gain = this.context.createGain()
-        this.music_gain = this.context.createGain()
-        this.sound_gain.connect(this.context.destination)
-        this.music_gain.connect(this.context.destination)
+        context = new AudioContext()
+        sound_node = context.createGain()
+        music_node = context.createGain()
+        sound_node.connect(context.destination)
+        music_node.connect(context.destination)
         for (const [mp3_file_name, mp3_path] of _.entries(ASSETS.mp3_paths)) {
             const response = await fetch(mp3_path)
             const arrayBuffer = await response.arrayBuffer()
-            const audioBuffer = await this.context.decodeAudioData(arrayBuffer)
-            this.buffers[mp3_file_name] = audioBuffer
+            const audioBuffer = await context.decodeAudioData(arrayBuffer)
+            buffers[mp3_file_name] = audioBuffer
         }
-        EVENTS.onSingle("novel-state-changed", () => {
-            this.stop(this.currentMusicId, 1000, "music")
-            this.music_playing = false
-            this.initialN1MusicPlayed = false
-
-            this.all_idle_ids.forEach((id) => this.stop(id))
-            this.all_idle_ids = []
-        })
-    }
-
-    river_positions: Position[] = [
-        { x: 7166, y: 7133 },
-        { x: 7424, y: 7163 },
-        { x: 7638, y: 6955 },
-        { x: 7840, y: 6695 },
-        { x: 7956, y: 6431 },
-        { x: 8005, y: 6169 },
-        { x: 8177, y: 5931 },
-        { x: 8226, y: 5701 },
-        { x: 6897, y: 7555 },
-        { x: 6695, y: 7731 },
-        { x: 6484, y: 7870 },
-        { x: 6230, y: 7955 },
-        { x: 5959, y: 8017 },
-    ]
-    startIdleMobs() {
-        if (!GAME_STATE.echo.world) return
-        MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
-            if (COORD.distance(entity.POSITION, HERO.entity.POSITION) > 1500)
-                return
-            if (Math.random() > 0.5 * LOOP.delta_sec) return
-            // 📜 mb add move state :)
-            if (entity.STATE.active === "idle") {
-                const id = this.play(entity.name + "-idle")
-                if (!id) return
-                this.all_idle_ids.push(id)
-            }
+        EVENTS.onSingle("root game state changed", () => {
+            this.stop_music()
+            novel_welcome_music_played = false
+            mobs_sounds_tokens.forEach((token) => this.stop_sound(token))
+            this.stop_loop_sound("river")
         })
     }
     process() {
-        if (!this.context || !this.sound_gain || !this.music_gain) return
+        if (!context || !sound_node || !music_node) return
+        sound_node.gain.value = SETTINGS.general.sound * sound_amplifier
+        music_node.gain.value = SETTINGS.general.music * music_amplifier
+        this.echo.state = context.state
 
-        this.echo.state = this.context.state
-        if (
-            NOVEL.echo.active_scene === "n1" &&
-            NOVEL.last.echo.active_scene !== "n1"
-        ) {
-            this.stop(this.currentMusicId, 1000, "music")
-        }
-
-        if (!LOOP.new_second_just_began) return
-        this.startIdleMobs()
-        this.sound_gain.gain.value = SETTINGS.general.sound * sound_amplifier
-        this.music_gain.gain.value = SETTINGS.general.music * music_amplifier
-        if (!this.music_playing && GAME_STATE.echo.world) {
-            if (!this.initialMusicPlayed) {
-                this.currentMusicId = this.play("green-forest-1", 0, "music")
-                if (this.currentMusicId) this.initialMusicPlayed = true
-                return
-            }
-            if (Math.random() > 1 / average_silence_sec) return // once per second
-            this.currentMusicId = this.play("green-forest", 0, "music")
-        }
-        if (!this.music_playing && GAME_STATE.echo.novel) {
-            if (NOVEL.echo.active_scene === "n1") {
-                if (!this.initialN1MusicPlayed) {
-                    this.currentMusicId = this.play("n-1", 0, "music")
-                    if (this.currentMusicId) this.initialN1MusicPlayed = true
-                    return
-                } else {
-                    this.currentMusicId = this.play("n-2", 0, "music")
-                    return
+        // update close mobs
+        if (GAME_STATE.echo.world && LOOP.new_second_just_began) {
+            MUSEUM.process_entity("MOB", (entity) => {
+                if (COORD.distance_to_hero(entity.POSITION) < 1500) {
+                    close_mobs.push(entity)
                 }
+            })
+        }
+        // play music
+        if (GAME_STATE.echo.world && !active_music_token) {
+            if (!world_welcome_music_played) {
+                // 📜 make green-forest-1 -> actual location
+                TIME.run_next_iteration(() => {
+                    active_music_token = this.play_music("green-forest-1")
+                })
+                world_welcome_music_played = true
+            } else if (
+                Math.random() <
+                (1 / average_silence_seconds) * LOOP.delta_sec
+            ) {
+                active_music_token = this.play_music("green-forest")
             }
-            if (_.startsWith(NOVEL.echo.active_scene, "n")) {
-                this.currentMusicId = this.play("n-2", 0, "music")
-                return
+        } else if (
+            GAME_STATE.echo.novel &&
+            NOVEL.echo.active_girl &&
+            !active_music_token
+        ) {
+            if (!novel_welcome_music_played) {
+                active_music_token = this.play_music(
+                    NOVEL.echo.active_girl + "-1"
+                )
+                novel_welcome_music_played = true
+            } else {
+                active_music_token = this.play_music(NOVEL.echo.active_girl)
             }
-            this.currentMusicId = this.play(NOVEL.echo.active_scene, 0, "music")
+        }
+        // play idle mobs sounds
+        // if (GAME_STATE.echo.world) {
+        //     close_mobs.forEach((mob) => {
+        //         if (
+        //             mob.STATE.active === "idle" &&
+        //             Math.random() < 0.3 * LOOP.delta_sec
+        //         ) {
+        //             const sound_token = this.play_sound(mob.name + "-idle")
+        //             if (sound_token) mobs_sounds_tokens.push(sound_token)
+        //         }
+        //         // 📜 add move state ?
+        //     })
+        // }
+        // play river sound
+        if (GAME_STATE.echo.world && !loop_sounds_tokens.river) {
+            this.play_loop_sound("river")
         }
     }
-    play(name: string, delay = 0, type: AudioType = "sound") {
-        if (!this.context || !this.sound_gain || !this.music_gain) return
-
-        const matching_buffers = _.filter(this.buffers, (buffer, key) =>
+    play_loop_sound = (name: string) => {
+        const sound_duration = 60_000 // 🌱 change this line to resolve sound duration form name using buffer, you can get it as in play function
+        const loop_duration = sound_duration - 750
+        const tokens: TokensObject = {
+            sound: [undefined, undefined],
+            time: [undefined, undefined],
+        }
+        tokens.time[0] = TIME.unbound_every(loop_duration * 2, () => {
+            const token = this.play(name, 0, "sound")
+            tokens.sound[0] = token
+        })
+        tokens.time[1] = TIME.run_after(loop_duration, () => {
+            tokens.time[1] = TIME.unbound_every(loop_duration * 2, () => {
+                const token = this.play(name, 0, "sound")
+                tokens.sound[1] = token
+            })
+        })
+        loop_sounds_tokens[name] = tokens
+    }
+    stop_loop_sound = (name: string, fade_duration = 500) => {
+        const tokens: TokensObject = loop_sounds_tokens[name]
+        if (tokens.time[0]) TIME.cancel(tokens.time[0])
+        if (tokens.time[1]) TIME.cancel(tokens.time[1])
+        if (tokens.sound[0]) this.stop_sound(tokens.sound[0], fade_duration)
+        if (tokens.sound[1]) this.stop_sound(tokens.sound[1], fade_duration)
+        delete loop_sounds_tokens[name]
+    }
+    play_music = (name: string, delay = 0) => this.play(name, delay, "music")
+    play_sound = (name: string, delay = 0) => this.play(name, delay, "sound")
+    private play(name: string, delay: number, type: AudioType) {
+        if (!context || !sound_node || !music_node) return
+        if (type === "music" && active_music_token) return
+        const matching_buffers = _.filter(buffers, (buffer, key) =>
             key.includes(name)
         )
         if (_.isEmpty(matching_buffers)) return
-        if (type === "music" && this.currentMusicId) return
-        if (type === "music") this.music_playing = true
-        const source = this.context.createBufferSource()
+        const source = context.createBufferSource()
         const buffer = _.sample(matching_buffers)
         if (!buffer) return
         source.buffer = buffer
-        if (type === "sound") {
-            source.connect(this.sound_gain)
-        } else if (type === "music") {
-            source.connect(this.music_gain)
+        let parent_node = type === "music" ? music_node : sound_node
+        source.connect(parent_node)
+        const token = UNIQUE.string()
+        sources[token] = source
+        source.onended = () => {
+            delete sources[token]
+            if (type === "music") active_music_token = undefined
         }
-        const id = UNIQUE.string()
-        this.sources[id] = source
-        source.onended = () => delete this.sources[id]
-        if (type === "music")
-            source.onended = () => {
-                this.currentMusicId = undefined
-                this.music_playing = false
-            }
-        source.start(this.context.currentTime + delay / 1000) // Add delay
-        return id
+        source.start(context.currentTime + delay / 1000)
+        return token
     }
-    stop(id, fadeDuration = 100, type = "sound") {
-        if (!this.context || !this.sound_gain || !this.music_gain) return
-
-        if (!this.sources[id]) return
-        const gainNode = this.context.createGain()
-        if (type === "sound") this.sources[id].disconnect(this.sound_gain)
-        else if (type === "music") this.sources[id].disconnect(this.music_gain)
-        this.sources[id].connect(gainNode)
-        let parentGain
-        if (type === "sound") parentGain = this.sound_gain
-        else if (type === "music") parentGain = this.music_gain
-        gainNode.connect(parentGain)
-        let volume
+    stop_music() {
+        if (active_music_token) this.stop(active_music_token, 1000, "music")
+    }
+    stop_sound(token: string, fade_duration = 100) {
+        this.stop(token, fade_duration, "sound")
+    }
+    private stop(token: string, fade_duration: number, type: AudioType) {
+        if (!context || !sound_node || !music_node) return
+        if (!sources[token]) return
+        const node = context.createGain()
+        let parent_node = type === "music" ? music_node : sound_node
+        sources[token].disconnect(parent_node)
+        sources[token].connect(node)
+        node.connect(parent_node)
+        let volume = 0
+        if (type === "music") volume = SETTINGS.general.music
         if (type === "sound") volume = SETTINGS.general.sound
-        else if (type === "music") volume = SETTINGS.general.music
-        gainNode.gain.setValueAtTime(volume, this.context.currentTime)
-        gainNode.gain.linearRampToValueAtTime(
-            0,
-            this.context.currentTime + fadeDuration / 1000
-        )
-        this.sources[id].stop(this.context.currentTime + fadeDuration / 1000)
-        delete this.sources[id]
+        let end_time = context.currentTime + fade_duration / 1000
+        node.gain.setValueAtTime(volume, context.currentTime)
+        node.gain.linearRampToValueAtTime(0, end_time)
+        sources[token].stop(end_time)
+        delete sources[token]
     }
 }
 

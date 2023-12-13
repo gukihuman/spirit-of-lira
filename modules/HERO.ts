@@ -11,7 +11,7 @@ class Hero {
         this.updateHero()
     }
     private updateHero() {
-        MUSEUM.processEntity(["HERO"], (entity, id) => {
+        MUSEUM.process_entity(["HERO"], (entity, id) => {
             this.entity = entity
             this.id = id
         })

@@ -1,6 +1,6 @@
 class Remove {
     process() {
-        MUSEUM.processEntity(["STATE", "NONHERO"], (entity, id) => {
+        MUSEUM.process_entity(["STATE", "NONHERO"], (entity, id) => {
             if (
                 entity.STATE.active === "dead" &&
                 LOOP.elapsed >

@@ -39,7 +39,7 @@ class Dead {
         })
     }
     process() {
-        MUSEUM.processEntity("HERO", (entity, id) => {
+        MUSEUM.process_entity("HERO", (entity, id) => {
             if (entity.ATTRIBUTES.health > 0) return
             entity.STATE.active = "dead"
             entity.TARGET.id = null
@@ -60,7 +60,7 @@ class Dead {
                 }, 1000)
             }
         })
-        MUSEUM.processEntity(
+        MUSEUM.process_entity(
             ["ATTRIBUTES", "STATE", "NONHERO"],
             (entity, id) => {
                 if (entity.ATTRIBUTES.health > 0) return
@@ -71,7 +71,7 @@ class Dead {
                     entity.STATE.active === "dead" &&
                     lastEntity.STATE.active !== "dead"
                 ) {
-                    AUDIO.stop(entity.SKILLS.attackSoundId, 10)
+                    AUDIO.stop_sound(entity.SKILLS.attackSoundId, 10)
                     entity.STATE.deadTimeMS = LOOP.elapsed
                     PROGRESS.mobs[entity.name]++
                     SAVE.update()

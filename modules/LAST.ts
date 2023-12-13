@@ -1,14 +1,5 @@
-declare global {
-    type Last = AnyObject | string[]
-}
 class La {
     process() {
-        if (
-            (GAME_STATE.echo.novel && !GAME_STATE.last.echo.novel) ||
-            (!GAME_STATE.echo.novel && GAME_STATE.last.echo.novel)
-        ) {
-            EVENTS.emitSingle("novel-state-changed")
-        }
         for (const name of CONFIG.modules) {
             const module = globalThis[name]
             if (!module.last) continue

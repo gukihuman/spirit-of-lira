@@ -104,7 +104,7 @@ class Target {
     }
     process() {
         if (!HERO.entity.TARGET) return
-        MUSEUM.processEntity(["MOVE", "TARGET"], (entity, id) => {
+        MUSEUM.process_entity(["MOVE", "TARGET"], (entity, id) => {
             this.updateLastTarget(entity)
             if (entity.HERO) this.updateKeepTrack(entity, id)
             this.checkTargetDistance(entity, id)
@@ -190,7 +190,7 @@ class Target {
         const closestGroup: number[] = []
         const correspondDistances: number[] = []
         const angleToGroup = 0.2 // about 12 degrees
-        MUSEUM.processEntity(["NONHERO", "MOVE"], (entity, id) => {
+        MUSEUM.process_entity(["NONHERO", "MOVE"], (entity, id) => {
             if (entity.STATE.active === "dead") return
             const distance = COORD.distance(
                 HERO.entity.POSITION,

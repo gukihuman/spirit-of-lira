@@ -5,7 +5,7 @@ class Hover {
         const heroPosition = HERO.entity.POSITION
         const intersections: number[] = []
         let hoverEntityId = 0
-        MUSEUM.processEntity(["NONHERO", "MOVE", "SIZE"], (entity, id) => {
+        MUSEUM.process_entity(["NONHERO", "MOVE", "SIZE"], (entity, id) => {
             const position = entity.POSITION
             const rect = {
                 x:

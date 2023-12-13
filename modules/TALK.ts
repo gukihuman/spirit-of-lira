@@ -9,7 +9,7 @@ class Talk {
     updatePosition = false
     talkEntity
     process() {
-        MUSEUM.processEntity(["TALK"], (entity) => {
+        MUSEUM.process_entity(["TALK"], (entity) => {
             if (
                 COORD.distance(entity.POSITION, HERO.entity.POSITION) <
                 entity.TALK.distance

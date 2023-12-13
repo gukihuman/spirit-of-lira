@@ -7,13 +7,13 @@ interface Echo extends AnyObject {
     preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
-    last: Last = ["context_index"]
     context_list: SettingsStates[] = ["general", "gamepad", "keyboard", "info"]
     get context_index() {
         return this.context_list.findIndex((context) => {
             return GAME_STATE.echo.world?.interface?.settings?.[context]
         })
     }
+    last = { context_index: 0 }
     get context() {
         return this.context_list[this.context_index]
     }
@@ -25,7 +25,7 @@ class Settings {
         preventEditHotkeyMode: null,
     }
     general = {
-        music: 0.0, // 0.8
+        music: 0.8, // 0.8
         sound: 0.8, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
@@ -226,7 +226,7 @@ class Settings {
                 })
             })
             this.echo.showButtonIcon = false
-            TIME.run_after_iterations(() => {
+            TIME.run_next_iteration(() => {
                 this.echo.editHotkeyMode = false
                 this.echo.showButtonIcon = true
                 this.echo.preventEditHotkeyMode = null
@@ -321,7 +321,7 @@ class Settings {
             if (!this.echo.editHotkeyMode) this.emitEvents()
         }, "SETTINGS")
         EVENTS.onSingle("quitInterface", () => {
-            TIME.run_after_iterations(() => {
+            TIME.run_next_iteration(() => {
                 if (this.echo.editHotkeyMode) return
                 GAME_STATE.set("world")
             })

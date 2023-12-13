@@ -53,9 +53,6 @@ class GameState {
             },
         },
     }
-    last = {
-        echo: this.echo,
-    }
     set(
         level1: RootStates,
         level2?: WorldStates,
@@ -106,6 +103,16 @@ class GameState {
                     if (level4 === "magic") inter.skills.magic = true
                 }
             }
+        }
+    }
+    private active_root: RootStates = "empty"
+    last = { echo: this.echo, active_root: this.active_root }
+    process() {
+        if (this.echo.empty) this.active_root = "empty"
+        if (this.echo.novel) this.active_root = "novel"
+        if (this.echo.world) this.active_root = "world"
+        if (this.active_root !== this.last.active_root) {
+            EVENTS.emitSingle("root game state changed")
         }
     }
 }

@@ -3,13 +3,8 @@ class Entities {
         lira: {
             HERO: true,
             POSITION: { x: 6588, y: 6891 },
-            SIZE: {
-                width: 60,
-                height: 153,
-            },
-            MOVE: {
-                speed: 16,
-            },
+            SIZE: { width: 60, height: 153 },
+            MOVE: { speed: 16 },
             SKILLS: {
                 modify: {
                     attack: {
@@ -29,11 +24,7 @@ class Entities {
             },
         },
         bunbo: {
-            SIZE: {
-                width: 70,
-                height: 60,
-                bottom: 17,
-            },
+            SIZE: { width: 70, height: 60, bottom: 17 },
             SPRITE: {
                 leaveAnimationConditions: {
                     move: (entity, id) => {
@@ -44,9 +35,7 @@ class Entities {
                 },
                 startFrames: { attack: 18 },
             },
-            MOVE: {
-                speed: 10,
-            },
+            MOVE: { speed: 10 },
             SKILLS: {
                 modify: {
                     attack: {
@@ -63,17 +52,11 @@ class Entities {
                 health: 10,
                 healthMax: 10,
             },
-            STATE: {
-                deadDelayMS: 1300,
-            },
+            STATE: { deadDelayMS: 1300 },
         },
         mousepoint: {
-            POSITION: {
-                x: -30,
-                y: -30,
-            },
+            POSITION: { x: -30, y: -30 },
             SPRITE: {},
-
             process(entity: { POSITION: any }, id: number) {
                 let position = entity.POSITION
                 if (!position) return

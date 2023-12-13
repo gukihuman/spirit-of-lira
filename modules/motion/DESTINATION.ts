@@ -1,7 +1,7 @@
 class Destination {
     delayMS = 15_000
     process() {
-        MUSEUM.processEntity("MOVE", (entity, id) => {
+        MUSEUM.process_entity("MOVE", (entity, id) => {
             if (
                 entity.NONHERO &&
                 entity.STATE.active === "idle" &&
@@ -17,9 +17,9 @@ class Destination {
         })
     }
     init() {
-        EVENTS.onSingle("novel-state-changed", () => {
+        EVENTS.onSingle("root game state changed", () => {
             GLOBAL.sceneContextChangedMS = LOOP.elapsed
-            TIME.run_after_iterations(() => {
+            TIME.run_next_iteration(() => {
                 HERO.entity.MOVE.final_destination = _.cloneDeep(
                     HERO.entity.POSITION
                 )

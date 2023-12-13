@@ -34,7 +34,7 @@ class Events {
     }
     private addCommonEvents() {
         this.onSingle("closeApp", () => {
-            TIME.run_after_iterations(() => {
+            TIME.run_next_iteration(() => {
                 // keep adult check
                 _.remove(PROGRESS.scenes, (s) => s === "a0")
                 SAVE.update()
