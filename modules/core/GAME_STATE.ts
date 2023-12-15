@@ -107,6 +107,11 @@ class GameState {
     }
     private active_root: RootStates = "empty"
     last = { echo: this.echo, active_root: this.active_root }
+    init() {
+        this.echo.empty = true
+        this.echo.novel = false
+        this.echo.world = false
+    }
     process() {
         if (this.echo.empty) this.active_root = "empty"
         if (this.echo.novel) this.active_root = "novel"

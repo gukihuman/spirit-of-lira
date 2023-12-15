@@ -195,7 +195,7 @@ class Novel {
             this.echo.nextSceneName = options.name // used each continue
             this.echo.stepIndex = 0
             if (options.instantChoices) {
-                TIME.run_next_iteration(() => EVENTS.emitSingle("continue"))
+                TIME.next(() => EVENTS.emitSingle("continue"))
             }
         })
         EVENTS.onSingle("skipScene", () => {
@@ -218,16 +218,14 @@ class Novel {
                 }
                 SAVE.update()
                 GAME_STATE.set("empty")
-                TIME.run_after(500, () => {
+                TIME.after(500, () => {
                     this.echo.active_md = "" // styling need to be changed in between 1000 transition and it is binded to active_md
                     EVENTS.emit("startScene", { name: "n1-start" })
                 })
             } else EVENTS.emitSingle("endScene")
         })
         EVENTS.onSingle("keepAdultCheck", () => {
-            TIME.run_next_iteration(() =>
-                _.remove(PROGRESS.scenes, (s) => s === "a0")
-            )
+            TIME.next(() => _.remove(PROGRESS.scenes, (s) => s === "a0"))
             SAVE.update()
         })
         EVENTS.onSingle("mouseContinue", () => {

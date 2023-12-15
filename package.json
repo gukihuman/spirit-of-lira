@@ -37,6 +37,7 @@
   "dependencies": {
     "dotenv": "^16.0.3",
     "guki-input-controller": "^0.8.7",
+    "howler": "^2.2.4",
     "mathjs": "^11.11.2",
     "pixi-filters": "^5.2.1",
     "sharp": "^0.32.6",

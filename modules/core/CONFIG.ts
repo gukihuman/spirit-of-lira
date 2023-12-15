@@ -22,6 +22,7 @@ class GukiConfig {
         },
         modulesInit: {
             // CONFIG init is always first, handled separatly in start.ts
+            GAME_STATE: 7,
             ENTITIES_STATIC: 6,
             ENTITIES: 5,
             WORLD: 4,
@@ -43,6 +44,7 @@ class GukiConfig {
             // <- rest of the logic here
             ASTAR: -1, // check logic in EVENTS before it is empty
             EVENTS: -2, // runs all logic for collected events and empty itself
+            AUDIO: -3, // after EVENTS to check game states
             MOVE: -3,
             CAST: -4,
             TARGET: -5,

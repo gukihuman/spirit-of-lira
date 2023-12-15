@@ -71,7 +71,7 @@ class Dead {
                     entity.STATE.active === "dead" &&
                     lastEntity.STATE.active !== "dead"
                 ) {
-                    AUDIO.stop_sound(entity.SKILLS.attackSoundId, 10)
+                    TIME.cancel(entity.SKILLS.attackSoundTimeId)
                     entity.STATE.deadTimeMS = LOOP.elapsed
                     PROGRESS.mobs[entity.name]++
                     SAVE.update()

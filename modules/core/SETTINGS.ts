@@ -226,7 +226,7 @@ class Settings {
                 })
             })
             this.echo.showButtonIcon = false
-            TIME.run_next_iteration(() => {
+            TIME.next(() => {
                 this.echo.editHotkeyMode = false
                 this.echo.showButtonIcon = true
                 this.echo.preventEditHotkeyMode = null
@@ -321,7 +321,7 @@ class Settings {
             if (!this.echo.editHotkeyMode) this.emitEvents()
         }, "SETTINGS")
         EVENTS.onSingle("quitInterface", () => {
-            TIME.run_next_iteration(() => {
+            TIME.next(() => {
                 if (this.echo.editHotkeyMode) return
                 GAME_STATE.set("world")
             })

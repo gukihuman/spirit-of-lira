@@ -43,20 +43,20 @@ async function start() {
     addEventListener("keydown", listener)
     addEventListener("mousedown", listener)
 
-    TIME.run_after(500, () => clearInterval(loading_animation))
+    TIME.after(500, () => clearInterval(loading_animation))
 
     if (!PROGRESS.scenes.includes("a0")) {
         EVENTS.emit("startScene", {
             name: "a0",
             instantChoices: true,
         })
-        TIME.run_next_iteration(() => (GLOBAL.loading = false))
+        TIME.next(() => (GLOBAL.loading = false))
     } else if (!PROGRESS.scenes.includes("n1")) {
         EVENTS.emit("startScene", { name: "n1-start" })
-        TIME.run_next_iteration(() => (GLOBAL.loading = false))
+        TIME.next(() => (GLOBAL.loading = false))
     } else {
         GAME_STATE.set("world")
         // delay to make transition work
-        TIME.run_next_iteration(() => (GLOBAL.loading = false))
+        TIME.next(() => (GLOBAL.loading = false))
     }
 }

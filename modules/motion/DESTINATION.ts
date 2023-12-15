@@ -19,7 +19,7 @@ class Destination {
     init() {
         EVENTS.onSingle("root game state changed", () => {
             GLOBAL.sceneContextChangedMS = LOOP.elapsed
-            TIME.run_next_iteration(() => {
+            TIME.next(() => {
                 HERO.entity.MOVE.final_destination = _.cloneDeep(
                     HERO.entity.POSITION
                 )
