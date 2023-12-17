@@ -1,7 +1,7 @@
 <template lang="pug">
 div(class="absolute z-10 overflow-hidden w-full h-full"
-v-show="GAME_STATE.echo.world")
-  div(v-show="GAME_STATE.echo.world.gameplay")
+v-show="CONTEXT.echo.gameplay")
+  div(v-show="!CONTEXT.echo.interface")
     float-damage(mark="float-damage" v-if="INTERFACE.floatDamage")
     tn: talk(mark="talk" v-show="INTERFACE.talk")
     tn: reset(mark="reset" v-show="GLOBAL.reset")

@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-    v-show="GAME_STATE.echo.novel" class="z-30 relative"
+    v-show="CONTEXT.echo.novel" class="z-30 relative"
 )
     //- layer one always on - content switched when layer two fully appears
     //- then layer two immidealtly turns off again and preloads next step

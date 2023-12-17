@@ -10,7 +10,7 @@ fullscreen
         tn: settings
         tn( type="long" ): novel
         tn: audiomessage
-        cursor( v-if="GLOBAL.firstUserGesture" )
+        tn: cursor( v-if="GLOBAL.firstUserGesture" )
 </template>
 <style>
 .long-enter-active,

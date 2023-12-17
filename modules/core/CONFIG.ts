@@ -22,7 +22,7 @@ class GukiConfig {
         },
         modulesInit: {
             // CONFIG init is always first, handled separatly in start.ts
-            GAME_STATE: 7,
+            CONTEXT: 7,
             ENTITIES_STATIC: 6,
             ENTITIES: 5,
             WORLD: 4,
@@ -40,6 +40,7 @@ class GukiConfig {
             NOVEL: 3,
             DEVMODE: 3, // between STATE and LAST
             SETTINGS: 3, // before LAST
+            CONTEXT: 3, // before LAST
             LAST: 2,
             // <- rest of the logic here
             ASTAR: -1, // check logic in EVENTS before it is empty

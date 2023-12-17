@@ -41,11 +41,11 @@ const inter: Inter = {
     heroEnergy: 0,
     heroMaxEnergy: 0,
     process() {
-        if (GAME_STATE.echo.novel) this.overlay = false
+        if (CONTEXT.echo.novel) this.overlay = false
         else this.overlay = true
         this.floatDamage = SETTINGS.general.floatDamage
         this.showKeys = SETTINGS.general.showKeys
-        if (GAME_STATE.echo.world) {
+        if (!CONTEXT.echo.novel) {
             if (HERO.entity.TARGET.id && HERO.entity.TARGET.entity) {
                 INTERFACE.target = true
                 INTERFACE.targetHealth =

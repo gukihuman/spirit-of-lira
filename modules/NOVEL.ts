@@ -185,12 +185,11 @@ class Novel {
             })
         })
         LOOP.add(() => {
-            if (!GAME_STATE.echo.novel) return
-            this.updateData()
+            if (CONTEXT.echo.novel) this.updateData()
         }, "NOVEL")
         EVENTS.on("startScene", (options) => {
             if (!options.name) return
-            GAME_STATE.set("novel")
+            CONTEXT.echo.novel = true
             this.echo.active_md = options.name
             this.echo.nextSceneName = options.name // used each continue
             this.echo.stepIndex = 0
@@ -208,7 +207,7 @@ class Novel {
             }
             HERO.reset_destination()
             SAVE.update()
-            GAME_STATE.set("world")
+            CONTEXT.echo.novel = false
             setTimeout(() => (this.echo.active_md = ""), 1000)
         })
         EVENTS.onSingle("resolveAdultCheckEndScene", () => {
@@ -217,7 +216,9 @@ class Novel {
                     PROGRESS.scenes.push(this.echo.active_scene)
                 }
                 SAVE.update()
-                GAME_STATE.set("empty")
+                CONTEXT.echo.novel = false
+                CONTEXT.echo.empty = true
+                TIME.after(1000, () => (CONTEXT.echo.empty = false))
                 TIME.after(500, () => {
                     this.echo.active_md = "" // styling need to be changed in between 1000 transition and it is binded to active_md
                     EVENTS.emit("startScene", { name: "n1-start" })

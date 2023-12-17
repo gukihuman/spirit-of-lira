@@ -31,7 +31,7 @@ class Move {
         })
     }
     process() {
-        if (GAME_STATE.echo.novel) return
+        if (CONTEXT.echo.novel) return
         WORLD.entities.forEach((entity) => {
             if (!entity.MOVE) return
             this.move(entity)
@@ -58,7 +58,7 @@ class Move {
         }
     }
     mouseMove() {
-        if (GAME_STATE.echo.world?.interface) return
+        if (CONTEXT.echo.interface) return
         if (INTERFACE.buttonHover) return
         HERO.entity.STATE.track = false
         HERO.entity.STATE.cast = false

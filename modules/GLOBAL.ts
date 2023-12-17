@@ -2,7 +2,6 @@ const global = {
     version: "0.1.0",
     gameWindowScale: 1,
     fullscreen: false,
-    loading: true,
     reset: false,
     devMode: false,
     editMode: false,

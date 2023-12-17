@@ -1,7 +1,7 @@
 <template lang="pug">
 div(
     mark="settings"
-    v-show="GAME_STATE.echo.world?.interface?.settings"
+    v-show="CONTEXT.echo.settings"
     class="z-30"
 )
     div(

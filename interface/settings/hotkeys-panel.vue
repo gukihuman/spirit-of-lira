@@ -39,13 +39,13 @@ class="absolute w-full h-full flex justify-center")
 <script setup lang="ts">
 const props = defineProps({ device: { type: String } }) // keyboard | gamepad
 const handleClick = (columnIndex, rowIndex) => {
-    if (!GAME_STATE.echo.world?.interface?.settings?.keyboard) return
+    if (CONTEXT.echo.settings === "gamepad") return
     SETTINGS.echo.focus.columnIndex = columnIndex
     SETTINGS.echo.focus.rowIndex = rowIndex
     EVENTS.emitSingle("editHotkey")
 }
 const button_class = computed(() => {
-    const condition = GAME_STATE.echo.world?.interface?.settings?.keyboard
+    const condition = CONTEXT.echo.settings === "keyboard"
     return {
         "hover:scale-[1.1] hover:brightness-125": condition,
     }
@@ -88,8 +88,8 @@ const resolve_show_button_icon = computed(() => {
 const resolve_show_panel = computed(() => {
     if (!SETTINGS.echo.show_panel) return
     if (props.device === "keyboard") {
-        return GAME_STATE.echo.world?.interface?.settings?.keyboard
-    } else return GAME_STATE.echo.world?.interface?.settings?.gamepad
+        return CONTEXT.echo.settings === "keyboard"
+    } else return CONTEXT.echo.settings === "gamepad"
 })
 const resolveFocus = computed(() => {
     return (columnIndex, rowIndex) => {

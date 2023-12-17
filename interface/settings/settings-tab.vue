@@ -18,10 +18,10 @@ class="relative w-[250px] h-[85px] overflow-hidden transition-all duration-[200m
 const props = defineProps(["context"]) // SETTINGS.context_list
 const handleClick = () => {
     if (SETTINGS.echo.editHotkeyMode) return
-    GAME_STATE.set("world", "interface", "settings", props.context)
+    CONTEXT.echo.settings = props.context
 }
 let inactive = computed(() => {
-    return !GAME_STATE.echo.world?.interface?.settings?.[props.context]
+    return CONTEXT.echo.settings !== props.context
 })
 const tab_style = computed(() => {
     return {

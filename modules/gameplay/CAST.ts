@@ -3,7 +3,7 @@ class Cast {
     attackSoundTimeIds: any = []
     heroSwordAttackCastStage: 0 | 1 = 0 // animation stage
     private cast(slot = "slot1") {
-        if (!GAME_STATE.echo.world?.gameplay) return
+        if (CONTEXT.echo.novel || CONTEXT.echo.interface) return
         EVENTS.emit("cast", {
             entity: HERO.entity,
             slot: slot,
@@ -139,7 +139,7 @@ class Cast {
         entity.SKILLS.delayedLogicDone = true
     }
     process() {
-        if (GAME_STATE.echo.novel) return
+        if (CONTEXT.echo.novel) return
         MUSEUM.process_entity(["STATE", "SKILLS"], (entity, id) => {
             this.stopAttackSoundsIfNotCast(entity, id)
             if (!entity.STATE.cast) {

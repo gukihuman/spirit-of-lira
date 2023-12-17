@@ -13,6 +13,6 @@ div(class="absolute w-full h-full bg-slate-800 flex justify-center items-center"
         img(:src="ASSETS.webp_paths['gamepad']" draggable="false"
         class="opacity-[.85] w-[60px] saturate-[.2]")
 
-  //- used to cover loading above after its ended
-  tn: div(v-show="!GLOBAL.loading" class="absolute w-full h-full bg-slate-800")
+  //- covers loading above to create blank screen
+  tn: div(v-show="!CONTEXT.echo.loading" class="absolute w-full h-full bg-slate-800")
 </template>

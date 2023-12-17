@@ -7,10 +7,11 @@ interface Echo extends AnyObject {
     preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
 class Settings {
+    last_opened = "general"
     context_list: SettingsStates[] = ["general", "gamepad", "keyboard", "info"]
     get context_index() {
         return this.context_list.findIndex((context) => {
-            return GAME_STATE.echo.world?.interface?.settings?.[context]
+            return CONTEXT.echo.settings === context
         })
     }
     last = { context_index: 0 }
@@ -38,15 +39,15 @@ class Settings {
     interfaceInputEvents = {
         keyboard: {
             toggleFullscreen: "f",
-            // toggleInventory: "i",
-            toggleSettings: "r",
-            quitInterface: "q",
+            // toggle backpack: "i",
+            "toggle settings": "r",
+            "quit interface": "q",
         },
         gamepad: {
             toggleFullscreen: "Start",
-            // toggleInventory: "B",
-            toggleSettings: "Menu",
-            quitInterface: "B",
+            // toggle backpack: "B",
+            "toggle settings": "Menu",
+            "quit interface": "B",
             editHotkey: "A", // action
         },
     }
@@ -59,8 +60,8 @@ class Settings {
             cast3: "",
             autoMove: "w",
             toggleFullscreen: "f",
-            // toggleInventory: "i",
-            toggleSettings: "r",
+            // toggle backpack: "i",
+            "toggle settings": "r",
         },
         mouse: {
             decide: 0,
@@ -73,8 +74,8 @@ class Settings {
             cast2: "",
             cast3: "",
             toggleFullscreen: "Start",
-            // toggleInventory: "B",
-            toggleSettings: "Menu",
+            // toggle backpack: "B",
+            "toggle settings": "Menu",
             lockTarget: "LB",
         },
     }
@@ -105,23 +106,23 @@ class Settings {
     gamepad = {
         leftColumn: {
             Action: ["talk", "reset", "continue", "editHotkey"],
-            Close: ["skipScene", "quitInterface"],
+            Close: ["skipScene", "quit interface"],
             Cast: ["cast1"],
         },
         rightColumn: {
             "Toggle Fullscreen": ["toggleFullscreen"],
-            "Toggle Settings": ["toggleSettings"],
+            "Toggle Settings": ["toggle settings"],
         },
     }
     keyboard = {
         leftColumn: {
             Action: ["talk", "reset", "continue"],
-            Close: ["skipScene", "quitInterface"],
+            Close: ["skipScene", "quit interface"],
             Cast: ["cast1"],
         },
         rightColumn: {
             "Toggle Fullscreen": ["toggleFullscreen"],
-            "Toggle Settings": ["toggleSettings"],
+            "Toggle Settings": ["toggle settings"],
             "Auto Move": ["autoMove"],
         },
     }
@@ -156,7 +157,7 @@ class Settings {
     }
     private updateHotkey(device: "keyboard" | "gamepad") {
         if (
-            !GAME_STATE.echo.world?.interface?.settings?.[device] ||
+            CONTEXT.echo.settings !== device ||
             INPUT[device].justPressed.length === 0
         ) {
             return
@@ -234,12 +235,8 @@ class Settings {
         }
     }
     updateShowSettingsPanel() {
-        if (!GAME_STATE.echo.world?.interface?.settings)
-            this.echo.show_panel = false
-        if (
-            GAME_STATE.echo.world?.interface?.settings &&
-            !GAME_STATE.last.echo?.world?.interface?.settings
-        ) {
+        if (!CONTEXT.echo.settings) this.echo.show_panel = false
+        if (CONTEXT.echo.settings && !CONTEXT.last.echo.settings) {
             this.echo.show_panel = true
         }
         if (this.context_index !== this.last.context_index) {
@@ -252,8 +249,7 @@ class Settings {
     }, 100)
     resetSettingsFocus() {
         if (
-            (GAME_STATE.echo.world.interface &&
-                !GAME_STATE.last.echo?.world?.interface) ||
+            (CONTEXT.echo.interface && !CONTEXT.last.echo.interface) ||
             this.context_index !== this.last.context_index
         ) {
             this.echo.focus.columnIndex = 0
@@ -261,10 +257,10 @@ class Settings {
         }
     }
     updateSettingsFocus() {
-        if (this.echo.editHotkeyMode) return
+        if (!CONTEXT.echo.settings || this.echo.editHotkeyMode) return
         let leftColumnLength = 0
         let rightColumnLength = 0
-        if (GAME_STATE.echo.world?.interface?.settings?.keyboard) {
+        if (CONTEXT.echo.settings === "keyboard") {
             leftColumnLength = _.keys(this.keyboard.leftColumn).length
             rightColumnLength = _.keys(this.keyboard.rightColumn).length
         } else {
@@ -308,7 +304,7 @@ class Settings {
         }
     }
     switchSettingsTabInputs() {
-        if (!GAME_STATE.echo.world?.interface?.settings) return
+        if (!CONTEXT.echo.settings || this.echo.editHotkeyMode) return
         if (INPUT.gamepad.justPressed.includes("LB")) {
             EVENTS.emitSingle("switchSettingsTabLeft")
         }
@@ -320,12 +316,6 @@ class Settings {
         LOOP.add(() => {
             if (!this.echo.editHotkeyMode) this.emitEvents()
         }, "SETTINGS")
-        EVENTS.onSingle("quitInterface", () => {
-            TIME.next(() => {
-                if (this.echo.editHotkeyMode) return
-                GAME_STATE.set("world")
-            })
-        })
         EVENTS.onSingle("previousOption", () => {
             if (NOVEL.echo.focusedChoiceIndex === null) return
             if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
@@ -383,26 +373,24 @@ class Settings {
             NOVEL.echo.focusedChoiceIndex = possibleIndex
         })
         EVENTS.onSingle("switchSettingsTabLeft", () => {
-            if (SETTINGS.echo.editHotkeyMode) return
             const last = SETTINGS.context_list.length - 1
             let i = SETTINGS.context_index - 1
             if (i < 0) i = last
             const context = SETTINGS.context_list[i]
-            GAME_STATE.set("world", "interface", "settings", context)
+            CONTEXT.echo.settings = context
         })
         EVENTS.onSingle("switchSettingsTabRight", () => {
-            if (SETTINGS.echo.editHotkeyMode) return
             const last = SETTINGS.context_list.length - 1
             let i = SETTINGS.context_index + 1
             if (i > last) i = 0
             const context = SETTINGS.context_list[i]
-            GAME_STATE.set("world", "interface", "settings", context)
+            CONTEXT.echo.settings = context
         })
         EVENTS.onSingle("editHotkey", () => {
-            if (!GAME_STATE.echo.world?.interface?.settings) return
+            if (!CONTEXT.echo.settings) return
             if (
-                GAME_STATE.echo.world?.interface?.settings?.keyboard ||
-                GAME_STATE.echo.world?.interface?.settings?.gamepad
+                CONTEXT.echo.settings === "keyboard" ||
+                CONTEXT.echo.settings === "gamepad"
             ) {
                 SETTINGS.echo.editHotkeyMode = true
             }
@@ -414,7 +402,7 @@ class Settings {
         }
         if (INTERFACE.inputFocus) return
         // 📜 why do we need check last here?? some order of events or smth i guess
-        if (GAME_STATE.echo.novel || GAME_STATE.last.echo.novel) {
+        if (CONTEXT.echo.novel || CONTEXT.last.echo.novel) {
             _.forEach(this.novelInputEvents, (settingList, device) => {
                 _.forEach(settingList, (button, setting) => {
                     if (INPUT[device].justPressed.includes(button)) {
@@ -434,10 +422,7 @@ class Settings {
                 EVENTS.emitSingle("continue")
             }
         }
-        if (
-            GAME_STATE.echo.world.interface ||
-            GAME_STATE.last.echo?.world?.interface
-        ) {
+        if (CONTEXT.echo.interface || CONTEXT.last.echo.interface) {
             _.forEach(this.interfaceInputEvents, (settingList, device) => {
                 _.forEach(settingList, (button, setting) => {
                     if (INPUT[device].justPressed.includes(button)) {
@@ -446,7 +431,7 @@ class Settings {
                 })
             })
         }
-        if (GAME_STATE.echo.world || GAME_STATE.last.echo?.world) {
+        if (CONTEXT.echo.gameplay || CONTEXT.last.echo.gameplay) {
             _.forEach(this.worldInputEvents, (settingList, device) => {
                 _.forEach(settingList, (button, setting) => {
                     if (INPUT[device].justPressed.includes(button)) {

@@ -18,18 +18,18 @@ const image_style = computed(() => {
 const handleClick = () => {
     if (SETTINGS.echo.editHotkeyMode) return
     if (props.type === "inventory") {
-        EVENTS.emitSingle("toggleInventory")
+        EVENTS.emitSingle("toggle backpack")
     } else if (props.type === "settings") {
-        EVENTS.emitSingle("toggleSettings")
+        EVENTS.emitSingle("toggle settings")
     } else {
         EVENTS.emitSingle("toggleFullscreen")
     }
 }
 const inputEvent = computed(() => {
     if (props.type === "inventory") {
-        return "toggleInventory"
+        return "toggle backpack"
     } else if (props.type === "settings") {
-        return "toggleSettings"
+        return "toggle settings"
     } else {
         return "toggleFullscreen"
     }

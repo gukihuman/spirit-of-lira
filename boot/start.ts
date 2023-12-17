@@ -50,13 +50,10 @@ async function start() {
             name: "a0",
             instantChoices: true,
         })
-        TIME.next(() => (GLOBAL.loading = false))
     } else if (!PROGRESS.scenes.includes("n1")) {
         EVENTS.emit("startScene", { name: "n1-start" })
-        TIME.next(() => (GLOBAL.loading = false))
-    } else {
-        GAME_STATE.set("world")
-        // delay to make transition work
-        TIME.next(() => (GLOBAL.loading = false))
     }
+
+    // delay to make transition work
+    TIME.next(() => (CONTEXT.echo.loading = false))
 }

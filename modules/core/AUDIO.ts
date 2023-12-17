@@ -30,7 +30,7 @@ type Echo = { state: AudioContextState }
 class Audio {
     echo: Echo = { state: "suspended" }
     async init() {
-        EVENTS.onSingle("root game state changed", () => {
+        EVENTS.onSingle("novel context changed", () => {
             this.stop_music()
             novel_welcome_music_played = false
             if (river_token && sounds[river_token]) {
@@ -49,7 +49,7 @@ class Audio {
         // })
 
         // play music
-        if (!music && GAME_STATE.echo.world) {
+        if (!music && !CONTEXT.echo.novel) {
             // 📜 green-forest -> actual location
             if (!world_welcome_music_played) {
                 TIME.next(() => this.play_music("green-forest-1"))
@@ -58,7 +58,7 @@ class Audio {
                 this.play_music("green-forest")
             }
         }
-        if (!music && GAME_STATE.echo.novel && NOVEL.echo.active_girl) {
+        if (!music && CONTEXT.echo.novel && NOVEL.echo.active_girl) {
             if (!novel_welcome_music_played) {
                 this.play_music(NOVEL.echo.active_girl + "-1")
                 novel_welcome_music_played = true
@@ -68,7 +68,7 @@ class Audio {
         }
 
         // river_token sound
-        if (GAME_STATE.echo.world && !river_token) {
+        if (CONTEXT.echo.world && !river_token) {
             river_token = this.play_loop_sound("river")
             river_time_token = TIME.throttle_iterations(30, () => {
                 if (!river_token && river_time_token)

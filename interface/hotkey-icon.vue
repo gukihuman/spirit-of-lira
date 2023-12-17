@@ -17,7 +17,7 @@ const props = defineProps({
     device: { type: String, default: "" },
 })
 const iconClass = computed(() => {
-    if (GAME_STATE.echo.novel) return { "hue-rotate-180": true }
+    if (CONTEXT.echo.novel) return { "hue-rotate-180": true }
     return {}
 })
 const imageStyle = computed(() => {
@@ -63,7 +63,7 @@ const imageClass = computed(() => {
         "-rotate-90": hotkey === "ArrowLeft" || hotkey === "Left",
         "opacity-100": hotkey,
     }
-    if (GAME_STATE.echo.novel) {
+    if (CONTEXT.echo.novel) {
         _.merge(classObject, {
             "saturate-[.6]": true,
             "brightness-[.85]": true,

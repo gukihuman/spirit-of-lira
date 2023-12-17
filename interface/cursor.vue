@@ -1,5 +1,5 @@
 <template lang="pug">
-div(v-if="GLOBAL.firstUserGesture"
+div(v-show="GLOBAL.firstUserGesture && !CONTEXT.echo.empty"
 :style="cursorStyle"
 class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none")
     img(v-show="cursor"
@@ -22,7 +22,7 @@ const cursorStyle = computed(() => {
 })
 const cursor = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false
-    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.novel) return true
+    if (CONTEXT.echo.interface || CONTEXT.echo.novel) return true
     if (INTERFACE.buttonHover) return true
     return (
         !GLOBAL.hoverId &&
@@ -31,7 +31,7 @@ const cursor = computed(() => {
 })
 const cursorNo = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false
-    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.novel) return false
+    if (CONTEXT.echo.interface || CONTEXT.echo.novel) return false
     if (INTERFACE.buttonHover) return false
     return (
         !GLOBAL.hoverId &&
@@ -40,7 +40,7 @@ const cursorNo = computed(() => {
 })
 const cursorCast = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false
-    if (GAME_STATE.echo.world.interface || GAME_STATE.echo.novel) {
+    if (CONTEXT.echo.interface || CONTEXT.echo.novel) {
         return false
     }
     if (INTERFACE.buttonHover) return false

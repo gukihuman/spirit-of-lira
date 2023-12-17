@@ -14,27 +14,6 @@ const inventory: AnyObject = {
     },
 }
 function initEvents() {
-    EVENTS.onSingle("toggleInventory", () => {
-        if (GAME_STATE.echo.world?.interface?.inventory) {
-            GAME_STATE.set("world")
-        } else {
-            GAME_STATE.set("world", "interface")
-        }
-    })
-    EVENTS.onSingle("toggleSettings", () => {
-        if (GAME_STATE.echo.world?.interface?.settings) {
-            GAME_STATE.set("world")
-        } else {
-            GAME_STATE.set("world", "interface", "settings")
-        }
-    })
-    EVENTS.onSingle("toggleSkills", () => {
-        if (GAME_STATE.echo.world?.interface?.skills) {
-            GAME_STATE.set("world")
-        } else {
-            GAME_STATE.set("world", "interface", "skills")
-        }
-    })
     EVENTS.on("equip", (data) => {
         const { singular, plural } = getType(data.name)
         if (!singular || !plural) {

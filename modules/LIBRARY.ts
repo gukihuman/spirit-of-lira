@@ -64,7 +64,9 @@ class Library {
         return module
     }
     /** transform an object into reactive pinia store, ignores but saves fns, **_pinia_store** is reserved and cannot be used as a property */
-    resonateObject(object: AnyObject) {
+    resonateObject(unresolved_object: AnyObject) {
+        // may be class instance, which conflict with pinia store
+        const object = _.toPlainObject(unresolved_object)
         const functions = {}
         _.forEach(object, (value, key) => {
             if (typeof value === "function") {
