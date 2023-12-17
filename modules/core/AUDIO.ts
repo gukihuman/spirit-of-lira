@@ -7,7 +7,7 @@ let world_welcome_music_played = false
 let novel_welcome_music_played = false
 let music: Howl | undefined = undefined
 const sounds: AudioObject = {}
-let river: Token | undefined = undefined
+let river_token: Token | undefined = undefined
 let river_time_token: Token | undefined = undefined
 const river_distance_close = 500
 const river_distance_far = 1300
@@ -33,9 +33,9 @@ class Audio {
         EVENTS.onSingle("root game state changed", () => {
             this.stop_music()
             novel_welcome_music_played = false
-            if (river && sounds[river]) {
-                this.stop_loop_sound(river)
-                river = undefined
+            if (river_token && sounds[river_token]) {
+                this.stop_loop_sound(river_token)
+                river_token = undefined
             }
         })
     }
@@ -67,12 +67,13 @@ class Audio {
             }
         }
 
-        // river sound
-        if (GAME_STATE.echo.world && !river) {
-            river = this.play_loop_sound("river")
+        // river_token sound
+        if (GAME_STATE.echo.world && !river_token) {
+            river_token = this.play_loop_sound("river")
             river_time_token = TIME.throttle_iterations(30, () => {
-                if (!river && river_time_token) TIME.cancel(river_time_token)
-                if (!river || !sounds[river]) return
+                if (!river_token && river_time_token)
+                    TIME.cancel(river_time_token)
+                if (!river_token || !sounds[river_token]) return
                 let volume = 0
                 let current_min = Infinity
                 river_positions.forEach((position) => {
@@ -84,7 +85,7 @@ class Audio {
                 const max_volume = SETTINGS.general.sound * sound_amplifier
                 volume = max_volume - current_min / river_distance_far
                 if (volume < 0) volume = 0
-                sounds[river].volume(volume)
+                sounds[river_token].volume(volume)
             })
         }
     }
@@ -126,7 +127,7 @@ class Audio {
         const token = UNIQUE.string()
         sounds[token] = new Howl(options)
         // "end" hook doesn't trigger with autoplay
-        sounds[token].on("end", () => delete sounds[token])
+        if (!loop) sounds[token].on("end", () => delete sounds[token])
         if (loop) sounds[token].fade(0, sounds[token].volume(), 1000)
         return token
     }
