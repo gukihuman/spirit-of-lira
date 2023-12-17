@@ -1,20 +1,17 @@
 <template lang="pug">
-fullscreen(mark="fullscreen")
-  loading(mark="loading")
-  tn(type="long"): game-window(mark="game-window" :class="classObject")
-    viewport(mark="viewport")
-    tn: overlay(mark="overlay")
-    tn: inventory(mark="inventory")
-    tn: settings(mark="settings")
-    tn(type="long"): novel(mark="novel")
-    tn: audiomessage(mark="audiomessage")
-    cursor(mark="cursor" v-if="GLOBAL.firstUserGesture")
+fullscreen
+    loading
+    tn( type="long" ): game-window(
+        :class="{ 'cursor-none': GLOBAL.firstUserGesture }"
+    )
+        viewport
+        tn: overlay
+        tn: inventory
+        tn: settings
+        tn( type="long" ): novel
+        tn: audiomessage
+        cursor( v-if="GLOBAL.firstUserGesture" )
 </template>
-<script setup lang="ts">
-const classObject = computed(() => {
-    return { "cursor-none": GLOBAL.firstUserGesture }
-})
-</script>
 <style>
 .long-enter-active,
 .long-leave-active {
@@ -23,18 +20,6 @@ const classObject = computed(() => {
 .long-enter-from,
 .long-leave-to {
     opacity: 0;
-}
-.swipe-enter-active,
-.swipe-leave-active {
-    transition: all 200ms ease;
-}
-.swipe-enter-from {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-.swipe-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
 }
 .fast-enter-active,
 .fast-leave-active {

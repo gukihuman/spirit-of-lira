@@ -385,17 +385,17 @@ class Settings {
         EVENTS.onSingle("switchSettingsTabLeft", () => {
             if (SETTINGS.echo.editHotkeyMode) return
             const last = SETTINGS.context_list.length - 1
-            SETTINGS.context_index--
-            if (SETTINGS.context_index < 0) SETTINGS.context_index = last
-            const context = SETTINGS.context_list[SETTINGS.context_index]
+            let i = SETTINGS.context_index - 1
+            if (i < 0) i = last
+            const context = SETTINGS.context_list[i]
             GAME_STATE.set("world", "interface", "settings", context)
         })
         EVENTS.onSingle("switchSettingsTabRight", () => {
             if (SETTINGS.echo.editHotkeyMode) return
             const last = SETTINGS.context_list.length - 1
-            SETTINGS.context_index++
-            if (SETTINGS.context_index > last) SETTINGS.context_index = 0
-            const context = SETTINGS.context_list[SETTINGS.context_index]
+            let i = SETTINGS.context_index + 1
+            if (i > last) i = 0
+            const context = SETTINGS.context_list[i]
             GAME_STATE.set("world", "interface", "settings", context)
         })
         EVENTS.onSingle("editHotkey", () => {
