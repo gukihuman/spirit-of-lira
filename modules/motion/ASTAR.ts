@@ -1,9 +1,10 @@
+const precision = 2
 class Astar {
     openList: any = []
     closedList: any = []
     clean = true
-    maxSteps = 2000
-    maxTime = 25 // ms
+    maxSteps = 2000 / precision
+    maxTime = 5 // ms
     process() {
         MUSEUM.process_entity("MOVE", (ent) => {
             if (!ent.MOVE.final_des) return
@@ -12,7 +13,6 @@ class Astar {
             const start: Tile = COORD.to_tile(ent.POS)
             const end: Tile = COORD.to_tile(ent.MOVE.final_des)
             if (ent.HERO) {
-                console.log(ent.MOVE.path.length)
                 if (
                     !COLLISION.is_tile_clear(end) &&
                     GLOBAL.lastActiveDevice === "gamepad" &&
@@ -55,41 +55,43 @@ class Astar {
         return diagonalNeighbors.concat(cardinalNeighbors)
     }
     getCardinalNeighbors(tile, ent) {
+        const precision = ent.HERO ? 2 : 1
         const neighbors: any = []
 
         // Add neighbor left
-        if (this.addNeighbor(tile.y, tile.x - 1, ent)) {
-            neighbors.push({ x: tile.x - 1, y: tile.y })
+        if (this.addNeighbor(tile.y, tile.x - precision, ent)) {
+            neighbors.push({ x: tile.x - precision, y: tile.y })
         }
         // Add neighbor right
-        if (this.addNeighbor(tile.y, tile.x + 1, ent)) {
-            neighbors.push({ x: tile.x + 1, y: tile.y })
+        if (this.addNeighbor(tile.y, tile.x + precision, ent)) {
+            neighbors.push({ x: tile.x + precision, y: tile.y })
         }
         // Add neighbor above
-        if (this.addNeighbor(tile.y - 1, tile.x, ent)) {
-            neighbors.push({ x: tile.x, y: tile.y - 1 })
+        if (this.addNeighbor(tile.y - precision, tile.x, ent)) {
+            neighbors.push({ x: tile.x, y: tile.y - precision })
         }
         // Add neighbor below
-        if (this.addNeighbor(tile.y + 1, tile.x, ent)) {
-            neighbors.push({ x: tile.x, y: tile.y + 1 })
+        if (this.addNeighbor(tile.y + precision, tile.x, ent)) {
+            neighbors.push({ x: tile.x, y: tile.y + precision })
         }
 
         return neighbors
     }
     getDiagonalNeighbors(tile, ent) {
+        const precision = ent.HERO ? 2 : 1
         const neighbors: any = []
 
-        if (this.addNeighbor(tile.y - 1, tile.x - 1, ent)) {
-            neighbors.push({ x: tile.x - 1, y: tile.y - 1 })
+        if (this.addNeighbor(tile.y - precision, tile.x - precision, ent)) {
+            neighbors.push({ x: tile.x - precision, y: tile.y - precision })
         }
-        if (this.addNeighbor(tile.y - 1, tile.x + 1, ent)) {
-            neighbors.push({ x: tile.x + 1, y: tile.y - 1 })
+        if (this.addNeighbor(tile.y - precision, tile.x + precision, ent)) {
+            neighbors.push({ x: tile.x + precision, y: tile.y - precision })
         }
-        if (this.addNeighbor(tile.y + 1, tile.x - 1, ent)) {
-            neighbors.push({ x: tile.x - 1, y: tile.y + 1 })
+        if (this.addNeighbor(tile.y + precision, tile.x - precision, ent)) {
+            neighbors.push({ x: tile.x - precision, y: tile.y + precision })
         }
-        if (this.addNeighbor(tile.y + 1, tile.x + 1, ent)) {
-            neighbors.push({ x: tile.x + 1, y: tile.y + 1 })
+        if (this.addNeighbor(tile.y + precision, tile.x + precision, ent)) {
+            neighbors.push({ x: tile.x + precision, y: tile.y + precision })
         }
 
         return neighbors
@@ -141,7 +143,10 @@ class Astar {
             this.openList = this.openList.filter((p) => p !== current)
             this.closedList.push(current)
 
-            if (current.x === endPos.x && current.y === endPos.y) {
+            if (
+                Math.abs(current.x - endPos.x) <= precision &&
+                Math.abs(current.y - endPos.y) <= precision
+            ) {
                 if (this.clean) return [endPos]
                 let path = this.reconstructPath(current, startPos, ent)
                 return this.refinePath(path, ent)
