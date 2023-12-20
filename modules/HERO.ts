@@ -1,19 +1,29 @@
+import { g } from "vitest/dist/index-40ebba2b"
+
 class Hero {
-    entity: AnyObject = {}
+    ent: AnyObject = {}
     id: number = 0
-    last = { entity: this.entity, id: this.id }
+    last = { ent: this.ent, id: this.id }
     reset_final_des() {
-        this.entity.MOVE.final_des = _.clone(this.entity.POS)
+        this.ent.MOVE.final_des = _.clone(this.ent.POS)
     }
     init() {
-        this.updateHero()
+        this.who_is_hero()
     }
     process() {
-        this.updateHero()
+        this.who_is_hero()
+        if (this.id !== this.last.id) EVENTS.emitSingle("hero changed")
+
+        if (!this.ent.MOVE || !this.last.ent.MOVE) return
+        const des = this.ent.MOVE.final_des
+        const last_des = this.last.ent.MOVE.final_des
+        if (!_.isEqual(des, last_des)) {
+            EVENTS.emitSingle("hero final destination changed")
+        }
     }
-    private updateHero() {
-        MUSEUM.process_entity(["HERO"], (entity, id) => {
-            this.entity = entity
+    private who_is_hero() {
+        MUSEUM.process_entity(["HERO"], (ent, id) => {
+            this.ent = ent
             this.id = id
         })
     }

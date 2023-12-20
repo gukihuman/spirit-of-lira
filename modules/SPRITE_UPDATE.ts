@@ -5,28 +5,28 @@ class SpriteUpdate {
         this.updateItems() // to load item sprites during loading
     }
     process() {
-        WORLD.entities.forEach((entity, id) => {
-            if (!entity.SPRITE || !entity.POS) return
+        WORLD.entities.forEach((ent, id) => {
+            if (!ent.SPRITE || !ent.POS) return
             const container = SPRITE.getContainer(id)
             if (!container) return
-            this.updateAnimation(entity, id)
-            this.updateLastChangeMS(entity, id)
-            this.updateCoordinates(entity, container)
-            this.updateVisibility(entity, id)
-            this.updateFirstFrameOfState(entity, id)
+            this.updateAnimation(ent, id)
+            this.updateLastChangeMS(ent, id)
+            this.updateCoordinates(ent, container)
+            this.updateVisibility(ent, id)
+            this.updateFirstFrameOfState(ent, id)
         })
         this.updateItems()
     }
-    private updateFirstFrameOfState(entity, id) {
-        if (entity.MOVE) {
+    private updateFirstFrameOfState(ent, id) {
+        if (ent.MOVE) {
             const lastEntity = WORLD.last.entities.get(id)
             if (!lastEntity) return
             SPRITE.getLayer(id, "animation")?.children.forEach((animation) => {
                 if (
-                    entity.SPRITE.active === animation.name &&
+                    ent.SPRITE.active === animation.name &&
                     lastEntity.SPRITE.active !== animation.name
                 ) {
-                    const frame = entity.SPRITE.startFrames[animation.name]
+                    const frame = ent.SPRITE.startFrames[animation.name]
                     if (frame) {
                         SPRITE.getAnimation(id, animation.name)?.gotoAndPlay(
                             frame
@@ -38,16 +38,14 @@ class SpriteUpdate {
             })
         }
     }
-    private updateCoordinates(entity, container) {
-        container.x =
-            entity.POS.x - HERO.entity.POS.x + CONFIG.viewport.width / 2
-        container.y =
-            entity.POS.y - HERO.entity.POS.y + CONFIG.viewport.height / 2
+    private updateCoordinates(ent, container) {
+        container.x = ent.POS.x - HERO.ent.POS.x + CONFIG.viewport.width / 2
+        container.y = ent.POS.y - HERO.ent.POS.y + CONFIG.viewport.height / 2
     }
-    private updateVisibility(entity, id) {
-        if (entity.MOVE) {
+    private updateVisibility(ent, id) {
+        if (ent.MOVE) {
             SPRITE.getLayer(id, "animation")?.children.forEach((child) => {
-                if (child.name === entity.SPRITE.active) child.visible = true
+                if (child.name === ent.SPRITE.active) child.visible = true
                 else child.visible = false
             })
         } else {
@@ -57,20 +55,20 @@ class SpriteUpdate {
             }
         }
     }
-    getHeroCastSprite(entity, id) {
+    getHeroCastSprite(ent, id) {
         // 📜 add sprite handling for other skills than attack
         // now weapon sprite option controls cast sprite
         // but it should be skill first by adding offensive or nutral options
-        if (entity.HERO) {
+        if (ent.HERO) {
             // "attack-sword"
             return ITEMS.collection.weapons[INVENTORY.gear.weapon].sprite
         } else {
             // "attack-sword"
-            return entity.SKILLS.active
+            return ent.SKILLS.active
         }
     }
     private updateItems() {
-        const heroSpriteName = this.getHeroCastSprite(HERO.entity, HERO.id)
+        const heroSpriteName = this.getHeroCastSprite(HERO.ent, HERO.id)
         const heroAnimation = SPRITE.getAnimation(HERO.id, heroSpriteName)
         const frontWeapon = SPRITE.getLayer(HERO.id, "frontWeapon")
         const backWeapon = SPRITE.getLayer(HERO.id, "backWeapon")
@@ -78,7 +76,7 @@ class SpriteUpdate {
         // syncronize all weapon sprites in cast state
         // turn visibility on for cast and off for non-attack
         // 📜 check if skill is neutral to not update and leave weapon idle
-        if (HERO.entity.SPRITE.active === heroSpriteName) {
+        if (HERO.ent.SPRITE.active === heroSpriteName) {
             frontWeapon.children.forEach((child) => {
                 const sprite = child as AnimatedSprite
                 sprite.gotoAndPlay(heroAnimation.currentFrame)
@@ -90,92 +88,92 @@ class SpriteUpdate {
             frontWeapon.visible = false
         }
     }
-    private updateAnimation(entity, id) {
-        if (!entity.STATE) return
+    private updateAnimation(ent, id) {
+        if (!ent.STATE) return
 
         if (
-            entity.SPRITE.leaveAnimationConditions &&
-            entity.STATE.active !== "cast"
+            ent.SPRITE.leaveAnimationConditions &&
+            ent.STATE.active !== "cast"
         ) {
             if (
-                entity.SPRITE.active === "move" &&
-                !entity.SPRITE.leaveAnimationConditions.move(entity, id)
+                ent.SPRITE.active === "move" &&
+                !ent.SPRITE.leaveAnimationConditions.move(ent, id)
             )
                 return
         }
 
-        if (entity.STATE.active === "dead") {
-            entity.SPRITE.active = "dead"
+        if (ent.STATE.active === "dead") {
+            ent.SPRITE.active = "dead"
             return
         }
 
-        this.checkMove(entity, id)
-        this.checkCast(entity, id)
+        this.checkMove(ent, id)
+        this.checkCast(ent, id)
     }
-    private checkMove(entity, id) {
-        if (!entity.MOVE || entity.STATE.active === "cast") return
+    private checkMove(ent, id) {
+        if (!ent.MOVE || ent.STATE.active === "cast") return
 
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
 
-        const distance = COORD.distance(entity.POS, lastEntity.POS)
-        const speedPerTick = COORD.speedPerTick(entity)
+        const distance = COORD.distance(ent.POS, lastEntity.POS)
+        const speedPerTick = COORD.speedPerTick(ent)
 
         if (distance / speedPerTick < 0.1) {
             //
-            this.setWithValidation(entity, id, "idle")
+            this.setWithValidation(ent, id, "idle")
             return
         }
         if (SPRITE.getAnimation(id, "walk")) {
             //
             if (distance / speedPerTick < this.walkRunRatio) {
                 //
-                this.setWithValidation(entity, id, "walk")
+                this.setWithValidation(ent, id, "walk")
                 return
                 //
             } else {
                 //
-                this.setWithValidation(entity, id, "run")
+                this.setWithValidation(ent, id, "run")
                 return
             }
         } else {
             //
-            this.setWithValidation(entity, id, "move")
+            this.setWithValidation(ent, id, "move")
             return
         }
     }
-    private checkCast(entity, id) {
-        if (!entity.MOVE || !entity.SKILLS) return
-        if (entity.STATE.active !== "cast") return
-        if (entity.HERO) {
-            entity.SPRITE.active = this.getHeroCastSprite(HERO.entity, HERO.id)
+    private checkCast(ent, id) {
+        if (!ent.MOVE || !ent.SKILLS) return
+        if (ent.STATE.active !== "cast") return
+        if (ent.HERO) {
+            ent.SPRITE.active = this.getHeroCastSprite(HERO.ent, HERO.id)
         } else {
-            entity.SPRITE.active = "attack"
+            ent.SPRITE.active = "attack"
         }
     }
     /** sets sprite if enough frames are validated */
-    private setWithValidation(entity, id, sprite: string) {
+    private setWithValidation(ent, id, sprite: string) {
         //
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
 
-        entity.SPRITE.onValidation = sprite
+        ent.SPRITE.onValidation = sprite
 
-        if (lastEntity.SPRITE.onValidation !== entity.SPRITE.onValidation) {
-            entity.SPRITE.framesValidated = 0
+        if (lastEntity.SPRITE.onValidation !== ent.SPRITE.onValidation) {
+            ent.SPRITE.framesValidated = 0
             return
         }
         if (lastEntity.SPRITE.framesValidated >= this.framesToValidate) {
             //
-            entity.SPRITE.active = sprite
+            ent.SPRITE.active = sprite
             return
         }
-        entity.SPRITE.framesValidated++
+        ent.SPRITE.framesValidated++
     }
-    private updateLastChangeMS(entity, id) {
+    private updateLastChangeMS(ent, id) {
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
-        if (entity.SPRITE.active !== lastEntity.SPRITE.active) {
+        if (ent.SPRITE.active !== lastEntity.SPRITE.active) {
             WORLD.entities.get(id).SPRITE.lastChangeMS = LOOP.elapsed
         }
     }

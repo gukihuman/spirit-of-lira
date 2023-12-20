@@ -102,7 +102,7 @@ class Library {
         return result
     }
     /**
-     * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache in Spirit of Lira is handled separatly with binding to entity name.
+     * This function takes spritesheet instance created by PIXI.Spritesheet and adds alternative "gParse" function to it. "gParse" removes caching from default "parse" function. This caching is binded to texture name like "idle.png" which is used repeatedly in this project by different entities. That causes lags. Cache in Spirit of Lira is handled separatly with binding to ent name.
      * @param spritesheet - instance of PIXI.Spritesheet
      */
     addParseWithoutCaching(spritesheet: gSpritesheet) {

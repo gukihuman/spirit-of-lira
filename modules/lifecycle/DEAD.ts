@@ -1,16 +1,16 @@
 class Dead {
     init() {
         EVENTS.onSingle("reset", () => {
-            if (HERO.entity.STATE.active !== "dead" || !GLOBAL.reset) return
-            HERO.entity.STATE.cast = false
-            HERO.entity.STATE.track = false
-            HERO.entity.STATE.idle = true
-            HERO.entity.STATE.active = "idle"
-            HERO.entity.ATTRIBUTES.health = HERO.entity.ATTRIBUTES.healthMax
-            HERO.entity.ATTRIBUTES.energy = HERO.entity.ATTRIBUTES.energyMax
-            HERO.entity.POS = _.cloneDeep(ENTITIES.collection.lira.POS)
-            HERO.entity.TARGET.id = null
-            HERO.entity.TARGET.locked = false
+            if (HERO.ent.STATE.active !== "dead" || !GLOBAL.reset) return
+            HERO.ent.STATE.cast = false
+            HERO.ent.STATE.track = false
+            HERO.ent.STATE.idle = true
+            HERO.ent.STATE.active = "idle"
+            HERO.ent.ATTRIBUTES.health = HERO.ent.ATTRIBUTES.healthMax
+            HERO.ent.ATTRIBUTES.energy = HERO.ent.ATTRIBUTES.energyMax
+            HERO.ent.POS = _.cloneDeep(ENTITIES.collection.lira.POS)
+            HERO.ent.TARGET.id = null
+            HERO.ent.TARGET.locked = false
             HERO.reset_final_des()
             GLOBAL.reset = false
             const container = SPRITE.getContainer(HERO.id)
@@ -37,58 +37,53 @@ class Dead {
         })
     }
     process() {
-        MUSEUM.process_entity("HERO", (entity, id) => {
-            if (entity.ATTRIBUTES.health > 0) return
-            entity.STATE.active = "dead"
-            entity.TARGET.id = null
-            entity.TARGET.locked = false
+        MUSEUM.process_entity("HERO", (ent, id) => {
+            if (ent.ATTRIBUTES.health > 0) return
+            ent.STATE.active = "dead"
+            ent.TARGET.id = null
+            ent.TARGET.locked = false
             SPRITE.emptyWeaponLayers()
             const lastEntity = WORLD.last.entities.get(id)
             if (
-                entity.STATE.active === "dead" &&
+                ent.STATE.active === "dead" &&
                 lastEntity.STATE.active !== "dead"
             ) {
                 setTimeout(() => (GLOBAL.reset = true), 2500)
                 SAVE.update()
                 setTimeout(() => {
-                    if (entity.STATE.active !== "dead") return
+                    if (ent.STATE.active !== "dead") return
                     const container = SPRITE.getContainer(id)
                     if (!container) return
                     container.setParent(WORLD.ground)
                 }, 1000)
             }
         })
-        MUSEUM.process_entity(
-            ["ATTRIBUTES", "STATE", "NONHERO"],
-            (entity, id) => {
-                if (entity.ATTRIBUTES.health > 0) return
-                entity.STATE.active = "dead"
-                entity.TARGET.id = undefined
-                const lastEntity = WORLD.last.entities.get(id)
-                if (
-                    entity.STATE.active === "dead" &&
-                    lastEntity.STATE.active !== "dead"
-                ) {
-                    TIME.cancel(entity.SKILLS.attackSoundTimeId)
-                    entity.STATE.deadTimeMS = LOOP.elapsed
-                    PROGRESS.mobs[entity.name]++
-                    SAVE.update()
-                }
-                const animation = SPRITE.getLayer(id, "animation")
-                const shadow = SPRITE.getLayer(id, "shadow")
-                if (!animation || !shadow) return
-                // fade
-                const timeTillRemove =
-                    entity.STATE.deadTimeMS +
-                    entity.STATE.deadDelayMS -
-                    LOOP.elapsed
-                animation.alpha = timeTillRemove / 500
-                if (timeTillRemove < 500) {
-                    entity.POS.y += 0.5 * (60 / LOOP.fps)
-                }
-                shadow.alpha = (timeTillRemove / 500) * CONFIG.shadow_alpha
+        MUSEUM.process_entity(["ATTRIBUTES", "STATE", "NONHERO"], (ent, id) => {
+            if (ent.ATTRIBUTES.health > 0) return
+            ent.STATE.active = "dead"
+            ent.TARGET.id = undefined
+            const lastEntity = WORLD.last.entities.get(id)
+            if (
+                ent.STATE.active === "dead" &&
+                lastEntity.STATE.active !== "dead"
+            ) {
+                TIME.cancel(ent.SKILLS.attackSoundTimeId)
+                ent.STATE.deadTimeMS = LOOP.elapsed
+                PROGRESS.mobs[ent.name]++
+                SAVE.update()
             }
-        )
+            const animation = SPRITE.getLayer(id, "animation")
+            const shadow = SPRITE.getLayer(id, "shadow")
+            if (!animation || !shadow) return
+            // fade
+            const timeTillRemove =
+                ent.STATE.deadTimeMS + ent.STATE.deadDelayMS - LOOP.elapsed
+            animation.alpha = timeTillRemove / 500
+            if (timeTillRemove < 500) {
+                ent.POS.y += 0.5 * (60 / LOOP.fps)
+            }
+            shadow.alpha = (timeTillRemove / 500) * CONFIG.shadow_alpha
+        })
     }
 }
 export const DEAD = new Dead()

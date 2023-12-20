@@ -39,11 +39,11 @@ class Coordinates {
         return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
     }
     distance_to_hero(p1: { x: number; y: number }) {
-        const p2 = HERO.entity.POS || p1
+        const p2 = HERO.ent.POS || p1
         return this.distance(p1, p2)
     }
-    speedPerTick(entity) {
-        return entity.MOVE.speed * 10 * LOOP.delta_sec
+    speedPerTick(ent) {
+        return ent.MOVE.speed * 10 * LOOP.delta_sec
     }
     conterOfScreen() {
         return this.vector(
@@ -62,15 +62,15 @@ class Coordinates {
     get mouse() {
         const mouse_pos = COORD.mouseOfScreen()
         return this.vector(
-            (mouse_pos.x += HERO.entity.POS.x - CONFIG.viewport.width / 2),
-            (mouse_pos.y += HERO.entity.POS.y - CONFIG.viewport.height / 2)
+            (mouse_pos.x += HERO.ent.POS.x - CONFIG.viewport.width / 2),
+            (mouse_pos.y += HERO.ent.POS.y - CONFIG.viewport.height / 2)
         )
     }
     coordinateToScreen(x: number, y: number) {
-        if (!HERO.entity.POS) return { x: 0, y: 0 }
+        if (!HERO.ent.POS) return { x: 0, y: 0 }
         return {
-            x: x - HERO.entity.POS.x + CONFIG.viewport.width / 2,
-            y: y - HERO.entity.POS.y + CONFIG.viewport.height / 2,
+            x: x - HERO.ent.POS.x + CONFIG.viewport.width / 2,
+            y: y - HERO.ent.POS.y + CONFIG.viewport.height / 2,
         }
     }
     coordinateToChunk(coordinate: number) {
@@ -89,17 +89,20 @@ class Coordinates {
     chunkToCoordinateY(chunk: string) {
         return _.floor(_.toNumber(chunk) / 100) * 1000
     }
-    to_tile(coord: { x: number; y: number }): Tile {
+    to_tile(coord: Coord): Tile {
         return { x: _.floor(coord.x / 20), y: _.floor(coord.y / 20) }
     }
     coordinateOffsetInTile(coordinate: number) {
         return coordinate % 20
     }
-    from_tile(tile: { x: number; y: number }): Coord {
+    from_tile(tile: Tile): Coord {
         return { x: tile.x * 20, y: tile.y * 20 }
     }
-    isGreenTile(tile: { x: number; y: number }) {
+    isGreenTile(tile: Tile) {
         return COLLISION.get_element([tile.y, tile.x]) === 1
+    }
+    on_same_tile(coord_1: Coord, coord_2: Coord) {
+        return _.isEqual(COORD.to_tile(coord_1), COORD.to_tile(coord_2))
     }
 }
 export const COORD = new Coordinates()

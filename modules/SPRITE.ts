@@ -12,7 +12,7 @@ class Spr {
     }
     entityContainers: Map<number, Container> = new Map()
     effectContainers: Map<number, Container> = new Map()
-    async entity(entity: AnyObject, id: number, options: AnyObject = {}) {
+    async ent(ent: AnyObject, id: number, options: AnyObject = {}) {
         const parent = options.parent ?? "sortable"
         const randomFlip = options.randomFlip ?? true
         const randomStartFrame = options.randomStartFrame ?? true
@@ -24,7 +24,7 @@ class Spr {
             "frontEffect",
         ]
         const container = new PIXI.Container()
-        container.name = entity.name
+        container.name = ent.name
         this.entityContainers.set(id, container)
         WORLD[parent].addChild(container)
         for (let name of layers) {
@@ -37,7 +37,7 @@ class Spr {
             if (!animation) return
             if (_.random() > 0.5) animation.scale.x = -1
         }
-        const spritesheet = await this.getSpritesheet(entity.name)
+        const spritesheet = await this.getSpritesheet(ent.name)
         const animation = this.getLayer(id, "animation")
         if (!animation || !spritesheet) return
         _.forOwn(spritesheet.animations, (arrayOfwebpImages, name) => {
@@ -56,7 +56,7 @@ class Spr {
             else sprite.gotoAndPlay(0)
         })
     }
-    async staticEntity(entity: AnyObject, id: number, options: AnyObject = {}) {
+    async staticEntity(ent: AnyObject, id: number, options: AnyObject = {}) {
         const parent = options.parent ?? "sortable"
         const randomFlip = options.randomFlip ?? true
         const layers = options.layers ?? [
@@ -66,7 +66,7 @@ class Spr {
             "frontEffect",
         ]
         const container = new PIXI.Container()
-        container.name = entity.name
+        container.name = ent.name
         this.entityContainers.set(id, container)
         WORLD[parent].addChild(container)
         for (let name of layers) {
@@ -80,18 +80,18 @@ class Spr {
             if (_.random() > 0.5) animation.scale.x = -1
         }
         const animation = this.getLayer(id, "animation")
-        const webpImage = ASSETS.webp_paths[entity.name]
+        const webpImage = ASSETS.webp_paths[ent.name]
         if (!animation || !webpImage) return
         const texture = PIXI.Texture.from(webpImage)
         const sprite = new PIXI.Sprite(texture)
-        sprite.name = entity.name
+        sprite.name = ent.name
         sprite.anchor.x = 0.5
         sprite.anchor.y = 0.5
         sprite.cullable = true
         animation.addChild(sprite)
     }
-    async effect(entity: AnyObject, name: string, targetEntity: AnyObject) {
-        if (!entity.TARGET.id) return
+    async effect(ent: AnyObject, name: string, targetEntity: AnyObject) {
+        if (!ent.TARGET.id) return
         let parentLayerName, durationMS
         if (EFFECTS.front[name]) {
             parentLayerName = "frontEffect"
@@ -105,10 +105,10 @@ class Spr {
             return
         }
         const container = new PIXI.Container()
-        const parentLayer = this.getLayer(entity.TARGET.id, parentLayerName)
+        const parentLayer = this.getLayer(ent.TARGET.id, parentLayerName)
         if (!parentLayer) return
         parentLayer.addChild(container)
-        this.offsetEffectContainer(container, entity, targetEntity)
+        this.offsetEffectContainer(container, ent, targetEntity)
         const expireMS = _.round(LOOP.elapsed + durationMS)
         this.effectContainers.set(expireMS, container)
         const possibleSprites: string[] = []
@@ -131,15 +131,15 @@ class Spr {
             container.addChild(sprite)
         })
     }
-    private offsetEffectContainer(container, entity, targetEntity) {
+    private offsetEffectContainer(container, ent, targetEntity) {
         let effectHeightRatio = targetEntity.SPRITE.effectHeightRatio
         let effectWidthRatio = targetEntity.SPRITE.effectWidthRatio
         container.POS.x = -targetEntity.SIZE.width * effectWidthRatio
-        if (targetEntity.POS.x < entity.POS.x) {
+        if (targetEntity.POS.x < ent.POS.x) {
             container.POS.x = -container.POS.x
         }
         container.POS.y = -targetEntity.SIZE.height * effectHeightRatio
-        const angle = COORD.angle(entity.POS, targetEntity.POS)
+        const angle = COORD.angle(ent.POS, targetEntity.POS)
         container.rotation = angle
     }
 

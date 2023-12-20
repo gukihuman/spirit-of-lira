@@ -12,9 +12,10 @@ class Move {
         // 🔧
         depend: ["POS"],
         trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
-        inject(entity, id) {
-            entity.MOVE.final_des = _.cloneDeep(entity.POS)
-            entity.MOVE.randomdesMS = LOOP.elapsed - _.random(0, 15_000)
+        inject(ent, id) {
+            ent.MOVE.des = _.cloneDeep(ent.POS)
+            ent.MOVE.final_des = _.cloneDeep(ent.POS)
+            ent.MOVE.randomdesMS = LOOP.elapsed - _.random(0, 15_000)
         },
     }
 
@@ -32,9 +33,9 @@ class Move {
     }
     process() {
         if (CONTEXT.echo.novel) return
-        WORLD.entities.forEach((entity) => {
-            if (!entity.MOVE) return
-            this.move(entity)
+        WORLD.entities.forEach((ent) => {
+            if (!ent.MOVE) return
+            this.move(ent)
         })
         if (GLOBAL.autoMove) EVENTS.emitSingle("mouseMove")
         this.checkGamepadAxes()
@@ -50,7 +51,7 @@ class Move {
                 this.gamepadAxesMoved &&
                 GLOBAL.lastActiveDevice === "gamepad"
             ) {
-                HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
+                HERO.ent.MOVE.final_des = _.cloneDeep(HERO.ent.POS)
             }
             this.gamepadAxesMoved = false
         }
@@ -58,42 +59,41 @@ class Move {
     mouseMove() {
         if (CONTEXT.echo.interface) return
         if (INTERFACE.buttonHover) return
-        HERO.entity.STATE.track = false
-        HERO.entity.STATE.cast = false
-        HERO.entity
+        HERO.ent.STATE.track = false
+        HERO.ent.STATE.cast = false
+        HERO.ent
         const distance = COORD.distance(
             COORD.conterOfScreen(),
             COORD.mouseOfScreen()
         )
         if (distance < 10) {
-            HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
+            HERO.ent.MOVE.final_des = _.cloneDeep(HERO.ent.POS)
             return
         }
         const x = COORD.mouse.x
         const y = COORD.mouse.y
         if (COLLISION.is_coord_clear({ x, y })) {
-            HERO.entity.MOVE.final_des = COORD.mouse
+            HERO.ent.MOVE.final_des = COORD.mouse
         }
     }
     private gamepadMoveTries = 0
     gamepadMove() {
         const elapsed = LOOP.elapsed
         if (
-            HERO.entity.STATE.active === "track" &&
-            elapsed <
-                HERO.entity.STATE.lastChangeMS + this.preventGamepadMoveMS &&
+            HERO.ent.STATE.active === "track" &&
+            elapsed < HERO.ent.STATE.lastChangeMS + this.preventGamepadMoveMS &&
             elapsed > this.lastMobKilledMS + this.preventGamepadMoveMS
         ) {
             return
         }
-        HERO.entity.STATE.track = false
-        HERO.entity.STATE.cast = false
+        HERO.ent.STATE.track = false
+        HERO.ent.STATE.cast = false
         this.gamepadMoveTries = 0
         this.gamepadMoveLogic()
     }
     private gamepadMoveLogic(otherRatio = 1) {
-        if (!HERO.entity) return
-        const speedPerTick = COORD.speedPerTick(HERO.entity)
+        if (!HERO.ent) return
+        const speedPerTick = COORD.speedPerTick(HERO.ent)
         const axesVector = COORD.vector(
             INPUT.gamepad.axes[0],
             INPUT.gamepad.axes[1]
@@ -105,7 +105,7 @@ class Move {
             angle,
             speedPerTick * LOOP.fps * 2
         )
-        const hero = HERO.entity
+        const hero = HERO.ent
         const possibledesX =
             hero.POS.x + vectorToFinaldes.x * ratio * otherRatio
         const possibledesY =
@@ -129,39 +129,34 @@ class Move {
         hero.MOVE.final_des.y = possibledesY
         this.gamepadAxesMoved = true
     }
-    private canMove(entity) {
-        if (
-            !entity.MOVE ||
-            !entity.STATE ||
-            !entity.MOVE.des ||
-            !entity.MOVE.final_des
-        ) {
+    private canMove(ent) {
+        if (!ent.MOVE || !ent.STATE || !ent.MOVE.des || !ent.MOVE.final_des) {
             return false
         }
-        if (entity.STATE.active === "cast" || entity.STATE.active === "dead") {
+        if (ent.STATE.active === "cast" || ent.STATE.active === "dead") {
             return false
         }
         return true
     }
-    move(entity) {
-        if (!this.canMove(entity)) return
-        const speedPerTick = COORD.speedPerTick(entity)
-        const displacement = COORD.vectorFromPoints(entity.POS, entity.MOVE.des)
+    move(ent) {
+        if (!this.canMove(ent)) return
+        const speedPerTick = COORD.speedPerTick(ent)
+        const displacement = COORD.vectorFromPoints(ent.POS, ent.MOVE.des)
         const finaldisplacement = COORD.vectorFromPoints(
-            entity.POS,
-            entity.MOVE.final_des
+            ent.POS,
+            ent.MOVE.final_des
         )
         const finaldistance = finaldisplacement.distance
         const distance = displacement.distance
         if (distance < speedPerTick) {
             return
         }
-        if (entity.attack && entity.TARGET.tracked) {
-            const targetEntity = WORLD.entities.get(entity.TARGET.id)
+        if (ent.attack && ent.TARGET.tracked) {
+            const targetEntity = WORLD.entities.get(ent.TARGET.id)
             if (
                 targetEntity &&
                 finaldistance <
-                    targetEntity.SIZE.width / 2 + entity.attack.distance
+                    targetEntity.SIZE.width / 2 + ent.attack.distance
             ) {
                 return
             }
@@ -169,11 +164,11 @@ class Move {
         let ratio = _.clamp(finaldistance / 200, 1)
         ratio = Math.sqrt(ratio)
         ratio = _.clamp(ratio, 0.3, 1)
-        if (HERO.entity.STATE.track) ratio = 1
+        if (HERO.ent.STATE.track) ratio = 1
         const angle = displacement.angle
         const velocity = COORD.vectorFromAngle(angle, speedPerTick)
-        entity.POS.x += velocity.x * ratio
-        entity.POS.y += velocity.y * ratio
+        ent.POS.x += velocity.x * ratio
+        ent.POS.y += velocity.y * ratio
     }
 }
 export const MOVE = new Move()

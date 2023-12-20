@@ -10,11 +10,11 @@ class Attributes {
         attackSpeed: 1, // work only for animations for now :)
     }
     process() {
-        MUSEUM.process_entity("ATTRIBUTES", (entity, id) => {
-            if (entity.STATE.active === "dead") return
-            if (entity.ATTRIBUTES.health < entity.ATTRIBUTES.healthMax) {
-                entity.ATTRIBUTES.health +=
-                    entity.ATTRIBUTES.healthRegen * LOOP.delta_sec
+        MUSEUM.process_entity("ATTRIBUTES", (ent, id) => {
+            if (ent.STATE.active === "dead") return
+            if (ent.ATTRIBUTES.health < ent.ATTRIBUTES.healthMax) {
+                ent.ATTRIBUTES.health +=
+                    ent.ATTRIBUTES.healthRegen * LOOP.delta_sec
             }
         })
     }

@@ -2,33 +2,33 @@ class Hover {
     process() {
         if (GLOBAL.lastActiveDevice === "gamepad") return
         const point = COORD.mouseOfScreen()
-        const heroPOS = HERO.entity.POS
+        const heroPOS = HERO.ent.POS
         const intersections: number[] = []
         let hoverEntityId = 0
-        MUSEUM.process_entity(["NONHERO", "MOVE", "SIZE"], (entity, id) => {
-            const POS = entity.POS
+        MUSEUM.process_entity(["NONHERO", "MOVE", "SIZE"], (ent, id) => {
+            const POS = ent.POS
             const rect = {
                 x:
                     POS.x -
                     heroPOS.x +
                     CONFIG.viewport.width / 2 -
-                    entity.SIZE.width / 2,
+                    ent.SIZE.width / 2,
                 y:
                     POS.y -
                     heroPOS.y +
                     CONFIG.viewport.height / 2 -
-                    entity.SIZE.height +
-                    entity.SIZE.bottom,
-                width: entity.SIZE.width,
-                height: entity.SIZE.height,
+                    ent.SIZE.height +
+                    ent.SIZE.bottom,
+                width: ent.SIZE.width,
+                height: ent.SIZE.height,
             }
             const intersectX = point.x < rect.x + rect.width && point.x > rect.x
             const intersectY =
                 point.y < rect.y + rect.height && point.y > rect.y
-            if (intersectX && intersectY && entity.STATE.active !== "dead")
+            if (intersectX && intersectY && ent.STATE.active !== "dead")
                 intersections.push(id)
         })
-        // in case there is more than one entity under the mouse
+        // in case there is more than one ent under the mouse
         if (intersections.length > 1) {
             let higherY = 0
             intersections.forEach((id) => {

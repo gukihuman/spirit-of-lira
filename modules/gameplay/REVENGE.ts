@@ -1,16 +1,16 @@
 class Revenge {
-  init() {
-    EVENTS.on("revenge", ({ entity, id, offender, offenderId }) => {
-      if (entity.HERO && !SETTINGS.general.attackBack) return
-      if (
-        entity.STATE.active === "idle" ||
-        (!entity.HERO && entity.STATE.active === "move")
-      ) {
-        entity.TARGET.id = offenderId
-        EVENTS.emit("cast", { entity, slot: "slot1" })
-      }
-    })
-  }
-  process() {}
+    init() {
+        EVENTS.on("revenge", ({ ent, id, offender, offenderId }) => {
+            if (ent.HERO && !SETTINGS.general.attackBack) return
+            if (
+                ent.STATE.active === "idle" ||
+                (!ent.HERO && ent.STATE.active === "move")
+            ) {
+                ent.TARGET.id = offenderId
+                EVENTS.emit("cast", { ent, slot: "slot1" })
+            }
+        })
+    }
+    process() {}
 }
 export const REVENGE = new Revenge()

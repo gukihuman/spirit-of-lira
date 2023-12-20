@@ -30,18 +30,16 @@ class Skills {
         // 📜 maybe move somewhere else
         firstCastState: true,
         // 🔧
-        inject(entity, id) {
-            entity.SKILLS.list.forEach((skill) => {
-                entity.SKILLS.data[skill] = _.cloneDeep(
-                    SKILLS.collection[skill]
-                )
-                if (entity.SKILLS.modify[skill]) {
-                    _.forEach(entity.SKILLS.modify[skill], (value, key) => {
-                        entity.SKILLS.data[skill][key] = value
+        inject(ent, id) {
+            ent.SKILLS.list.forEach((skill) => {
+                ent.SKILLS.data[skill] = _.cloneDeep(SKILLS.collection[skill])
+                if (ent.SKILLS.modify[skill]) {
+                    _.forEach(ent.SKILLS.modify[skill], (value, key) => {
+                        ent.SKILLS.data[skill][key] = value
                     })
                 }
             })
-            delete entity.SKILLS.modify
+            delete ent.SKILLS.modify
         },
     }
 }

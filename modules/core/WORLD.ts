@@ -26,8 +26,8 @@ class World {
         }
         LOOP.add(() => {
             this.sortable.children.sort((a, b) => a.y - b.y)
-            this.entities.forEach((entity, id) => {
-                if (entity.process) entity.process(entity, id)
+            this.entities.forEach((ent, id) => {
+                if (ent.process) ent.process(ent, id)
             })
         }, "WORLD")
 

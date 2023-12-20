@@ -2,18 +2,18 @@
 class Museum {
     process_entity(
         components: string[] | string,
-        fn: (entity, id: number) => void
+        fn: (ent, id: number) => void
     ) {
-        WORLD.entities.forEach((entity, id) => {
+        WORLD.entities.forEach((ent, id) => {
             let satisfied = true
             if (typeof components === "string") {
-                if (!entity[components]) satisfied = false
+                if (!ent[components]) satisfied = false
             } else {
                 components.forEach((component) => {
-                    if (!entity[component]) satisfied = false
+                    if (!ent[component]) satisfied = false
                 })
             }
-            if (satisfied) fn(entity, id)
+            if (satisfied) fn(ent, id)
         })
     }
 }

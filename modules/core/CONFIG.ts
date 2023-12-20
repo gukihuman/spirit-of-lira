@@ -35,6 +35,7 @@ class GukiConfig {
         },
         modulesProcess: {
             ASTAR: 10,
+            HERO: 10,
             INPUT_UPDATE: 6, // at least SETTINGS and INTERFACE depends on it
             STATE: 5,
             SPRITE_UPDATE: 4,

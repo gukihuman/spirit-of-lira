@@ -1,25 +1,25 @@
 class Damage {
-    deal(entity, id, skill) {
+    deal(ent, id, skill) {
         let damage = skill.damage
-        if (entity.HERO) {
+        if (ent.HERO) {
             let weaponDamage = 0
             const weapon = INVENTORY.gear.weapon
             if (weapon) weaponDamage = ITEMS.collection.weapons[weapon].damage
             damage = weaponDamage
         }
-        entity.TARGET.entity.ATTRIBUTES.health -= damage
+        ent.TARGET.ent.ATTRIBUTES.health -= damage
         const randomXstart = (Math.random() - 0.5) * 20 // -10 to 10
         const randomYstart = (Math.random() - 0.5) * 6 // -3 to 3
         const randomX = randomXstart * 1.5 // continue to -15 to 15 in a second
         // y is always the lower - the highter
         const randomY = -5 + (Math.random() - 1) * 5 // -5 to -10 in a second
-        const hero = entity.TARGET.entity.HERO ? true : false
+        const hero = ent.TARGET.ent.HERO ? true : false
         let overlay: DamageOverlay = {
             hero,
             damage,
-            x: entity.TARGET.entity.POS.x + randomXstart,
-            y: entity.TARGET.entity.POS.y + randomYstart,
-            entityHeight: entity.TARGET.entity.SIZE.height,
+            x: ent.TARGET.ent.POS.x + randomXstart,
+            y: ent.TARGET.ent.POS.y + randomYstart,
+            entityHeight: ent.TARGET.ent.SIZE.height,
             // automatically updated in INTERFACE
             screen: {
                 x: 0,

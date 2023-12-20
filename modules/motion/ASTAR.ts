@@ -1,3 +1,4 @@
+let is_hero_path_found = false
 class Astar {
     openList: any = []
     closedList: any = []
@@ -5,88 +6,110 @@ class Astar {
     maxSteps = 2000
     maxTime = 25 // ms
     process() {
-        MUSEUM.process_entity("MOVE", (entity, id) => {
-            if (!entity.MOVE.final_des) return
-            if (_.round(LOOP.elapsed / 100) % _.random(1, 5) !== 0) {
-                return
+        EVENTS.onSingle("hero final destination changed", () => {
+            is_hero_path_found = false
+        })
+        MUSEUM.process_entity("MOVE", (ent) => {
+            if (!ent.MOVE.final_des) return
+            if (ent.NONHERO && Math.random() > 0.3) return
+            const start: Tile = COORD.to_tile(ent.POS)
+            const end: Tile = COORD.to_tile(ent.MOVE.final_des)
+            if (ent.HERO) {
+                if (is_hero_path_found) {
+                    if (
+                        ent.MOVE.path.length > 1 &&
+                        _.isEqual(
+                            COORD.to_tile(ent.POS),
+                            COORD.to_tile(ent.MOVE.des)
+                        )
+                    ) {
+                        ent.MOVE.path.shift()
+                        ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
+                        ent.MOVE.des.x += 10
+                        ent.MOVE.des.y += 10
+                    }
+                    return
+                }
+                if (
+                    !COLLISION.is_tile_clear(end) &&
+                    GLOBAL.lastActiveDevice === "gamepad" &&
+                    GLOBAL.collision
+                ) {
+                    return
+                }
             }
-            const start: Tile = COORD.to_tile(entity.POS)
-            const end: Tile = COORD.to_tile(entity.MOVE.final_des)
-            if (
-                !COLLISION.is_tile_clear(end) &&
-                GLOBAL.lastActiveDevice === "gamepad" &&
-                GLOBAL.collision
-            ) {
-                return
-            }
-            const possible_path = this.findPath(start, end, entity)
+            const possible_path = this.findPath(start, end, ent)
             if (!possible_path) return
-            else entity.MOVE.path = possible_path
+            else ent.MOVE.path = possible_path
+            if (ent.HERO) is_hero_path_found = true
 
-            entity.MOVE.des = _.cloneDeep(entity.POS)
-            if (entity.MOVE.path.length <= 1) {
-                entity.MOVE.des.x = entity.MOVE.final_des.x
-                entity.MOVE.des.y = entity.MOVE.final_des.y
+            if (ent.MOVE.path.length > 1) {
+                if (COORD.on_same_tile(ent.POS, ent.MOVE.path[0])) {
+                    ent.MOVE.path.shift()
+                }
+                ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
+                ent.MOVE.des.x += 10
+                ent.MOVE.des.y += 10
             } else {
-                entity.MOVE.des = COORD.from_tile(entity.MOVE.path[0])
-                entity.MOVE.des.x += 10
-                entity.MOVE.des.y += 10
+                ent.MOVE.des.x = ent.MOVE.final_des.x
+                ent.MOVE.des.y = ent.MOVE.final_des.y
+                ent.MOVE.path = []
             }
         })
     }
-    addNeighbor(y, x, entity) {
+    addNeighbor(y, x, ent) {
         const collision = GLOBAL.collision
         if (
             COLLISION.get_element([y, x]) === 0 ||
             COLLISION.get_element([y, x]) === 1 ||
             !collision
         ) {
-            if (COLLISION.get_mob_element([y, x]) !== 2 || entity.HERO) {
+            if (COLLISION.get_mob_element([y, x]) !== 2 || ent.HERO) {
                 return true
             }
         }
         return false
     }
-    getAllNeighbors(tile, entity) {
-        const cardinalNeighbors = this.getCardinalNeighbors(tile, entity)
-        const diagonalNeighbors = this.getDiagonalNeighbors(tile, entity)
+    getAllNeighbors(tile, ent) {
+        const cardinalNeighbors = this.getCardinalNeighbors(tile, ent)
+        const diagonalNeighbors = this.getDiagonalNeighbors(tile, ent)
         return diagonalNeighbors.concat(cardinalNeighbors)
     }
-    getCardinalNeighbors(tile, entity) {
+    getCardinalNeighbors(tile, ent) {
         const neighbors: any = []
 
         // Add neighbor left
-        if (this.addNeighbor(tile.y, tile.x - 1, entity)) {
+        if (this.addNeighbor(tile.y, tile.x - 1, ent)) {
             neighbors.push({ x: tile.x - 1, y: tile.y })
         }
         // Add neighbor right
-        if (this.addNeighbor(tile.y, tile.x + 1, entity)) {
+        if (this.addNeighbor(tile.y, tile.x + 1, ent)) {
             neighbors.push({ x: tile.x + 1, y: tile.y })
         }
         // Add neighbor above
-        if (this.addNeighbor(tile.y - 1, tile.x, entity)) {
+        if (this.addNeighbor(tile.y - 1, tile.x, ent)) {
             neighbors.push({ x: tile.x, y: tile.y - 1 })
         }
         // Add neighbor below
-        if (this.addNeighbor(tile.y + 1, tile.x, entity)) {
+        if (this.addNeighbor(tile.y + 1, tile.x, ent)) {
             neighbors.push({ x: tile.x, y: tile.y + 1 })
         }
 
         return neighbors
     }
-    getDiagonalNeighbors(tile, entity) {
+    getDiagonalNeighbors(tile, ent) {
         const neighbors: any = []
 
-        if (this.addNeighbor(tile.y - 1, tile.x - 1, entity)) {
+        if (this.addNeighbor(tile.y - 1, tile.x - 1, ent)) {
             neighbors.push({ x: tile.x - 1, y: tile.y - 1 })
         }
-        if (this.addNeighbor(tile.y - 1, tile.x + 1, entity)) {
+        if (this.addNeighbor(tile.y - 1, tile.x + 1, ent)) {
             neighbors.push({ x: tile.x + 1, y: tile.y - 1 })
         }
-        if (this.addNeighbor(tile.y + 1, tile.x - 1, entity)) {
+        if (this.addNeighbor(tile.y + 1, tile.x - 1, ent)) {
             neighbors.push({ x: tile.x - 1, y: tile.y + 1 })
         }
-        if (this.addNeighbor(tile.y + 1, tile.x + 1, entity)) {
+        if (this.addNeighbor(tile.y + 1, tile.x + 1, ent)) {
             neighbors.push({ x: tile.x + 1, y: tile.y + 1 })
         }
 
@@ -106,7 +129,7 @@ class Astar {
         return true
     }
 
-    findPath(startPos, endPos, entity) {
+    findPath(startPos, endPos, ent) {
         const t0 = performance.now()
         let walkable = true
         if (
@@ -132,8 +155,8 @@ class Astar {
 
             if (maxSteps < 0) {
                 if (this.clean) return [endPos]
-                let path = this.reconstructPath(current, startPos, entity)
-                return this.refinePath(path, entity)
+                let path = this.reconstructPath(current, startPos, ent)
+                return this.refinePath(path, ent)
             }
 
             this.openList = this.openList.filter((p) => p !== current)
@@ -141,11 +164,11 @@ class Astar {
 
             if (current.x === endPos.x && current.y === endPos.y) {
                 if (this.clean) return [endPos]
-                let path = this.reconstructPath(current, startPos, entity)
-                return this.refinePath(path, entity)
+                let path = this.reconstructPath(current, startPos, ent)
+                return this.refinePath(path, ent)
             }
 
-            let neighbors = this.getAllNeighbors(current, entity)
+            let neighbors = this.getAllNeighbors(current, ent)
             if (neighbors.length < 8) this.clean = false
 
             neighbors.forEach((neighbor) => {
@@ -156,7 +179,7 @@ class Astar {
                 ) {
                     return
                 }
-                let secondNeighbors = this.getAllNeighbors(neighbor, entity)
+                let secondNeighbors = this.getAllNeighbors(neighbor, ent)
 
                 let g = current.g
                 if (
@@ -189,7 +212,7 @@ class Astar {
         return []
     }
 
-    refinePath(path, entity) {
+    refinePath(path, ent) {
         //
         const indexes: number[] = []
 
@@ -199,7 +222,7 @@ class Astar {
             let tile = path[i]
             if (!tile) continue
 
-            let neighbors = this.getAllNeighbors(tile, entity)
+            let neighbors = this.getAllNeighbors(tile, ent)
 
             // all neighbors are walkable
             if (neighbors.length === 8) {
@@ -275,7 +298,7 @@ class Astar {
         }, openList[0])
     }
 
-    reconstructPath(endNode, startPos, entity) {
+    reconstructPath(endNode, startPos, ent) {
         let path: number[] = []
         let current = endNode
 
@@ -284,7 +307,7 @@ class Astar {
         let max = 300
         while (current && max > 0) {
             path.unshift(current) // add to front
-            const neighbors = this.getAllNeighbors(current, entity)
+            const neighbors = this.getAllNeighbors(current, ent)
 
             let closest
             _.reverse(neighbors)

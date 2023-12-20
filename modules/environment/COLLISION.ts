@@ -16,8 +16,8 @@ class Collision {
     }
     process() {
         this.mob_array = MATHJS.sparse()
-        MUSEUM.process_entity(["MOVE", "NONHERO"], (entity) => {
-            let { x, y } = COORD.to_tile(entity.POS)
+        MUSEUM.process_entity(["MOVE", "NONHERO"], (ent) => {
+            let { x, y } = COORD.to_tile(ent.POS)
             this.mob_array.set([y, x], 2)
             this.mob_array.set([y, x - 1], 2)
             this.mob_array.set([y, x + 1], 2)
@@ -63,8 +63,8 @@ class Collision {
     }
 
     updateCollisionGrid() {
-        if (!HERO.entity) return
-        const heroPOS = HERO.entity.POS
+        if (!HERO.ent) return
+        const heroPOS = HERO.ent.POS
 
         // center point of collision grid minus hero offset
         // 50 is the half of the tile size of 100
@@ -102,9 +102,9 @@ class Collision {
         })
 
         // draw paths
-        MUSEUM.process_entity("MOVE", (entity) => {
-            if (!entity.MOVE.path) return
-            entity.MOVE.path.forEach((tile) => {
+        MUSEUM.process_entity("MOVE", (ent) => {
+            if (!ent.MOVE.path) return
+            ent.MOVE.path.forEach((tile) => {
                 if (!tile || !GLOBAL.collision) return
                 let row = tile.x - startX
                 let col = tile.y - startY
@@ -116,8 +116,8 @@ class Collision {
     }
 
     private editCollisionArray() {
-        if (!HERO.entity) return
-        const heroPOS = HERO.entity.POS
+        if (!HERO.ent) return
+        const heroPOS = HERO.ent.POS
 
         let { x, y } = COORD.to_tile(heroPOS)
         if (y < 0 || x < 0) return

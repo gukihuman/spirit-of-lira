@@ -22,12 +22,12 @@ class Spawn {
             if (this.spawnedChunks.includes(chunk)) return
 
             _.forEach(this.locationPopulation, async (spawner, location) => {
-                _.forEach(spawner, async (ratio, entity) => {
+                _.forEach(spawner, async (ratio, ent) => {
                     this.spawnPromises.push(
                         this.createEntitiesOnChunk(
                             chunk,
                             MAP[location],
-                            entity,
+                            ent,
                             ratio
                         )
                     )
@@ -43,9 +43,9 @@ class Spawn {
         this.spawnedChunks.forEach((chunk) => {
             if (MAP.closeChunks.includes(chunk)) return
 
-            WORLD.entities.forEach((entity, id) => {
-                if (!entity.MOVE) return
-                const POS = entity.POS
+            WORLD.entities.forEach((ent, id) => {
+                if (!ent.MOVE) return
+                const POS = ent.POS
                 if (!POS) return
 
                 const entityChunk = COORD.chunkFromCoordinates(POS.x, POS.y)
@@ -66,7 +66,7 @@ class Spawn {
     private async createEntitiesOnChunk(
         chunk: string,
         locationChunks: string[],
-        entity: string,
+        ent: string,
         ratio: number
     ) {
         if (locationChunks.includes(chunk)) {
@@ -78,7 +78,7 @@ class Spawn {
                 // stop loop if POS not found, all tiles in chunks with collision
                 if (!POS) return
 
-                await CREATOR.create(entity, { POS: POS })
+                await CREATOR.create(ent, { POS: POS })
                 ratio -= 1
             }
         }

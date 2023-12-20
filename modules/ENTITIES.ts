@@ -27,7 +27,7 @@ class Entities {
             SIZE: { width: 70, height: 60, bottom: 17 },
             SPRITE: {
                 leaveAnimationConditions: {
-                    move: (entity, id) => {
+                    move: (ent, id) => {
                         return (
                             SPRITE.getAnimation(id, "move")?.currentFrame === 0
                         )
@@ -57,10 +57,10 @@ class Entities {
         mousepoint: {
             POS: { x: -30, y: -30 },
             SPRITE: {},
-            process(entity: { POS: any }, id: number) {
-                let POS = entity.POS
+            process(ent: { POS: any }, id: number) {
+                let POS = ent.POS
                 if (!POS) return
-                if (HERO.entity.STATE.active === "dead") {
+                if (HERO.ent.STATE.active === "dead") {
                     HERO.reset_final_des()
                     return
                 }
@@ -71,7 +71,7 @@ class Entities {
                     return
                 }
 
-                const final_des = HERO.entity.MOVE.final_des
+                const final_des = HERO.ent.MOVE.final_des
                 if (!final_des) {
                     POS.x = -30
                     POS.y = -30
@@ -85,16 +85,13 @@ class Entities {
                     POS.y = -30
                 }
 
-                const displacement = COORD.vectorFromPoints(
-                    POS,
-                    HERO.entity.POS
-                )
+                const displacement = COORD.vectorFromPoints(POS, HERO.ent.POS)
                 const distance = displacement.distance
-                const speedPerTick = COORD.speedPerTick(HERO.entity)
+                const speedPerTick = COORD.speedPerTick(HERO.ent)
 
                 // hide
                 // 📜 change tracked to track state, implement track state
-                if (distance < speedPerTick || HERO.entity.STATE.track) {
+                if (distance < speedPerTick || HERO.ent.STATE.track) {
                     POS.x = -30
                     POS.y = -30
                     return

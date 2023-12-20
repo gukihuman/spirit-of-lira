@@ -13,37 +13,34 @@ class State {
         deadDelayMS: 1000,
     }
     process() {
-        WORLD.entities.forEach((entity, id) => {
-            if (!entity.STATE) return
+        WORLD.entities.forEach((ent, id) => {
+            if (!ent.STATE) return
             // controlled by dead system
-            if (entity.STATE.active === "dead") return
-            this.checkStill(entity, id)
-            if (entity.STATE.cast) {
-                entity.STATE.active = "cast"
-            } else if (entity.STATE.track) {
-                entity.STATE.active = "track"
-            } else if (!entity.STATE.still) {
-                entity.STATE.active = "move"
+            if (ent.STATE.active === "dead") return
+            this.checkStill(ent, id)
+            if (ent.STATE.cast) {
+                ent.STATE.active = "cast"
+            } else if (ent.STATE.track) {
+                ent.STATE.active = "track"
+            } else if (!ent.STATE.still) {
+                ent.STATE.active = "move"
             } else {
-                entity.STATE.active = "idle"
+                ent.STATE.active = "idle"
             }
-            this.updateLastChangeMS(entity, id)
+            this.updateLastChangeMS(ent, id)
         })
     }
-    private checkStill(entity, id) {
+    private checkStill(ent, id) {
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
-        if (
-            entity.POS.x === lastEntity.POS.x &&
-            entity.POS.y === lastEntity.POS.y
-        ) {
-            entity.STATE.still = true
-        } else entity.STATE.still = false
+        if (ent.POS.x === lastEntity.POS.x && ent.POS.y === lastEntity.POS.y) {
+            ent.STATE.still = true
+        } else ent.STATE.still = false
     }
-    private updateLastChangeMS(entity, id) {
+    private updateLastChangeMS(ent, id) {
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
-        if (entity.STATE.active !== lastEntity.STATE.active) {
+        if (ent.STATE.active !== lastEntity.STATE.active) {
             WORLD.entities.get(id).STATE.lastChangeMS = LOOP.elapsed
         }
     }
