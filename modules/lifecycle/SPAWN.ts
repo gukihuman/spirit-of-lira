@@ -93,7 +93,7 @@ class Spawn {
         x += _.random(0, 999)
         y += _.random(0, 999)
 
-        if (COLLISION.is_coord_clear(x, y)) {
+        if (COLLISION.is_coord_clear({ x, y })) {
             return { x, y }
         } else if (counter < 10) {
             counter++

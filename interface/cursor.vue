@@ -24,27 +24,13 @@ const cursor = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false
     if (CONTEXT.echo.interface || CONTEXT.echo.novel) return true
     if (INTERFACE.buttonHover) return true
-    return (
-        !GLOBAL.hoverId &&
-        COLLISION.is_coord_clear(
-            GLOBAL.mousePosition.x,
-            GLOBAL.mousePosition.y,
-            false
-        )
-    )
+    return !GLOBAL.hoverId && COLLISION.is_coord_clear(GLOBAL.mouse_pos, false)
 })
 const cursorNo = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false
     if (CONTEXT.echo.interface || CONTEXT.echo.novel) return false
     if (INTERFACE.buttonHover) return false
-    return (
-        !GLOBAL.hoverId &&
-        !COLLISION.is_coord_clear(
-            GLOBAL.mousePosition.x,
-            GLOBAL.mousePosition.y,
-            false
-        )
-    )
+    return !GLOBAL.hoverId && !COLLISION.is_coord_clear(GLOBAL.mouse_pos, false)
 })
 const cursorCast = computed(() => {
     if (GLOBAL.lastActiveDevice === "gamepad") return false

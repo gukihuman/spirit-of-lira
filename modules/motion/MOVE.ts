@@ -73,10 +73,10 @@ class Move {
             )
             return
         }
-        const x = COORD.mousePosition().x
-        const y = COORD.mousePosition().y
-        if (COLLISION.is_coord_clear(x, y)) {
-            HERO.entity.MOVE.final_destination = COORD.mousePosition()
+        const x = COORD.mouse.x
+        const y = COORD.mouse.y
+        if (COLLISION.is_coord_clear({ x, y })) {
+            HERO.entity.MOVE.final_destination = COORD.mouse
         }
     }
     private gamepadMoveTries = 0
@@ -115,10 +115,10 @@ class Move {
         const possibleDestinationY =
             hero.POSITION.y + vectorToFinalDestination.y * ratio * otherRatio
         if (
-            !COLLISION.is_coord_clear(
-                possibleDestinationX,
-                possibleDestinationY
-            ) &&
+            !COLLISION.is_coord_clear({
+                x: possibleDestinationX,
+                y: possibleDestinationY,
+            }) &&
             GLOBAL.collision
         ) {
             this.gamepadMoveTries++

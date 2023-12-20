@@ -11,14 +11,14 @@ const global = {
     sceneContextChangedMS: 0,
     firstUserGesture: false,
     mouseOfScreen: { x: -30, y: -30 },
-    mousePosition: { x: -30, y: -30 },
+    mouse_pos: { x: -30, y: -30 },
     hoverId: undefined,
     lastActiveDevice: "keyboard",
     elapsed: 0,
     process() {
         this.elapsed = LOOP.elapsed
         this.mouseOfScreen = COORD.mouseOfScreen()
-        this.mousePosition = COORD.mousePosition()
+        this.mouse_pos = COORD.mouse
     },
 }
 

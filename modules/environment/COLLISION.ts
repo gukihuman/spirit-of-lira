@@ -154,27 +154,24 @@ class Collision {
             return undefined
         }
     }
-    is_tile_clear(x: number, y: number, mob = true) {
-        const element = this.get_element([y, x])
-        const mob_element = this.get_mob_element([y, x])
+    is_tile_clear(tile: { x: number; y: number }, mob = true) {
+        const element = this.get_element([tile.y, tile.x])
+        const mob_element = this.get_mob_element([tile.y, tile.x])
         const main_check = element !== 2 && element !== 3
         const mob_check = mob_element !== 2
         if (mob) return main_check && mob_check
         else return main_check
     }
-    is_coord_clear(x: number, y: number, mob = true) {
-        return this.is_tile_clear(COORD.to_tile(x), COORD.to_tile(y), mob)
+    is_coord_clear(pos: { x: number; y: number }, mob = true) {
+        const tile = { x: COORD.to_tile(pos.x), y: COORD.to_tile(pos.y) }
+        return this.is_tile_clear(tile, mob)
     }
     get_mob_element([y, x]) {
         const size = this.mob_array.size()
-        try {
-            if (y >= 0 && y < size[0] && x >= 0 && x < size[1]) {
-                return this.mob_array.get([y, x])
-            } else {
-                return 0
-            }
-        } catch (error) {
-            return undefined
+        if (y >= 0 && y < size[0] && x >= 0 && x < size[1]) {
+            return this.mob_array.get([y, x])
+        } else {
+            return 0
         }
     }
 }

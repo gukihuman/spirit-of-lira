@@ -55,13 +55,11 @@ class Coordinates {
             INPUT.mouse.y / GLOBAL.gameWindowScale
         )
     }
-    mousePosition() {
-        const mousePosition = COORD.mouseOfScreen()
+    get mouse() {
+        const mouse_pos = COORD.mouseOfScreen()
         return this.vector(
-            (mousePosition.x +=
-                HERO.entity.POSITION.x - CONFIG.viewport.width / 2),
-            (mousePosition.y +=
-                HERO.entity.POSITION.y - CONFIG.viewport.height / 2)
+            (mouse_pos.x += HERO.entity.POSITION.x - CONFIG.viewport.width / 2),
+            (mouse_pos.y += HERO.entity.POSITION.y - CONFIG.viewport.height / 2)
         )
     }
     coordinateToScreen(x: number, y: number) {
@@ -93,7 +91,7 @@ class Coordinates {
     coordinateOffsetInTile(coordinate: number) {
         return coordinate % 20
     }
-    tileToCoordinate(tile: number) {
+    from_tile(tile: number) {
         return tile * 20
     }
     isGreenTile(tile: { x: number; y: number }) {
