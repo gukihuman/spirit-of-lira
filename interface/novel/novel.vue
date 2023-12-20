@@ -21,12 +21,21 @@ div(
         skipScene
         navigate
     tn: div(
-        mark="button-fullscreen"
+        mark="fullscreen button"
         v-if="NOVEL.echo.active_md !== 'a0'"
         class="absolute top-[7px] right-[7px] saturate-[0.4] opacity-[0.8]"
     )
         gbutton(
             type="fullscreen"
+            :icon_hue="160 + NOVEL.echo[NOVEL.echo.activeLayer].hue"
+        )
+    tn: div(
+        mark="settings button"
+        v-if="NOVEL.echo.active_md !== 'a0'"
+        class="absolute top-[7px] left-[7px] saturate-[0.4] opacity-[0.8]"
+    )
+        gbutton(
+            type="settings"
             :icon_hue="160 + NOVEL.echo[NOVEL.echo.activeLayer].hue"
         )
 

@@ -15,7 +15,7 @@ async function start() {
         LIBRARY.logWarning("viewport not found (starter)")
         return
     }
-    if (process.env.NODE_ENV == "development") GLOBAL.devMode = true
+    if (process.env.NODE_ENV == "development") GLOBAL.dev_env = true
 
     // right click menu off
     document.addEventListener("contextmenu", (event) => event.preventDefault())

@@ -1,6 +1,6 @@
 class DevMode {
     process() {
-        if (GLOBAL.devMode) {
+        if (GLOBAL.dev_env) {
             if (INPUT.keyboard.justPressed.includes("z")) {
                 EVENTS.emitSingle("toggleEditMode")
             }

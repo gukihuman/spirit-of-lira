@@ -26,8 +26,8 @@ class Settings {
         preventEditHotkeyMode: null,
     }
     general = {
-        music: 0.8, // 0.8
-        sound: 0.8, // 0.8
+        music: 0.0, // 0.8
+        sound: 0.0, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,
@@ -86,6 +86,7 @@ class Settings {
             toggleFullscreen: "f",
             previousOption: "ArrowDown",
             nextOption: "ArrowUp",
+            "toggle settings": "r",
         },
         mouse: {
             mouseContinue: 0,
@@ -96,6 +97,7 @@ class Settings {
             toggleFullscreen: "Start",
             previousOption: "Down",
             nextOption: "Up",
+            "toggle settings": "Menu",
         },
     }
     inputOther = {

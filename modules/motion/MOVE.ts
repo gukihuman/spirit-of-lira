@@ -14,7 +14,7 @@ class Move {
         trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
         inject(entity, id) {
             entity.MOVE.final_destination = _.cloneDeep(entity.POSITION)
-            entity.MOVE.randomDestinationMS = LOOP.elapsed - 10_000
+            entity.MOVE.randomDestinationMS = LOOP.elapsed - _.random(0, 15_000)
         },
     }
 
@@ -75,7 +75,7 @@ class Move {
         }
         const x = COORD.mousePosition().x
         const y = COORD.mousePosition().y
-        if (COORD.isWalkable(x, y)) {
+        if (COLLISION.is_coord_clear(x, y)) {
             HERO.entity.MOVE.final_destination = COORD.mousePosition()
         }
     }
@@ -115,7 +115,10 @@ class Move {
         const possibleDestinationY =
             hero.POSITION.y + vectorToFinalDestination.y * ratio * otherRatio
         if (
-            !COORD.isWalkable(possibleDestinationX, possibleDestinationY) &&
+            !COLLISION.is_coord_clear(
+                possibleDestinationX,
+                possibleDestinationY
+            ) &&
             GLOBAL.collision
         ) {
             this.gamepadMoveTries++

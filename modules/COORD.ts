@@ -87,7 +87,7 @@ class Coordinates {
     chunkToCoordinateY(chunk: string) {
         return _.floor(_.toNumber(chunk) / 100) * 1000
     }
-    coordinateToTile(coordinate: number) {
+    to_tile(coordinate: number) {
         return _.floor(coordinate / 20)
     }
     coordinateOffsetInTile(coordinate: number) {
@@ -96,17 +96,8 @@ class Coordinates {
     tileToCoordinate(tile: number) {
         return tile * 20
     }
-    isWalkable(x: number, y: number, mobs = true) {
-        let tileX = this.coordinateToTile(x)
-        let tileY = this.coordinateToTile(y)
-        return (
-            COLLISION.getArrayElement([tileY, tileX]) !== 2 &&
-            COLLISION.getArrayElement([tileY, tileX]) !== 3 &&
-            (COLLISION.getArrayOfEntitiesElement([tileY, tileX]) !== 2 || !mobs)
-        )
-    }
     isGreenTile(tile: { x: number; y: number }) {
-        return COLLISION.getArrayElement([tile.y, tile.x]) === 1
+        return COLLISION.get_element([tile.y, tile.x]) === 1
     }
 }
 export const COORD = new Coordinates()

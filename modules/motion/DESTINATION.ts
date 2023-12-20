@@ -31,7 +31,7 @@ class Destination {
     private setRandomDestination(entity, id: number) {
         let possibleX = entity.POSITION.x + _.random(-500, 500)
         let possibleY = entity.POSITION.y + _.random(-500, 500)
-        if (!COORD.isWalkable(possibleX, possibleY)) {
+        if (!COLLISION.is_coord_clear(possibleX, possibleY)) {
             this.counter++
             if (this.counter < 10) this.setRandomDestination(entity, id)
             return

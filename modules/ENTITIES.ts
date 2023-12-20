@@ -80,7 +80,7 @@ class Entities {
                 position.x = final_destination.x
                 position.y = final_destination.y
 
-                if (!COORD.isWalkable(position.x, position.y)) {
+                if (!COLLISION.is_coord_clear(position.x, position.y)) {
                     position.x = -30
                     position.y = -30
                 }

@@ -3,101 +3,69 @@ class Astar {
     closedList: any = []
     clean = true
     maxSteps = 2000
-    maxTime = 5
+    maxTime = 5 // ms
     process() {
-        let executes: any = []
-        WORLD.entities.forEach((entity, id) => {
-            executes.push(() => {
-                if (entity.MOVE) {
-                    if (!entity.MOVE.final_destination) return
-                    if (_.round(LOOP.elapsed / 100) % _.random(1, 5) !== 0) {
-                        return
-                    }
-                    const startTile = {
-                        x: COORD.coordinateToTile(entity.POSITION.x),
-                        y: COORD.coordinateToTile(entity.POSITION.y),
-                    }
-                    let endTile = {
-                        x: COORD.coordinateToTile(
-                            entity.MOVE.final_destination.x
-                        ),
-                        y: COORD.coordinateToTile(
-                            entity.MOVE.final_destination.y
-                        ),
-                    }
+        MUSEUM.process_entity("MOVE", (entity) => {
+            if (!entity.MOVE.final_destination) return
+            if (_.round(LOOP.elapsed / 100) % _.random(1, 5) !== 0) {
+                return
+            }
+            const startTile = {
+                x: COORD.to_tile(entity.POSITION.x),
+                y: COORD.to_tile(entity.POSITION.y),
+            }
+            let endTile = {
+                x: COORD.to_tile(entity.MOVE.final_destination.x),
+                y: COORD.to_tile(entity.MOVE.final_destination.y),
+            }
 
-                    const mousePosition = COORD.mousePosition()
-                    const mouseTileX = COORD.coordinateToTile(mousePosition.x)
-                    const mouseTileY = COORD.coordinateToTile(mousePosition.y)
+            const mousePosition = COORD.mousePosition()
+            const mouseTileX = COORD.to_tile(mousePosition.x)
+            const mouseTileY = COORD.to_tile(mousePosition.y)
 
-                    // mouseMove signal on non-walkable tile
-                    if (
-                        GLOBAL.lastActiveDevice !== "gamepad" &&
-                        EVENTS.activeSingle.includes("mouseMove") &&
-                        COLLISION.getArrayElement([mouseTileY, mouseTileX]) !==
-                            0 &&
-                        COLLISION.getArrayElement([mouseTileY, mouseTileX]) !==
-                            1
-                    ) {
-                        entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsed
-                    }
+            // mouseMove signal on non-walkable tile
+            if (
+                GLOBAL.lastActiveDevice !== "gamepad" &&
+                EVENTS.activeSingle.includes("mouseMove") &&
+                COLLISION.get_element([mouseTileY, mouseTileX]) !== 0 &&
+                COLLISION.get_element([mouseTileY, mouseTileX]) !== 1
+            ) {
+                entity.MOVE.setMousePointOnWalkableMS = LOOP.elapsed
+            }
 
-                    if (
-                        COLLISION.getArrayElement([endTile.y, endTile.x]) !==
-                            0 &&
-                        COLLISION.getArrayElement([endTile.y, endTile.x]) !==
-                            1 &&
-                        (LOOP.elapsed <
-                            entity.MOVE.setMousePointOnWalkableMS + 100 ||
-                            GLOBAL.lastActiveDevice === "gamepad")
-                    ) {
-                        if (GLOBAL.collision) {
-                            return
-                        }
-                    }
+            if (
+                COLLISION.get_element([endTile.y, endTile.x]) !== 0 &&
+                COLLISION.get_element([endTile.y, endTile.x]) !== 1 &&
+                (LOOP.elapsed < entity.MOVE.setMousePointOnWalkableMS + 100 ||
+                    GLOBAL.lastActiveDevice === "gamepad")
+            ) {
+                if (GLOBAL.collision) return
+            }
 
-                    const possiblePath = this.findPath(
-                        startTile,
-                        endTile,
-                        entity
-                    )
-                    if (possiblePath) entity.MOVE.path = possiblePath
-                    else return
+            const possiblePath = this.findPath(startTile, endTile, entity)
+            if (possiblePath) entity.MOVE.path = possiblePath
+            else return
 
-                    entity.MOVE.destination = _.cloneDeep(entity.POSITION)
-                    if (
-                        entity.MOVE.path.length <= 1 &&
-                        entity.MOVE.destination
-                    ) {
-                        entity.MOVE.destination.x =
-                            entity.MOVE.final_destination.x
-                        entity.MOVE.destination.y =
-                            entity.MOVE.final_destination.y
-                    } else if (
-                        entity.MOVE.path.length > 0 &&
-                        entity.MOVE.destination
-                    ) {
-                        entity.MOVE.destination.x =
-                            COORD.tileToCoordinate(entity.MOVE.path[0].x) + 10
-                        entity.MOVE.destination.y =
-                            COORD.tileToCoordinate(entity.MOVE.path[0].y) + 10
-                    }
-                }
-            })
+            entity.MOVE.destination = _.cloneDeep(entity.POSITION)
+            if (entity.MOVE.path.length <= 1 && entity.MOVE.destination) {
+                entity.MOVE.destination.x = entity.MOVE.final_destination.x
+                entity.MOVE.destination.y = entity.MOVE.final_destination.y
+            } else if (entity.MOVE.path.length > 0 && entity.MOVE.destination) {
+                entity.MOVE.destination.x =
+                    COORD.tileToCoordinate(entity.MOVE.path[0].x) + 10
+                entity.MOVE.destination.y =
+                    COORD.tileToCoordinate(entity.MOVE.path[0].y) + 10
+            }
         })
-        executes.forEach((func) => func())
     }
     addNeighbor(y, x, entity) {
         const collision = GLOBAL.collision
         if (
-            COLLISION.getArrayElement([y, x]) === 0 ||
-            COLLISION.getArrayElement([y, x]) === 1 ||
+            COLLISION.get_element([y, x]) === 0 ||
+            COLLISION.get_element([y, x]) === 1 ||
             !collision
         ) {
-            if (
-                COLLISION.getArrayOfEntitiesElement([y, x]) !== 2 ||
-                entity.HERO
-            ) {
+            if (COLLISION.get_mob_element([y, x]) !== 2 || entity.HERO) {
                 return true
             }
         }
@@ -166,8 +134,8 @@ class Astar {
         const t0 = performance.now()
         let walkable = true
         if (
-            COLLISION.getArrayElement([endPos.y, endPos.x]) !== 0 &&
-            COLLISION.getArrayElement([endPos.y, endPos.x]) !== 1
+            COLLISION.get_element([endPos.y, endPos.x]) !== 0 &&
+            COLLISION.get_element([endPos.y, endPos.x]) !== 1
         ) {
             walkable = false
         }
@@ -317,8 +285,8 @@ class Astar {
 
         for (let tile of filteredList) {
             if (
-                COLLISION.getArrayElement([tile.y, tile.x]) === 0 ||
-                COLLISION.getArrayElement([tile.y, tile.x]) === 1
+                COLLISION.get_element([tile.y, tile.x]) === 0 ||
+                COLLISION.get_element([tile.y, tile.x]) === 1
             ) {
                 let dist = this.heuristic(tile, endPos)
                 if (dist < minDist) {

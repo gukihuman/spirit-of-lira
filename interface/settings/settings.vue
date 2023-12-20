@@ -2,21 +2,23 @@
 div(
     mark="settings"
     v-show="CONTEXT.echo.settings"
-    class="z-30"
+    class="z-[100]"
+    :class="settings_classes"
 )
+
     div(
         mark="dim"
-        class="absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900"
+        class="z-[80] absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900"
     )
     img(
         mark="bg"
         draggable="false"
         :src="ASSETS.webp_paths['settings-bg']"
-        class="absolute"
+        class="z-[100] absolute"
     )
     div(
         mark="tabs"
-        class="flex justify-center items-center w-[1165px] h-[85px] left-[360px] top-[145px] absolute"
+        class="flex justify-center items-center w-[1165px] h-[85px] left-[360px] top-[145px] absolute z-[120]"
     )
         settings-tab(
             v-for="(context, i) in SETTINGS.context_list"
@@ -26,6 +28,7 @@ div(
     tn: div(
         mark="tab switch gamepad icons"
         v-if="GLOBAL.lastActiveDevice === 'gamepad'"
+        class="z-[150]"
     )
         hotkey-icon(
             static="LB"
@@ -37,13 +40,21 @@ div(
         )
     div(
         mark="panel"
-        class="absolute w-[1150px] h-[620px] top-[210px] left-[372px]"
+        class="z-[100] absolute w-[1150px] h-[620px] top-[210px] left-[372px]"
     )
         tn( type="swipe" )
             hotkeys-panel( device="keyboard" )
         tn( type="swipe" )
             hotkeys-panel( device="gamepad" )
 </template>
+<script setup lang="ts">
+const settings_classes = computed(() => {
+    // if (CONTEXT.echo.novel) {
+    //     return { "saturate-[0.4]": true, "opacity-[0.8]": true }
+    // }
+    return {}
+})
+</script>
 <style>
 .swipe-enter-active,
 .swipe-leave-active {

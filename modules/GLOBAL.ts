@@ -3,7 +3,7 @@ const global = {
     gameWindowScale: 1,
     fullscreen: false,
     reset: false,
-    devMode: false,
+    dev_env: false,
     editMode: false,
     collision: true,
     firstMouseMove: false,

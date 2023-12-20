@@ -1,14 +1,12 @@
-const MAP_SIZE = { width: 40_000, height: 30_000 }
+const map_size = { width: 40_000, height: 30_000 }
 class Collision {
     array: math.Matrix = MATHJS.sparse()
-    arrayOfEntities: math.Matrix = MATHJS.sparse()
+    mob_array: math.Matrix = MATHJS.sparse()
     private collisionGrid: Graphics[][] = []
     init() {
         const arrayString = JSON.stringify(ASSETS.jsons.collision)
         this.array = JSON.parse(arrayString, MATHJS.reviver)
-
-        if (GLOBAL.devMode) this.drawCollisionGrid()
-
+        if (GLOBAL.dev_env) this.draw_grid()
         EVENTS.onSingle("toggleCollision", () => {
             GLOBAL.collision = !GLOBAL.collision
         })
@@ -17,15 +15,15 @@ class Collision {
         })
     }
     process() {
-        this.arrayOfEntities = MATHJS.sparse()
+        this.mob_array = MATHJS.sparse()
         MUSEUM.process_entity(["MOVE", "NONHERO"], (entity) => {
-            let y = COORD.coordinateToTile(entity.POSITION.y)
-            let x = COORD.coordinateToTile(entity.POSITION.x)
-            this.arrayOfEntities.set([y, x], 2)
-            this.arrayOfEntities.set([y, x - 1], 2)
-            this.arrayOfEntities.set([y, x + 1], 2)
-            this.arrayOfEntities.set([y + 1, x], 2)
-            this.arrayOfEntities.set([y - 1, x], 2)
+            let y = COORD.to_tile(entity.POSITION.y)
+            let x = COORD.to_tile(entity.POSITION.x)
+            this.mob_array.set([y, x], 2)
+            this.mob_array.set([y, x - 1], 2)
+            this.mob_array.set([y, x + 1], 2)
+            this.mob_array.set([y + 1, x], 2)
+            this.mob_array.set([y - 1, x], 2)
         })
         if (GLOBAL.editMode) {
             WORLD.collision.visible = true
@@ -35,7 +33,7 @@ class Collision {
             WORLD.collision.visible = false
         }
     }
-    drawCollisionGrid() {
+    draw_grid() {
         const height = 55
         const width = 97
         for (let y of _.range(height)) {
@@ -80,8 +78,8 @@ class Collision {
             COORD.coordinateOffsetInTile(heroPosition.y) +
             10
 
-        const startY = COORD.coordinateToTile(heroPosition.y) - 27
-        const startX = COORD.coordinateToTile(heroPosition.x) - 48
+        const startY = COORD.to_tile(heroPosition.y) - 27
+        const startX = COORD.to_tile(heroPosition.x) - 48
         this.collisionGrid.forEach((row, y) => {
             row.forEach((square, x) => {
                 let tileX = startX + x
@@ -90,7 +88,7 @@ class Collision {
                     square.tint = 0x8f0005
                     return
                 }
-                if (this.getArrayOfEntitiesElement([tileY, tileX]) === 2) {
+                if (this.get_mob_element([tileY, tileX]) === 2) {
                     square.tint = 0x7e7eff
                     return
                 }
@@ -121,8 +119,8 @@ class Collision {
         if (!HERO.entity) return
         const heroPosition = HERO.entity.POSITION
 
-        let y = COORD.coordinateToTile(heroPosition.y)
-        let x = COORD.coordinateToTile(heroPosition.x)
+        let y = COORD.to_tile(heroPosition.y)
+        let x = COORD.to_tile(heroPosition.x)
         if (y < 0 || x < 0) return
 
         if (INPUT.gamepad.pressed.includes("Y")) this.array.set([y, x], 0)
@@ -149,21 +147,29 @@ class Collision {
             },
         })
     }, 150)
-    getArrayElement([y, x]) {
+    get_element([y, x]) {
         try {
             return this.array.get([y, x])
         } catch (error) {
             return undefined
         }
     }
-    getArrayOfEntitiesElement([y, x]) {
+    is_tile_clear(x: number, y: number, mob = true) {
+        const element = this.get_element([y, x])
+        const mob_element = this.get_mob_element([y, x])
+        const main_check = element !== 2 && element !== 3
+        const mob_check = mob_element !== 2
+        if (mob) return main_check && mob_check
+        else return main_check
+    }
+    is_coord_clear(x: number, y: number, mob = true) {
+        return this.is_tile_clear(COORD.to_tile(x), COORD.to_tile(y), mob)
+    }
+    get_mob_element([y, x]) {
+        const size = this.mob_array.size()
         try {
-            // Check if y and x are within the bounds of the matrix
-            if (
-                y < this.arrayOfEntities._size[0] &&
-                x < this.arrayOfEntities._size[1]
-            ) {
-                return this.arrayOfEntities.get([y, x])
+            if (y >= 0 && y < size[0] && x >= 0 && x < size[1]) {
+                return this.mob_array.get([y, x])
             } else {
                 return 0
             }
