@@ -17,8 +17,8 @@ class Damage {
         let overlay: DamageOverlay = {
             hero,
             damage,
-            x: entity.TARGET.entity.POSITION.x + randomXstart,
-            y: entity.TARGET.entity.POSITION.y + randomYstart,
+            x: entity.TARGET.entity.POS.x + randomXstart,
+            y: entity.TARGET.entity.POS.y + randomYstart,
             entityHeight: entity.TARGET.entity.SIZE.height,
             // automatically updated in INTERFACE
             screen: {

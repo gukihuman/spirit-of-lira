@@ -6,7 +6,7 @@ class SpriteUpdate {
     }
     process() {
         WORLD.entities.forEach((entity, id) => {
-            if (!entity.SPRITE || !entity.POSITION) return
+            if (!entity.SPRITE || !entity.POS) return
             const container = SPRITE.getContainer(id)
             if (!container) return
             this.updateAnimation(entity, id)
@@ -40,13 +40,9 @@ class SpriteUpdate {
     }
     private updateCoordinates(entity, container) {
         container.x =
-            entity.POSITION.x -
-            HERO.entity.POSITION.x +
-            CONFIG.viewport.width / 2
+            entity.POS.x - HERO.entity.POS.x + CONFIG.viewport.width / 2
         container.y =
-            entity.POSITION.y -
-            HERO.entity.POSITION.y +
-            CONFIG.viewport.height / 2
+            entity.POS.y - HERO.entity.POS.y + CONFIG.viewport.height / 2
     }
     private updateVisibility(entity, id) {
         if (entity.MOVE) {
@@ -122,7 +118,7 @@ class SpriteUpdate {
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
 
-        const distance = COORD.distance(entity.POSITION, lastEntity.POSITION)
+        const distance = COORD.distance(entity.POS, lastEntity.POS)
         const speedPerTick = COORD.speedPerTick(entity)
 
         if (distance / speedPerTick < 0.1) {

@@ -43,7 +43,7 @@ class Cast {
     private targetDiesLogic(entity, id) {
         entity.TARGET.id = undefined
         entity.TARGET.locked = false
-        entity.MOVE.final_destination = _.cloneDeep(entity.POSITION)
+        entity.MOVE.final_des = _.cloneDeep(entity.POS)
         if (entity.HERO) {
             if (!SETTINGS.general.easyFight) {
                 entity.STATE.track = false

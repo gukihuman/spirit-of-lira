@@ -21,26 +21,26 @@ class Ma {
     }
     process() {
         this.loadCloseChunks()
-        const heroPosition = HERO.entity.POSITION
-        if (!heroPosition) return
+        const heroPOS = HERO.entity.POS
+        if (!heroPOS) return
         // update coordinates
         this.chunkSprites.forEach((sprite, chunk) => {
-            if (!heroPosition.x || !heroPosition.y) return
+            if (!heroPOS.x || !heroPOS.y) return
             sprite.x =
                 COORD.chunkToCoordinateX(chunk) +
                 CONFIG.viewport.width / 2 -
-                heroPosition.x
+                heroPOS.x
             sprite.y =
                 COORD.chunkToCoordinateY(chunk) +
                 CONFIG.viewport.height / 2 -
-                heroPosition.y
+                heroPOS.y
         })
     }
     private async loadCloseChunks() {
         if (!HERO.entity) return
-        const heroPosition = HERO.entity.POSITION
-        const startY = COORD.coordinateToChunk(heroPosition.y) - 1
-        const startX = COORD.coordinateToChunk(heroPosition.x) - 2
+        const heroPOS = HERO.entity.POS
+        const startY = COORD.coordinateToChunk(heroPOS.y) - 1
+        const startX = COORD.coordinateToChunk(heroPOS.x) - 2
         this.closeChunks = []
         const sprites: Promise<void>[] = []
         for (let y of _.range(startY, startY + 3)) {

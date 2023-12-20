@@ -6,12 +6,12 @@ class Talk {
         x: -60,
         y: -100,
     }
-    updatePosition = false
+    updatePOS = false
     talkEntity
     process() {
         MUSEUM.process_entity(["TALK"], (entity) => {
             if (
-                COORD.distance(entity.POSITION, HERO.entity.POSITION) <
+                COORD.distance(entity.POS, HERO.entity.POS) <
                 entity.TALK.distance
             ) {
                 this.talkEntity = entity
@@ -19,33 +19,33 @@ class Talk {
         })
         if (!this.talkEntity) return
         if (
-            COORD.distance(this.talkEntity.POSITION, HERO.entity.POSITION) <
+            COORD.distance(this.talkEntity.POS, HERO.entity.POS) <
             this.talkEntity.TALK.distance
         ) {
             INTERFACE.talk = true
-            this.updatePosition = true
+            this.updatePOS = true
             this.debouncedTurnOff()
         } else {
             INTERFACE.talk = false
         }
-        if (this.updatePosition) {
+        if (this.updatePOS) {
             INTERFACE.talkEntity = this.talkEntity.name
-            INTERFACE.talkPosition = {
+            INTERFACE.talkPOS = {
                 x:
-                    this.talkEntity.POSITION.x -
-                    HERO.entity.POSITION.x +
+                    this.talkEntity.POS.x -
+                    HERO.entity.POS.x +
                     CONFIG.viewport.width / 2 +
                     this.talkEntity.TALK.x,
                 y:
-                    this.talkEntity.POSITION.y -
-                    HERO.entity.POSITION.y +
+                    this.talkEntity.POS.y -
+                    HERO.entity.POS.y +
                     CONFIG.viewport.height / 2 +
                     this.talkEntity.TALK.y,
             }
         }
     }
     debouncedTurnOff = _.debounce(() => {
-        this.updatePosition = false
+        this.updatePOS = false
         this.talkEntity = null
     }, 500)
     init() {

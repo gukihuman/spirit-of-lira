@@ -205,7 +205,7 @@ class Novel {
             if (!PROGRESS.scenes.includes(this.echo.active_scene)) {
                 PROGRESS.scenes.push(this.echo.active_scene)
             }
-            HERO.reset_destination()
+            HERO.reset_final_des()
             SAVE.update()
             CONTEXT.echo.novel = false
             setTimeout(() => (this.echo.active_md = ""), 1000)

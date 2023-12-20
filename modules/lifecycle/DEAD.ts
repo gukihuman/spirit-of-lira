@@ -8,12 +8,10 @@ class Dead {
             HERO.entity.STATE.active = "idle"
             HERO.entity.ATTRIBUTES.health = HERO.entity.ATTRIBUTES.healthMax
             HERO.entity.ATTRIBUTES.energy = HERO.entity.ATTRIBUTES.energyMax
-            HERO.entity.POSITION = _.cloneDeep(
-                ENTITIES.collection.lira.POSITION
-            )
+            HERO.entity.POS = _.cloneDeep(ENTITIES.collection.lira.POS)
             HERO.entity.TARGET.id = null
             HERO.entity.TARGET.locked = false
-            HERO.reset_destination()
+            HERO.reset_final_des()
             GLOBAL.reset = false
             const container = SPRITE.getContainer(HERO.id)
             if (!container) return
@@ -86,7 +84,7 @@ class Dead {
                     LOOP.elapsed
                 animation.alpha = timeTillRemove / 500
                 if (timeTillRemove < 500) {
-                    entity.POSITION.y += 0.5 * (60 / LOOP.fps)
+                    entity.POS.y += 0.5 * (60 / LOOP.fps)
                 }
                 shadow.alpha = (timeTillRemove / 500) * CONFIG.shadow_alpha
             }

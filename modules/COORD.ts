@@ -1,3 +1,7 @@
+declare global {
+    type Coord = { x: number; y: number }
+    type Tile = { x: number; y: number }
+}
 class Vector {
     x: number
     y: number
@@ -35,7 +39,7 @@ class Coordinates {
         return Math.sqrt((p2.y - p1.y) ** 2 + (p2.x - p1.x) ** 2)
     }
     distance_to_hero(p1: { x: number; y: number }) {
-        const p2 = HERO.entity.POSITION || p1
+        const p2 = HERO.entity.POS || p1
         return this.distance(p1, p2)
     }
     speedPerTick(entity) {
@@ -58,15 +62,15 @@ class Coordinates {
     get mouse() {
         const mouse_pos = COORD.mouseOfScreen()
         return this.vector(
-            (mouse_pos.x += HERO.entity.POSITION.x - CONFIG.viewport.width / 2),
-            (mouse_pos.y += HERO.entity.POSITION.y - CONFIG.viewport.height / 2)
+            (mouse_pos.x += HERO.entity.POS.x - CONFIG.viewport.width / 2),
+            (mouse_pos.y += HERO.entity.POS.y - CONFIG.viewport.height / 2)
         )
     }
     coordinateToScreen(x: number, y: number) {
-        if (!HERO.entity.POSITION) return { x: 0, y: 0 }
+        if (!HERO.entity.POS) return { x: 0, y: 0 }
         return {
-            x: x - HERO.entity.POSITION.x + CONFIG.viewport.width / 2,
-            y: y - HERO.entity.POSITION.y + CONFIG.viewport.height / 2,
+            x: x - HERO.entity.POS.x + CONFIG.viewport.width / 2,
+            y: y - HERO.entity.POS.y + CONFIG.viewport.height / 2,
         }
     }
     coordinateToChunk(coordinate: number) {
@@ -85,14 +89,14 @@ class Coordinates {
     chunkToCoordinateY(chunk: string) {
         return _.floor(_.toNumber(chunk) / 100) * 1000
     }
-    to_tile(coordinate: number) {
-        return _.floor(coordinate / 20)
+    to_tile(coord: { x: number; y: number }): Tile {
+        return { x: _.floor(coord.x / 20), y: _.floor(coord.y / 20) }
     }
     coordinateOffsetInTile(coordinate: number) {
         return coordinate % 20
     }
-    from_tile(tile: number) {
-        return tile * 20
+    from_tile(tile: { x: number; y: number }): Coord {
+        return { x: tile.x * 20, y: tile.y * 20 }
     }
     isGreenTile(tile: { x: number; y: number }) {
         return COLLISION.get_element([tile.y, tile.x]) === 1

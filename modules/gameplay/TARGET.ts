@@ -42,18 +42,15 @@ class Target {
         EVENTS.onSingle("lockTarget", () => {
             if (!HERO.entity.TARGET.id) return
             HERO.entity.TARGET.locked = !HERO.entity.TARGET.locked
-            // reset final_destination if it is on the TARGET
+            // reset final_des if it is on the TARGET
             if (
-                HERO.entity.MOVE.final_destination &&
+                HERO.entity.MOVE.final_des &&
                 !HERO.entity.TARGET.locked &&
-                HERO.entity.TARGET.entity.POSITION.x ===
-                    HERO.entity.MOVE.final_destination.x &&
-                HERO.entity.TARGET.entity.POSITION.y ===
-                    HERO.entity.MOVE.final_destination.y
+                HERO.entity.TARGET.entity.POS.x ===
+                    HERO.entity.MOVE.final_des.x &&
+                HERO.entity.TARGET.entity.POS.y === HERO.entity.MOVE.final_des.y
             ) {
-                HERO.entity.MOVE.final_destination = _.cloneDeep(
-                    HERO.entity.POSITION
-                )
+                HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
             }
             if (
                 (GLOBAL.lastActiveDevice === "gamepad" &&
@@ -69,9 +66,7 @@ class Target {
                 HERO.entity.STATE.track = false
                 HERO.entity.TARGET.id = null
                 HERO.entity.TARGET.lock = false
-                HERO.entity.MOVE.final_destination = _.cloneDeep(
-                    HERO.entity.POSITION
-                )
+                HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
             }
             // when lock is used to lock a new TARGET immidiately
             if (GLOBAL.lastActiveDevice !== "gamepad") {
@@ -146,10 +141,7 @@ class Target {
     }
     private checkTargetDistance(entity, id) {
         if (!entity.TARGET.id || !entity.TARGET.entity) return
-        const distance = COORD.distance(
-            entity.POSITION,
-            entity.TARGET.entity.POSITION
-        )
+        const distance = COORD.distance(entity.POS, entity.TARGET.entity.POS)
         let maxDistance = 0
         if (entity.HERO) maxDistance = this.heroMaxTargetDistance
         else maxDistance = this.mobsMaxTargetDistance
@@ -163,10 +155,7 @@ class Target {
             if (!entity.HERO && entity.ATTRIBUTES.mood === "peaceful") {
                 return
             }
-            const distance = COORD.distance(
-                entity.POSITION,
-                otherEntity.POSITION
-            )
+            const distance = COORD.distance(entity.POS, otherEntity.POS)
             if (distance < minDistance) {
                 minDistance = distance
                 entity.TARGET.id = otherId
@@ -192,15 +181,9 @@ class Target {
         const angleToGroup = 0.2 // about 12 degrees
         MUSEUM.process_entity(["NONHERO", "MOVE"], (entity, id) => {
             if (entity.STATE.active === "dead") return
-            const distance = COORD.distance(
-                HERO.entity.POSITION,
-                entity.POSITION
-            )
+            const distance = COORD.distance(HERO.entity.POS, entity.POS)
             if (distance > 750) return
-            const entityAngle = COORD.angle(
-                HERO.entity.POSITION,
-                entity.POSITION
-            )
+            const entityAngle = COORD.angle(HERO.entity.POS, entity.POS)
             const angle = Math.abs(entityAngle - axesAngle)
             if (angle < angleToGroup) {
                 closestGroup.push(id)

@@ -34,6 +34,7 @@ class GukiConfig {
             // <- rest of the logic
         },
         modulesProcess: {
+            ASTAR: 10,
             INPUT_UPDATE: 6, // at least SETTINGS and INTERFACE depends on it
             STATE: 5,
             SPRITE_UPDATE: 4,
@@ -43,7 +44,6 @@ class GukiConfig {
             CONTEXT: 3, // before LAST
             LAST: 2,
             // <- rest of the logic here
-            ASTAR: -1, // check logic in EVENTS before it is empty
             EVENTS: -2, // runs all logic for collected events and empty itself
             AUDIO: -3, // after EVENTS to check game states
             MOVE: -3,

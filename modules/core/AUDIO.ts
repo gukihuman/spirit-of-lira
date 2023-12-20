@@ -11,7 +11,7 @@ let river_token: Token | undefined = undefined
 let river_time_token: Token | undefined = undefined
 const river_distance_close = 500
 const river_distance_far = 1300
-const river_positions: Position[] = [
+const river_POSs: POS[] = [
     { x: 7166, y: 7133 },
     { x: 7424, y: 7163 },
     { x: 7638, y: 6955 },
@@ -76,8 +76,8 @@ class Audio {
                 if (!river_token || !sounds[river_token]) return
                 let volume = 0
                 let current_min = Infinity
-                river_positions.forEach((position) => {
-                    const distance = COORD.distance_to_hero(position)
+                river_POSs.forEach((POS) => {
+                    const distance = COORD.distance_to_hero(POS)
                     if (distance < current_min) current_min = distance
                 })
                 current_min -= river_distance_close

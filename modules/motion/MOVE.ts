@@ -2,19 +2,19 @@ class Move {
     component = {
         speed: 5,
 
-        destination: null,
-        final_destination: null,
+        des: null, // destination
+        final_des: null,
         path: [],
 
-        randomDestinationMS: 0,
+        randomdesMS: 0,
         setMousePointOnWalkableMS: 0,
 
         // 🔧
-        depend: ["POSITION"],
+        depend: ["POS"],
         trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
         inject(entity, id) {
-            entity.MOVE.final_destination = _.cloneDeep(entity.POSITION)
-            entity.MOVE.randomDestinationMS = LOOP.elapsed - _.random(0, 15_000)
+            entity.MOVE.final_des = _.cloneDeep(entity.POS)
+            entity.MOVE.randomdesMS = LOOP.elapsed - _.random(0, 15_000)
         },
     }
 
@@ -50,9 +50,7 @@ class Move {
                 this.gamepadAxesMoved &&
                 GLOBAL.lastActiveDevice === "gamepad"
             ) {
-                HERO.entity.MOVE.final_destination = _.cloneDeep(
-                    HERO.entity.POSITION
-                )
+                HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
             }
             this.gamepadAxesMoved = false
         }
@@ -68,15 +66,13 @@ class Move {
             COORD.mouseOfScreen()
         )
         if (distance < 10) {
-            HERO.entity.MOVE.final_destination = _.cloneDeep(
-                HERO.entity.POSITION
-            )
+            HERO.entity.MOVE.final_des = _.cloneDeep(HERO.entity.POS)
             return
         }
         const x = COORD.mouse.x
         const y = COORD.mouse.y
         if (COLLISION.is_coord_clear({ x, y })) {
-            HERO.entity.MOVE.final_destination = COORD.mouse
+            HERO.entity.MOVE.final_des = COORD.mouse
         }
     }
     private gamepadMoveTries = 0
@@ -105,19 +101,19 @@ class Move {
         const angle = axesVector.angle
         let ratio = axesVector.distance
         ratio = _.clamp(ratio, 1)
-        const vectorToFinalDestination = COORD.vectorFromAngle(
+        const vectorToFinaldes = COORD.vectorFromAngle(
             angle,
             speedPerTick * LOOP.fps * 2
         )
         const hero = HERO.entity
-        const possibleDestinationX =
-            hero.POSITION.x + vectorToFinalDestination.x * ratio * otherRatio
-        const possibleDestinationY =
-            hero.POSITION.y + vectorToFinalDestination.y * ratio * otherRatio
+        const possibledesX =
+            hero.POS.x + vectorToFinaldes.x * ratio * otherRatio
+        const possibledesY =
+            hero.POS.y + vectorToFinaldes.y * ratio * otherRatio
         if (
             !COLLISION.is_coord_clear({
-                x: possibleDestinationX,
-                y: possibleDestinationY,
+                x: possibledesX,
+                y: possibledesY,
             }) &&
             GLOBAL.collision
         ) {
@@ -129,16 +125,16 @@ class Move {
             this.gamepadMoveLogic(otherRatio + 0.1)
             return
         }
-        hero.MOVE.final_destination.x = possibleDestinationX
-        hero.MOVE.final_destination.y = possibleDestinationY
+        hero.MOVE.final_des.x = possibledesX
+        hero.MOVE.final_des.y = possibledesY
         this.gamepadAxesMoved = true
     }
     private canMove(entity) {
         if (
             !entity.MOVE ||
             !entity.STATE ||
-            !entity.MOVE.destination ||
-            !entity.MOVE.final_destination
+            !entity.MOVE.des ||
+            !entity.MOVE.final_des
         ) {
             return false
         }
@@ -150,13 +146,10 @@ class Move {
     move(entity) {
         if (!this.canMove(entity)) return
         const speedPerTick = COORD.speedPerTick(entity)
-        const displacement = COORD.vectorFromPoints(
-            entity.POSITION,
-            entity.MOVE.destination
-        )
+        const displacement = COORD.vectorFromPoints(entity.POS, entity.MOVE.des)
         const finaldisplacement = COORD.vectorFromPoints(
-            entity.POSITION,
-            entity.MOVE.final_destination
+            entity.POS,
+            entity.MOVE.final_des
         )
         const finaldistance = finaldisplacement.distance
         const distance = displacement.distance
@@ -179,8 +172,8 @@ class Move {
         if (HERO.entity.STATE.track) ratio = 1
         const angle = displacement.angle
         const velocity = COORD.vectorFromAngle(angle, speedPerTick)
-        entity.POSITION.x += velocity.x * ratio
-        entity.POSITION.y += velocity.y * ratio
+        entity.POS.x += velocity.x * ratio
+        entity.POS.y += velocity.y * ratio
     }
 }
 export const MOVE = new Move()

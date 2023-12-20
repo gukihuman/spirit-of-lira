@@ -17,8 +17,7 @@ class Collision {
     process() {
         this.mob_array = MATHJS.sparse()
         MUSEUM.process_entity(["MOVE", "NONHERO"], (entity) => {
-            let y = COORD.to_tile(entity.POSITION.y)
-            let x = COORD.to_tile(entity.POSITION.x)
+            let { x, y } = COORD.to_tile(entity.POS)
             this.mob_array.set([y, x], 2)
             this.mob_array.set([y, x - 1], 2)
             this.mob_array.set([y, x + 1], 2)
@@ -65,21 +64,22 @@ class Collision {
 
     updateCollisionGrid() {
         if (!HERO.entity) return
-        const heroPosition = HERO.entity.POSITION
+        const heroPOS = HERO.entity.POS
 
         // center point of collision grid minus hero offset
         // 50 is the half of the tile size of 100
         WORLD.collision.x =
             CONFIG.viewport.width / 2 -
-            COORD.coordinateOffsetInTile(heroPosition.x) +
+            COORD.coordinateOffsetInTile(heroPOS.x) +
             10
         WORLD.collision.y =
             CONFIG.viewport.height / 2 -
-            COORD.coordinateOffsetInTile(heroPosition.y) +
+            COORD.coordinateOffsetInTile(heroPOS.y) +
             10
 
-        const startY = COORD.to_tile(heroPosition.y) - 27
-        const startX = COORD.to_tile(heroPosition.x) - 48
+        let { x: startX, y: startY } = COORD.to_tile(heroPOS)
+        startX -= 48
+        startY -= 27
         this.collisionGrid.forEach((row, y) => {
             row.forEach((square, x) => {
                 let tileX = startX + x
@@ -117,10 +117,9 @@ class Collision {
 
     private editCollisionArray() {
         if (!HERO.entity) return
-        const heroPosition = HERO.entity.POSITION
+        const heroPOS = HERO.entity.POS
 
-        let y = COORD.to_tile(heroPosition.y)
-        let x = COORD.to_tile(heroPosition.x)
+        let { x, y } = COORD.to_tile(heroPOS)
         if (y < 0 || x < 0) return
 
         if (INPUT.gamepad.pressed.includes("Y")) this.array.set([y, x], 0)
@@ -163,8 +162,7 @@ class Collision {
         else return main_check
     }
     is_coord_clear(pos: { x: number; y: number }, mob = true) {
-        const tile = { x: COORD.to_tile(pos.x), y: COORD.to_tile(pos.y) }
-        return this.is_tile_clear(tile, mob)
+        return this.is_tile_clear(COORD.to_tile(pos), mob)
     }
     get_mob_element([y, x]) {
         const size = this.mob_array.size()

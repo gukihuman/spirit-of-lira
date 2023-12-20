@@ -31,7 +31,7 @@ const inter: Inter = {
     targetHealth: 0,
     targetMaxHealth: 0,
     talk: false,
-    talkPosition: { x: 0, y: 0 },
+    talkPOS: { x: 0, y: 0 },
     talkEntity: "",
     buttonHover: false,
     skipHover: false,

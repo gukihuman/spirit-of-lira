@@ -1,12 +1,12 @@
 class Flip {
     process() {
         MUSEUM.process_entity(
-            ["MOVE", "POSITION", "STATE", "TARGET"],
+            ["MOVE", "POS", "STATE", "TARGET"],
             (entity, id) => {
                 if (entity.STATE.active === "dead") return
                 if (LOOP.elapsed - entity.SPRITE.lastFlipMS < 200) return
                 if (!WORLD.last.entities.get(id)) return
-                const previousX = WORLD.last.entities.get(id).POSITION.x
+                const previousX = WORLD.last.entities.get(id).POS.x
                 const container = SPRITE.getContainer(id)
                 if (!container) return
                 let before = 1
@@ -26,19 +26,19 @@ class Flip {
                     if (layerName === "animation") before = layer.scale.x
                 })
                 // move
-                if (entity.POSITION.x < previousX) {
+                if (entity.POS.x < previousX) {
                     layersToFlip.forEach((layer) => (layer.scale.x = -1))
-                } else if (entity.POSITION.x > previousX) {
+                } else if (entity.POS.x > previousX) {
                     layersToFlip.forEach((layer) => (layer.scale.x = 1))
                 }
                 // attack target
                 if (entity.TARGET.id && entity.STATE.track) {
                     const targetEntity = WORLD.entities.get(entity.TARGET.id)
-                    if (targetEntity.POSITION.x < entity.POSITION.x) {
+                    if (targetEntity.POS.x < entity.POS.x) {
                         layersToFlip.forEach(
                             (container) => (container.scale.x = -1)
                         )
-                    } else if (targetEntity.POSITION.x > entity.POSITION.x) {
+                    } else if (targetEntity.POS.x > entity.POS.x) {
                         layersToFlip.forEach(
                             (container) => (container.scale.x = 1)
                         )

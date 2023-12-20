@@ -6,9 +6,7 @@ class Track {
                 entity.STATE.track = false
                 return
             }
-            entity.MOVE.final_destination = _.cloneDeep(
-                entity.TARGET.entity.POSITION
-            )
+            entity.MOVE.final_des = _.cloneDeep(entity.TARGET.entity.POS)
             const skill = entity.SKILLS.data[entity.SKILLS.active]
             if (this.inRange(entity, skill.distance)) {
                 entity.STATE.cast = true
@@ -22,7 +20,7 @@ class Track {
         let weaponDistance = 0
         if (entity.HERO)
             weaponDistance = ITEMS.collection.weapons[weapon].distance
-        const distance = COORD.distance(entity.POSITION, targetEntity.POSITION)
+        const distance = COORD.distance(entity.POS, targetEntity.POS)
         return (
             distance - targetEntity.SIZE.width / 2 <
             (skillDistance + weaponDistance) * multiplier

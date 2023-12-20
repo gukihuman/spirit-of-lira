@@ -45,13 +45,10 @@ class Spawn {
 
             WORLD.entities.forEach((entity, id) => {
                 if (!entity.MOVE) return
-                const position = entity.POSITION
-                if (!position) return
+                const POS = entity.POS
+                if (!POS) return
 
-                const entityChunk = COORD.chunkFromCoordinates(
-                    position.x,
-                    position.y
-                )
+                const entityChunk = COORD.chunkFromCoordinates(POS.x, POS.y)
                 if (entityChunk === chunk) {
                     WORLD.entities.delete(id)
                     let container = SPRITE.getContainer(id)
@@ -76,12 +73,12 @@ class Spawn {
             //
             while (ratio > 1 || (ratio > 0 && _.random(1) < ratio)) {
                 const counter = 0
-                const position = this.randomCoordinatesFromChunk(chunk, counter)
+                const POS = this.randomCoordinatesFromChunk(chunk, counter)
 
-                // stop loop if position not found, all tiles in chunks with collision
-                if (!position) return
+                // stop loop if POS not found, all tiles in chunks with collision
+                if (!POS) return
 
-                await CREATOR.create(entity, { POSITION: position })
+                await CREATOR.create(entity, { POS: POS })
                 ratio -= 1
             }
         }

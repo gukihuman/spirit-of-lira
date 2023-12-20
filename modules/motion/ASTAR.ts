@@ -6,46 +6,31 @@ class Astar {
     maxTime = 25 // ms
     process() {
         MUSEUM.process_entity("MOVE", (entity, id) => {
-            if (!entity.MOVE.final_destination) return
-            const last_entity = WORLD.last.entities.get(id)
-            if (
-                last_entity &&
-                last_entity.MOVE.final_destination ===
-                    entity.MOVE.final_destination
-            ) {
-                return
-            }
+            if (!entity.MOVE.final_des) return
             if (_.round(LOOP.elapsed / 100) % _.random(1, 5) !== 0) {
                 return
             }
-            const end_tile = {
-                x: COORD.to_tile(entity.MOVE.final_destination.x),
-                y: COORD.to_tile(entity.MOVE.final_destination.y),
-            }
+            const start: Tile = COORD.to_tile(entity.POS)
+            const end: Tile = COORD.to_tile(entity.MOVE.final_des)
             if (
-                !COLLISION.is_tile_clear(end_tile) &&
+                !COLLISION.is_tile_clear(end) &&
                 GLOBAL.lastActiveDevice === "gamepad" &&
                 GLOBAL.collision
             ) {
                 return
             }
-            const start_tile = {
-                x: COORD.to_tile(entity.POSITION.x),
-                y: COORD.to_tile(entity.POSITION.y),
-            }
-            const possible_path = this.findPath(start_tile, end_tile, entity)
+            const possible_path = this.findPath(start, end, entity)
             if (!possible_path) return
             else entity.MOVE.path = possible_path
 
-            entity.MOVE.destination = _.cloneDeep(entity.POSITION)
+            entity.MOVE.des = _.cloneDeep(entity.POS)
             if (entity.MOVE.path.length <= 1) {
-                entity.MOVE.destination.x = entity.MOVE.final_destination.x
-                entity.MOVE.destination.y = entity.MOVE.final_destination.y
+                entity.MOVE.des.x = entity.MOVE.final_des.x
+                entity.MOVE.des.y = entity.MOVE.final_des.y
             } else {
-                entity.MOVE.destination.x =
-                    COORD.from_tile(entity.MOVE.path[0].x) + 10
-                entity.MOVE.destination.y =
-                    COORD.from_tile(entity.MOVE.path[0].y) + 10
+                entity.MOVE.des = COORD.from_tile(entity.MOVE.path[0])
+                entity.MOVE.des.x += 10
+                entity.MOVE.des.y += 10
             }
         })
     }
@@ -263,38 +248,9 @@ class Astar {
         return newPath
     }
 
-    // setFinalDestinationToWalkable(endPos, entity) {
-    //     let closestTile
-    //     let minDist = Infinity
-
-    //     let filteredList = this.closedList.filter((p, i) => i % 15 === 0)
-
-    //     for (let tile of filteredList) {
-    //         if (
-    //             COLLISION.get_element([tile.y, tile.x]) === 0 ||
-    //             COLLISION.get_element([tile.y, tile.x]) === 1
-    //         ) {
-    //             let dist = this.heuristic(tile, endPos)
-    //             if (dist < minDist) {
-    //                 closestTile = tile
-    //                 minDist = dist
-    //             }
-    //         }
-    //     }
-    //     if (closestTile) {
-    //         entity.MOVE.final_destination.x = COORD.from_tile(
-    //             closestTile.x
-    //         )
-    //         entity.MOVE.final_destination.y = COORD.from_tile(
-    //             closestTile.y
-    //         )
-    //     }
-    // }
-
     // Compute heuristic cost between current tile and end tile
-
     heuristic(current, end) {
-        // Ensure positions are valid
+        // Ensure POSs are valid
         if (!current || !end) {
             return 0
         }

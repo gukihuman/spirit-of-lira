@@ -1,8 +1,9 @@
 class Hero {
     entity: AnyObject = {}
     id: number = 0
-    reset_destination() {
-        this.entity.MOVE.final_destination = _.clone(this.entity.POSITION)
+    last = { entity: this.entity, id: this.id }
+    reset_final_des() {
+        this.entity.MOVE.final_des = _.clone(this.entity.POS)
     }
     init() {
         this.updateHero()

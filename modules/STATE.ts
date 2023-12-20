@@ -34,8 +34,8 @@ class State {
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
         if (
-            entity.POSITION.x === lastEntity.POSITION.x &&
-            entity.POSITION.y === lastEntity.POSITION.y
+            entity.POS.x === lastEntity.POS.x &&
+            entity.POS.y === lastEntity.POS.y
         ) {
             entity.STATE.still = true
         } else entity.STATE.still = false

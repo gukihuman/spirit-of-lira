@@ -20,8 +20,8 @@ div(
 <script setup lang="ts">
 const style = computed(() => {
     return {
-        left: INTERFACE.talkPosition.x + "px",
-        top: INTERFACE.talkPosition.y + "px",
+        left: INTERFACE.talkPOS.x + "px",
+        top: INTERFACE.talkPOS.y + "px",
     }
 })
 </script>

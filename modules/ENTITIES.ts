@@ -2,7 +2,7 @@ class Entities {
     collection = {
         lira: {
             HERO: true,
-            POSITION: { x: 6588, y: 6891 },
+            POS: { x: 6588, y: 6891 },
             SIZE: { width: 60, height: 153 },
             MOVE: { speed: 16 },
             SKILLS: {
@@ -55,39 +55,39 @@ class Entities {
             STATE: { deadDelayMS: 1300 },
         },
         mousepoint: {
-            POSITION: { x: -30, y: -30 },
+            POS: { x: -30, y: -30 },
             SPRITE: {},
-            process(entity: { POSITION: any }, id: number) {
-                let position = entity.POSITION
-                if (!position) return
+            process(entity: { POS: any }, id: number) {
+                let POS = entity.POS
+                if (!POS) return
                 if (HERO.entity.STATE.active === "dead") {
-                    HERO.reset_destination()
+                    HERO.reset_final_des()
                     return
                 }
 
                 if (GLOBAL.lastActiveDevice === "gamepad") {
-                    position.x = -30
-                    position.y = -30
+                    POS.x = -30
+                    POS.y = -30
                     return
                 }
 
-                const final_destination = HERO.entity.MOVE.final_destination
-                if (!final_destination) {
-                    position.x = -30
-                    position.y = -30
+                const final_des = HERO.entity.MOVE.final_des
+                if (!final_des) {
+                    POS.x = -30
+                    POS.y = -30
                     return
                 }
-                position.x = final_destination.x
-                position.y = final_destination.y
+                POS.x = final_des.x
+                POS.y = final_des.y
 
-                if (!COLLISION.is_coord_clear(position)) {
-                    position.x = -30
-                    position.y = -30
+                if (!COLLISION.is_coord_clear(POS)) {
+                    POS.x = -30
+                    POS.y = -30
                 }
 
                 const displacement = COORD.vectorFromPoints(
-                    position,
-                    HERO.entity.POSITION
+                    POS,
+                    HERO.entity.POS
                 )
                 const distance = displacement.distance
                 const speedPerTick = COORD.speedPerTick(HERO.entity)
@@ -95,8 +95,8 @@ class Entities {
                 // hide
                 // 📜 change tracked to track state, implement track state
                 if (distance < speedPerTick || HERO.entity.STATE.track) {
-                    position.x = -30
-                    position.y = -30
+                    POS.x = -30
+                    POS.y = -30
                     return
                 }
 
