@@ -134,11 +134,11 @@ class Spr {
     private offsetEffectContainer(container, ent, targetEntity) {
         let effectHeightRatio = targetEntity.SPRITE.effectHeightRatio
         let effectWidthRatio = targetEntity.SPRITE.effectWidthRatio
-        container.POS.x = -targetEntity.SIZE.width * effectWidthRatio
+        container.position.x = -targetEntity.SIZE.width * effectWidthRatio
         if (targetEntity.POS.x < ent.POS.x) {
-            container.POS.x = -container.POS.x
+            container.position.x = -container.position.x
         }
-        container.POS.y = -targetEntity.SIZE.height * effectHeightRatio
+        container.position.y = -targetEntity.SIZE.height * effectHeightRatio
         const angle = COORD.angle(ent.POS, targetEntity.POS)
         container.rotation = angle
     }

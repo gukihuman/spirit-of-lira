@@ -1,4 +1,3 @@
-let is_hero_path_found = false
 class Astar {
     openList: any = []
     closedList: any = []
@@ -6,30 +5,14 @@ class Astar {
     maxSteps = 2000
     maxTime = 25 // ms
     process() {
-        EVENTS.onSingle("hero final destination changed", () => {
-            is_hero_path_found = false
-        })
         MUSEUM.process_entity("MOVE", (ent) => {
             if (!ent.MOVE.final_des) return
+            if (_.isEqual(ent.POS, ent.MOVE.final_des)) return
             if (ent.NONHERO && Math.random() > 0.3) return
             const start: Tile = COORD.to_tile(ent.POS)
             const end: Tile = COORD.to_tile(ent.MOVE.final_des)
             if (ent.HERO) {
-                if (is_hero_path_found) {
-                    if (
-                        ent.MOVE.path.length > 1 &&
-                        _.isEqual(
-                            COORD.to_tile(ent.POS),
-                            COORD.to_tile(ent.MOVE.des)
-                        )
-                    ) {
-                        ent.MOVE.path.shift()
-                        ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
-                        ent.MOVE.des.x += 10
-                        ent.MOVE.des.y += 10
-                    }
-                    return
-                }
+                console.log(ent.MOVE.path.length)
                 if (
                     !COLLISION.is_tile_clear(end) &&
                     GLOBAL.lastActiveDevice === "gamepad" &&
@@ -41,12 +24,8 @@ class Astar {
             const possible_path = this.findPath(start, end, ent)
             if (!possible_path) return
             else ent.MOVE.path = possible_path
-            if (ent.HERO) is_hero_path_found = true
 
             if (ent.MOVE.path.length > 1) {
-                if (COORD.on_same_tile(ent.POS, ent.MOVE.path[0])) {
-                    ent.MOVE.path.shift()
-                }
                 ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
                 ent.MOVE.des.x += 10
                 ent.MOVE.des.y += 10
