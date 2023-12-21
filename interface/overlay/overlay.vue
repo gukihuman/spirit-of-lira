@@ -1,12 +1,12 @@
 <template lang="pug">
-div(class="absolute z-10 overflow-hidden w-full h-full"
-v-show="CONTEXT.echo.gameplay")
+div(class="absolute z-0 overflow-hidden w-full h-full"
+v-show="CONTEXT.echo.world")
   div(v-show="!CONTEXT.echo.interface")
-    float-damage(mark="float-damage" v-if="INTERFACE.floatDamage")
-    tn: talk(mark="talk" v-show="INTERFACE.talk")
-    tn: reset(mark="reset" v-show="GLOBAL.reset")
-    tn(type="fast"): target(mark="target" v-show="INTERFACE.target")
-  bars-panel(mark="bars-panel")
+    float-damage(v-if="INTERFACE.floatDamage")
+    tn: talk(v-show="INTERFACE.talk")
+    tn: reset(v-show="GLOBAL.reset")
+    tn(type="fast"): target(v-show="INTERFACE.target")
+  bars-panel
   tn: div(mark="button-settings" class="absolute top-[7px] left-[7px]")
     gbutton(type="settings")
   tn: div(mark="button-fullscreen" class="absolute top-[7px] right-[7px]")
