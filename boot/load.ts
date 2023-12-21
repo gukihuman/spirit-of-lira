@@ -38,7 +38,7 @@ async function load(
         savePlace[name] = item.default
     }
 }
-function getFileName(path: string, format: Format) {
+export function getFileName(path: string, format: Format) {
     let match: any[] | null = null
     if (format === "ts") {
         match = path.match(/\/([^/]+)\.ts/)

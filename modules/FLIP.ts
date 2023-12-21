@@ -24,7 +24,8 @@ class Flip {
                 if (layerName === "animation") before = layer.scale.x
             })
             // move
-            if (ent.POS.x < previousX) {
+            if (ent.POS.x < previousX && ent.STATE.active !== "idle") {
+                console.log("yes")
                 layersToFlip.forEach((layer) => (layer.scale.x = -1))
             } else if (ent.POS.x > previousX) {
                 layersToFlip.forEach((layer) => (layer.scale.x = 1))

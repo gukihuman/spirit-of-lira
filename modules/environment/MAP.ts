@@ -38,7 +38,10 @@ class Ma {
     }
     private async loadCloseChunks() {
         if (!HERO.ent) return
-        const heroPOS = HERO.ent.POS
+        let heroPOS = HERO.ent.POS
+        if (HERO.ent.STATE.active === "dead") {
+            heroPOS = _.cloneDeep(ENTITIES.collection.lira.POS)
+        }
         const startY = COORD.coordinateToChunk(heroPOS.y) - 1
         const startX = COORD.coordinateToChunk(heroPOS.x) - 2
         this.closeChunks = []
