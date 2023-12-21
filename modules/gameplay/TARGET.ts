@@ -42,15 +42,15 @@ class Target {
         EVENTS.onSingle("lockTarget", () => {
             if (!HERO.ent.TARGET.id) return
             HERO.ent.TARGET.locked = !HERO.ent.TARGET.locked
-            // reset final_des if it is on the TARGET
-            if (
-                HERO.ent.MOVE.final_des &&
-                !HERO.ent.TARGET.locked &&
-                HERO.ent.TARGET.ent.POS.x === HERO.ent.MOVE.final_des.x &&
-                HERO.ent.TARGET.ent.POS.y === HERO.ent.MOVE.final_des.y
-            ) {
-                HERO.ent.MOVE.final_des = _.cloneDeep(HERO.ent.POS)
-            }
+            // reset final_des if it is on the TARGET - 📜 remove and all working fine, if still work after some time, just delete :)
+            // if (
+            //     HERO.ent.MOVE.final_des &&
+            //     !HERO.ent.TARGET.locked &&
+            //     HERO.ent.TARGET.ent.POS.x === HERO.ent.MOVE.final_des.x &&
+            //     HERO.ent.TARGET.ent.POS.y === HERO.ent.MOVE.final_des.y
+            // ) {
+            //     HERO.ent.MOVE.final_des = _.cloneDeep(HERO.ent.POS)
+            // }
             if (
                 (GLOBAL.lastActiveDevice === "gamepad" &&
                     HERO.ent.STATE.cast) ||

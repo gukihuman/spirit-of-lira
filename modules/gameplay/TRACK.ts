@@ -6,6 +6,7 @@ class Track {
                 ent.STATE.track = false
                 return
             }
+            ent.MOVE.des = _.cloneDeep(ent.TARGET.ent.POS)
             ent.MOVE.final_des = _.cloneDeep(ent.TARGET.ent.POS)
             const skill = ent.SKILLS.data[ent.SKILLS.active]
             if (this.inRange(ent, skill.distance)) {

@@ -4,6 +4,7 @@ class Spr {
         startFrames: {}, // { idle: 11, move: 5 } default is 0
         // how many frames meet conditions consecutively
         framesValidated: 0,
+        framesWalkRunValidated: 0,
         onValidation: "idle",
         lastChangeMS: 0,
         lastFlipMS: 0,

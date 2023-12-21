@@ -1,6 +1,7 @@
+const frames_to_validate = 3
+const frames_to_validate_walk_run = 22
+const walk_run_ratio = 0.8
 class SpriteUpdate {
-    private framesToValidate = 3
-    private walkRunRatio = 0.9
     init() {
         this.updateItems() // to load item sprites during loading
     }
@@ -118,26 +119,42 @@ class SpriteUpdate {
 
         const distance = COORD.distance(ent.POS, lastEntity.POS)
         const speedPerTick = COORD.speedPerTick(ent)
+        const distance_to_des = COORD.distance(ent.POS, ent.MOVE.final_des)
 
         if (distance / speedPerTick < 0.1) {
-            //
             this.setWithValidation(ent, id, "idle")
             return
         }
         if (SPRITE.getAnimation(id, "walk")) {
-            //
-            if (distance / speedPerTick < this.walkRunRatio) {
-                //
-                this.setWithValidation(ent, id, "walk")
-                return
-                //
+            if (ent.SPRITE.active === "walk" || ent.SPRITE.active === "run") {
+                if (distance / speedPerTick < walk_run_ratio) {
+                    this.setWalkRunWithValidation(ent, id, "walk")
+                    return
+                } else {
+                    this.setWalkRunWithValidation(ent, id, "run")
+                    return
+                }
+            } else if (ent.SPRITE.active === "idle") {
+                if (
+                    distance_to_des <
+                    MOVE.max_speed_distance * walk_run_ratio
+                ) {
+                    this.setWithValidation(ent, id, "walk")
+                    return
+                } else {
+                    this.setWithValidation(ent, id, "run")
+                    return
+                }
             } else {
-                //
-                this.setWithValidation(ent, id, "run")
-                return
+                if (distance / speedPerTick < walk_run_ratio) {
+                    this.setWithValidation(ent, id, "walk")
+                    return
+                } else {
+                    this.setWithValidation(ent, id, "run")
+                    return
+                }
             }
         } else {
-            //
             this.setWithValidation(ent, id, "move")
             return
         }
@@ -153,22 +170,35 @@ class SpriteUpdate {
     }
     /** sets sprite if enough frames are validated */
     private setWithValidation(ent, id, sprite: string) {
-        //
         const lastEntity = WORLD.last.entities.get(id)
         if (!lastEntity) return
-
         ent.SPRITE.onValidation = sprite
-
         if (lastEntity.SPRITE.onValidation !== ent.SPRITE.onValidation) {
             ent.SPRITE.framesValidated = 0
             return
         }
-        if (lastEntity.SPRITE.framesValidated >= this.framesToValidate) {
-            //
+        if (lastEntity.SPRITE.framesValidated >= frames_to_validate) {
             ent.SPRITE.active = sprite
             return
         }
         ent.SPRITE.framesValidated++
+    }
+    private setWalkRunWithValidation(ent, id, sprite: string) {
+        const lastEntity = WORLD.last.entities.get(id)
+        if (!lastEntity) return
+        ent.SPRITE.onValidation = sprite
+        if (lastEntity.SPRITE.onValidation !== ent.SPRITE.onValidation) {
+            ent.SPRITE.framesWalkRunValidated = 0
+            return
+        }
+        if (
+            lastEntity.SPRITE.framesWalkRunValidated >=
+            frames_to_validate_walk_run
+        ) {
+            ent.SPRITE.active = sprite
+            return
+        }
+        ent.SPRITE.framesWalkRunValidated++
     }
     private updateLastChangeMS(ent, id) {
         const lastEntity = WORLD.last.entities.get(id)

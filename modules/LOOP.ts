@@ -12,7 +12,10 @@ class Loop {
     /** @returns 1/60 for 60 fps, 1/144 for 144 fps with delta correction */
     get delta_sec() {
         if (!WORLD.app) return 1 / 60
-        return WORLD.app.ticker.deltaMS / 16.66 / 60
+        let result = WORLD.app.ticker.deltaMS / 16.66 / 60
+        const normal = 1 / this.fps
+        if (result > normal * 1.2) result = normal * 1.2
+        return result
     }
     new_second_just_began = false
     last = {

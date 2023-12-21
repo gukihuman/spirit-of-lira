@@ -1,8 +1,8 @@
 import { Howl, Howler } from "howler"
 type AudioObject = { [Token: string]: Howl }
 const sound_amplifier = 1.5
-const music_amplifier = 1.4
-const silence_time = 40 // average silence between music at world.gameplay
+const music_amplifier = 1.3
+const silence_time = 50 // average silence between music at world.gameplay
 let world_welcome_music_played = false
 let novel_welcome_music_played = false
 let music: Howl | undefined = undefined
@@ -11,7 +11,7 @@ let river_token: Token | undefined = undefined
 let river_time_token: Token | undefined = undefined
 const river_distance_close = 500
 const river_distance_far = 1300
-const river_POSs: POS[] = [
+const river_pos: Position[] = [
     { x: 7166, y: 7133 },
     { x: 7424, y: 7163 },
     { x: 7638, y: 6955 },
@@ -49,7 +49,7 @@ class Audio {
         // })
 
         // play music
-        if (!music && !CONTEXT.echo.novel) {
+        if (!music && !CONTEXT.echo.novel && !CONTEXT.echo.empty) {
             // 📜 green-forest -> actual location
             if (!world_welcome_music_played) {
                 TIME.next(() => this.play_music("green-forest-1"))
@@ -68,7 +68,7 @@ class Audio {
         }
 
         // river_token sound
-        if (CONTEXT.echo.world && !river_token) {
+        if (LOOP.iterations > 30 && CONTEXT.echo.world && !river_token) {
             river_token = this.play_loop_sound("river")
             river_time_token = TIME.throttle_iterations(30, () => {
                 if (!river_token && river_time_token)
@@ -76,7 +76,7 @@ class Audio {
                 if (!river_token || !sounds[river_token]) return
                 let volume = 0
                 let current_min = Infinity
-                river_POSs.forEach((POS) => {
+                river_pos.forEach((POS) => {
                     const distance = COORD.distance_to_hero(POS)
                     if (distance < current_min) current_min = distance
                 })
@@ -107,9 +107,13 @@ class Audio {
         }
         if (music) {
             this.stop_music()
-            TIME.after(1100, () => (music = new Howl(options)))
+            TIME.after(1100, () => {
+                music = new Howl(options)
+                music.on("end", () => (music = undefined))
+            })
         } else {
             music = new Howl(options)
+            music.on("end", () => (music = undefined))
         }
     }
     play_loop_sound = (name: string) => this._play_sound(name, true)

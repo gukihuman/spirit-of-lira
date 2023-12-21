@@ -8,7 +8,7 @@ interface Echo extends AnyObject {
 }
 class Settings {
     last_opened = "general"
-    context_list: SettingsStates[] = ["general", "gamepad", "keyboard", "info"]
+    context_list = ["general", "gamepad", "keyboard", "info"]
     get context_index() {
         return this.context_list.findIndex((context) => {
             return CONTEXT.echo.settings === context
@@ -26,8 +26,8 @@ class Settings {
         preventEditHotkeyMode: null,
     }
     general = {
-        music: 0.0, // 0.8
-        sound: 0.0, // 0.8
+        music: 0.8, // 0.8
+        sound: 0.8, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,

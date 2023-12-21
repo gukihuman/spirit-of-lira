@@ -25,7 +25,7 @@ class Astar {
             if (!possible_path) return
             else ent.MOVE.path = possible_path
 
-            if (ent.MOVE.path.length > 1) {
+            if (ent.MOVE.path.length > 2) {
                 ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
                 ent.MOVE.des.x += 10
                 ent.MOVE.des.y += 10
