@@ -25,7 +25,6 @@ class Flip {
             })
             // move
             if (ent.POS.x < previousX && ent.STATE.active !== "idle") {
-                console.log("yes")
                 layersToFlip.forEach((layer) => (layer.scale.x = -1))
             } else if (ent.POS.x > previousX) {
                 layersToFlip.forEach((layer) => (layer.scale.x = 1))
@@ -33,6 +32,7 @@ class Flip {
             // attack target
             if (ent.TARGET.id && ent.STATE.track) {
                 const targetEntity = WORLD.entities.get(ent.TARGET.id)
+                if (!targetEntity) return
                 if (targetEntity.POS.x < ent.POS.x) {
                     layersToFlip.forEach(
                         (container) => (container.scale.x = -1)

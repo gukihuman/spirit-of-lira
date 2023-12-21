@@ -21,6 +21,7 @@ class Ma {
     }
     process() {
         this.loadCloseChunks()
+        this.preloadCloseChunksOnDead()
         const heroPOS = HERO.ent.POS
         if (!heroPOS) return
         // update coordinates
@@ -36,15 +37,21 @@ class Ma {
                 heroPOS.y
         })
     }
-    private async loadCloseChunks() {
+    private async preloadCloseChunksOnDead() {
+        if (HERO.ent.STATE.active === "dead") {
+            const custom_center = _.cloneDeep(ENTITIES.collection.lira.POS)
+            this.loadCloseChunks(custom_center)
+        }
+    }
+    private async loadCloseChunks(
+        custom_center: { x: number; y: number } | undefined = undefined
+    ) {
         if (!HERO.ent) return
         let heroPOS = HERO.ent.POS
-        if (HERO.ent.STATE.active === "dead") {
-            heroPOS = _.cloneDeep(ENTITIES.collection.lira.POS)
-        }
+        if (custom_center) heroPOS = custom_center
         const startY = COORD.coordinateToChunk(heroPOS.y) - 1
         const startX = COORD.coordinateToChunk(heroPOS.x) - 2
-        this.closeChunks = []
+        if (!custom_center) this.closeChunks = []
         const sprites: Promise<void>[] = []
         for (let y of _.range(startY, startY + 3)) {
             for (let x of _.range(startX, startX + 5)) {
