@@ -197,10 +197,13 @@ class Novel {
                 TIME.next(() => EVENTS.emitSingle("continue"))
             }
         })
-        EVENTS.onSingle("skipScene", () => {
-            if (this.echo.active_md === "a0") return
+        EVENTS.onSingle("close novel", () => {
+            if (this.echo.active_md === "a0") return // no button but hotkey
             if (CONTEXT.echo.settings) return
-            EVENTS.emitSingle("endScene")
+            HERO.reset_final_des()
+            SAVE.update()
+            CONTEXT.echo.novel = false
+            setTimeout(() => (this.echo.active_md = ""), 1000)
         })
         EVENTS.onSingle("endScene", () => {
             if (!PROGRESS.scenes.includes(this.echo.active_scene)) {

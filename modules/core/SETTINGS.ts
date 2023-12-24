@@ -27,8 +27,8 @@ class Settings {
         show_hotkey: true, // used to update
     }
     general = {
-        music: 0.8, // 0.8
-        sound: 0.8, // 0.8
+        music: 0.0, // 0.8
+        sound: 0.3, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,
@@ -83,7 +83,7 @@ class Settings {
     novelInputEvents = {
         keyboard: {
             continue: " ", // action
-            skipScene: "q",
+            "close novel": "q",
             toggleFullscreen: "f",
             previousOption: "ArrowDown",
             nextOption: "ArrowUp",
@@ -94,7 +94,7 @@ class Settings {
         },
         gamepad: {
             continue: "A", // action
-            skipScene: "B",
+            "close novel": "B",
             toggleFullscreen: "Start",
             previousOption: "Down",
             nextOption: "Up",
@@ -109,7 +109,7 @@ class Settings {
     gamepad = {
         leftColumn: {
             Action: ["talk", "reset", "continue", "editHotkey"],
-            Close: ["skipScene", "quit interface"],
+            Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
         },
         rightColumn: {
@@ -120,7 +120,7 @@ class Settings {
     keyboard = {
         leftColumn: {
             Action: ["talk", "reset", "continue"],
-            Close: ["skipScene", "quit interface"],
+            Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
         },
         rightColumn: {

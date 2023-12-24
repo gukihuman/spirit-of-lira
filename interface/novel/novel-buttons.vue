@@ -14,7 +14,7 @@ div(
     tn: div(
         mark="settings button"
         v-if="NOVEL.echo.active_md !== 'a0'"
-        class="absolute top-[7px] left-[7px] saturate-[0.4] opacity-[0.8]"
+        class="absolute top-[0px] left-[0px] saturate-[0.4] opacity-[0.8]"
     )
         gbutton(
             type="settings"
