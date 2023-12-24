@@ -2,10 +2,8 @@
 div(
     mark="settings"
     v-show="CONTEXT.echo.settings"
-    class="z-[100]"
-    :class="settings_classes"
+    class="relative z-[100]"
 )
-
     div(
         mark="dim"
         class="z-[80] absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900"
@@ -47,14 +45,6 @@ div(
         tn( type="swipe" )
             hotkeys-panel( device="gamepad" )
 </template>
-<script setup lang="ts">
-const settings_classes = computed(() => {
-    // if (CONTEXT.echo.novel) {
-    //     return { "saturate-[0.4]": true, "opacity-[0.8]": true }
-    // }
-    return {}
-})
-</script>
 <style>
 .swipe-enter-active,
 .swipe-leave-active {

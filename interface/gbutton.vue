@@ -1,5 +1,5 @@
 <template lang="pug">
-div(class="absolute relative w-[100px] hover:brightness-[1.15] transition duration-150 ease-in-out")
+div(class="absolute relative w-[100px] hover:brightness-[1.15] transition duration-150 ease-in-out z-[999]")
   div(class="relative flex justify-center items-center hover:scale-[1.05] transition duration-150 ease-in-out h-[100px]"
   @mouseover="INTERFACE.buttonHover = true"
   @mouseleave="INTERFACE.buttonHover = false"

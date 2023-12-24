@@ -5,10 +5,12 @@ fullscreen
         :class="{ 'cursor-none': GLOBAL.firstUserGesture }"
     )
         viewport
-        tn: overlay
         tn: inventory
         tn: settings
         tn( type="long" ): novel
+        tn( type="long" ): novel-buttons
+        tn: overlay
+        tn: overlay-top
         tn: audiomessage
         tn: cursor( v-if="GLOBAL.firstUserGesture" )
     preload

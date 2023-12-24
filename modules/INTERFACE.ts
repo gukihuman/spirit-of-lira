@@ -34,7 +34,6 @@ const inter: Inter = {
     talkPOS: { x: 0, y: 0 },
     talkEntity: "",
     buttonHover: false,
-    skipHover: false,
     showKeys: true,
     heroHealth: 0,
     heroMaxHealth: 0,

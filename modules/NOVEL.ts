@@ -199,6 +199,7 @@ class Novel {
         })
         EVENTS.onSingle("skipScene", () => {
             if (this.echo.active_md === "a0") return
+            if (CONTEXT.echo.settings) return
             EVENTS.emitSingle("endScene")
         })
         EVENTS.onSingle("endScene", () => {
@@ -235,6 +236,7 @@ class Novel {
             else EVENTS.emitSingle("continue")
         })
         EVENTS.onSingle("continue", () => {
+            if (CONTEXT.echo.settings) return
             if (
                 this.echo.lastContinueMS + CONFIG.novel.skipDelay >
                 LOOP.elapsed

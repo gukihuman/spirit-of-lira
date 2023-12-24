@@ -1,6 +1,8 @@
 <template lang="pug">
 div(
-    v-show="CONTEXT.echo.novel" class="z-30 relative"
+    v-show="CONTEXT.echo.novel"
+    class="z-30 relative"
+    :class="{ 'blur-[10px]': CONTEXT.echo.settings }"
 )
     //- layer one always on - content switched when layer two fully appears
     //- then layer two immidealtly turns off again and preloads next step
@@ -18,26 +20,8 @@ div(
         class="absolute left-[35px] top-[1005px] flex gap-10"
         v-if="NOVEL.echo.active_md !== 'a0'"
     )
-        skipScene
+        skip
         navigate
-    tn: div(
-        mark="fullscreen button"
-        v-if="NOVEL.echo.active_md !== 'a0'"
-        class="absolute top-[7px] right-[7px] saturate-[0.4] opacity-[0.8]"
-    )
-        gbutton(
-            type="fullscreen"
-            :icon_hue="160 + NOVEL.echo[NOVEL.echo.activeLayer].hue"
-        )
-    tn: div(
-        mark="settings button"
-        v-if="NOVEL.echo.active_md !== 'a0'"
-        class="absolute top-[7px] left-[7px] saturate-[0.4] opacity-[0.8]"
-    )
-        gbutton(
-            type="settings"
-            :icon_hue="160 + NOVEL.echo[NOVEL.echo.activeLayer].hue"
-        )
 
     //- adult check
     div(
