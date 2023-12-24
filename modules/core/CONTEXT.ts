@@ -54,13 +54,13 @@ class Context {
         })
         EVENTS.onSingle("toggle settings", () => {
             if (!this.echo.interface) {
-                this.echo.settings = last_opened.settings
+                this.echo.settings = SETTINGS.last_opened
             } else if (this.echo.settings) {
-                last_opened.settings = this.echo.settings
+                last_opened.settings = SETTINGS.last_opened
                 this.echo.settings = false
             } else {
                 this.echo[this.echo.interface] = false
-                this.echo.settings = last_opened.settings
+                this.echo.settings = SETTINGS.last_opened
             }
         })
         EVENTS.onSingle("quit interface", () => {

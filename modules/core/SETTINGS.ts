@@ -4,8 +4,8 @@ type Focus = {
 }
 interface Echo extends AnyObject {
     focus: Focus
-    preventEditHotkeyMode: "cast_only" | "empty_action" | null
 }
+let show_message_time_token = ""
 class Settings {
     last_opened = "general"
     context_list = ["general", "gamepad", "keyboard", "info"]
@@ -23,12 +23,13 @@ class Settings {
         show_panel: false, // switching delay
         editHotkeyMode: false,
         showButtonIcon: true,
-        preventEditHotkeyMode: null,
         show_hotkey: true, // used to update
+        button_pressed: false,
+        show_message: "",
     }
     general = {
-        music: 0.0, // 0.8
-        sound: 0.3, // 0.8
+        music: 0.8, // 0.8
+        sound: 0.8, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,
@@ -49,7 +50,7 @@ class Settings {
             // toggle backpack: "B",
             "toggle settings": "Menu",
             "quit interface": "B",
-            editHotkey: "A", // action
+            "resolve setting action": "A", // action
         },
     }
     worldInputEvents = {
@@ -108,9 +109,10 @@ class Settings {
     }
     gamepad = {
         leftColumn: {
-            Action: ["talk", "reset", "continue", "editHotkey"],
+            Action: ["talk", "reset", "continue", "resolve setting action"],
             Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
+            "Reset Default": { type: "button", event: "reset gamepad" },
         },
         rightColumn: {
             "Toggle Fullscreen": ["toggleFullscreen"],
@@ -122,6 +124,7 @@ class Settings {
             Action: ["talk", "reset", "continue"],
             Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
+            "Reset Default": { type: "button", event: "reset keyboard" },
         },
         rightColumn: {
             "Toggle Fullscreen": ["toggleFullscreen"],
@@ -139,13 +142,22 @@ class Settings {
             this.updateHotkey("keyboard")
         }
         if (!this.echo.editHotkeyMode) this.emitEvents()
+        if (CONTEXT.echo.settings && !CONTEXT.last.echo.settings) {
+            this.echo.show_message = ""
+        }
     }
     private checkGamepadKeys = (device, setting, pressedKey) => {
         if (device !== "gamepad") return true
         const preventKeys = ["Up", "Down", "Left", "Right", "RB", "LB"]
         // allow only with Cast
         if (!setting.includes("Cast") && preventKeys.includes(pressedKey)) {
-            this.echo.preventEditHotkeyMode = "cast_only"
+            this.echo.show_message =
+                "Up, Down, Left, Right, RB, LB can be used only with Cast."
+            TIME.cancel(show_message_time_token)
+            show_message_time_token = TIME.after(
+                5000,
+                () => (this.echo.show_message = "")
+            )
             return false
         }
         return true
@@ -190,7 +202,10 @@ class Settings {
         let preventEditHotkey = false
         function cleanPrevious(previousEvents, placeToClean) {
             previousEvents.forEach((event) => {
-                if (event === "editHotkey" && setting !== "Action") {
+                if (
+                    event === "resolve setting action" &&
+                    setting !== "Action"
+                ) {
                     preventEditHotkey = true
                 }
                 if (placeToClean[device][event] && !preventEditHotkey) {
@@ -222,7 +237,12 @@ class Settings {
                 cleanPrevious(previousEvents, place)
             })
             if (preventEditHotkey) {
-                this.echo.preventEditHotkeyMode = "empty_action"
+                this.echo.show_message = "This button is reserved for Action."
+                TIME.cancel(show_message_time_token)
+                show_message_time_token = TIME.after(
+                    5000,
+                    () => (this.echo.show_message = "")
+                )
                 return
             }
             events.forEach((event) => {
@@ -234,7 +254,6 @@ class Settings {
             TIME.next(() => {
                 this.echo.editHotkeyMode = false
                 this.echo.showButtonIcon = true
-                this.echo.preventEditHotkeyMode = null
             })
             this.echo.show_hotkey = false
             TIME.after_iterations(10, () => {
@@ -320,7 +339,27 @@ class Settings {
             EVENTS.emitSingle("switchSettingsTabRight")
         }
     }
+    reset_device_hotkeys(device) {
+        this.echo.show_hotkey = false
+        TIME.next(() => (this.echo.show_hotkey = true))
+        this.worldInputEvents[device] = _.cloneDeep(
+            SAVE.startSave.settings.worldInputEvents[device]
+        )
+        this.novelInputEvents[device] = _.cloneDeep(
+            SAVE.startSave.settings.novelInputEvents[device]
+        )
+        this.interfaceInputEvents[device] = _.cloneDeep(
+            SAVE.startSave.settings.interfaceInputEvents[device]
+        )
+        SAVE.update()
+    }
     init() {
+        EVENTS.onSingle("reset keyboard", () => {
+            this.reset_device_hotkeys("keyboard")
+        })
+        EVENTS.onSingle("reset gamepad", () => {
+            this.reset_device_hotkeys("gamepad")
+        })
         EVENTS.onSingle("previousOption", () => {
             if (NOVEL.echo.focusedChoiceIndex === null) return
             if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
@@ -383,6 +422,7 @@ class Settings {
             if (i < 0) i = last
             const context = SETTINGS.context_list[i]
             CONTEXT.echo.settings = context
+            SETTINGS.last_opened = context
         })
         EVENTS.onSingle("switchSettingsTabRight", () => {
             const last = SETTINGS.context_list.length - 1
@@ -390,14 +430,44 @@ class Settings {
             if (i > last) i = 0
             const context = SETTINGS.context_list[i]
             CONTEXT.echo.settings = context
+            SETTINGS.last_opened = context
         })
-        EVENTS.onSingle("editHotkey", () => {
+        EVENTS.onSingle("resolve setting action", () => {
             if (!CONTEXT.echo.settings) return
-            if (
-                CONTEXT.echo.settings === "keyboard" ||
-                CONTEXT.echo.settings === "gamepad"
-            ) {
-                SETTINGS.echo.editHotkeyMode = true
+            let column = "leftColumn"
+            const columnIndex = SETTINGS.echo.focus.columnIndex
+            const rowIndex = SETTINGS.echo.focus.rowIndex
+            if (columnIndex === 1) column = "rightColumn"
+            const device = this.context
+            if (!device || (device !== "keyboard" && device !== "gamepad"))
+                return
+            const setting = SETTINGS[device]
+            if (!setting) return
+            const key_of_row = _.keys(setting[column])[rowIndex]
+            const action = setting[column][key_of_row]
+            if (!action) return
+            const type = _.isArray(action) ? "hotkey" : "button"
+            if (type === "button") {
+                EVENTS.emitSingle(action.event)
+                SETTINGS.echo.button_pressed = true
+                TIME.after(300, () => {
+                    SETTINGS.echo.button_pressed = false
+                })
+            } else {
+                if (
+                    this.context === "keyboard" &&
+                    INPUT.lastActiveDevice === "gamepad"
+                ) {
+                    this.echo.show_message =
+                        "Please use keyboard to edit keyboard hotkeys."
+                    TIME.cancel(show_message_time_token)
+                    show_message_time_token = TIME.after(
+                        5000,
+                        () => (this.echo.show_message = "")
+                    )
+                } else {
+                    SETTINGS.echo.editHotkeyMode = true
+                }
             }
         })
     }

@@ -4,7 +4,7 @@ class Entities {
             HERO: true,
             POS: { x: 6588, y: 6891 },
             SIZE: { width: 60, height: 153 },
-            MOVE: { speed: 16 },
+            MOVE: { speed: 20 },
             SKILLS: {
                 modify: {
                     attack: {
@@ -35,7 +35,7 @@ class Entities {
                 },
                 startFrames: { attack: 18 },
             },
-            MOVE: { speed: 10 },
+            MOVE: { speed: 15 },
             SKILLS: {
                 modify: {
                     attack: {

@@ -19,6 +19,7 @@ const props = defineProps(["context"]) // SETTINGS.context_list
 const handleClick = () => {
     if (SETTINGS.echo.editHotkeyMode) return
     CONTEXT.echo.settings = props.context
+    SETTINGS.last_opened = props.context
 }
 let inactive = computed(() => {
     return CONTEXT.echo.settings !== props.context
