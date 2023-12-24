@@ -20,6 +20,7 @@ const props = defineProps({
     static: { type: String, default: "" },
     device: { type: String, default: "" },
     hueAffected: { type: Boolean, default: true },
+    update: { type: Boolean, default: true },
 })
 const iconClass = computed(() => {
     if (CONTEXT.echo.novel && props.hueAffected)
@@ -30,6 +31,7 @@ const imageStyle = computed(() => {
     return { transition: "filter 1000ms ease-in-out" }
 })
 const image = computed(() => {
+    SETTINGS.echo.show_hotkey // just to update this computed
     const hotkey = findKey()
     if (
         (GLOBAL.lastActiveDevice === "gamepad" && !props.device) ||
@@ -62,6 +64,7 @@ const image = computed(() => {
     }
 })
 const imageClass = computed(() => {
+    SETTINGS.echo.show_hotkey // just to update this computed
     const hotkey = findKey()
     const classObject = {
         "rotate-90": hotkey === "ArrowRight" || hotkey === "Right",
@@ -80,12 +83,14 @@ const imageClass = computed(() => {
     return classObject
 })
 const textClass = computed(() => {
+    SETTINGS.echo.show_hotkey // just to update this computed
     const hotkey = findKey()
     if (GLOBAL.lastActiveDevice === "gamepad") return { "mb-0": true }
     else if (textMap[hotkey]) return { "mb-[1px]": true }
     return {}
 })
 const text = computed(() => {
+    SETTINGS.echo.show_hotkey // just to update this computed
     const hotkey = findKey()
     return textMap[hotkey] ? textMap[hotkey] : hotkey
 })

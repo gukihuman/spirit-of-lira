@@ -15,13 +15,26 @@ class="absolute w-full h-full flex justify-center")
         p(mark="hotkeys-title"
         class="text-royal-brown text-[22px] font-bold"
         class="z-[20] ml-[125px] mt-[53px]") {{ setting }}
-        div(@click="handleClick(columnIndex, rowIndex)"
-        class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out" :class="button_class")
-          tn: hotkey-icon(:hueAffected="false" mark="buttonIcon" :device="props.device"
-          v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
-          class="scale-[1.3] mt-[30px]"
-          :inputEvent="resolveEvent(columnIndex, rowIndex, setting)")
-        tn: hotkey-icon(hueAffected="false" inputEvent="editHotkey" class="left-[450px] top-[48px]"
+        div(
+          mark="hotkey"
+          @click="handleClick(columnIndex, rowIndex)"
+          class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
+          :class="button_class"
+        )
+          tn: hotkey-icon(
+            :update="SETTINGS.echo.show_hotkey"
+            :hueAffected="false"
+            :device="props.device"
+            v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
+            class="scale-[1.3] mt-[30px]"
+            :inputEvent="resolveEvent(columnIndex, rowIndex, setting)"
+            ref="hotkey_icons"
+          )
+        tn: hotkey-icon(
+          mark="gamepad action key"
+          :hueAffected="false"
+          inputEvent="editHotkey"
+          class="left-[450px] top-[48px]"
           v-if="resolve_show_button_icon(columnIndex, rowIndex)")
   p(mark="hotkeys-message"
   v-if="props.device === 'keyboard' && GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.editHotkeyMode"
@@ -104,5 +117,9 @@ const columns = computed(() => {
         return [SETTINGS.keyboard.leftColumn, SETTINGS.keyboard.rightColumn]
     }
     return [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
+})
+const hotkey_icons = ref(null)
+onMounted(() => {
+    REFS.hotkey_icons = hotkey_icons
 })
 </script>

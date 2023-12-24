@@ -40,10 +40,8 @@ div(
         mark="panel"
         class="z-[100] absolute w-[1150px] h-[620px] top-[210px] left-[372px]"
     )
-        tn( type="swipe" )
-            hotkeys-panel( device="keyboard" )
-        tn( type="swipe" )
-            hotkeys-panel( device="gamepad" )
+        tn( type="swipe" ): hotkeys-panel( device="keyboard" )
+        tn( type="swipe" ): hotkeys-panel( device="gamepad" )
 </template>
 <style>
 .swipe-enter-active,

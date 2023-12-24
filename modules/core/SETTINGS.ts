@@ -24,6 +24,7 @@ class Settings {
         editHotkeyMode: false,
         showButtonIcon: true,
         preventEditHotkeyMode: null,
+        show_hotkey: true, // used to update
     }
     general = {
         music: 0.8, // 0.8
@@ -137,6 +138,7 @@ class Settings {
             this.updateHotkey("gamepad")
             this.updateHotkey("keyboard")
         }
+        if (!this.echo.editHotkeyMode) this.emitEvents()
     }
     private checkGamepadKeys = (device, setting, pressedKey) => {
         if (device !== "gamepad") return true
@@ -234,6 +236,10 @@ class Settings {
                 this.echo.showButtonIcon = true
                 this.echo.preventEditHotkeyMode = null
             })
+            this.echo.show_hotkey = false
+            TIME.after_iterations(10, () => {
+                this.echo.show_hotkey = true
+            })
         }
     }
     updateShowSettingsPanel() {
@@ -315,9 +321,6 @@ class Settings {
         }
     }
     init() {
-        LOOP.add(() => {
-            if (!this.echo.editHotkeyMode) this.emitEvents()
-        }, "SETTINGS")
         EVENTS.onSingle("previousOption", () => {
             if (NOVEL.echo.focusedChoiceIndex === null) return
             if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
