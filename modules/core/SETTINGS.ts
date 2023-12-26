@@ -6,6 +6,9 @@ interface Echo extends AnyObject {
     focus: Focus
 }
 let show_message_time_token = ""
+let max_setting_index = 0
+let leftColumnLength = 0
+let rightColumnLength = 0
 class Settings {
     last_opened = "general"
     context_list = ["general", "gamepad", "keyboard", "info"]
@@ -51,6 +54,12 @@ class Settings {
             "toggle settings": "Menu",
             "quit interface": "B",
             "resolve setting action": "A", // action
+            "go down": "Down",
+            "go up": "Up",
+            "go left": "Left",
+            "go right": "Right",
+            "switch tab left": "LB",
+            "switch tab right": "RB",
         },
     }
     worldInputEvents = {
@@ -133,7 +142,6 @@ class Settings {
         },
     }
     process() {
-        this.switchSettingsTabInputs()
         this.updateShowSettingsPanel()
         this.resetSettingsFocus()
         this.updateSettingsFocus()
@@ -285,8 +293,8 @@ class Settings {
     }
     updateSettingsFocus() {
         if (!CONTEXT.echo.settings || this.echo.editHotkeyMode) return
-        let leftColumnLength = 0
-        let rightColumnLength = 0
+        leftColumnLength = 0
+        rightColumnLength = 0
         if (CONTEXT.echo.settings === "keyboard") {
             leftColumnLength = _.keys(this.keyboard.leftColumn).length
             rightColumnLength = _.keys(this.keyboard.rightColumn).length
@@ -294,49 +302,11 @@ class Settings {
             leftColumnLength = _.keys(this.gamepad.leftColumn).length
             rightColumnLength = _.keys(this.gamepad.rightColumn).length
         }
-        let maxSettingIndex = 0
+        max_setting_index = 0
         if (this.echo.focus.columnIndex === 0) {
-            maxSettingIndex = leftColumnLength - 1
+            max_setting_index = leftColumnLength - 1
         } else {
-            maxSettingIndex = rightColumnLength - 1
-        }
-        if (INPUT.gamepad.justPressed.includes("Down")) {
-            this.echo.focus.rowIndex++
-            if (this.echo.focus.rowIndex > maxSettingIndex) {
-                this.echo.focus.rowIndex = 0
-            }
-        }
-        if (INPUT.gamepad.justPressed.includes("Up")) {
-            this.echo.focus.rowIndex--
-            if (this.echo.focus.rowIndex < 0) {
-                this.echo.focus.rowIndex = maxSettingIndex
-            }
-        }
-        // left and right are the same while there is only two columns
-        if (
-            INPUT.gamepad.justPressed.includes("Right") ||
-            INPUT.gamepad.justPressed.includes("Left")
-        ) {
-            if (
-                this.echo.focus.columnIndex === 0 &&
-                rightColumnLength - 1 >= this.echo.focus.rowIndex
-            ) {
-                this.echo.focus.columnIndex = 1
-            } else if (
-                this.echo.focus.columnIndex === 1 &&
-                leftColumnLength - 1 >= this.echo.focus.rowIndex
-            ) {
-                this.echo.focus.columnIndex = 0
-            }
-        }
-    }
-    switchSettingsTabInputs() {
-        if (!CONTEXT.echo.settings || this.echo.editHotkeyMode) return
-        if (INPUT.gamepad.justPressed.includes("LB")) {
-            EVENTS.emitSingle("switchSettingsTabLeft")
-        }
-        if (INPUT.gamepad.justPressed.includes("RB")) {
-            EVENTS.emitSingle("switchSettingsTabRight")
+            max_setting_index = rightColumnLength - 1
         }
     }
     reset_device_hotkeys(device) {
@@ -360,6 +330,8 @@ class Settings {
         EVENTS.onSingle("reset gamepad", () => {
             this.reset_device_hotkeys("gamepad")
         })
+
+        // scene choices
         EVENTS.onSingle("previousOption", () => {
             if (NOVEL.echo.focusedChoiceIndex === null) return
             if (!NOVEL.echo[NOVEL.echo.activeLayer].choices) return
@@ -416,21 +388,55 @@ class Settings {
             }
             NOVEL.echo.focusedChoiceIndex = possibleIndex
         })
-        EVENTS.onSingle("switchSettingsTabLeft", () => {
-            const last = SETTINGS.context_list.length - 1
-            let i = SETTINGS.context_index - 1
-            if (i < 0) i = last
-            const context = SETTINGS.context_list[i]
-            CONTEXT.echo.settings = context
-            SETTINGS.last_opened = context
+
+        // left and right are the same while there is only two columns
+        const left_right_the_same = () => {
+            if (
+                this.echo.focus.columnIndex === 0 &&
+                rightColumnLength - 1 >= this.echo.focus.rowIndex
+            ) {
+                this.echo.focus.columnIndex = 1
+            } else if (
+                this.echo.focus.columnIndex === 1 &&
+                leftColumnLength - 1 >= this.echo.focus.rowIndex
+            ) {
+                this.echo.focus.columnIndex = 0
+            }
+        }
+        EVENTS.onSingle("go left", left_right_the_same)
+        EVENTS.onSingle("go right", left_right_the_same)
+        EVENTS.onSingle("go down", () => {
+            this.echo.focus.rowIndex++
+            if (this.echo.focus.rowIndex > max_setting_index) {
+                this.echo.focus.rowIndex = 0
+            }
         })
-        EVENTS.onSingle("switchSettingsTabRight", () => {
-            const last = SETTINGS.context_list.length - 1
-            let i = SETTINGS.context_index + 1
-            if (i > last) i = 0
-            const context = SETTINGS.context_list[i]
-            CONTEXT.echo.settings = context
-            SETTINGS.last_opened = context
+        EVENTS.onSingle("go up", () => {
+            this.echo.focus.rowIndex--
+            if (this.echo.focus.rowIndex < 0) {
+                this.echo.focus.rowIndex = max_setting_index
+            }
+        })
+
+        EVENTS.onSingle("switch tab left", () => {
+            if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
+                const last = SETTINGS.context_list.length - 1
+                let i = SETTINGS.context_index - 1
+                if (i < 0) i = last
+                const context = SETTINGS.context_list[i]
+                CONTEXT.echo.settings = context
+                SETTINGS.last_opened = context
+            }
+        })
+        EVENTS.onSingle("switch tab right", () => {
+            if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
+                const last = SETTINGS.context_list.length - 1
+                let i = SETTINGS.context_index + 1
+                if (i > last) i = 0
+                const context = SETTINGS.context_list[i]
+                CONTEXT.echo.settings = context
+                SETTINGS.last_opened = context
+            }
         })
         EVENTS.onSingle("resolve setting action", () => {
             if (!CONTEXT.echo.settings) return

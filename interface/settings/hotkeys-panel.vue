@@ -3,7 +3,7 @@ div(v-if="resolve_show_panel"
 class="absolute w-full h-full flex justify-center")
   div(mark="hotkeys-column"
   v-for="(column, columnIndex) in columns" :key="columnIndex"
-  class="w-[580px] h-[620px] flex flex-col items-center mx-[-25px]")
+  class="w-[580px] h-[600px] flex flex-col items-center mx-[-25px]")
     div(
       mark="hotkeys-setting"
       v-for="(object, setting, rowIndex) in column" key="rowIndex"
@@ -68,7 +68,7 @@ class="absolute w-full h-full flex justify-center")
   tn: p(
     mark="hotkeys-message"
     v-if="SETTINGS.echo.show_message"
-    class="text-tan bottom-[20px] text-[22px] font-semibold absolute opacity-[0.8]"
+    class="text-tan bottom-[40px] text-[22px] font-semibold absolute opacity-[0.8]"
   ) {{ SETTINGS.echo.show_message }}
 </template>
 <script setup lang="ts">

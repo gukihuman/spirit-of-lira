@@ -9,7 +9,6 @@ class Astar {
         MUSEUM.process_entity("MOVE", (ent) => {
             if (!ent.MOVE.final_des) return
             if (_.isEqual(ent.POS, ent.MOVE.final_des)) return
-            // if (ent.NONHERO && Math.random() > 0.3) return
             const start: Tile = COORD.to_tile(ent.POS)
             const end: Tile = COORD.to_tile(ent.MOVE.final_des)
             if (ent.HERO) {
