@@ -7,8 +7,8 @@ interface Echo extends AnyObject {
 }
 let show_message_time_token = ""
 let max_setting_index = 0
-let leftColumnLength = 0
-let rightColumnLength = 0
+let left_column_length = 0
+let right_column_length = 0
 class Settings {
     last_opened = "general"
     context_list = ["general", "gamepad", "keyboard", "info"]
@@ -116,29 +116,34 @@ class Settings {
             deadZone: 0.15,
         },
     }
-    gamepad = {
-        leftColumn: {
+    gamepad_tab = {
+        left_column: {
             Action: ["talk", "reset", "continue", "resolve setting action"],
             Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
             "Reset Default": { type: "button", event: "reset gamepad" },
         },
-        rightColumn: {
+        right_column: {
             "Toggle Fullscreen": ["toggleFullscreen"],
             "Toggle Settings": ["toggle settings"],
         },
     }
-    keyboard = {
-        leftColumn: {
+    keyboard_tab = {
+        left_column: {
             Action: ["talk", "reset", "continue"],
             Close: ["close novel", "quit interface"],
             Cast: ["cast1"],
             "Reset Default": { type: "button", event: "reset keyboard" },
         },
-        rightColumn: {
+        right_column: {
             "Toggle Fullscreen": ["toggleFullscreen"],
             "Toggle Settings": ["toggle settings"],
             "Auto Move": ["autoMove"],
+        },
+    }
+    general_tab = {
+        center_column: {
+            Music: { type: "slider" },
         },
     }
     process() {
@@ -191,19 +196,20 @@ class Settings {
         let newKeySetted = false
         let setting = ""
         if (HOTKEYS[device].includes(pressedKey)) {
+            let device_tab = device + "_tab"
             if (this.echo.focus.columnIndex === 0) {
-                setting = _.keys(this[device].leftColumn)[
+                setting = _.keys(this[device_tab].left_column)[
                     this.echo.focus.rowIndex
                 ]
                 if (this.checkGamepadKeys(device, setting, pressedKey)) {
-                    events = this[device].leftColumn[setting]
+                    events = this[device_tab].left_column[setting]
                 }
             } else {
-                setting = _.keys(this[device].rightColumn)[
+                setting = _.keys(this[device_tab].right_column)[
                     this.echo.focus.rowIndex
                 ]
                 if (this.checkGamepadKeys(device, setting, pressedKey)) {
-                    events = this[device].rightColumn[setting]
+                    events = this[device_tab].right_column[setting]
                 }
             }
         }
@@ -293,20 +299,20 @@ class Settings {
     }
     updateSettingsFocus() {
         if (!CONTEXT.echo.settings || this.echo.editHotkeyMode) return
-        leftColumnLength = 0
-        rightColumnLength = 0
+        left_column_length = 0
+        right_column_length = 0
         if (CONTEXT.echo.settings === "keyboard") {
-            leftColumnLength = _.keys(this.keyboard.leftColumn).length
-            rightColumnLength = _.keys(this.keyboard.rightColumn).length
+            left_column_length = _.keys(this.keyboard_tab.left_column).length
+            right_column_length = _.keys(this.keyboard_tab.right_column).length
         } else {
-            leftColumnLength = _.keys(this.gamepad.leftColumn).length
-            rightColumnLength = _.keys(this.gamepad.rightColumn).length
+            left_column_length = _.keys(this.gamepad_tab.left_column).length
+            right_column_length = _.keys(this.gamepad_tab.right_column).length
         }
         max_setting_index = 0
         if (this.echo.focus.columnIndex === 0) {
-            max_setting_index = leftColumnLength - 1
+            max_setting_index = left_column_length - 1
         } else {
-            max_setting_index = rightColumnLength - 1
+            max_setting_index = right_column_length - 1
         }
     }
     reset_device_hotkeys(device) {
@@ -393,12 +399,12 @@ class Settings {
         const left_right_the_same = () => {
             if (
                 this.echo.focus.columnIndex === 0 &&
-                rightColumnLength - 1 >= this.echo.focus.rowIndex
+                right_column_length - 1 >= this.echo.focus.rowIndex
             ) {
                 this.echo.focus.columnIndex = 1
             } else if (
                 this.echo.focus.columnIndex === 1 &&
-                leftColumnLength - 1 >= this.echo.focus.rowIndex
+                left_column_length - 1 >= this.echo.focus.rowIndex
             ) {
                 this.echo.focus.columnIndex = 0
             }
@@ -420,6 +426,8 @@ class Settings {
 
         EVENTS.onSingle("switch tab left", () => {
             if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
+                this.echo.show_message = ""
+                TIME.cancel(show_message_time_token)
                 const last = SETTINGS.context_list.length - 1
                 let i = SETTINGS.context_index - 1
                 if (i < 0) i = last
@@ -430,6 +438,8 @@ class Settings {
         })
         EVENTS.onSingle("switch tab right", () => {
             if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
+                this.echo.show_message = ""
+                TIME.cancel(show_message_time_token)
                 const last = SETTINGS.context_list.length - 1
                 let i = SETTINGS.context_index + 1
                 if (i > last) i = 0
@@ -440,14 +450,14 @@ class Settings {
         })
         EVENTS.onSingle("resolve setting action", () => {
             if (!CONTEXT.echo.settings) return
-            let column = "leftColumn"
+            let column = "left_column"
             const columnIndex = SETTINGS.echo.focus.columnIndex
             const rowIndex = SETTINGS.echo.focus.rowIndex
-            if (columnIndex === 1) column = "rightColumn"
+            if (columnIndex === 1) column = "right_column"
             const device = this.context
             if (!device || (device !== "keyboard" && device !== "gamepad"))
                 return
-            const setting = SETTINGS[device]
+            const setting = SETTINGS[device + "_tab"]
             if (!setting) return
             const key_of_row = _.keys(setting[column])[rowIndex]
             const action = setting[column][key_of_row]

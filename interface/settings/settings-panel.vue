@@ -52,11 +52,10 @@ class="absolute w-full h-full flex justify-center")
           tn: hotkey-icon(
             :update="SETTINGS.echo.show_hotkey"
             :hueAffected="false"
-            :device="props.device"
+            :tab="props.tab"
             v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
             class="scale-[1.3] mt-[30px]"
             :inputEvent="resolveEvent(columnIndex, rowIndex, setting)"
-            ref="hotkey_icons"
           )
         tn: hotkey-icon(
           mark="gamepad action key"
@@ -99,7 +98,7 @@ const button_hovered = (columnIndex, rowIndex) => {
     SETTINGS.echo.focus.columnIndex = columnIndex
     SETTINGS.echo.focus.rowIndex = rowIndex
 }
-const props = defineProps({ device: { type: String } }) // keyboard | gamepad
+const props = defineProps({ tab: { type: String } })
 const handleButtonClick = (columnIndex, rowIndex) => {
     SETTINGS.echo.focus.columnIndex = columnIndex
     SETTINGS.echo.focus.rowIndex = rowIndex
@@ -120,13 +119,13 @@ const button_class = computed(() => {
 const resolveEvent = computed(() => {
     return (columnIndex, rowIndex, setting) => {
         let columns = [
-            SETTINGS.gamepad.leftColumn,
-            SETTINGS.gamepad.rightColumn,
+            SETTINGS.gamepad_tab.left_column,
+            SETTINGS.gamepad_tab.right_column,
         ]
-        if (props.device === "keyboard") {
+        if (props.tab === "keyboard") {
             columns = [
-                SETTINGS.keyboard.leftColumn,
-                SETTINGS.keyboard.rightColumn,
+                SETTINGS.keyboard_tab.left_column,
+                SETTINGS.keyboard_tab.right_column,
             ]
         }
         const events = columns[columnIndex][setting]
@@ -154,7 +153,7 @@ const resolve_show_button_icon = computed(() => {
 })
 const resolve_show_panel = computed(() => {
     if (!SETTINGS.echo.show_panel) return
-    if (props.device === "keyboard") {
+    if (props.tab === "keyboard") {
         return CONTEXT.echo.settings === "keyboard"
     } else return CONTEXT.echo.settings === "gamepad"
 })
@@ -167,13 +166,12 @@ const resolveFocus = computed(() => {
     }
 })
 const columns = computed(() => {
-    if (props.device === "keyboard") {
-        return [SETTINGS.keyboard.leftColumn, SETTINGS.keyboard.rightColumn]
+    if (props.tab === "keyboard") {
+        return [
+            SETTINGS.keyboard_tab.left_column,
+            SETTINGS.keyboard_tab.right_column,
+        ]
     }
-    return [SETTINGS.gamepad.leftColumn, SETTINGS.gamepad.rightColumn]
-})
-const hotkey_icons = ref(null)
-onMounted(() => {
-    REFS.hotkey_icons = hotkey_icons
+    return [SETTINGS.gamepad_tab.left_column, SETTINGS.gamepad_tab.right_column]
 })
 </script>

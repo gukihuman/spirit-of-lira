@@ -40,8 +40,8 @@ div(
         mark="panel"
         class="z-[100] absolute w-[1150px] h-[620px] top-[230px] left-[372px]"
     )
-        tn( type="swipe" ): hotkeys-panel( device="keyboard" )
-        tn( type="swipe" ): hotkeys-panel( device="gamepad" )
+        tn( type="swipe" ): settings-panel( tab="keyboard" )
+        tn( type="swipe" ): settings-panel( tab="gamepad" )
         tn( type="swipe" ): info-panel
 </template>
 <style>

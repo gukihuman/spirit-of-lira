@@ -18,7 +18,7 @@ div(
 const props = defineProps({
     inputEvent: { type: String, default: "" },
     static: { type: String, default: "" },
-    device: { type: String, default: "" },
+    tab: { type: String, default: "" },
     hueAffected: { type: Boolean, default: true },
     update: { type: Boolean, default: true },
 })
@@ -34,8 +34,8 @@ const image = computed(() => {
     SETTINGS.echo.show_hotkey // just to update this computed
     const hotkey = findKey()
     if (
-        (GLOBAL.lastActiveDevice === "gamepad" && !props.device) ||
-        (props.device && props.device === "gamepad")
+        (GLOBAL.lastActiveDevice === "gamepad" && !props.tab) ||
+        (props.tab && props.tab === "gamepad")
     ) {
         if (
             hotkey.includes("Down") ||
@@ -98,8 +98,8 @@ function findKey() {
     if (props.static) return props.static
     let hotkey = ""
     if (
-        (GLOBAL.lastActiveDevice === "gamepad" && !props.device) ||
-        (props.device && props.device === "gamepad")
+        (GLOBAL.lastActiveDevice === "gamepad" && !props.tab) ||
+        (props.tab && props.tab === "gamepad")
     ) {
         hotkey = SETTINGS.worldInputEvents.gamepad[props.inputEvent] || hotkey
         hotkey = SETTINGS.novelInputEvents.gamepad[props.inputEvent] || hotkey
