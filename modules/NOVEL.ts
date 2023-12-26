@@ -215,7 +215,10 @@ class Novel {
             setTimeout(() => (this.echo.active_md = ""), 1000)
         })
         EVENTS.onSingle("resolveAdultCheckEndScene", () => {
-            if (!PROGRESS.scenes.includes("n1")) {
+            if (
+                !PROGRESS.scenes.includes("n1") &&
+                COORD.compare(HERO.ent.POS, ENTITIES.collection.lira.POS)
+            ) {
                 if (!PROGRESS.scenes.includes(this.echo.active_scene)) {
                     PROGRESS.scenes.push(this.echo.active_scene)
                 }

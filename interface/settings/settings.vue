@@ -42,6 +42,7 @@ div(
     )
         tn( type="swipe" ): hotkeys-panel( device="keyboard" )
         tn( type="swipe" ): hotkeys-panel( device="gamepad" )
+        tn( type="swipe" ): info-panel
 </template>
 <style>
 .swipe-enter-active,

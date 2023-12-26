@@ -50,7 +50,10 @@ async function start() {
             name: "a0",
             instantChoices: true,
         })
-    } else if (!PROGRESS.scenes.includes("n1")) {
+    } else if (
+        !PROGRESS.scenes.includes("n1") &&
+        COORD.compare(HERO.ent.POS, ENTITIES.collection.lira.POS)
+    ) {
         EVENTS.emit("startScene", { name: "n1-start" })
     }
 

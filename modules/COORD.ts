@@ -104,5 +104,8 @@ class Coordinates {
     on_same_tile(coord_1: Coord, coord_2: Coord) {
         return _.isEqual(COORD.to_tile(coord_1), COORD.to_tile(coord_2))
     }
+    compare(coord_1: Coord, coord_2: Coord) {
+        return coord_1.x === coord_2.x && coord_1.y === coord_2.y
+    }
 }
 export const COORD = new Coordinates()

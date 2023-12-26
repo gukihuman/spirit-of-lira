@@ -26,8 +26,8 @@ class Destination {
     }
     private counter = 0
     private setRandomdes(ent, id: number) {
-        let possibleX = ent.POS.x + _.random(-500, 500)
-        let possibleY = ent.POS.y + _.random(-500, 500)
+        let possibleX = ent.POS.x + _.random(-300, 300)
+        let possibleY = ent.POS.y + _.random(-300, 300)
         if (!COLLISION.is_coord_clear({ x: possibleX, y: possibleY })) {
             this.counter++
             if (this.counter < 10) this.setRandomdes(ent, id)

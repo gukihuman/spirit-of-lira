@@ -4,7 +4,7 @@ class Astar {
     closedList: any = []
     clean = true
     maxSteps = 2000 / precision
-    maxTime = 5 // ms
+    maxTime = 7 // ms
     process() {
         MUSEUM.process_entity("MOVE", (ent) => {
             if (!ent.MOVE.final_des) return

@@ -28,8 +28,8 @@ class Settings {
         show_message: "",
     }
     general = {
-        music: 0.8, // 0.8
-        sound: 0.8, // 0.8
+        music: 0.0, // 0.8
+        sound: 0.3, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
         attackBack: false,
