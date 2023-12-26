@@ -9,8 +9,8 @@ div( class="relative w-fit h-fit flex p-[10px] pr-[5px]" )
     )
     div(
         mark="x-logo"
-        class="flex justify-center items-center h-[50px] w-[50px] transition-all duration-[280ms] ease-in-out ml-[20px]"
-        :class="{ 'ml-[20px]': is_hover, 'scale-[1.3]': is_hover }"
+        class="flex justify-center items-center h-[50px] w-[50px] transition-all duration-[80ms] ease-in-out ml-[20px]"
+        :class="{ 'ml-[20px]': is_hover, 'scale-[1.1]': is_hover, 'hue-rotate-[130deg]': is_hover, 'brightness-[1.1]': is_hover, 'saturate-[1.3]': is_hover }"
     )
         img(
             :src="ASSETS.get_webp_path(props.platform)"
@@ -25,12 +25,12 @@ div( class="relative w-fit h-fit flex p-[10px] pr-[5px]" )
         ) {{ props.platform.toUpperCase() }}
     div(
         class="absolute left-[68px] w-fit px-[10px] h-[50px] transition-all duration-[150ms] ease-in-out"
-        :class="{ 'left-[75px]': is_hover }"
+        :class="{ 'left-[73px]': is_hover }"
     )
         p(
             mark="link text"
             class="ml-[10px] text-tan font-semibold mt-[10px] text-[26px] leading-[32px] transition-all duration-[100ms] ease-in-out z-10"
-            :class="{ 'text-sky-blue': is_hover }"
+            :class="{ 'text-sky-blue': is_hover, 'brightness-[1.1]': is_hover }"
         ) {{ _.capitalize(props.platform) }}
 
 </template>
@@ -47,7 +47,7 @@ const link = computed(() => {
     } else if (props.platform === "patreon") {
         return "https://patreon.com/gukihuman"
     } else if (props.platform === "github") {
-        return "https://patreon.com/gukihuman"
+        return "https://github.com/gukihuman/spirit-of-lira/blob/main/README.md"
     } else {
         return "https://boosty.to/gukihuman"
     }

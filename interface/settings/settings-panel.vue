@@ -1,74 +1,78 @@
 <template lang="pug">
-div(v-if="resolve_show_panel"
-class="absolute w-full h-full flex justify-center")
-  div(mark="hotkeys-column"
-  v-for="(column, columnIndex) in columns" :key="columnIndex"
-  class="w-[580px] h-[600px] flex flex-col items-center mx-[-25px]")
+div(
+    v-if="resolve_show_panel"
+    class="absolute w-full h-full flex justify-center"
+)
     div(
-      mark="hotkeys-setting"
-      v-for="(object, name, rowIndex) in column" key="rowIndex"
-      class="w-[580px] h-[100px]"
-      :class="{ 'mt-[120px]': object.type === 'button' }"
+        mark="column"
+        v-for="(column, columnIndex) in columns" :key="columnIndex"
+        class="w-[580px] h-[600px] flex flex-col items-center mx-[-25px]"
     )
-      tn: settings-frame(
-        mark="settings-frame"
-        v-if="resolveFocus(columnIndex, rowIndex)" :class="{ 'w-[585px]': object.type ==='hotkey', 'w-[460px]': object.type === 'button' }"
-        )
-      div(class="absolute w-fit h-fit z-[10]")
-        settings-scroll(
-          mark="settings-scroll"
-          class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]"
-          v-if="object.type === 'hotkey'"
-        )
-        setting-button-bg(
-          mark="settings-button"
-          class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]"
-          v-if="object.type === 'button'"
-          :pressed="resolve_pressed(columnIndex, rowIndex)"
-        )
-        p(mark="hotkeys-title-pressed-light"
-          v-show="resolve_pressed(columnIndex, rowIndex)"
-          class="absolute blur-[3px] opacity-[0.5] text-[22px] font-bold pointers-events-none z-[20] ml-[125px] "
-          :class="text_class(columnIndex, rowIndex, object)"
-        ) {{ name }}
-        p(mark="hotkeys-title"
-          class="text-[22px] font-bold pointers-events-none z-[20] ml-[125px] "
-          :class="text_class(columnIndex, rowIndex, object)"
-        ) {{ name }}
-        tn( type="fast" ): div(
-          mark="front clickable container"
-          v-show="object.type === 'button'"
-          @click="handleButtonClick(columnIndex, rowIndex)"
-          class="absolute w-[80%] h-[68%] mt-[-42px] rounded-3xl ml-[92px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out"
-          :class="SETTINGS.echo.button_pressed ? 'h-[63%]' : 'h-[68%]'"
-        )
         div(
-          v-if="object.type === 'hotkey'"
-          mark="hotkey"
-          @click="handleClick(columnIndex, rowIndex)"
-          class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
-          :class="button_class"
+            mark="row"
+            v-for="(object, name, rowIndex) in column" key="rowIndex"
+            class="w-[580px] h-[100px]"
+            :class="{ 'mt-[120px]': object.type === 'button' }"
         )
-          tn: hotkey-icon(
-            :update="SETTINGS.echo.show_hotkey"
-            :hueAffected="false"
-            :tab="props.tab"
-            v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
-            class="scale-[1.3] mt-[30px]"
-            :inputEvent="resolveEvent(columnIndex, rowIndex, name)"
-          )
-        tn: hotkey-icon(
-          mark="gamepad action key"
-          :hueAffected="false"
-          inputEvent="resolve setting action"
-          class="top-[48px]"
-          :class="{ 'left-[455px]': object.type === 'hotkey', 'left-[338px]': object.type === 'button' }"
-          v-if="resolve_show_button_icon(columnIndex, rowIndex)")
-  tn: p(
-    mark="hotkeys-message"
-    v-if="SETTINGS.echo.show_message"
-    class="text-tan bottom-[40px] text-[22px] font-semibold absolute opacity-[0.8]"
-  ) {{ SETTINGS.echo.show_message }}
+            tn: settings-frame(
+                v-if="resolveFocus(columnIndex, rowIndex)" :class="{ 'w-[585px]': object.type !== 'button', 'w-[460px]': object.type === 'button' }"
+            )
+            div( class="absolute w-fit h-fit z-[10]" )
+                settings-scroll(
+                    class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]"
+                    v-if="object.type !== 'button'"
+                )
+                setting-button-bg(
+                    class="z-[-10] ml-[88px] mt-[35px] w-[calc(100%-48px)] scale-[1.1]"
+                    v-if="object.type === 'button'"
+                    :pressed="resolve_pressed(columnIndex, rowIndex)"
+                )
+                p(
+                    mark="pressed button title light"
+                    v-show="resolve_pressed(columnIndex, rowIndex)"
+                    class="absolute blur-[3px] opacity-[0.5] text-[22px] font-bold pointers-events-none z-[20] ml-[125px] "
+                    :class="text_class(columnIndex, rowIndex, object)"
+                ) {{ name }}
+                p(
+                    mark="setting name"
+                    class="text-[22px] font-bold pointers-events-none z-[20] ml-[125px] "
+                    :class="text_class(columnIndex, rowIndex, object)"
+                ) {{ name }}
+                tn( type="fast" ): div(
+                    mark="front clickable container"
+                    v-show="object.type === 'button'"
+                    @click="handleButtonClick(columnIndex, rowIndex)"
+                    class="absolute w-[80%] h-[68%] mt-[-42px] rounded-3xl ml-[92px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out"
+                    :class="SETTINGS.echo.button_pressed ? 'h-[63%]' : 'h-[68%]'"
+                )
+                div(
+                    v-if="object.type === 'hotkey'"
+                    mark="hotkey"
+                    @click="handleClick(columnIndex, rowIndex)"
+                    class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
+                    :class="button_class"
+                )
+                    tn: hotkey-icon(
+                        :update="SETTINGS.echo.show_hotkey"
+                        :hueAffected="false"
+                        :tab="props.tab"
+                        v-if="resolve_show_button_icon(columnIndex, rowIndex, true)"
+                        class="scale-[1.3] mt-[30px]"
+                        :inputEvent="resolveEvent(columnIndex, rowIndex, name)"
+                    )
+                tn: hotkey-icon(
+                    mark="gamepad action key"
+                    :hueAffected="false"
+                    inputEvent="resolve setting action"
+                    class="top-[48px]"
+                    :class="{ 'left-[455px]': object.type !== 'button', 'left-[338px]': object.type === 'button' }"
+                    v-if="resolve_show_button_icon(columnIndex, rowIndex)"
+                )
+    tn: p(
+        mark="hotkeys-message"
+        v-if="SETTINGS.echo.show_message"
+        class="text-tan bottom-[40px] text-[22px] font-semibold absolute opacity-[0.8]"
+    ) {{ SETTINGS.echo.show_message }}
 </template>
 <script setup lang="ts">
 const text_class = computed(() => {
@@ -78,7 +82,7 @@ const text_class = computed(() => {
             SETTINGS.echo.focus.rowIndex === rowIndex &&
             SETTINGS.echo.button_pressed
         return {
-            "text-royal-brown": object.type === "hotkey",
+            "text-royal-brown": object.type !== "button",
             "text-tan": object.type === "button",
             "mt-[53px]": !pressed,
             "mt-[56px]": pressed,
@@ -154,7 +158,11 @@ const resolve_show_panel = computed(() => {
     if (!SETTINGS.echo.show_panel) return
     if (props.tab === "keyboard") {
         return CONTEXT.echo.settings === "keyboard"
-    } else return CONTEXT.echo.settings === "gamepad"
+    } else if (props.tab === "gamepad") {
+        return CONTEXT.echo.settings === "gamepad"
+    } else {
+        return CONTEXT.echo.settings === "general"
+    }
 })
 const resolveFocus = computed(() => {
     return (columnIndex, rowIndex) => {
@@ -170,7 +178,16 @@ const columns = computed(() => {
             SETTINGS.keyboard_tab.left_column,
             SETTINGS.keyboard_tab.right_column,
         ]
+    } else if (props.tab === "gamepad") {
+        return [
+            SETTINGS.gamepad_tab.left_column,
+            SETTINGS.gamepad_tab.right_column,
+        ]
+    } else {
+        return [
+            SETTINGS.general_tab.left_column,
+            SETTINGS.general_tab.right_column,
+        ]
     }
-    return [SETTINGS.gamepad_tab.left_column, SETTINGS.gamepad_tab.right_column]
 })
 </script>

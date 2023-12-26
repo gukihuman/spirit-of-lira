@@ -178,12 +178,12 @@ class Settings {
             Sound: { type: "slider" },
         },
         left_column: {
-            "Auto-Attack Next Target": { type: "trigger", prop: "easyFight" },
+            "Auto-Attack Next": { type: "trigger", prop: "easyFight" },
             "Attack Back": { type: "trigger", prop: "attackBack" },
         },
         right_column: {
-            "Show Hotkeys Icons": { type: "trigger", prop: "showKeys" },
-            "Show Float Damage": { type: "trigger", prop: "floatDamage" },
+            "Hotkeys Icons": { type: "trigger", prop: "showKeys" },
+            "Float Damage": { type: "trigger", prop: "floatDamage" },
         },
     }
     process() {
@@ -514,7 +514,7 @@ class Settings {
                     INPUT.lastActiveDevice === "gamepad"
                 ) {
                     this.echo.show_message =
-                        "Please use keyboard to edit keyboard hotkeys."
+                        "Please use keyboard / mouse to edit keyboard hotkeys."
                     TIME.cancel(show_message_time_token)
                     show_message_time_token = TIME.after(
                         5000,
