@@ -1,3 +1,19 @@
+declare global {
+    type SettingObject = {
+        type: "hotkey" | "button" | "trigger" | "slider"
+        prop?: string
+        event?: string
+        events?: string[]
+    }
+    type Setting = {
+        [key: string]: SettingObject
+    }
+    type Tab = {
+        center_column?: Setting
+        left_column: Setting
+        right_column: Setting
+    }
+}
 type Focus = {
     columnIndex: 0 | 1
     rowIndex: number
@@ -35,9 +51,9 @@ class Settings {
         sound: 0.3, // 0.8
         // auto attack after kill and also autotarget for mouse like on gamepad
         easyFight: false,
-        attackBack: false,
+        attackBack: true,
         // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
-        keepLock: true,
+        keepLock: true, // currently constant true
         showKeys: true,
         floatDamage: true,
     }
@@ -116,34 +132,58 @@ class Settings {
             deadZone: 0.15,
         },
     }
-    gamepad_tab = {
+    gamepad_tab: Tab = {
         left_column: {
-            Action: ["talk", "reset", "continue", "resolve setting action"],
-            Close: ["close novel", "quit interface"],
-            Cast: ["cast1"],
+            Action: {
+                type: "hotkey",
+                events: ["talk", "reset", "continue", "resolve setting action"],
+            },
+            Close: {
+                type: "hotkey",
+                events: ["close novel", "quit interface"],
+            },
+            Cast: { type: "hotkey", events: ["cast1"] },
             "Reset Default": { type: "button", event: "reset gamepad" },
         },
         right_column: {
-            "Toggle Fullscreen": ["toggleFullscreen"],
-            "Toggle Settings": ["toggle settings"],
+            "Toggle Fullscreen": {
+                type: "hotkey",
+                events: ["toggleFullscreen"],
+            },
+            "Toggle Settings": { type: "hotkey", events: ["toggle settings"] },
         },
     }
-    keyboard_tab = {
+    keyboard_tab: Tab = {
         left_column: {
-            Action: ["talk", "reset", "continue"],
-            Close: ["close novel", "quit interface"],
-            Cast: ["cast1"],
+            Action: { type: "hotkey", events: ["talk", "reset", "continue"] },
+            Close: {
+                type: "hotkey",
+                events: ["close novel", "quit interface"],
+            },
+            Cast: { type: "hotkey", events: ["cast1"] },
             "Reset Default": { type: "button", event: "reset keyboard" },
         },
         right_column: {
-            "Toggle Fullscreen": ["toggleFullscreen"],
-            "Toggle Settings": ["toggle settings"],
-            "Auto Move": ["autoMove"],
+            "Toggle Fullscreen": {
+                type: "hotkey",
+                events: ["toggleFullscreen"],
+            },
+            "Toggle Settings": { type: "hotkey", events: ["toggle settings"] },
+            "Auto Move": { type: "hotkey", events: ["autoMove"] },
         },
     }
-    general_tab = {
+    general_tab: Tab = {
         center_column: {
             Music: { type: "slider" },
+            Sound: { type: "slider" },
+        },
+        left_column: {
+            "Auto-Attack Next Target": { type: "trigger", prop: "easyFight" },
+            "Attack Back": { type: "trigger", prop: "attackBack" },
+        },
+        right_column: {
+            "Show Hotkeys Icons": { type: "trigger", prop: "showKeys" },
+            "Show Float Damage": { type: "trigger", prop: "floatDamage" },
         },
     }
     process() {
@@ -202,14 +242,14 @@ class Settings {
                     this.echo.focus.rowIndex
                 ]
                 if (this.checkGamepadKeys(device, setting, pressedKey)) {
-                    events = this[device_tab].left_column[setting]
+                    events = this[device_tab].left_column[setting].events
                 }
             } else {
                 setting = _.keys(this[device_tab].right_column)[
                     this.echo.focus.rowIndex
                 ]
                 if (this.checkGamepadKeys(device, setting, pressedKey)) {
-                    events = this[device_tab].right_column[setting]
+                    events = this[device_tab].right_column[setting].events
                 }
             }
         }
@@ -462,8 +502,7 @@ class Settings {
             const key_of_row = _.keys(setting[column])[rowIndex]
             const action = setting[column][key_of_row]
             if (!action) return
-            const type = _.isArray(action) ? "hotkey" : "button"
-            if (type === "button") {
+            if (action.type === "button") {
                 EVENTS.emitSingle(action.event)
                 SETTINGS.echo.button_pressed = true
                 TIME.after(300, () => {
