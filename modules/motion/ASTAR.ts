@@ -48,13 +48,15 @@ class Astar {
         }
         return false
     }
-    getAllNeighbors(tile, ent) {
-        const cardinalNeighbors = this.getCardinalNeighbors(tile, ent)
-        const diagonalNeighbors = this.getDiagonalNeighbors(tile, ent)
+    getAllNeighbors(tile, ent, p?: number) {
+        const cardinalNeighbors = this.getCardinalNeighbors(tile, ent, p)
+        const diagonalNeighbors = this.getDiagonalNeighbors(tile, ent, p)
         return diagonalNeighbors.concat(cardinalNeighbors)
     }
-    getCardinalNeighbors(tile, ent) {
-        const precision = ent.HERO ? 2 : 1
+    getCardinalNeighbors(tile, ent, p?: number) {
+        let precision = 1
+        if (!p) precision = ent.HERO ? 2 : 1
+        if (p) precision = p
         const neighbors: any = []
 
         // Add neighbor left
@@ -76,8 +78,10 @@ class Astar {
 
         return neighbors
     }
-    getDiagonalNeighbors(tile, ent) {
-        const precision = ent.HERO ? 2 : 1
+    getDiagonalNeighbors(tile, ent, p?: number) {
+        let precision = 1
+        if (!p) precision = ent.HERO ? 2 : 1
+        if (p) precision = p
         const neighbors: any = []
 
         if (this.addNeighbor(tile.y - precision, tile.x - precision, ent)) {
@@ -205,7 +209,7 @@ class Astar {
             let tile = path[i]
             if (!tile) continue
 
-            let neighbors = this.getAllNeighbors(tile, ent)
+            let neighbors = this.getAllNeighbors(tile, ent, 1)
 
             // all neighbors are walkable
             if (neighbors.length === 8) {

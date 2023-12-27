@@ -41,7 +41,7 @@ class Settings {
         general: {
             music: 0.8, // 0.8
             sound: 0.8, // 0.8
-            autoAttackNext: true,
+            autoAttackNext: false,
             attackBack: true,
             showKeys: true,
             floatDamage: true,
@@ -184,7 +184,7 @@ class Settings {
         },
         right_column: {
             "Hotkeys Icons": { type: "trigger", prop: "showKeys" },
-            "Float Damage": { type: "trigger", prop: "floatDamage" },
+            "Show Damage": { type: "trigger", prop: "floatDamage" },
         },
     }
     process() {

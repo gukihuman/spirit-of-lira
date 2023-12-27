@@ -21,7 +21,7 @@ div(
         info-link( platform="github")
     p(
         mark="thanks"
-        class="px-[80px] text-center absolute text-tan font-courgette mt-[20px] text-[28px] bottom-[70px] opacity-[0.80] scale-y-[0.9]"
+        class="px-[80px] text-center absolute text-tan font-courgette mt-[20px] text-[28px] bottom-[40px] opacity-[0.80] scale-y-[0.9]"
     ) Special thanks to Psycho-Nerd, General-Tomato, and Karpai. <br> ♡ My first three patrons ever. ♡
 </template>
 <script setup lang="ts">
