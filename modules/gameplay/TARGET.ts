@@ -69,7 +69,8 @@ class Target {
             }
             // when lock is used to lock a new TARGET immidiately
             if (GLOBAL.lastActiveDevice !== "gamepad") {
-                if (!GLOBAL.hoverId || SETTINGS.echo.general.easyFight) return
+                if (!GLOBAL.hoverId || SETTINGS.echo.general.autoAttackNext)
+                    return
                 HERO.ent.TARGET.id = GLOBAL.hoverId
                 HERO.ent.TARGET.locked = true
             }
@@ -101,7 +102,7 @@ class Target {
             this.checkTargetDistance(ent, id)
             if (ent.STATE.active !== "track" && !ent.TARGET.locked) {
                 if (
-                    !SETTINGS.echo.general.easyFight &&
+                    !SETTINGS.echo.general.autoAttackNext &&
                     ent.HERO &&
                     GLOBAL.lastActiveDevice !== "gamepad"
                 ) {
@@ -112,14 +113,7 @@ class Target {
                 this.autoTarget(ent, id)
             }
         })
-        if (
-            GLOBAL.lastActiveDevice === "gamepad" &&
-            LIBRARY.deadZoneExceed(
-                SETTINGS.inputOther.gamepad.deadZone,
-                INPUT
-            ) &&
-            !HERO.ent.TARGET.locked
-        ) {
+        if (GLOBAL.lastActiveDevice === "gamepad" && !HERO.ent.TARGET.locked) {
             // overwrites autoTarget for hero with gamepad axes
             this.targetByGamepadAxes()
         }
@@ -132,7 +126,7 @@ class Target {
         }
     }
     targetByMouse() {
-        if (SETTINGS.echo.general.easyFight && !GLOBAL.hoverId) return
+        if (SETTINGS.echo.general.autoAttackNext && !GLOBAL.hoverId) return
         HERO.ent.TARGET.id = GLOBAL.hoverId
     }
     private checkTargetDistance(ent, id) {
@@ -164,10 +158,30 @@ class Target {
         }
     }
     targetByGamepadAxes() {
-        const axesVector = COORD.vector(
+        let left_stick_active = LIBRARY.deadZoneExceed(
+            SETTINGS.inputOther.gamepad.deadZone,
+            INPUT
+        )
+        let right_stick_active = false
+        if (
+            Math.abs(INPUT.gamepad.axes[2]) >
+                SETTINGS.inputOther.gamepad.deadZone ||
+            Math.abs(INPUT.gamepad.axes[3]) >
+                SETTINGS.inputOther.gamepad.deadZone
+        ) {
+            right_stick_active = true
+        }
+        if (!left_stick_active && !right_stick_active) return
+        let axesVector = COORD.vector(
             INPUT.gamepad.axes[0],
             INPUT.gamepad.axes[1]
         )
+        if (right_stick_active) {
+            axesVector = COORD.vector(
+                INPUT.gamepad.axes[2],
+                INPUT.gamepad.axes[3]
+            )
+        }
         const axesAngle = axesVector.angle
         let minAngle = Infinity
         let closestEntityId = 0

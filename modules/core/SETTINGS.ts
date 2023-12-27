@@ -41,13 +41,13 @@ class Settings {
         general: {
             music: 0.8, // 0.8
             sound: 0.8, // 0.8
-            // auto attack after kill and also autotarget for mouse like on gamepad
-            easyFight: true,
+            autoAttackNext: true,
             attackBack: true,
-            // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
-            keepLock: true, // currently constant true
             showKeys: true,
             floatDamage: true,
+
+            // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
+            keepLock: true, // currently constant true
         },
         focus: { columnIndex: 0, rowIndex: 0 },
         show_panel: false, // switching delay
@@ -103,7 +103,7 @@ class Settings {
             toggleFullscreen: "Start",
             // toggle backpack: "B",
             "toggle settings": "Menu",
-            lockTarget: "LB",
+            lockTarget: "RT",
         },
     }
     novelInputEvents = {
@@ -151,6 +151,7 @@ class Settings {
                 events: ["toggleFullscreen"],
             },
             "Toggle Settings": { type: "hotkey", events: ["toggle settings"] },
+            "Lock Target": { type: "hotkey", events: ["lockTarget"] },
         },
     }
     keyboard_tab: Tab = {
@@ -178,7 +179,7 @@ class Settings {
             Sound: { type: "slider" },
         },
         left_column: {
-            "Auto-Attack Next": { type: "trigger", prop: "easyFight" },
+            "Auto-Attack Next": { type: "trigger", prop: "autoAttackNext" },
             "Attack Back": { type: "trigger", prop: "attackBack" },
         },
         right_column: {

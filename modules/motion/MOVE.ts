@@ -46,6 +46,22 @@ class Move {
         if (GLOBAL.autoMove) EVENTS.emitSingle("mouseMove")
         this.checkGamepadAxes()
     }
+    private cast_key_pressed_and_target_in_range() {
+        // all this just to additionally check cast, ideally find the problem where cast overwritten by track if gamepad cast signal is pressed continuously
+        const hero_skill = HERO.ent.SKILLS.data[HERO.ent.SKILLS.active]
+        const cast1_key = SETTINGS.worldInputEvents.gamepad.cast1
+        const cast2_key = SETTINGS.worldInputEvents.gamepad.cast2
+        const cast3_key = SETTINGS.worldInputEvents.gamepad.cast3
+        const cast_pressed =
+            INPUT.gamepad.pressed.includes(cast1_key) ||
+            INPUT.gamepad.pressed.includes(cast2_key) ||
+            INPUT.gamepad.pressed.includes(cast3_key)
+        return (
+            cast_pressed &&
+            hero_skill &&
+            TRACK.inRange(HERO.ent, hero_skill.distance)
+        )
+    }
     private checkGamepadAxes() {
         if (
             LIBRARY.deadZoneExceed(SETTINGS.inputOther.gamepad.deadZone, INPUT)
@@ -65,8 +81,11 @@ class Move {
     mouseMove() {
         if (CONTEXT.echo.interface) return
         if (INTERFACE.buttonHover) return
-        HERO.ent.STATE.track = false
-        HERO.ent.STATE.cast = false
+        const check = this.cast_key_pressed_and_target_in_range()
+        if (!check) {
+            HERO.ent.STATE.track = false
+            HERO.ent.STATE.cast = false
+        }
         const distance = COORD.distance(
             COORD.conterOfScreen(),
             COORD.mouseOfScreen()
@@ -90,8 +109,11 @@ class Move {
         ) {
             return
         }
-        HERO.ent.STATE.track = false
-        HERO.ent.STATE.cast = false
+        const check = this.cast_key_pressed_and_target_in_range()
+        if (!check) {
+            HERO.ent.STATE.track = false
+            HERO.ent.STATE.cast = false
+        }
         this.gamepadMoveTries = 0
         this.gamepadMoveLogic()
     }

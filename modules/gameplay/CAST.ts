@@ -42,11 +42,11 @@ class Cast {
         ent.TARGET.locked = false
         ent.MOVE.final_des = _.cloneDeep(ent.POS)
         if (ent.HERO) {
-            if (!SETTINGS.echo.general.easyFight) {
+            if (!SETTINGS.echo.general.autoAttackNext) {
                 ent.STATE.track = false
             } else {
                 TIME.next(() => {
-                    // its new target by easyFight here
+                    // its new target by autoAttackNext here
                     ent.TARGET.locked = true
                 })
             }
@@ -92,12 +92,12 @@ class Cast {
             ent.SKILLS.castAndDelayMS = Infinity
             return
         } else {
-            ent.TARGET.locked = true // its new target by easyFight here
+            ent.TARGET.locked = true // its new target by autoAttackNext here
         }
         if (
             ent.HERO &&
-            !SETTINGS.echo.general.easyFight &&
-            // here we have new target but not easyFight
+            !SETTINGS.echo.general.autoAttackNext &&
+            // here we have new target but not autoAttackNext
             ent.TARGET.id !== ent.TARGET.attackedId
         ) {
             ent.TARGET.id = null
@@ -137,6 +137,7 @@ class Cast {
     }
     process() {
         if (CONTEXT.echo.novel) return
+
         MUSEUM.process_entity(["STATE", "SKILLS"], (ent, id) => {
             this.stopAttackSoundsIfNotCast(ent, id)
             if (!ent.STATE.cast) {
@@ -166,7 +167,7 @@ class Cast {
             if (elapsed > ent.SKILLS.castAndDelayMS + skill.castMS) {
                 if (
                     LOOP.elapsed <
-                    // 1.5 is just to find time between first and second cast :)
+                    // 1.5 is just to find time between first and second cast
                     ent.SKILLS.castStartMS + skill.firstCastMS * 1.5
                 ) {
                     this.firstCastLogic(ent, id, skill)
@@ -207,7 +208,6 @@ class Cast {
     private playAudioEffect(ent) {
         let soundId: any
         const skill = ent.SKILLS.data[ent.SKILLS.active]
-        // 📜 0.8 and "sword-hit" should be taken from item for hero and from ent for mobs
         let audioDelay
         if (ent.SKILLS.firstCastState) {
             audioDelay = skill.firstCastMS + skill.audioStartMS
@@ -215,6 +215,7 @@ class Cast {
             audioDelay = skill.castMS + skill.audioStartMS
         }
         ent.SKILLS.attackSoundTimeId = TIME.after(audioDelay, () => {
+            // 📜 sword-hit should depend on equipped weapon
             if (ent.HERO) AUDIO.play_sound("sword-hit")
             else AUDIO.play_sound("bunbo-bite")
         })
