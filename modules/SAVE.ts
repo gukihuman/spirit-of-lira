@@ -57,7 +57,7 @@ class Save {
         this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
         this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)
         this.save.progress.mobs = _.cloneDeep(PROGRESS.mobs)
-        this.save.settings.echo = _.cloneDeep(SETTINGS.echo.general)
+        this.save.settings.echo.general = _.cloneDeep(SETTINGS.echo.general)
         this.save.settings.worldInputEvents = _.cloneDeep(
             SETTINGS.worldInputEvents
         )
