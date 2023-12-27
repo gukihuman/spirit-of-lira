@@ -71,6 +71,7 @@ div(
                 )
                 trigger-indicator(
                     v-if="object.type === 'trigger'"
+                    @click="handle_trigger_click(object.prop)"
                     :state="SETTINGS.echo.general[object.prop]"
                     class="left-[376px] top-[36px] scale-[1.1]"
                 )
@@ -82,6 +83,9 @@ div(
     ) {{ SETTINGS.echo.show_message }}
 </template>
 <script setup lang="ts">
+const handle_trigger_click = (prop) => {
+    SETTINGS.echo.general[prop] = !SETTINGS.echo.general[prop]
+}
 const text_class = computed(() => {
     return (columnIndex, rowIndex, object) => {
         const pressed =

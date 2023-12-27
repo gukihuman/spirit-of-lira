@@ -1,5 +1,5 @@
 <template lang="pug">
-div( class="w-[75px] h-[75px] absolute" )
+div( class="w-[75px] h-[75px] absolute rounded-full hover:brightness-[1.15] transition duration-120 ease-in-out" )
     img(
         :src="resolve_source"
         class="absolute object-none"
