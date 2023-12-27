@@ -42,8 +42,8 @@ const inter: Inter = {
     process() {
         if (CONTEXT.echo.novel) this.overlay = false
         else this.overlay = true
-        this.floatDamage = SETTINGS.general.floatDamage
-        this.showKeys = SETTINGS.general.showKeys
+        this.floatDamage = SETTINGS.echo.general.floatDamage
+        this.showKeys = SETTINGS.echo.general.showKeys
         if (!CONTEXT.echo.novel) {
             if (HERO.ent.TARGET.id && HERO.ent.TARGET.ent) {
                 INTERFACE.target = true

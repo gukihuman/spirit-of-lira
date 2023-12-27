@@ -6,7 +6,7 @@ div(
     div(
         mark="column"
         v-for="(column, columnIndex) in columns" :key="columnIndex"
-        class="w-[580px] h-[600px] flex flex-col items-center mx-[-25px]"
+        class="w-580px] h-full flex flex-col items-center mx-[-25px]"
     )
         div(
             mark="row"
@@ -15,7 +15,7 @@ div(
             :class="{ 'mt-[120px]': object.type === 'button' }"
         )
             tn: settings-frame(
-                v-if="resolveFocus(columnIndex, rowIndex)" :class="{ 'w-[585px]': object.type !== 'button', 'w-[460px]': object.type === 'button' }"
+                v-if="resolveFocus(columnIndex, rowIndex)" :class="{ 'w-[585px]': object.type !== 'button' && SETTINGS.echo.general.showKeys, 'w-[535px]': object.type !== 'button' && !SETTINGS.echo.general.showKeys , 'w-[460px]': object.type === 'button' && SETTINGS.echo.general.showKeys, 'w-[416px]': object.type === 'button' && !SETTINGS.echo.general.showKeys }"
             )
             div( class="absolute w-fit h-fit z-[10]" )
                 settings-scroll(
@@ -47,12 +47,13 @@ div(
                 )
                 div(
                     v-if="object.type === 'hotkey'"
-                    mark="hotkey"
+                    mark="hotkey-setting"
                     @click="handleClick(columnIndex, rowIndex)"
                     class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
                     :class="button_class"
                 )
                     tn: hotkey-icon(
+                        :hotkeySetting="true"
                         :update="SETTINGS.echo.show_hotkey"
                         :hueAffected="false"
                         :tab="props.tab"
@@ -68,6 +69,12 @@ div(
                     :class="{ 'left-[455px]': object.type !== 'button', 'left-[338px]': object.type === 'button' }"
                     v-if="resolve_show_button_icon(columnIndex, rowIndex)"
                 )
+                trigger-indicator(
+                    v-if="object.type === 'trigger'"
+                    :state="SETTINGS.echo.general[object.prop]"
+                    class="left-[376px] top-[36px] scale-[1.1]"
+                )
+
     tn: p(
         mark="hotkeys-message"
         v-if="SETTINGS.echo.show_message"

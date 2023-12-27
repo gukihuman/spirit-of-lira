@@ -43,9 +43,9 @@ class Audio {
         this.echo.state = Howler.ctx?.state || "suspended"
 
         // 📜 run only when settings change, and even then mb throttle
-        // if (music) music.volume(SETTINGS.general.music * music_amplifier)
+        // if (music) music.volume(SETTINGS.echo.general.music * music_amplifier)
         // _.values(sounds).forEach((sound) => {
-        //     sound.volume(SETTINGS.general.music * music_amplifier)
+        //     sound.volume(SETTINGS.echo.general.music * music_amplifier)
         // })
 
         // play music
@@ -82,7 +82,7 @@ class Audio {
                 })
                 current_min -= river_distance_close
                 if (current_min < 0) current_min = 0
-                const max_volume = SETTINGS.general.sound * sound_amplifier
+                const max_volume = SETTINGS.echo.general.sound * sound_amplifier
                 volume = max_volume - current_min / river_distance_far
                 if (volume < 0) volume = 0
                 sounds[river_token].volume(volume)
@@ -102,7 +102,7 @@ class Audio {
         const options = {
             src: [ASSETS.mp3_paths[picked_file_name]],
             format: ["mp3"],
-            volume: SETTINGS.general.music * music_amplifier,
+            volume: SETTINGS.echo.general.music * music_amplifier,
             autoplay: true,
         }
         if (music) {
@@ -124,7 +124,7 @@ class Audio {
         const options = {
             src: [ASSETS.mp3_paths[picked_file_name]],
             format: ["mp3"],
-            volume: SETTINGS.general.sound * sound_amplifier,
+            volume: SETTINGS.echo.general.sound * sound_amplifier,
             autoplay: true,
             loop: loop,
         }

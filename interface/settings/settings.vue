@@ -38,7 +38,7 @@ div(
         )
     div(
         mark="panel"
-        class="z-[100] absolute w-[1150px] h-[620px] top-[230px] left-[372px]"
+        class="z-[100] absolute w-[1150px] h-[580px] top-[240px] left-[372px]"
     )
         tn( type="swipe" ): settings-panel( tab="general" )
         tn( type="swipe" ): settings-panel( tab="keyboard" )

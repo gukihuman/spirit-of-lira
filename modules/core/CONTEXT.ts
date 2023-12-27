@@ -53,6 +53,7 @@ class Context {
             }
         })
         EVENTS.onSingle("toggle settings", () => {
+            if (NOVEL.echo.active_md === "a0") return
             if (!this.echo.interface) {
                 this.echo.settings = SETTINGS.last_opened
             } else if (this.echo.settings) {

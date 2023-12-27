@@ -42,7 +42,7 @@ class Cast {
         ent.TARGET.locked = false
         ent.MOVE.final_des = _.cloneDeep(ent.POS)
         if (ent.HERO) {
-            if (!SETTINGS.general.easyFight) {
+            if (!SETTINGS.echo.general.easyFight) {
                 ent.STATE.track = false
             } else {
                 TIME.next(() => {
@@ -96,7 +96,7 @@ class Cast {
         }
         if (
             ent.HERO &&
-            !SETTINGS.general.easyFight &&
+            !SETTINGS.echo.general.easyFight &&
             // here we have new target but not easyFight
             ent.TARGET.id !== ent.TARGET.attackedId
         ) {

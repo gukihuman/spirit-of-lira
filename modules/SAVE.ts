@@ -21,7 +21,7 @@ class Save {
                 mobs: PROGRESS.mobs,
             },
             settings: {
-                general: SETTINGS.general,
+                echo: { general: SETTINGS.echo.general },
                 worldInputEvents: SETTINGS.worldInputEvents,
                 novelInputEvents: SETTINGS.novelInputEvents,
                 interfaceInputEvents: SETTINGS.interfaceInputEvents,
@@ -40,7 +40,7 @@ class Save {
         INVENTORY.gear = this.save.inventory.gear
         PROGRESS.scenes = this.save.progress.scenes
         PROGRESS.mobs = this.save.progress.mobs
-        SETTINGS.general = this.save.settings.general
+        SETTINGS.echo.general = this.save.settings.echo.general
         SETTINGS.worldInputEvents = this.save.settings.worldInputEvents
         SETTINGS.novelInputEvents = this.save.settings.novelInputEvents
         SETTINGS.interfaceInputEvents = this.save.settings.interfaceInputEvents
@@ -57,15 +57,17 @@ class Save {
         this.save.inventory.gear = _.cloneDeep(INVENTORY.gear)
         this.save.progress.scenes = _.cloneDeep(PROGRESS.scenes)
         this.save.progress.mobs = _.cloneDeep(PROGRESS.mobs)
-        this.save.audio = _.cloneDeep(SETTINGS.general)
-        this.save.gameplay = _.cloneDeep(SETTINGS.general)
-        this.save.interface = _.cloneDeep(SETTINGS.general)
-        this.save.worldInputEvents = _.cloneDeep(SETTINGS.worldInputEvents)
-        this.save.novelInputEvents = _.cloneDeep(SETTINGS.novelInputEvents)
-        this.save.interfaceInputEvents = _.cloneDeep(
+        this.save.settings.echo = _.cloneDeep(SETTINGS.echo.general)
+        this.save.settings.worldInputEvents = _.cloneDeep(
+            SETTINGS.worldInputEvents
+        )
+        this.save.settings.novelInputEvents = _.cloneDeep(
+            SETTINGS.novelInputEvents
+        )
+        this.save.settings.interfaceInputEvents = _.cloneDeep(
             SETTINGS.interfaceInputEvents
         )
-        this.save.inputOther = _.cloneDeep(SETTINGS.inputOther)
+        this.save.settings.inputOther = _.cloneDeep(SETTINGS.inputOther)
         this.stringifyLocal("save", this.save)
     }
     process() {

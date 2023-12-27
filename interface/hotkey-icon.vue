@@ -1,6 +1,6 @@
 <template lang="pug">
 div(
-    v-if="INTERFACE.showKeys || props.static"
+    v-if="resolve_show_icon"
     class="absolute w-[50px] mt-[25px] transition duration-1000 ease-in-out"
     class="flex justify-center items-center pointer-events-none"
     :class="iconClass"
@@ -16,11 +16,15 @@ div(
 </template>
 <script setup lang="ts">
 const props = defineProps({
+    hotkeySetting: { type: Boolean, default: false },
     inputEvent: { type: String, default: "" },
     static: { type: String, default: "" },
     tab: { type: String, default: "" },
     hueAffected: { type: Boolean, default: true },
     update: { type: Boolean, default: true },
+})
+const resolve_show_icon = computed(() => {
+    return INTERFACE.showKeys || props.hotkeySetting || props.static
 })
 const iconClass = computed(() => {
     if (CONTEXT.echo.novel && props.hueAffected)

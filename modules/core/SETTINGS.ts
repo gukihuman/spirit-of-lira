@@ -38,6 +38,17 @@ class Settings {
         return this.context_list[this.context_index]
     }
     echo: Echo = {
+        general: {
+            music: 0.8, // 0.8
+            sound: 0.8, // 0.8
+            // auto attack after kill and also autotarget for mouse like on gamepad
+            easyFight: true,
+            attackBack: true,
+            // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
+            keepLock: true, // currently constant true
+            showKeys: true,
+            floatDamage: true,
+        },
         focus: { columnIndex: 0, rowIndex: 0 },
         show_panel: false, // switching delay
         editHotkeyMode: false,
@@ -45,17 +56,6 @@ class Settings {
         show_hotkey: true, // used to update
         button_pressed: false,
         show_message: "",
-    }
-    general = {
-        music: 0.0, // 0.8
-        sound: 0.3, // 0.8
-        // auto attack after kill and also autotarget for mouse like on gamepad
-        easyFight: false,
-        attackBack: true,
-        // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
-        keepLock: true, // currently constant true
-        showKeys: true,
-        floatDamage: true,
     }
     interfaceInputEvents = {
         keyboard: {
@@ -494,10 +494,8 @@ class Settings {
             const columnIndex = SETTINGS.echo.focus.columnIndex
             const rowIndex = SETTINGS.echo.focus.rowIndex
             if (columnIndex === 1) column = "right_column"
-            const device = this.context
-            if (!device || (device !== "keyboard" && device !== "gamepad"))
-                return
-            const setting = SETTINGS[device + "_tab"]
+            if (this.context === "info") return
+            const setting = SETTINGS[this.context + "_tab"]
             if (!setting) return
             const key_of_row = _.keys(setting[column])[rowIndex]
             const action = setting[column][key_of_row]
@@ -508,6 +506,9 @@ class Settings {
                 TIME.after(300, () => {
                     SETTINGS.echo.button_pressed = false
                 })
+            } else if (action.type === "trigger") {
+                SETTINGS.echo.general[action.prop] =
+                    !SETTINGS.echo.general[action.prop]
             } else {
                 if (
                     this.context === "keyboard" &&
