@@ -7,12 +7,14 @@ div(
     div(
         mark="dim"
         class="z-[80] absolute w-[1920px] h-[1080px] opacity-[0.4] bg-gray-900"
+        @click="CONTEXT.echo.settings = false"
     )
     img(
         mark="bg"
         draggable="false"
         :src="ASSETS.webp_paths['settings-bg']"
-        class="z-[100] absolute"
+        class="z-[100] left-[312px] top-[85px] absolute object-none w-[1280px] h-[815px]"
+        style="object-position: 48% 33%"
     )
     div(
         mark="tabs"
