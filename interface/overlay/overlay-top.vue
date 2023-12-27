@@ -1,11 +1,10 @@
 <template lang="pug">
 div(
-    class="absolute z-[999] overflow-hidden relative h-[150px]"
     v-show="CONTEXT.echo.world"
 )
     tn: div(
         mark="button-settings"
-        class="top-[7px] left-[7px] z-[999]"
+        class="absolute top-[7px] left-[7px] z-[999]"
     )
         gbutton( type="settings" )
     tn: div(
