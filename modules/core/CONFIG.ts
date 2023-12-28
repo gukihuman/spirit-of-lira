@@ -50,6 +50,7 @@ class GukiConfig {
             MOVE: -3,
             CAST: -4,
             TARGET: -5,
+            INTERFACE: -6, // after CAST
             DEAD: -6, // remove target after TARGET so dead hero cant target :)
             FLIP: -7,
             TIME: -8,
