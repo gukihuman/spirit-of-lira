@@ -28,14 +28,16 @@ div(
     tn: div(
         mark="tab switch gamepad icons"
         v-if="GLOBAL.lastActiveDevice === 'gamepad'"
-        class="z-[150]"
+        class="z-[150] relative"
     )
         hotkey-icon(
             static="LB"
+            :hueAffected="false"
             class="left-[390px] top-[145px]"
         )
         hotkey-icon(
             static="RB"
+            :hueAffected="false"
             class="left-[1450px] top-[145px]"
         )
     div(

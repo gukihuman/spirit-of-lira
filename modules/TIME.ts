@@ -45,14 +45,16 @@ type FnsThrottleIterations = {
 }
 class Time {
     cancel(token: string) {
-        delete this.fns_until[token]
-        delete this.fns_until_iterations[token]
-        delete this.fns_after[token]
-        delete this.fns_after_iterations[token]
-        delete this.fns_every[token]
-        delete this.fns_every_iterations[token]
-        delete this.fns_throttle_iterations[token]
-        clearInterval(parseInt(token))
+        TIME.next(() => {
+            delete this.fns_until[token]
+            delete this.fns_until_iterations[token]
+            delete this.fns_after[token]
+            delete this.fns_after_iterations[token]
+            delete this.fns_every[token]
+            delete this.fns_every_iterations[token]
+            delete this.fns_throttle_iterations[token]
+            clearInterval(parseInt(token))
+        })
     }
     private fns_until: FnsUntil = {}
     until(time_to_run: number, fn: Function) {

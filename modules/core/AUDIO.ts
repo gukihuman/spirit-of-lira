@@ -39,14 +39,14 @@ class Audio {
             }
         })
     }
+    update_volume() {
+        if (music) music.volume(SETTINGS.echo.general.music * music_amplifier)
+        _.values(sounds).forEach((sound) => {
+            sound.volume(SETTINGS.echo.general.sound * sound_amplifier)
+        })
+    }
     process() {
         this.echo.state = Howler.ctx?.state || "suspended"
-
-        // 📜 run only when settings change, and even then mb throttle
-        // if (music) music.volume(SETTINGS.echo.general.music * music_amplifier)
-        // _.values(sounds).forEach((sound) => {
-        //     sound.volume(SETTINGS.echo.general.music * music_amplifier)
-        // })
 
         // play music
         if (!music && !CONTEXT.echo.novel && !CONTEXT.echo.empty) {
