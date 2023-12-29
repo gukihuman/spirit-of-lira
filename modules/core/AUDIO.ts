@@ -11,6 +11,7 @@ let river_token: Token | undefined = undefined
 let river_time_token: Token | undefined = undefined
 const river_distance_close = 500
 const river_distance_far = 1300
+let river_volume = 0
 const river_pos: Position[] = [
     { x: 7166, y: 7133 },
     { x: 7424, y: 7163 },
@@ -44,6 +45,9 @@ class Audio {
         _.values(sounds).forEach((sound) => {
             sound.volume(SETTINGS.echo.general.sound * sound_amplifier)
         })
+        if (river_token && sounds[river_token]) {
+            sounds[river_token].volume(river_volume)
+        }
     }
     process() {
         this.echo.state = Howler.ctx?.state || "suspended"
@@ -70,20 +74,24 @@ class Audio {
         // river_token sound
         if (LOOP.iterations > 30 && CONTEXT.echo.world && !river_token) {
             river_token = this.play_loop_sound("river")
-            river_time_token = TIME.throttle_iterations(30, () => {
+            river_time_token = TIME.throttle_iterations(5, () => {
                 if (!river_token && river_time_token)
                     TIME.cancel(river_time_token)
                 if (!river_token || !sounds[river_token]) return
-                let volume = 0
-                let current_min = Infinity
+                let distance = Infinity
                 river_pos.forEach((POS) => {
-                    const distance = COORD.distance_to_hero(POS)
-                    if (distance < current_min) current_min = distance
+                    const d = COORD.distance_to_hero(POS)
+                    if (d < distance) distance = d
                 })
-                current_min -= river_distance_close
-                if (current_min < 0) current_min = 0
-                const max_volume = SETTINGS.echo.general.sound * sound_amplifier
-                volume = max_volume - current_min / river_distance_far
+                distance -= river_distance_close
+                if (distance < 0) distance = 0
+                const sound_ratio =
+                    SETTINGS.echo.general.sound * sound_amplifier
+                let distance_volume_ratio =
+                    1 - distance / (river_distance_far - river_distance_close)
+                if (distance_volume_ratio < 0) distance_volume_ratio = 0
+                let volume = distance_volume_ratio * sound_ratio
+                river_volume = volume
                 if (volume < 0) volume = 0
                 sounds[river_token].volume(volume)
             })

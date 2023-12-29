@@ -55,6 +55,7 @@ class Settings {
             floatDamage: true,
             // keepLock is about keeping lock after stop attacking, currently not working properly, like when its off, there is no way to lock target while attacking, ideally make possible to attack target without locking, coding is hard in that matter
             keepLock: true, // currently constant true
+            patreon_access: false,
         },
         show_panel: false, // switching delay
         editHotkeyMode: false,
@@ -230,6 +231,10 @@ class Settings {
             "Attack Back": {
                 type: "trigger",
                 prop: "attackBack",
+            },
+            "Patreon Access": {
+                type: "trigger",
+                prop: "patreon_access",
             },
         },
         right_column: {
