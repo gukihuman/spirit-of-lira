@@ -5,6 +5,7 @@ class DevMode {
             globalThis.reset = () => SAVE.reset()
             globalThis.kill = () => (HERO.ent.ATTRIBUTES.health -= Infinity)
             globalThis.chunks = () => MAP.closeChunks
+            globalThis.chunk = () => COORD.chunk_from_coordinates(HERO.ent.POS)
 
             globalThis.mobs = () => {
                 let mobs = 0

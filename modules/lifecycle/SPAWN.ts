@@ -32,6 +32,12 @@ class Spawn {
                         )
                     )
                 })
+                // custom garden bunbo logic
+                if (chunk === "0708" && Math.random() < 1) {
+                    await CREATOR.create("bunbo", {
+                        POS: { x: 8799, y: 7659 },
+                    })
+                }
             })
             this.spawnedChunks.push(chunk)
         })

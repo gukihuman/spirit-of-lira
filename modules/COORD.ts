@@ -76,6 +76,13 @@ class Coordinates {
     coordinateToChunk(coordinate: number) {
         return _.floor(coordinate / 1000)
     }
+    chunk_from_coordinates(coord: Coord) {
+        const chunkX = this.coordinateToChunk(coord.x)
+        const chunkY = this.coordinateToChunk(coord.y)
+        return `${chunkY.toString().padStart(2, "0")}${chunkX
+            .toString()
+            .padStart(2, "0")}`
+    }
     chunkFromCoordinates(x: number, y: number) {
         const chunkX = this.coordinateToChunk(x)
         const chunkY = this.coordinateToChunk(y)
