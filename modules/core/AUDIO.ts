@@ -10,7 +10,7 @@ const sounds: AudioObject = {}
 let river_token: Token | undefined = undefined
 let river_time_token: Token | undefined = undefined
 const river_distance_close = 500
-const river_distance_far = 1500
+const river_distance_far = 1800
 let river_volume = 0
 const river_pos: Position[] = [
     { x: 7166, y: 7133 },

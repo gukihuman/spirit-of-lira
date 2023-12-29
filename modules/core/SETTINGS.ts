@@ -675,6 +675,13 @@ class Settings {
         })
     }
     emitEvents() {
+        INPUT.keyboard.justPressed.forEach((key, i) => {
+            if (key.length === 1)
+                INPUT.keyboard.justPressed[i] = key.toLowerCase()
+        })
+        INPUT.keyboard.pressed.forEach((key, i) => {
+            if (key.length === 1) INPUT.keyboard.pressed[i] = key.toLowerCase()
+        })
         if (LIBRARY.deadZoneExceed(this.inputOther.gamepad.deadZone, INPUT)) {
             EVENTS.emitSingle("gamepadMove")
         }
