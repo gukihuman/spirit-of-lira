@@ -1,17 +1,19 @@
 const precision = 2
 let performance_time_stamp: number
+let hero_prevent_time_token = ""
 class Astar {
     openList: any = []
     closedList: any = []
     clean = true
     maxSteps = 2000 / precision
-    maxTime = 7 // ms
+    maxTime = 7 // ms for hero and for mobs separately
     process() {
         performance_time_stamp = performance.now()
         // hero should be prioritized, though it should be first in entities as it is, making this explicitly here not gonna hurt in case
         MUSEUM.process_entity("HERO", (ent, id) => {
             this.process_path(ent, id)
         })
+        performance_time_stamp = performance.now()
         MUSEUM.process_entity(["MOVE", "NONHERO"], (ent, id) => {
             this.process_path(ent, id)
         })
@@ -34,6 +36,16 @@ class Astar {
         const possible_path = this.findPath(start, end, ent)
         if (!possible_path) {
             if (ent.NONHERO) DESTINATION.set_random_des(ent, id)
+            if (ent.HERO) {
+                // HERO.reset_final_des()
+                HERO.ent.MOVE.global_prevent = true
+                if (hero_prevent_time_token)
+                    TIME.cancel(hero_prevent_time_token)
+                hero_prevent_time_token = TIME.after_iterations(5, () => {
+                    HERO.ent.MOVE.global_prevent = false
+                })
+            }
+            ent.MOVE.path = undefined
             return
         } else ent.MOVE.path = possible_path
         if (ent.MOVE.path.length > 2) {

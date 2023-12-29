@@ -12,6 +12,8 @@ class Move {
         velocity: { x: 0, y: 0 },
         inertia: 0.15,
 
+        global_prevent: false,
+
         // 🔧
         depend: ["POS"],
         trigger: ["TARGET", "ATTRIBUTES", "SHADOW", "STATE"],
@@ -156,6 +158,7 @@ class Move {
         this.gamepadAxesMoved = true
     }
     private canMove(ent) {
+        if (ent.MOVE.global_prevent) return false
         if (!ent.MOVE || !ent.STATE || !ent.MOVE.des || !ent.MOVE.final_des) {
             return false
         }
