@@ -20,6 +20,7 @@ class Creator {
         }
         ent.name = name
         const id = this.nextId
+        ent.id = id
         this.nextId++
         // inject / expand components from argument
         _.forEach(components, (value, name) => (ent[name] = _.cloneDeep(value)))

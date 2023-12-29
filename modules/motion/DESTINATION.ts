@@ -8,7 +8,7 @@ class Destination {
                 Math.random() < 0.08 * LOOP.delta_sec
             ) {
                 this.counter = 0
-                this.setRandomdes(ent, id)
+                this.set_random_des(ent, id)
             }
             if (CONTEXT.echo.novel) {
                 ent.MOVE.randomdesMS = LOOP.elapsed
@@ -25,12 +25,12 @@ class Destination {
         })
     }
     private counter = 0
-    private setRandomdes(ent, id: number) {
+    set_random_des(ent, id: number) {
         let possibleX = ent.POS.x + _.random(-300, 300)
         let possibleY = ent.POS.y + _.random(-300, 300)
         if (!COLLISION.is_coord_clear({ x: possibleX, y: possibleY })) {
             this.counter++
-            if (this.counter < 10) this.setRandomdes(ent, id)
+            if (this.counter < 10) this.set_random_des(ent, id)
             return
         }
         ent.MOVE.final_des.x = possibleX

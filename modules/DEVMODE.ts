@@ -1,6 +1,17 @@
 class DevMode {
     process() {
         if (GLOBAL.dev_env) {
+            globalThis.log = () => INTERFACE.damageOverlays
+            globalThis.reset = () => SAVE.reset()
+            globalThis.kill = () => (HERO.ent.ATTRIBUTES.health -= Infinity)
+            globalThis.chunks = () => MAP.closeChunks
+
+            globalThis.mobs = () => {
+                let mobs = 0
+                MUSEUM.process_entity(["NONHERO", "MOVE"], () => mobs++)
+                return mobs
+            }
+
             if (INPUT.keyboard.justPressed.includes("z")) {
                 EVENTS.emitSingle("toggleEditMode")
             }
@@ -9,12 +20,6 @@ class DevMode {
             }
             if (INPUT.keyboard.justPressed.includes("l")) {
                 console.log(WORLD.hover)
-            }
-            globalThis.reset = () => SAVE.reset()
-            globalThis.kill = () => (HERO.ent.ATTRIBUTES.health -= Infinity)
-
-            globalThis.log = () => {
-                return INTERFACE.damageOverlays
             }
         }
     }

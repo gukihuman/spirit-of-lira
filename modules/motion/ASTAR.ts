@@ -6,9 +6,10 @@ class Astar {
     maxSteps = 2000 / precision
     maxTime = 7 // ms
     process() {
-        MUSEUM.process_entity("MOVE", (ent) => {
+        MUSEUM.process_entity("MOVE", (ent, id) => {
             if (!ent.MOVE.final_des) return
             if (_.isEqual(ent.POS, ent.MOVE.final_des)) return
+            if (ent.NONHERO && Math.random() > 0.3) return
             const start: Tile = COORD.to_tile(ent.POS)
             const end: Tile = COORD.to_tile(ent.MOVE.final_des)
             if (ent.HERO) {
@@ -21,9 +22,10 @@ class Astar {
                 }
             }
             const possible_path = this.findPath(start, end, ent)
-            if (!possible_path) return
-            else ent.MOVE.path = possible_path
-
+            if (!possible_path) {
+                if (ent.NONHERO) DESTINATION.set_random_des(ent, id)
+                return
+            } else ent.MOVE.path = possible_path
             if (ent.MOVE.path.length > 2) {
                 ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
                 ent.MOVE.des.x += 10
