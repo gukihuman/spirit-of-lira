@@ -1,4 +1,5 @@
 const precision = 2
+let performance_time_stamp: number
 class Astar {
     openList: any = []
     closedList: any = []
@@ -6,36 +7,44 @@ class Astar {
     maxSteps = 2000 / precision
     maxTime = 7 // ms
     process() {
-        MUSEUM.process_entity("MOVE", (ent, id) => {
-            if (!ent.MOVE.final_des) return
-            if (_.isEqual(ent.POS, ent.MOVE.final_des)) return
-            if (ent.NONHERO && Math.random() > 0.3) return
-            const start: Tile = COORD.to_tile(ent.POS)
-            const end: Tile = COORD.to_tile(ent.MOVE.final_des)
-            if (ent.HERO) {
-                if (
-                    !COLLISION.is_tile_clear(end) &&
-                    GLOBAL.lastActiveDevice === "gamepad" &&
-                    GLOBAL.collision
-                ) {
-                    return
-                }
-            }
-            const possible_path = this.findPath(start, end, ent)
-            if (!possible_path) {
-                if (ent.NONHERO) DESTINATION.set_random_des(ent, id)
-                return
-            } else ent.MOVE.path = possible_path
-            if (ent.MOVE.path.length > 2) {
-                ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
-                ent.MOVE.des.x += 10
-                ent.MOVE.des.y += 10
-            } else {
-                ent.MOVE.des.x = ent.MOVE.final_des.x
-                ent.MOVE.des.y = ent.MOVE.final_des.y
-                ent.MOVE.path = []
-            }
+        performance_time_stamp = performance.now()
+        // hero should be prioritized, though it should be first in entities as it is, making this explicitly here not gonna hurt in case
+        MUSEUM.process_entity("HERO", (ent, id) => {
+            this.process_path(ent, id)
         })
+        MUSEUM.process_entity(["MOVE", "NONHERO"], (ent, id) => {
+            this.process_path(ent, id)
+        })
+    }
+    process_path(ent, id) {
+        if (!ent.MOVE.final_des) return
+        if (_.isEqual(ent.POS, ent.MOVE.final_des)) return
+        if (ent.NONHERO && Math.random() > 0.3) return
+        const start: Tile = COORD.to_tile(ent.POS)
+        const end: Tile = COORD.to_tile(ent.MOVE.final_des)
+        if (ent.HERO) {
+            if (
+                !COLLISION.is_tile_clear(end) &&
+                GLOBAL.lastActiveDevice === "gamepad" &&
+                GLOBAL.collision
+            ) {
+                return
+            }
+        }
+        const possible_path = this.findPath(start, end, ent)
+        if (!possible_path) {
+            if (ent.NONHERO) DESTINATION.set_random_des(ent, id)
+            return
+        } else ent.MOVE.path = possible_path
+        if (ent.MOVE.path.length > 2) {
+            ent.MOVE.des = COORD.from_tile(ent.MOVE.path[0])
+            ent.MOVE.des.x += 10
+            ent.MOVE.des.y += 10
+        } else {
+            ent.MOVE.des.x = ent.MOVE.final_des.x
+            ent.MOVE.des.y = ent.MOVE.final_des.y
+            ent.MOVE.path = []
+        }
     }
     addNeighbor(y, x, ent) {
         const collision = GLOBAL.collision
@@ -116,7 +125,6 @@ class Astar {
     }
 
     findPath(startPos, endPos, ent) {
-        const t0 = performance.now()
         let walkable = true
         if (
             COLLISION.get_element([endPos.y, endPos.x]) !== 0 &&
@@ -136,7 +144,8 @@ class Astar {
         while (this.openList.length > 0) {
             maxSteps--
 
-            if (performance.now() - t0 >= this.maxTime) return null
+            if (performance.now() - performance_time_stamp >= this.maxTime)
+                return null
             let current = this.getLowestF(this.openList)
 
             if (maxSteps < 0) {
