@@ -1,3 +1,4 @@
+const reset_time_delay = 5000
 class Dead {
     init() {
         EVENTS.onSingle("reset", () => {
@@ -48,7 +49,7 @@ class Dead {
                 ent.STATE.active === "dead" &&
                 lastEntity.STATE.active !== "dead"
             ) {
-                setTimeout(() => (GLOBAL.reset = true), 2500)
+                setTimeout(() => (GLOBAL.reset = true), reset_time_delay)
                 SAVE.update()
                 setTimeout(() => {
                     if (ent.STATE.active !== "dead") return
@@ -67,6 +68,7 @@ class Dead {
                 ent.STATE.active === "dead" &&
                 lastEntity.STATE.active !== "dead"
             ) {
+                AUDIO.play_sound(ent.name + "-dead")
                 TIME.cancel(ent.SKILLS.attackSoundTimeId)
                 ent.STATE.deadTimeMS = LOOP.elapsed
                 PROGRESS.mobs[ent.name]++

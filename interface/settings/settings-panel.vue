@@ -6,7 +6,7 @@ div(
     div(
         mark="center column"
         v-show="CONTEXT.echo.settings === 'general'"
-        class="w-[860px] h-fit flex flex-col items-center"
+        class="w-[860px] h-fit flex flex-col items-center z-[50] mt-[-15px]"
     )
         div(
             mark="row"
@@ -44,13 +44,13 @@ div(
                         class="top-[47px] left-[725px]"
                     )
     div(
-        class="w-full h-full flex justify-center"
+        class="w-full h-full flex justify-center mt-[10px]"
         :class="hotkeys_panel_margin"
     )
         div(
             mark="column of doubles"
             v-for="(column, column_index) in columns" :key="column_index"
-            class="w-580px] h-full flex flex-col items-center mx-[-25px] z-[-10]"
+            class="w-580px] h-full flex flex-col items-center mx-[-25px]"
         )
             div(
                 mark="row"
