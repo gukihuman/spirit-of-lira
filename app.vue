@@ -11,6 +11,7 @@ fullscreen
         tn( type="long" ): novel-buttons
         tn: overlay
         tn: overlay-top
+        tn: confirm
         tn: audiomessage
         tn: cursor( v-if="GLOBAL.firstUserGesture" )
     preload

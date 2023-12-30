@@ -1,7 +1,7 @@
 <template lang="pug">
 div(v-show="GLOBAL.firstUserGesture && !CONTEXT.echo.empty"
 :style="cursorStyle"
-class="absolute left-[100px] z-[999] w-[102px] h-[94px] pointer-events-none")
+class="absolute left-[100px] z-[9999] w-[102px] h-[94px] pointer-events-none")
     img(v-show="cursor"
         :src="ASSETS.get_webp_path('cursor')"
         draggable="false" class="absolute")

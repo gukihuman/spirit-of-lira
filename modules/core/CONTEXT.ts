@@ -12,6 +12,7 @@ class Echo {
     novel = false
     settings: false | SettingsContext = false
     backpack = false
+    confirm = false
 
     // helper contexts, auto updated in process
     // also used externally as index to turn off specific echo key
@@ -54,6 +55,7 @@ class Context {
         })
         EVENTS.onSingle("toggle settings", () => {
             if (NOVEL.echo.active_md === "a0") return
+            if (CONTEXT.echo.confirm) return
             if (!this.echo.interface) {
                 this.echo.settings = SETTINGS.last_opened
             } else if (this.echo.settings) {
@@ -64,10 +66,15 @@ class Context {
                 this.echo.settings = SETTINGS.last_opened
             }
         })
-        EVENTS.onSingle("quit interface", () => {
+        EVENTS.onSingle("go back interface", () => {
+            if (CONFIRM.echo.input_focus) return
             TIME.next(() => {
                 if (!this.echo.interface) return
                 if (SETTINGS.echo.editHotkeyMode) return
+                if (this.echo.confirm) {
+                    this.echo.confirm = false
+                    return
+                }
                 this.echo[this.echo.interface] = false
             })
         })

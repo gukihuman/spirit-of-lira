@@ -10,7 +10,7 @@ div(
         draggable="false"
         :class="imageClass" :style="imageStyle"
     )
-    p(class="absolute z-10 ml-[1px] mb-[2px] opacity-[0.9]"
+    p(class="absolute z-10 ml-[1px] mb-[3px] opacity-[0.9]"
         class="text-tan text-[22px] font-semibold points-events-none"
         :class="textClass") {{ _.capitalize(text) }}
 </template>

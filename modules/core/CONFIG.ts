@@ -54,6 +54,7 @@ class GukiConfig {
             DEAD: -6, // remove target after TARGET so dead hero cant target :)
             FLIP: -7,
             TIME: -8,
+            CONFIRM: -10,
         },
     }
     viewport = {

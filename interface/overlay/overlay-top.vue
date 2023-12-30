@@ -1,6 +1,7 @@
 <template lang="pug">
 div(
     v-show="CONTEXT.echo.world"
+    :class="{ 'blur': CONTEXT.echo.confirm }"
 )
     tn: div(
         mark="button-settings"

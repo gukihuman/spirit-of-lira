@@ -15,7 +15,7 @@ div(
         )
             tn: settings-frame(
                 class="mt-[-25px]"
-                v-if="resolveFocus(0, central_row_index, 'center')" :class="{ 'w-[850px]': SETTINGS.echo.general.showKeys, 'w-[810px]': !SETTINGS.echo.general.showKeys}"
+                v-if="!CONTEXT.echo.confirm && resolveFocus(0, central_row_index, 'center')" :class="{ 'w-[850px]': SETTINGS.echo.general.showKeys, 'w-[810px]': !SETTINGS.echo.general.showKeys}"
             )
             div( class="absolute w-fit h-fit z-[10] mt-[-25px]" )
                 settings-scroll(
@@ -132,7 +132,11 @@ const hotkeys_panel_margin = computed(() => {
     return { "mt-[30px]": CONTEXT.echo.settings !== "general" }
 })
 const handle_trigger_click = (prop) => {
-    SETTINGS.echo.general[prop] = !SETTINGS.echo.general[prop]
+    if (prop === "patreon_access") {
+        SETTINGS.resolve_patreon_access()
+    } else {
+        g.toggle(SETTINGS.echo.general, prop)
+    }
 }
 const text_class = computed(() => {
     return (column_index, row_index, object) => {
@@ -197,6 +201,7 @@ const resolveEvent = computed(() => {
 const resolve_show_button_icon_center = computed(() => {
     return (row_index) => {
         if (!SETTINGS.echo.general.showKeys) return
+        if (CONTEXT.echo.confirm) return
         if (SETTINGS.echo.focus.column_section !== "center") return
         if (GLOBAL.lastActiveDevice !== "gamepad") return
         return SETTINGS.echo.focus.row_index === row_index

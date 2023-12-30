@@ -40,7 +40,7 @@ class Hover {
         } else if (intersections.length === 1) {
             hoverEntityId = intersections[0]
         }
-        if (hoverEntityId) {
+        if (hoverEntityId && !CONTEXT.echo.interface) {
             GLOBAL.hoverId = hoverEntityId
             WORLD.hover = WORLD.entities.get(hoverEntityId)
             this.debouncedEmpty()

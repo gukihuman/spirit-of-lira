@@ -6,14 +6,14 @@ div(class="absolute h-[75px]")
     div(class="absolute h-full w-[80%] overflow-hidden")
       img(:src="ASSETS.webp_paths['settings-button-left-pressed']" draggable="false"
       class="absolute object-left object-cover h-full")
-    div(class="absolute h-full mt-[0.5px] w-[30%] right-0 overflow-hidden")
+    div(class="absolute h-full mt-[1px] w-[30%] right-0 overflow-hidden")
       img(:src="ASSETS.webp_paths['settings-button-right-pressed']" draggable="false"
       class="absolute object-right object-cover h-full")
   div(v-if="!props.pressed")
     div(class="absolute h-full w-[80%] overflow-hidden")
       img(:src="ASSETS.webp_paths['settings-button-left']" draggable="false"
       class="absolute object-left object-cover h-full")
-    div(class="absolute h-full mt-[0.5px] w-[30%] right-0 overflow-hidden")
+    div(class="absolute h-full mt-[1px] w-[30%] right-0 overflow-hidden")
       img(:src="ASSETS.webp_paths['settings-button-right']" draggable="false"
       class="absolute object-right object-cover h-full")
 </template>

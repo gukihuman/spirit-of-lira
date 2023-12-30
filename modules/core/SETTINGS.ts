@@ -67,6 +67,7 @@ class Settings {
             column_section: "double",
             column_index: 0,
             row_index: 0,
+            confirm_index: 0,
         },
     }
     interfaceInputEvents = {
@@ -74,13 +75,13 @@ class Settings {
             toggleFullscreen: "f",
             // toggle backpack: "i",
             "toggle settings": "r",
-            "quit interface": "q",
+            "go back interface": "q",
         },
         gamepad: {
             toggleFullscreen: "Start",
             // toggle backpack: "B",
             "toggle settings": "Menu",
-            "quit interface": "B",
+            "go back interface": "B",
             "resolve setting action": "A",
             "go down": "Down",
             "go up": "Up",
@@ -152,7 +153,7 @@ class Settings {
             },
             Close: {
                 type: "hotkey",
-                events: ["close novel", "quit interface"],
+                events: ["close novel", "go back interface"],
             },
             Cast: {
                 type: "hotkey",
@@ -186,7 +187,7 @@ class Settings {
             },
             Close: {
                 type: "hotkey",
-                events: ["close novel", "quit interface"],
+                events: ["close novel", "go back interface"],
             },
             Cast: {
                 type: "hotkey",
@@ -522,8 +523,19 @@ class Settings {
                 this.echo.focus.column_index = 0
             }
         }
+        const confirm_left_right_the_same = () => {
+            if (this.echo.focus.confirm_index) {
+                this.echo.focus.confirm_index = 0
+            } else {
+                this.echo.focus.confirm_index = 1
+            }
+        }
         EVENTS.onSingle("go left", () => {
-            TIME.cancel(left_time_token)
+            TIME.cancel(left_time_token) // its better to reset with any press
+            if (CONTEXT.echo.confirm) {
+                confirm_left_right_the_same()
+                return
+            }
             if (this.echo.focus.column_section === "double") {
                 left_right_the_same()
             } else {
@@ -552,7 +564,11 @@ class Settings {
             }
         })
         EVENTS.onSingle("go right", () => {
-            TIME.cancel(right_time_token)
+            TIME.cancel(right_time_token) // its better to reset with any press
+            if (CONTEXT.echo.confirm) {
+                confirm_left_right_the_same()
+                return
+            }
             if (this.echo.focus.column_section === "double") {
                 left_right_the_same()
             } else {
@@ -581,6 +597,7 @@ class Settings {
             }
         })
         EVENTS.onSingle("go down", () => {
+            if (CONTEXT.echo.confirm) return
             this.echo.focus.row_index++
             if (this.echo.focus.row_index > max_setting_index) {
                 this.echo.focus.row_index = 0
@@ -594,6 +611,7 @@ class Settings {
             }
         })
         EVENTS.onSingle("go up", () => {
+            if (CONTEXT.echo.confirm) return
             this.echo.focus.row_index--
             if (this.echo.focus.row_index < 0) {
                 if (this.context !== "general") {
@@ -611,6 +629,7 @@ class Settings {
             }
         })
         EVENTS.onSingle("switch tab left", () => {
+            if (CONTEXT.echo.confirm) return
             if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
                 this.echo.show_message = ""
                 TIME.cancel(show_message_time_token)
@@ -623,6 +642,7 @@ class Settings {
             }
         })
         EVENTS.onSingle("switch tab right", () => {
+            if (CONTEXT.echo.confirm) return
             if (CONTEXT.echo.settings || !SETTINGS.editHotkeyMode) {
                 this.echo.show_message = ""
                 TIME.cancel(show_message_time_token)
@@ -636,6 +656,11 @@ class Settings {
         })
         EVENTS.onSingle("resolve setting action", () => {
             if (!CONTEXT.echo.settings) return
+            if (CONTEXT.echo.confirm) {
+                if (this.echo.focus.confirm_index === 0) CONFIRM.echo.left_fn()
+                else CONFIRM.echo.right_fn()
+                return
+            }
             if (SETTINGS.echo.focus.column_section === "center") return
             let column = "left_column"
             const column_index = SETTINGS.echo.focus.column_index
@@ -647,15 +672,16 @@ class Settings {
             const key_of_row = _.keys(setting[column])[row_index]
             const action = setting[column][key_of_row]
             if (!action) return
-            if (action.type === "button") {
+            if (action.type === "button" && !this.echo.button_pressed) {
                 EVENTS.emitSingle(action.event)
-                SETTINGS.echo.button_pressed = true
-                TIME.after(300, () => {
-                    SETTINGS.echo.button_pressed = false
-                })
+                this.echo.button_pressed = true
+                TIME.after(300, () => (this.echo.button_pressed = false))
             } else if (action.type === "trigger") {
-                SETTINGS.echo.general[action.prop] =
-                    !SETTINGS.echo.general[action.prop]
+                if (action.prop === "patreon_access") {
+                    this.resolve_patreon_access()
+                } else {
+                    g.toggle(this.echo.general, action.prop)
+                }
             } else {
                 if (
                     this.context === "keyboard" &&
@@ -673,6 +699,14 @@ class Settings {
                 }
             }
         })
+    }
+    resolve_patreon_access() {
+        if (!SETTINGS.echo.general.patreon_access) {
+            CONTEXT.echo.confirm = true
+            CONFIRM.echo.text = "Please provide access key:"
+        } else {
+            SETTINGS.echo.general.patreon_access = false
+        }
     }
     emitEvents() {
         INPUT.keyboard.justPressed.forEach((key, i) => {

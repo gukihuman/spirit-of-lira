@@ -1,5 +1,8 @@
 <template lang="pug">
-div(class="absolute relative top-[950px] left-[520px]")
+div(
+    class="absolute relative top-[950px] left-[520px]"
+    :class="{ 'blur': CONTEXT.echo.confirm }"
+)
     img(:src="ASSETS.webp_paths['bars-panel-bg']" class="absolute" draggable="false")
     img(
         v-show="HERO.ent.STATE && HERO.ent.STATE.active !== 'dead'"

@@ -3,6 +3,7 @@ div(
     mark="settings"
     v-show="CONTEXT.echo.settings"
     class="relative z-[100]"
+    :class="{ 'blur': CONTEXT.echo.confirm }"
 )
     div(
         mark="dim"
@@ -13,12 +14,12 @@ div(
         mark="bg"
         draggable="false"
         :src="ASSETS.webp_paths['settings-bg']"
-        class="z-[100] left-[312px] top-[85px] absolute object-none w-[1280px] h-[815px]"
+        class="z-[100] left-[312px] top-[115px] absolute object-none w-[1280px] h-[815px]"
         style="object-position: 48% 33%"
     )
     div(
         mark="tabs"
-        class="flex justify-center items-center w-[1165px] h-[85px] left-[360px] top-[145px] absolute z-[120]"
+        class="flex justify-center items-center w-[1165px] h-[85px] left-[360px] top-[175px] absolute z-[120]"
     )
         settings-tab(
             v-for="(context, i) in SETTINGS.context_list"
@@ -33,16 +34,16 @@ div(
         hotkey-icon(
             static="LB"
             :hueAffected="false"
-            class="left-[390px] top-[145px]"
+            class="left-[390px] top-[175px]"
         )
         hotkey-icon(
             static="RB"
             :hueAffected="false"
-            class="left-[1450px] top-[145px]"
+            class="left-[1450px] top-[175px]"
         )
     div(
         mark="panel"
-        class="z-[100] absolute w-[1150px] h-[580px] top-[240px] left-[372px]"
+        class="z-[100] absolute w-[1150px] h-[580px] top-[270px] left-[372px]"
     )
         tn( type="swipe" ): settings-panel( tab="general" )
         tn( type="swipe" ): settings-panel( tab="keyboard" )

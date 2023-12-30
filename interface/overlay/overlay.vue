@@ -2,13 +2,15 @@
 div(
     class="absolute z-0 overflow-hidden w-full h-full"
     v-show="CONTEXT.echo.world"
+    :class="{ 'blur': CONTEXT.echo.confirm }"
 )
     div( v-show="!CONTEXT.echo.interface" )
         float-damage( v-if="INTERFACE.floatDamage" )
         tn: talk( v-show="INTERFACE.talk" )
         tn: reset( v-show="GLOBAL.reset" )
+    div( :class="{ 'blur-[3px]': CONTEXT.echo.interface }" )
         tn( type="fast" ): target( v-show="INTERFACE.target" )
-    bars-panel
+        bars-panel
     div(
         mark="gamepad-icon"
         v-if="GLOBAL.lastActiveDevice === 'gamepad'"
