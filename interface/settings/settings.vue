@@ -28,7 +28,7 @@ div(
         )
     tn: div(
         mark="tab switch gamepad icons"
-        v-if="GLOBAL.lastActiveDevice === 'gamepad'"
+        v-if="GLOBAL.lastActiveDevice === 'gamepad' && SETTINGS.echo.showKeys"
         class="z-[150] relative"
     )
         hotkey-icon(

@@ -47,8 +47,8 @@ class Settings {
     }
     echo = {
         general: {
-            music: 0,
-            sound: 0.3,
+            music: 0.8,
+            sound: 0.8,
             autoAttackNext: false,
             attackBack: true,
             showKeys: true,

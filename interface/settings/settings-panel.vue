@@ -56,7 +56,7 @@ div(
                 mark="row"
                 v-for="(object, name, row_index) in column" :key="row_index"
                 class="w-[580px] h-[90px]"
-                :class="{ 'mt-[10px]': object.type === 'button', 'mt-[120px]': object.type === 'button' && CONTEXT.echo.settings !== 'general' }"
+                :class="{ 'mt-[10px]': object.type === 'button', 'mt-[100px]': object.type === 'button' && CONTEXT.echo.settings !== 'general' }"
             )
                 tn: settings-frame(
                     class="mt-[-25px]"
@@ -95,7 +95,7 @@ div(
                         v-if="object.type === 'hotkey'"
                         mark="hotkey-setting"
                         @click="handleClick(column_index, row_index)"
-                        class="absolute w-[60px] h-[60px] left-[385px] top-[42px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
+                        class="absolute w-[60px] h-[60px] left-[385px] top-[46px] flex justify-center pb-[10px] hover:scale-1.4 transition-all duration-150 ease-in-out"
                         :class="button_class"
                     )
                         tn: hotkey-icon(
@@ -130,7 +130,7 @@ div(
 </template>
 <script setup lang="ts">
 const hotkeys_panel_margin = computed(() => {
-    return { "mt-[30px]": CONTEXT.echo.settings !== "general" }
+    return { "mt-[35px]": CONTEXT.echo.settings !== "general" }
 })
 const handle_trigger_click = (prop) => {
     if (prop === "patreon_access") {

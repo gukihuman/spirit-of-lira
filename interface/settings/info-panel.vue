@@ -4,7 +4,7 @@ div(
     v-if="resolve_show_panel"
     class="absolute w-full h-full flex justify-center"
 )
-    div( class="w-full h-[500px] px-[80px] flex flex-col mt-[30px]" )
+    div( class="w-full h-[500px] px-[80px] flex flex-col mt-[20px]" )
         p(
             mark="version"
             class="text-tan font-lilita text-[28px]"
@@ -13,7 +13,7 @@ div(
             mark="text"
             class="text-tan font-semibold mt-[10px] text-[26px] text-justify leading-[40px]"
         ) Hey there! It's Guki, the dev behind the scenes. In this early version, I focused on making the basic game mechanics. Fingers crossed that there's a promising future ahead. I'm lining up items, bows, magic, skills, mobs, locations, and naturally, fresh story events. Keep an eye on my socials for updates.
-    div( class="absolute px-[55px] top-[330px] w-full flex ml-[30px]" )
+    div( class="absolute px-[55px] top-[320px] w-full flex ml-[30px]" )
         info-link( platform="x" class="w-[125px]")
         info-link( platform="discord")
         info-link( platform="patreon")
