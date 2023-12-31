@@ -133,7 +133,7 @@ const hotkeys_panel_margin = computed(() => {
 })
 const handle_trigger_click = (prop) => {
     if (prop === "patreon_access") {
-        SETTINGS.resolve_patreon_access()
+        CONFIRM.resolve_patreon_access()
     } else {
         g.toggle(SETTINGS.echo.general, prop)
     }

@@ -14,22 +14,23 @@ div(
         :src="ASSETS.webp_paths['confirm-bg']"
         class="z-[100] absolute object-none mt-[23px]"
     )
-    div(
-        mark="top line with links"
+    tn: div(
+        v-if="CONFIRM.echo.patreon_mode && CONFIRM.echo.show_content"
+        mark="patreon top line with links"
         class="absolute top-[370px] w-full flex items-center ml-[547px] z-[300]"
     )
         p(
-            mark="text"
-            class="text-tan font-semibold text-[26px] text-justify leading-[40px]"
-        ) Get access key for $5 / month:
+            class="text-tan font-semibold text-[26px] leading-[40px]"
+        ) Get access key for $<span class="ml-[2px]">5</span> / month:
         info-link( platform="patreon")
         info-link( platform="boosty" class="ml-[-30px]")
-    div(
-        class="absolute mt-[400px] ml-[500px] z-[200] w-[880px] h-[170px] px-[30px] flex justify-center gap-[10px] items-center bg-"
+    tn: div(
+        v-if="CONFIRM.echo.patreon_mode && CONFIRM.echo.show_content"
+        class="absolute mt-[400px] ml-[500px] z-[200] w-[880px] h-[170px] px-[30px] flex justify-center gap-[10px] items-center"
     )
         p(
-            mark="text"
-            class="text-tan font-semibold text-[26px] text-justify leading-[40px] mt-[15px]"
+            mark="patreon input left text"
+            class="text-tan font-semibold text-[26px] leading-[40px] mt-[15px]"
         ) Please provide access key:
         input(
             ref="input"
@@ -39,45 +40,60 @@ div(
             @blur="() => CONFIRM.echo.input_focus = false"
             maxlength="16"
         )
-    div(
-        v-for="(button_text, index) in ['OK', 'Cancel']"
-        :key="index"
-        class="absolute ml-[580px] mt-[560px] w-[300px] h-[70px] flex items-center justify-center z-[300]"
-        :class="{ 'ml-[992px]': index === 1 }"
+    tn: div(
+        mark="regular text"
+        v-if="!CONFIRM.echo.patreon_mode && CONFIRM.echo.show_content"
+        class="absolute mt-[350px] ml-[500px] z-[200] w-[880px] h-[200px] px-[30px] flex flex-col justify-center gap-[0px] items-center"
     )
-        tn: settings-frame(
-            class="mt-[25px]"
-            v-if="resolve_focus(index)" :class="{ 'w-[470px] ml-[50px]': SETTINGS.echo.general.showKeys, 'w-[420px]': !SETTINGS.echo.general.showKeys }"
+        p(
+            class="text-tan font-semibold text-[26px] text-center leading-[40px] mt-[15px] text-justify"
+        ) {{ CONFIRM.echo.text }}
+        p(
+            class="text-tan font-semibold text-[26px] text-center leading-[40px] mt-[15px]"
+        ) {{ CONFIRM.echo.text_2 }}
+    div(
+        v-for="(button_text, index) in CONFIRM.echo.button_texts"
+        :key="index"
+        class="absolute ml-[580px] mt-[560px] w-[300px] h-[70px] z-[300]"
+        :class="{ 'ml-[992px]': index === 1, 'ml-[790px] mt-[540px]': index === 1 && !CONFIRM.echo.double_button }"
+    )
+        tn: div(
+            class="w-full h-full flex justify-center items-center"
+            v-show="(CONFIRM.echo.double_button || index === 1) && CONFIRM.echo.show_content"
         )
-        tn: hotkey-icon(
-            mark="gamepad action key"
-            :hueAffected="false"
-            inputEvent="resolve setting action"
-            class="top-[21px] left-[288px]"
-            v-if="resolve_focus(index) && SETTINGS.echo.general.showKeys && GLOBAL.lastActiveDevice === 'gamepad'"
-        )
-        div( class="absolute w-[200px] h-fit z-[10] flex justify-center" )
-            setting-button-bg(
-                class="z-[-10] w-[max(calc(100%+58px),200px)] scale-[1.1]"
-                :pressed="resolve_pressed(index)"
+            tn: settings-frame(
+                class="mt-[30px]"
+                v-if="resolve_focus(index)" :class="{ 'w-[470px] ml-[50px]': SETTINGS.echo.general.showKeys, 'w-[420px]': !SETTINGS.echo.general.showKeys }"
             )
-            p(
-                mark="pressed button title light"
-                v-show="resolve_pressed(index)"
-                class="absolute blur-[3px] opacity-[0.5] text-[22px] font-bold pointers-events-none z-[20] text-tan"
-                :class="text_class()"
-            ) {{ button_text }}
-            p(
-                mark="setting name"
-                class="text-[22px] font-bold pointers-events-none z-[20] text-tan"
-                :class="text_class()"
-            ) {{ button_text }}
-            tn( type="fast" ): div(
-                mark="front clickable container"
-                @click="handle_click(index)"
-                class="absolute w-[250px] rounded-3xl mt-[10px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out z-[20]"
-                :class="SETTINGS.echo.button_pressed ? 'h-[50px]' : 'h-[52px]'"
+            tn: hotkey-icon(
+                mark="gamepad action key"
+                :hueAffected="false"
+                inputEvent="resolve setting action"
+                class="top-[24px] left-[288px]"
+                v-if="resolve_focus(index) && SETTINGS.echo.general.showKeys && GLOBAL.lastActiveDevice === 'gamepad'"
             )
+            div( class="absolute w-[200px] h-fit z-[10] flex justify-center" )
+                setting-button-bg(
+                    class="z-[-10] w-[max(calc(100%+58px),200px)] scale-[1.1]"
+                    :pressed="resolve_pressed(index)"
+                )
+                p(
+                    mark="pressed button title light"
+                    v-show="resolve_pressed(index)"
+                    class="absolute blur-[3px] opacity-[0.5] text-[22px] font-bold pointers-events-none z-[20] text-tan"
+                    :class="text_class()"
+                ) {{ button_text }}
+                p(
+                    mark="setting name"
+                    class="text-[22px] font-bold pointers-events-none z-[20] text-tan"
+                    :class="text_class()"
+                ) {{ button_text }}
+                tn( type="fast" ): div(
+                    mark="front clickable container"
+                    @click="handle_click(index)"
+                    class="absolute w-[250px] rounded-3xl mt-[10px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out z-[20]"
+                    :class="SETTINGS.echo.button_pressed ? 'h-[50px]' : 'h-[52px]'"
+                )
 </template>
 <script setup lang="ts">
 const resolve_focus = computed(() => {
@@ -118,6 +134,7 @@ const input: any = ref(null)
 const handle_input = () => {
     CONFIRM.echo.input = input.value.value
 }
+onMounted(() => (REFS.input = input))
 </script>
 <style>
 ::selection {

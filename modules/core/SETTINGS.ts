@@ -67,7 +67,7 @@ class Settings {
             column_section: "double",
             column_index: 0,
             row_index: 0,
-            confirm_index: 0,
+            confirm_index: 1,
         },
     }
     interfaceInputEvents = {
@@ -532,7 +532,7 @@ class Settings {
         }
         EVENTS.onSingle("go left", () => {
             TIME.cancel(left_time_token) // its better to reset with any press
-            if (CONTEXT.echo.confirm) {
+            if (CONTEXT.echo.confirm && CONFIRM.echo.double_button) {
                 confirm_left_right_the_same()
                 return
             }
@@ -565,7 +565,7 @@ class Settings {
         })
         EVENTS.onSingle("go right", () => {
             TIME.cancel(right_time_token) // its better to reset with any press
-            if (CONTEXT.echo.confirm) {
+            if (CONTEXT.echo.confirm && CONFIRM.echo.double_button) {
                 confirm_left_right_the_same()
                 return
             }
@@ -672,13 +672,14 @@ class Settings {
             const key_of_row = _.keys(setting[column])[row_index]
             const action = setting[column][key_of_row]
             if (!action) return
-            if (action.type === "button" && !this.echo.button_pressed) {
+            if (action.type === "button") {
+                if (this.echo.button_pressed) return
                 EVENTS.emitSingle(action.event)
                 this.echo.button_pressed = true
                 TIME.after(300, () => (this.echo.button_pressed = false))
             } else if (action.type === "trigger") {
                 if (action.prop === "patreon_access") {
-                    this.resolve_patreon_access()
+                    CONFIRM.resolve_patreon_access()
                 } else {
                     g.toggle(this.echo.general, action.prop)
                 }
@@ -699,14 +700,6 @@ class Settings {
                 }
             }
         })
-    }
-    resolve_patreon_access() {
-        if (!SETTINGS.echo.general.patreon_access) {
-            CONTEXT.echo.confirm = true
-            CONFIRM.echo.text = "Please provide access key:"
-        } else {
-            SETTINGS.echo.general.patreon_access = false
-        }
     }
     emitEvents() {
         INPUT.keyboard.justPressed.forEach((key, i) => {

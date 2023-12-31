@@ -5,7 +5,7 @@ class Save {
     lastUpdateMS = 0
     preventUpdate = false // for now only when reset in initialized
     init() {
-        const storageSave = this.parseLocal("save") || this.save
+        const storageSave = this.parseLocal("spirit-of-lira-save") || this.save
         this.startSave = {
             version: GLOBAL.version,
             hero: {
@@ -68,7 +68,7 @@ class Save {
             SETTINGS.interfaceInputEvents
         )
         this.save.settings.inputOther = _.cloneDeep(SETTINGS.inputOther)
-        this.stringifyLocal("save", this.save)
+        this.stringifyLocal("spirit-of-lira-save", this.save)
     }
     process() {
         if (LOOP.elapsed > this.lastUpdateMS + this.updatePeriodMS) {
@@ -78,7 +78,7 @@ class Save {
     }
     reset() {
         this.preventUpdate = true
-        this.stringifyLocal("save", SAVE.startSave)
+        this.stringifyLocal("spirit-of-lira-save", SAVE.startSave)
         location.reload()
     }
     private parseLocal(key: string) {
