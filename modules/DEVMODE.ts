@@ -13,14 +13,16 @@ class DevMode {
                 return mobs
             }
 
-            if (INPUT.keyboard.justPressed.includes("z")) {
-                EVENTS.emitSingle("toggleEditMode")
-            }
-            if (INPUT.keyboard.justPressed.includes("k")) {
-                EVENTS.emitSingle("toggleCollision")
-            }
-            if (INPUT.keyboard.justPressed.includes("l")) {
-                console.log(WORLD.hover)
+            if (CONTEXT.echo.gameplay) {
+                if (INPUT.keyboard.justPressed.includes("z")) {
+                    EVENTS.emitSingle("toggleEditMode")
+                }
+                if (INPUT.keyboard.justPressed.includes("k")) {
+                    EVENTS.emitSingle("toggleCollision")
+                }
+                if (INPUT.keyboard.justPressed.includes("l")) {
+                    console.log(WORLD.hover)
+                }
             }
         }
     }

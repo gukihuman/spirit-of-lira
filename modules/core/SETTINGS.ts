@@ -565,7 +565,11 @@ class Settings {
         })
         EVENTS.onSingle("go right", () => {
             TIME.cancel(right_time_token) // its better to reset with any press
-            if (CONTEXT.echo.confirm && CONFIRM.echo.double_button) {
+            if (
+                CONTEXT.echo.confirm &&
+                CONFIRM.echo.double_button &&
+                CONFIRM.echo.show_content
+            ) {
                 confirm_left_right_the_same()
                 return
             }

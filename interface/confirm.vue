@@ -55,7 +55,7 @@ div(
         v-for="(button_text, index) in CONFIRM.echo.button_texts"
         :key="index"
         class="absolute ml-[580px] mt-[560px] w-[300px] h-[70px] z-[300]"
-        :class="{ 'ml-[992px]': index === 1, 'ml-[790px] mt-[540px]': index === 1 && !CONFIRM.echo.double_button }"
+        :class="{ 'ml-[992px]': index === 1, 'ml-[790px]': index === 1 && !CONFIRM.echo.double_button, 'mt-[540px]': CONFIRM.echo.buttons_higher }"
     )
         tn: div(
             class="w-full h-full flex justify-center items-center"

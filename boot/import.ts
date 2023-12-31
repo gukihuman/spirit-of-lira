@@ -13,6 +13,9 @@ export const _ = lodash
 import * as mathjs from "mathjs"
 export const MATHJS = mathjs
 
+import crypto_js from "crypto-js"
+export const CRYPTO_JS = crypto_js
+
 import { v4 } from "uuid"
 const unique: Unique = { string: v4 }
 export const UNIQUE: Unique = unique

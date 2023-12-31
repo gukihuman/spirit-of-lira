@@ -156,8 +156,10 @@ class Target {
         if (minDistance > autoTargetDistance) {
             ent.TARGET.id = undefined
         }
+        if (ent.HERO && CONTEXT.echo.interface) ent.TARGET.id = undefined
     }
     targetByGamepadAxes() {
+        if (CONTEXT.echo.interface) return
         let left_stick_active = LIBRARY.deadZoneExceed(
             SETTINGS.inputOther.gamepad.deadZone,
             INPUT
