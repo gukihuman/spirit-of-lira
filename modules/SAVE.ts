@@ -47,6 +47,18 @@ class Save {
         SETTINGS.inputOther = this.save.settings.inputOther
 
         HERO.reset_final_des() // update final des otherwise hero run at the start
+        EVENTS.onSingle("reset progress", () => {
+            CONTEXT.echo.confirm = true
+            CONFIRM.echo.text =
+                "Your progress will be permanently deleted. After the page refreshes, you're back to the start."
+            CONFIRM.echo.text_2 = "Are you sure about this?"
+            CONFIRM.echo.double_button = true
+            CONFIRM.echo.button_texts = ["OK", "Cancel"]
+            CONFIRM.echo.left_fn = () => {
+                CONTEXT.echo.confirm = false
+                SAVE.reset_progress()
+            }
+        })
     }
     update() {
         if (this.preventUpdate) return
@@ -76,7 +88,7 @@ class Save {
             this.lastUpdateMS = LOOP.elapsed
         }
     }
-    reset() {
+    reset_progress() {
         this.preventUpdate = true
         this.stringifyLocal("spirit-of-lira-save", SAVE.startSave)
         location.reload()

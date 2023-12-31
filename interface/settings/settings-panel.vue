@@ -56,11 +56,11 @@ div(
                 mark="row"
                 v-for="(object, name, row_index) in column" :key="row_index"
                 class="w-[580px] h-[90px]"
-                :class="{ 'mt-[120px]': object.type === 'button' }"
+                :class="{ 'mt-[10px]': object.type === 'button', 'mt-[120px]': object.type === 'button' && CONTEXT.echo.settings !== 'general' }"
             )
                 tn: settings-frame(
                     class="mt-[-25px]"
-                    v-if="resolveFocus(column_index, row_index)" :class="{ 'w-[585px]': object.type !== 'button' && SETTINGS.echo.general.showKeys, 'w-[535px]': object.type !== 'button' && !SETTINGS.echo.general.showKeys , 'w-[460px]': object.type === 'button' && SETTINGS.echo.general.showKeys, 'w-[416px]': object.type === 'button' && !SETTINGS.echo.general.showKeys }"
+                    v-if="!CONTEXT.echo.confirm && resolveFocus(column_index, row_index)" :class="{ 'w-[585px]': object.type !== 'button' && SETTINGS.echo.general.showKeys, 'w-[535px]': object.type !== 'button' && !SETTINGS.echo.general.showKeys , 'w-[460px]': object.type === 'button' && SETTINGS.echo.general.showKeys, 'w-[416px]': object.type === 'button' && !SETTINGS.echo.general.showKeys }"
                 )
                 div( class="absolute w-fit h-fit z-[10] mt-[-25px]" )
                     settings-scroll(
@@ -86,9 +86,10 @@ div(
                     tn( type="fast" ): div(
                         mark="front clickable container"
                         v-show="object.type === 'button'"
+                        @hover="SETTINGS.echo.focus.column_index = column_index; SETTINGS.echo.focus.row_index = row_index"
                         @click="handleButtonClick(column_index, row_index)"
                         class="absolute w-[80%] h-[68%] mt-[-42px] rounded-3xl ml-[92px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out"
-                        :class="SETTINGS.echo.button_pressed ? 'h-[63%]' : 'h-[68%]'"
+                        :class="{'h-[63%]': SETTINGS.echo.button_pressed, 'h-[68%]': !SETTINGS.echo.button_pressed, 'hover:opacity-0': CONTEXT.echo.confirm}"
                     )
                     div(
                         v-if="object.type === 'hotkey'"
@@ -167,6 +168,7 @@ const button_hovered = (column_index, row_index) => {
 }
 const props = defineProps({ tab: { type: String } })
 const handleButtonClick = (column_index, row_index) => {
+    SETTINGS.echo.focus.column_section = "double" // otherwise action not work
     SETTINGS.echo.focus.column_index = column_index
     SETTINGS.echo.focus.row_index = row_index
     EVENTS.emitSingle("resolve setting action")

@@ -15,6 +15,7 @@ class Confirm {
         left_fn: () => {},
         right_fn: () => (CONTEXT.echo.confirm = false),
         patreon_mode: false,
+        button_pressed: false,
     }
     default_echo = _.cloneDeep(this.echo)
     reset() {

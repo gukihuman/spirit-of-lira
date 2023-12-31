@@ -237,6 +237,10 @@ class Settings {
                 type: "trigger",
                 prop: "patreon_access",
             },
+            "Reset Progress": {
+                type: "button",
+                event: "reset progress",
+            },
         },
         right_column: {
             "Hotkeys Icons": {
@@ -661,8 +665,14 @@ class Settings {
         EVENTS.onSingle("resolve setting action", () => {
             if (!CONTEXT.echo.settings) return
             if (CONTEXT.echo.confirm) {
-                if (this.echo.focus.confirm_index === 0) CONFIRM.echo.left_fn()
-                else CONFIRM.echo.right_fn()
+                if (CONFIRM.echo.button_pressed) return
+                CONFIRM.echo.button_pressed = true
+                TIME.after(50, () => {
+                    if (this.echo.focus.confirm_index === 0)
+                        CONFIRM.echo.left_fn()
+                    else CONFIRM.echo.right_fn()
+                    TIME.after(100, () => (CONFIRM.echo.button_pressed = false))
+                })
                 return
             }
             if (SETTINGS.echo.focus.column_section === "center") return
@@ -678,9 +688,11 @@ class Settings {
             if (!action) return
             if (action.type === "button") {
                 if (this.echo.button_pressed) return
-                EVENTS.emitSingle(action.event)
                 this.echo.button_pressed = true
-                TIME.after(300, () => (this.echo.button_pressed = false))
+                TIME.after(50, () => {
+                    EVENTS.emitSingle(action.event)
+                    TIME.after(100, () => (this.echo.button_pressed = false))
+                })
             } else if (action.type === "trigger") {
                 if (action.prop === "patreon_access") {
                     CONFIRM.resolve_patreon_access()

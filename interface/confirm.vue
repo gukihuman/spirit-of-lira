@@ -81,18 +81,18 @@ div(
                     mark="pressed button title light"
                     v-show="resolve_pressed(index)"
                     class="absolute blur-[3px] opacity-[0.5] text-[22px] font-bold pointers-events-none z-[20] text-tan"
-                    :class="text_class()"
+                    :class="text_class(index)"
                 ) {{ button_text }}
                 p(
                     mark="setting name"
                     class="text-[22px] font-bold pointers-events-none z-[20] text-tan"
-                    :class="text_class()"
+                    :class="text_class(index)"
                 ) {{ button_text }}
                 tn( type="fast" ): div(
                     mark="front clickable container"
                     @click="handle_click(index)"
                     class="absolute w-[250px] rounded-3xl mt-[10px] bg-tan opacity-0 hover:opacity-[0.1] hover:saturate-[3.5] blur-[2px] transition-opacity duration-[100ms] ease-in-out z-[20]"
-                    :class="SETTINGS.echo.button_pressed ? 'h-[50px]' : 'h-[52px]'"
+                    :class="CONFIRM.echo.button_pressed ? 'h-[50px]' : 'h-[52px]'"
                 )
 </template>
 <script setup lang="ts">
@@ -104,29 +104,28 @@ const resolve_focus = computed(() => {
 const resolve_pressed = computed(() => {
     return (index) => {
         return (
-            SETTINGS.echo.button_pressed &&
+            CONFIRM.echo.button_pressed &&
             index === SETTINGS.echo.focus.confirm_index
         )
     }
 })
 const handle_click = (index) => {
-    SETTINGS.echo.button_pressed = true
+    CONFIRM.echo.button_pressed = true
     SETTINGS.echo.focus.confirm_index = index
-    TIME.after(150, () => {
+    TIME.after(50, () => {
         if (index === 0) CONFIRM.echo.left_fn()
         else CONFIRM.echo.right_fn()
-        SETTINGS.echo.button_pressed = false
+        TIME.after(100, () => (CONFIRM.echo.button_pressed = false))
     })
 }
 const text_class = computed(() => {
-    return () => {
+    return (index) => {
         const pressed =
-            // SETTINGS.echo.focus.column_index === column_index &&
-            // SETTINGS.echo.focus.row_index === row_index &&
-            SETTINGS.echo.button_pressed
+            CONFIRM.echo.button_pressed &&
+            index === SETTINGS.echo.focus.confirm_index
         return {
             "mt-[19px]": !pressed,
-            "mt-[20px]": pressed,
+            "mt-[22px]": pressed,
         }
     }
 })
