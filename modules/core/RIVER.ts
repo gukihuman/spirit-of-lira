@@ -1,7 +1,6 @@
 const waveIntervalMS = 4000
 const fadeDurationMS = 1800
 const opacity_ratio = 0.35
-const blur_ratio = 5
 type Water = {
     POS: { x: number; y: number }
     id?: number
@@ -12,66 +11,28 @@ type Water = {
 }
 class River {
     displacement
-    blur
     water: Water[] = [
         {
             POS: { x: 8370, y: 5190 },
-            last_wave_ms: 100,
+            last_wave_ms: -2000,
             rotate: -0.3,
             scale: 1.3,
         },
         {
-            POS: { x: 8200, y: 5580 },
-            last_wave_ms: -800,
-            rotate: -0.5,
-            scale: 0.9,
-        },
-        {
-            POS: { x: 8170, y: 5920 },
-            last_wave_ms: 300,
-            rotate: -0.3,
-        },
-        {
-            POS: { x: 7980, y: 6320 },
+            POS: { x: 8250, y: 5520 },
             last_wave_ms: -600,
-            rotate: -0.2,
-            scale: 0.9,
+            rotate: -0.4,
+            scale: 1,
         },
         {
-            POS: { x: 7850, y: 6700 },
-            last_wave_ms: 100,
-            rotate: -0.2,
-        },
-        {
-            POS: { x: 7470, y: 7150 },
-        },
-        {
-            POS: { x: 6900, y: 7550 },
-            last_wave_ms: -600,
-            rotate: -0.1,
-            scale: 1.05,
-        },
-        {
-            POS: { x: 6600, y: 7780 },
-            last_wave_ms: 500,
-            rotate: 0.1,
-            scale: 1.08,
-        },
-        // second group
-        {
-            POS: { x: 8300, y: 5350 },
-            last_wave_ms: -1300,
-            rotate: -0.3,
-        },
-        {
-            POS: { x: 8220, y: 5800 },
+            POS: { x: 8200, y: 5800 },
             last_wave_ms: -2500,
             rotate: -0.4,
         },
         {
             POS: { x: 8000, y: 6200 },
-            last_wave_ms: -1900,
-            scale: 0.9,
+            last_wave_ms: -200,
+            scale: 1.0,
         },
         {
             POS: { x: 7930, y: 6550 },
@@ -79,8 +40,16 @@ class River {
             rotate: -0.3,
         },
         {
+            POS: { x: 7850, y: 6700 },
+            last_wave_ms: -500,
+            rotate: -0.2,
+        },
+        {
             POS: { x: 7630, y: 7000 },
             last_wave_ms: -1900,
+        },
+        {
+            POS: { x: 7470, y: 7150 },
         },
         {
             POS: { x: 7220, y: 7360 },
@@ -89,16 +58,28 @@ class River {
             scale: 1.05,
         },
         {
-            POS: { x: 6790, y: 7630 },
+            POS: { x: 6900, y: 7550 },
+            last_wave_ms: -600,
             rotate: -0.1,
-            last_wave_ms: -1700,
             scale: 1.05,
         },
         {
-            POS: { x: 6360, y: 7930 },
+            POS: { x: 6790, y: 7630 },
+            rotate: -0.1,
+            last_wave_ms: -2100,
+            scale: 1.05,
+        },
+        {
+            POS: { x: 6600, y: 7780 },
+            last_wave_ms: 500,
+            rotate: 0.1,
+            scale: 1.08,
+        },
+        {
+            POS: { x: 6360, y: 7945 },
             rotate: 0.4,
-            last_wave_ms: -2500,
-            scale: 1,
+            last_wave_ms: -1700,
+            scale: 0.95,
         },
     ]
     async init() {
@@ -109,8 +90,6 @@ class River {
         this.displacement = new PIXI.filters.DisplacementFilter(
             displacementSprite
         )
-        this.blur = new PIXI.filters.BlurFilter()
-        this.blur.blur = blur_ratio
         this.displacement.scale.x = 25
         this.displacement.scale.y = 25
         for (const instance of this.water) {
@@ -122,7 +101,7 @@ class River {
             if (!container) return
             WORLD.sortable.removeChild(container)
             WORLD.ground.addChild(container)
-            container.filters = [this.displacement, this.blur]
+            container.filters = [this.displacement]
             const scale = { x: 1.15, y: 1.15 }
             if (instance.scale) {
                 scale.x = instance.scale
