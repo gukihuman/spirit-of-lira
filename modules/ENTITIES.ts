@@ -1,5 +1,6 @@
 class Entities {
     collection = {
+        "water-1": {},
         lira: {
             HERO: true,
             POS: { x: 6588, y: 6891 },
