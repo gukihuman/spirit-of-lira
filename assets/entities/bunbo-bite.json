@@ -1,0 +1,63 @@
+{"frames": {
+
+"bunbo-bite0000.png":
+{
+	"frame": {"x":63,"y":79,"w":39,"h":43},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":43,"w":39,"h":43},
+	"sourceSize": {"w":122,"h":125}
+},
+"bunbo-bite0001.png":
+{
+	"frame": {"x":131,"y":54,"w":52,"h":65},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":40,"y":31,"w":52,"h":65},
+	"sourceSize": {"w":122,"h":125}
+},
+"bunbo-bite0002.png":
+{
+	"frame": {"x":1,"y":85,"w":27,"h":29},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":54,"w":27,"h":29},
+	"sourceSize": {"w":122,"h":125}
+},
+"bunbo-bite0003.png":
+{
+	"frame": {"x":131,"y":1,"w":51,"h":71},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":38,"y":29,"w":51,"h":71},
+	"sourceSize": {"w":122,"h":125}
+},
+"bunbo-bite0004.png":
+{
+	"frame": {"x":1,"y":1,"w":60,"h":82},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":31,"y":24,"w":60,"h":82},
+	"sourceSize": {"w":122,"h":125}
+},
+"bunbo-bite0005.png":
+{
+	"frame": {"x":63,"y":1,"w":66,"h":76},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":29,"w":66,"h":76},
+	"sourceSize": {"w":122,"h":125}
+}},
+"animations": {
+	"bunbo-bite": ["bunbo-bite0000.png","bunbo-bite0001.png","bunbo-bite0002.png","bunbo-bite0003.png","bunbo-bite0004.png","bunbo-bite0005.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bunbo-bite.webp",
+	"format": "RGBA8888",
+	"size": {"w":203,"h":119},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:49a64eef7081f07873d2633beb6485d9:18fe03e4d35b38e1c11e4bffe0ed4bb0:c7c6e1508c5d5965f8eb872a15705fa4$"
+}
+}

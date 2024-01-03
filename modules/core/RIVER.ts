@@ -14,7 +14,7 @@ class River {
     water: Water[] = [
         {
             POS: { x: 8370, y: 5190 },
-            last_wave_ms: -2000,
+            last_wave_ms: -2400,
             rotate: -0.3,
             scale: 1.3,
         },
@@ -26,7 +26,7 @@ class River {
         },
         {
             POS: { x: 8200, y: 5800 },
-            last_wave_ms: -2500,
+            last_wave_ms: -2150,
             rotate: -0.4,
         },
         {

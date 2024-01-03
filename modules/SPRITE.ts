@@ -106,6 +106,7 @@ class Spr {
             return
         }
         const container = new PIXI.Container()
+        container.name = String(ent.id)
         const parentLayer = this.getLayer(ent.TARGET.id, parentLayerName)
         if (!parentLayer) return
         parentLayer.addChild(container)

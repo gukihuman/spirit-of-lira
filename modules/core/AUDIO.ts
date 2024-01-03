@@ -1,6 +1,6 @@
 import { Howl, Howler } from "howler"
 type AudioObject = { [Token: string]: Howl }
-const sound_amplifier = 1.5
+const sound_amplifier = 1.7
 const music_amplifier = 1.3
 const silence_time = 50 // average silence between music at world.gameplay
 let world_welcome_music_played = false

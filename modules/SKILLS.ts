@@ -25,6 +25,8 @@ class Skills {
         castStartMS: Infinity,
         castAndDelayMS: Infinity, // includes delay after cast logic
         delayedLogicDone: true,
+        pre_cast_logic_done: false,
+        was_visual_effect: false,
         audioDone: false,
         attackSoundTimeId: undefined,
         // 📜 maybe move somewhere else

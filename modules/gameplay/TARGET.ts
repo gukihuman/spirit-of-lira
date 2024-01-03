@@ -110,6 +110,7 @@ class Target {
                 }
 
                 // work on all entities and hero with gamepad
+                if (ent.HERO && HERO.ent.STATE.active === "dead") return
                 this.autoTarget(ent, id)
             }
         })
@@ -159,6 +160,7 @@ class Target {
         if (ent.HERO && CONTEXT.echo.interface) ent.TARGET.id = undefined
     }
     targetByGamepadAxes() {
+        if (HERO.ent.STATE.active === "dead") return
         if (CONTEXT.echo.interface) return
         let left_stick_active = LIBRARY.deadZoneExceed(
             SETTINGS.inputOther.gamepad.deadZone,

@@ -1,5 +1,6 @@
 class Damage {
     deal(ent, id, skill) {
+        if (!ent.TARGET.id && ent.STATE.active !== "cast") return
         let damage = skill.damage
         if (ent.HERO) {
             let weaponDamage = 0

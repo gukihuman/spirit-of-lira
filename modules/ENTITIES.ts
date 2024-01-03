@@ -9,12 +9,12 @@ class Entities {
             SKILLS: {
                 modify: {
                     attack: {
-                        firstCastMS: 900,
+                        firstCastMS: 700,
                     },
                 },
             },
             SPRITE: {
-                startFrames: { idle: 11, walk: 8, run: 4, "attack-sword": 14 },
+                startFrames: { idle: 11, walk: 8, run: 4, "attack-sword": 16 },
                 effectHeightRatio: 0.45,
                 effectWidthRatio: 0.25,
             },
@@ -22,6 +22,7 @@ class Entities {
                 health: 20,
                 healthMax: 20,
                 healthRegen: 0.2,
+                attackSpeed: 1,
             },
         },
         bunbo: {

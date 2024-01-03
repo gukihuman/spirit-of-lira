@@ -1,5 +1,6 @@
 class Hover {
     process() {
+        if (HERO.ent.STATE.active === "dead") return
         if (GLOBAL.lastActiveDevice === "gamepad") return
         const point = COORD.mouseOfScreen()
         const heroPOS = HERO.ent.POS

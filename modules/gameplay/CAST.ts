@@ -1,3 +1,4 @@
+const pre_cast_urge = 250
 // no damage if target go away based on skill distance
 class Cast {
     attackSoundTimeIds: any = []
@@ -72,18 +73,26 @@ class Cast {
         this.castLogic(ent, id, skill)
         ent.SKILLS.firstCastState = false
     }
-    private castLogic(ent, id, skill) {
-        if (!ent.TARGET.id || ent.STATE.active !== "cast") return
+    private pre_cast_logic(ent, id, skill) {
         if (TRACK.inRange(ent, skill.distance, 3)) {
             this.createCastEffectSprite(ent, id)
-            if (skill.offensive) DAMAGE.deal(ent, id, skill)
+            ent.SKILLS.was_visual_effect = true
         }
+        ent.SKILLS.pre_cast_logic_done = true
+    }
+    private castLogic(ent, id, skill) {
+        if (!ent.TARGET.id || ent.STATE.active !== "cast") return
         if (skill.revenge) this.revengeLogic(ent, id, skill)
+        if (skill.offensive && ent.SKILLS.was_visual_effect) {
+            DAMAGE.deal(ent, id, skill)
+        }
         const targetHealth = ent.TARGET.ent.ATTRIBUTES.health
         if (targetHealth <= 0) this.targetDiesLogic(ent, id)
         if (skill.logic) skill.logic(ent, id)
         ent.SKILLS.castAndDelayMS = LOOP.elapsed + skill.delayMS
         ent.SKILLS.delayedLogicDone = false
+        ent.SKILLS.pre_cast_logic_done = false
+        ent.SKILLS.was_visual_effect = false
     }
     private delayedLogic(ent, id, skill) {
         ent.SKILLS.delayedLogicDone = true
@@ -163,6 +172,13 @@ class Cast {
                 ent.SKILLS.castAndDelayMS =
                     LOOP.elapsed - skill.castMS + skill.firstCastMS
                 ent.SKILLS.firstCastState = true
+            }
+            if (
+                !ent.SKILLS.pre_cast_logic_done &&
+                elapsed >
+                    ent.SKILLS.castAndDelayMS + skill.castMS - pre_cast_urge
+            ) {
+                this.pre_cast_logic(ent, id, skill)
             }
             if (elapsed > ent.SKILLS.castAndDelayMS + skill.castMS) {
                 if (
