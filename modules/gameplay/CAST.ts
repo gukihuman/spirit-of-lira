@@ -1,3 +1,5 @@
+import { ATTACK_SPEED } from "./ATTACK_SPEED"
+
 const pre_cast_urge = 250
 // no damage if target go away based on skill distance
 class Cast {
@@ -202,24 +204,8 @@ class Cast {
                 this.delayedLogic(ent, id, skill)
                 ent.SKILLS.audioDone = false
             }
-            this.updateAnimationSpeed(ent, id)
+            ATTACK_SPEED.updateAnimationSpeed(ent, id)
         })
-    }
-    private updateAnimationSpeed(ent, id) {
-        let sprite
-        if (ent.HERO) {
-            // "attack-sword"
-            const spriteName = SPRITE_UPDATE.getHeroCastSprite(
-                HERO.ent,
-                HERO.id
-            )
-            sprite = SPRITE.getAnimation(HERO.id, spriteName)
-        } else {
-            sprite = SPRITE.getAnimation(id, "attack")
-        }
-        if (!sprite) return
-        sprite.animationSpeed =
-            (1 / (CONFIG.max_fps / 10)) * ent.ATTRIBUTES.attackSpeed
     }
     private playAudioEffect(ent) {
         let soundId: any

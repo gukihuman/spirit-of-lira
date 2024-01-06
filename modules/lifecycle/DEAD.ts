@@ -1,4 +1,4 @@
-const reset_time_delay = 5000
+const reset_time_delay = 3000
 class Dead {
     init() {
         EVENTS.onSingle("reset", () => {
