@@ -1,26 +1,24 @@
 <template lang="pug">
 div(
-  class="absolute w-[120px] hover:brightness-[1.15] transition duration-150 ease-in-out"
-  :style="style"
-)
-  div(
-    class="relative flex justify-center items-center hover:scale-[1.05] transition duration-150 ease-in-out h-[80px]"
-    @click="TALK.emit()"
+    class="absolute w-fit h-fit z-[10] hover:brightness-[1.15] transition duration-150 ease-in-out"
+    :style="style"
     @mouseover="INTERFACE.buttonHover = true"
     @mouseleave="INTERFACE.buttonHover = false"
+    @click="TALK.emit()"
+)
+    talk-bg(
+        class="z-[-10] ml-[0px] w-[calc(100%-0px)] scale-[1.1] contrast-[0.9]"
     )
-    img(
-      :src="ASSETS.webp_paths.talk"
-      draggable="false"
-      class="absolute object-none"
-    )
-    p(class="absolute z-10 text-tan text-[25px] font-semibold mb-2 points-events-none") Talk
-  hotkey-icon(class="top-[30px] left-[87px]" inputEvent="talk")
+    p(
+        mark="setting name"
+        class="mx-[40px] my-[16px] text-[25px] font-semibold pointers-events-none z-[20] text-tan"
+    ) Talk
+    hotkey-icon(class="top-[38px] left-[87px]" inputEvent="talk")
 </template>
 <script setup lang="ts">
 const style = computed(() => {
     return {
-        left: INTERFACE.talkPOS.x + "px",
+        left: INTERFACE.talkPOS.x + 80 + "px",
         top: INTERFACE.talkPOS.y + "px",
     }
 })

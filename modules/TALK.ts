@@ -1,6 +1,6 @@
 class Talk {
     component = {
-        distance: 200,
+        distance: 320,
         scene: "",
         instantChoices: true, // maybe, just maybe some talk without it :)
         x: -60,
@@ -9,9 +9,12 @@ class Talk {
     updatePOS = false
     talkEntity
     process() {
+        let min_dist = Infinity
         MUSEUM.process_entity(["TALK"], (ent) => {
-            if (COORD.distance(ent.POS, HERO.ent.POS) < ent.TALK.distance) {
+            const dist = COORD.distance(ent.POS, HERO.ent.POS)
+            if (dist < min_dist) {
                 this.talkEntity = ent
+                min_dist = dist
             }
         })
         if (!this.talkEntity) return
@@ -21,11 +24,12 @@ class Talk {
         ) {
             INTERFACE.talk = true
             this.updatePOS = true
-            this.debouncedTurnOff()
+            // this.debouncedTurnOff()
         } else {
             INTERFACE.talk = false
         }
-        if (this.updatePOS) {
+        // if (this.updatePOS) {
+        if (true) {
             INTERFACE.talkEntity = this.talkEntity.name
             INTERFACE.talkPOS = {
                 x:
@@ -49,6 +53,7 @@ class Talk {
         EVENTS.onSingle("talk", () => this.emit())
     }
     emit() {
+        if (!INTERFACE.talk) return
         if (!this.talkEntity) return
         if (HERO.ent.STATE.active === "dead") return
         if (GLOBAL.sceneContextChangedMS + 1000 > LOOP.elapsed) return

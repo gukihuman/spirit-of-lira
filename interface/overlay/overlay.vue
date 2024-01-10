@@ -6,7 +6,8 @@ div(
 )
     div( v-show="!CONTEXT.echo.interface" )
         float-damage( v-if="INTERFACE.floatDamage" )
-        tn: talk( v-show="INTERFACE.talk" )
+        tn: exclamation-mark
+        //- tn: talk( v-show="INTERFACE.talk" )
         tn: reset( v-show="GLOBAL.reset" )
     div( :class="{ 'blur-[3px]': CONTEXT.echo.interface }" )
         tn( type="fast" ): target( v-show="INTERFACE.target" )

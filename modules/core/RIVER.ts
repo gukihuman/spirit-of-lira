@@ -1,6 +1,6 @@
 const waveIntervalMS = 4000
 const fadeDurationMS = 1800
-const opacity_ratio = 0.45
+const opacity_ratio = 0.55
 type Water = {
     POS: { x: number; y: number }
     id?: number
@@ -50,7 +50,7 @@ class River {
             scale: 1.0,
         },
         {
-            POS: { x: 7470, y: 7150 },
+            POS: { x: 7570, y: 7050 },
         },
         {
             POS: { x: 7190, y: 7360 },
