@@ -203,7 +203,6 @@ class Move {
         ent.MOVE.velocity.y =
             ent.MOVE.velocity.y * (1.0 - delta_inertia) +
             velocity_desire.y * delta_inertia
-
         ent.POS.x += ent.MOVE.velocity.x * ratio
         ent.POS.y += ent.MOVE.velocity.y * ratio
     }

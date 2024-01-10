@@ -1,6 +1,6 @@
 const waveIntervalMS = 4000
 const fadeDurationMS = 1800
-const opacity_ratio = 0.35
+const opacity_ratio = 0.45
 type Water = {
     POS: { x: number; y: number }
     id?: number
@@ -30,7 +30,7 @@ class River {
             rotate: -0.4,
         },
         {
-            POS: { x: 8000, y: 6200 },
+            POS: { x: 8040, y: 6170 },
             last_wave_ms: -200,
             scale: 1.0,
         },
@@ -45,23 +45,24 @@ class River {
             rotate: -0.2,
         },
         {
-            POS: { x: 7630, y: 7000 },
+            POS: { x: 7630, y: 6980 },
             last_wave_ms: -1900,
+            scale: 1.0,
         },
         {
             POS: { x: 7470, y: 7150 },
         },
         {
-            POS: { x: 7220, y: 7360 },
+            POS: { x: 7190, y: 7360 },
             rotate: 0.3,
             last_wave_ms: -2600,
-            scale: 1.05,
+            scale: 1,
         },
         {
-            POS: { x: 6900, y: 7550 },
+            POS: { x: 6900, y: 7530 },
             last_wave_ms: -600,
             rotate: -0.1,
-            scale: 1.05,
+            scale: 1,
         },
         {
             POS: { x: 6790, y: 7630 },
@@ -76,7 +77,7 @@ class River {
             scale: 1.08,
         },
         {
-            POS: { x: 6360, y: 7945 },
+            POS: { x: 6360, y: 7915 },
             rotate: 0.4,
             last_wave_ms: -1700,
             scale: 0.95,

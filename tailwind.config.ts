@@ -8,6 +8,8 @@ module.exports = {
                 roboto: ["Roboto Mono"],
                 courgette: ["Courgette"],
                 hat: ["Red Hat Display"],
+                yatra: ["Yatra One"],
+                kaushan: ["Kaushan Script"],
             },
             colors: {
                 tan: "#cfc391",

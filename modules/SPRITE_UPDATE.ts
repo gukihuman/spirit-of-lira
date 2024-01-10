@@ -179,6 +179,9 @@ class SpriteUpdate {
         }
         if (lastEntity.SPRITE.framesValidated >= frames_to_validate) {
             ent.SPRITE.active = sprite
+            if (ent.HERO && ent.SPRITE.active === "idle") {
+                HERO.reset_final_des()
+            }
             return
         }
         ent.SPRITE.framesValidated++
