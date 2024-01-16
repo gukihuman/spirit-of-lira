@@ -2,6 +2,7 @@
 div(
     mark="preload"
     class="opacity-0 absolute z-[999] w-full h-full overflow-hidden pointer-events-none"
+    v-if="!CONTEXT.echo.loading"
 )
     img(
         v-for="(webp_path, i) of exclude_map_paths"
