@@ -13,22 +13,22 @@ export default defineNuxtConfig({
                 autoImports: ["defineStore"],
             },
         ],
-        [
-            "nuxt-electron",
-            {
-                build: [
-                    {
-                        // Main-Process entry file of the Electron App.
-                        entry: "electron/main.mjs",
-                        win: {
-                            icon: "public/favicon.png",
-                        },
+        // [
+        //     "nuxt-electron",
+        //     {
+        //         build: [
+        //             {
+        //                 // Main-Process entry file of the Electron App.
+        //                 entry: "electron/main.mjs",
+        //                 win: {
+        //                     icon: "public/favicon.png",
+        //                 },
 
-                        extraResources: [".output/server/**"],
-                    },
-                ],
-            },
-        ],
+        //                 extraResources: [".output/server/**"],
+        //             },
+        //         ],
+        //     },
+        // ],
     ],
     ignore: ["whales/**", "sprout/**"],
     imports: {

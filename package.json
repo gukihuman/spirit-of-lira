@@ -3,31 +3,36 @@
     "name": "spirit-of-lira",
     "version": "0.1.0",
     "build": {
+        "files": [
+            "node_modules/electron/**/*",
+            "node_modules/electron-is-dev/**/*",
+            "node_modules/url/**/*",
+            "electron/main.mjs"
+        ],
         "extraResources": [
-            ".output/server/**"
-        ]
+            ".output/**"
+        ],
+        "win": {
+            "icon": "public/favicon-large.png"
+        }
     },
     "scripts": {
-        "electron": "electron .",
-        "electron-test-pack": "electron-builder --dir",
-        "electron-win-pack": "electron-builder --win",
-        "electron-full-pack": "electron-builder -mw",
         "dev": "nuxt dev",
-        "test": "vitest",
-        "testui": "vitest --ui",
         "build": "nuxt build",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
         "forge": "ts-node forge.ts",
+        "electron": "electron .",
+        "electron-build": "nuxt build && electron-builder --dir",
+        "electron-pack": "electron-builder --dir",
         "sprout": "ssh -i satyr-remix-gukihuman.pem -L 7860:localhost:7860 ubuntu@109.248.175.42",
-        "sprout-send": "scp -i satyr-remix-gukihuman.pem satyr-remix.ipynb ubuntu@109.248.175.42:satyr-remix.ipynb",
-        "sprout-setup": "ssh -i satyr-remix-gukihuman.pem ubuntu@109.248.175.42 \"bash -c 'jupyter nbconvert --execute --to notebook --inplace satyr-remix.ipynb'\"",
-        "sprout-launch": "ssh -t -i satyr-remix-gukihuman.pem -L 7860:localhost:7860 ubuntu@109.248.175.42 \"bash -c 'cd ~/stable-diffusion-webui && python3 launch.py'\"",
         "sprout-clone": "scp -i satyr-remix-gukihuman.pem -r ubuntu@109.248.175.42:~/stable-diffusion-webui/outputs/img2img-images/* ./sprout/",
         "sprout-clean": "ssh -i satyr-remix-gukihuman.pem ubuntu@109.248.175.42 \"bash -c 'cd ~/stable-diffusion-webui/outputs/img2img-images && rm -rf ./*'\"",
         "sprout-clone-2": "scp -i satyr-remix-gukihuman.pem -r ubuntu@109.248.175.42:~/stable-diffusion-webui/outputs/txt2img-images/* ./sprout/",
-        "sprout-clean-2": "ssh -i satyr-remix-gukihuman.pem ubuntu@109.248.175.42 \"bash -c 'cd ~/stable-diffusion-webui/outputs/txt2img-images && rm -rf ./*'\""
+        "sprout-clean-2": "ssh -i satyr-remix-gukihuman.pem ubuntu@109.248.175.42 \"bash -c 'cd ~/stable-diffusion-webui/outputs/txt2img-images && rm -rf ./*'\"",
+        "test": "vitest",
+        "testui": "vitest --ui",
+        "sprout-send": "scp -i satyr-remix-gukihuman.pem satyr-remix.ipynb ubuntu@109.248.175.42:satyr-remix.ipynb",
+        "sprout-setup": "ssh -i satyr-remix-gukihuman.pem ubuntu@109.248.175.42 \"bash -c 'jupyter nbconvert --execute --to notebook --inplace satyr-remix.ipynb'\"",
+        "sprout-launch": "ssh -t -i satyr-remix-gukihuman.pem -L 7860:localhost:7860 ubuntu@109.248.175.42 \"bash -c 'cd ~/stable-diffusion-webui && python3 launch.py'\""
     },
     "devDependencies": {
         "@nuxtjs/tailwindcss": "^6.1.3",
