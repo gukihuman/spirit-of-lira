@@ -8,4 +8,6 @@ desktop.ini
 .nitro
 .cache
 .output
-dist
+releases
+electron-temp
+electron

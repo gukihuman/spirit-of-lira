@@ -3,11 +3,11 @@ class EntitiesStatic {
         // green-forest
         nighty: {
             POS: { x: 6353, y: 6682 },
-            TALK: { x: -65, y: -200, distance: 320, scene: "n0" },
+            TALK: { x: -65, y: -200, distance: 320, scene: "n1-start" },
         },
         bunny: {
             POS: { x: 7880, y: 7408 },
-            // TALK: { x: -50, y: -220, scene: "a0" },
+            // TALK: { x: -50, y: -220, scene: "adult" },
         },
         "low-tree": { POS: { x: 6450, y: 7620 } },
         "low-forest": { POS: { x: 7500, y: 9400 } },

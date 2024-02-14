@@ -51,7 +51,7 @@ class Novel {
     mds_plain_texts: PlainTextsObject = {}
     mds_steps: Steps = {}
     style_adjustments_by_webp: StyleAdjustmentsByWebp = {
-        a0: { x: 610, y: 750, brightness: 1.1 }, // 📜 remove blank dependence
+        adult: { x: 610, y: 750, brightness: 1.1 }, // 📜 remove blank dependence
         "n1-lira-no-light": { hue: -30 },
         "n1-lira-arms-down": { hue: -30 },
         "n1-lira-arms-raised": { hue: -30 },
@@ -83,7 +83,7 @@ class Novel {
     async init() {
         for (const md_file_name in ASSETS.md_paths) {
             const tag = md_file_name.split("-")[0]
-            if (tag === "a0") continue
+            if (tag === "adult") continue
             if (tag.includes("0")) this.menu_scenes.push(tag)
         }
 
@@ -198,7 +198,7 @@ class Novel {
             }
         })
         EVENTS.onSingle("close novel", () => {
-            if (this.echo.active_md === "a0") return // no button but hotkey
+            if (this.echo.active_md === "adult") return // no button but hotkey
             if (CONTEXT.echo.settings) return
             HERO.reset_final_des()
             SAVE.update()
@@ -233,7 +233,7 @@ class Novel {
             } else EVENTS.emitSingle("endScene")
         })
         EVENTS.onSingle("keepAdultCheck", () => {
-            TIME.next(() => _.remove(PROGRESS.scenes, (s) => s === "a0"))
+            TIME.next(() => _.remove(PROGRESS.scenes, (s) => s === "adult"))
             SAVE.update()
         })
         EVENTS.onSingle("mouseContinue", () => {

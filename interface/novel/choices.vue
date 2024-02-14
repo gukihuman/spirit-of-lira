@@ -2,7 +2,7 @@
 //- choice section
 div(
   class="absolute flex flex-col-reverse justify-center gap-[15px]"
-  :class="NOVEL.echo.active_md !== 'a0' ? 'animate-translate-y-menu' : 'animate-fade-in'"
+  :class="NOVEL.echo.active_md !== 'adult' ? 'animate-translate-y-menu' : 'animate-fade-in'"
   :style="mainStyle"
 )
   //- choice boxes
@@ -108,7 +108,7 @@ const mainStyle = computed(() => {
         accumulate = 0
         finalStyle = center
     }
-    if (NOVEL.echo.active_md === "a0") {
+    if (NOVEL.echo.active_md === "adult") {
         finalStyle = start
     }
     return finalStyle

@@ -18,7 +18,7 @@ div(
     div(
         :style="style_object"
         class="absolute left-[35px] top-[1005px] flex gap-10"
-        v-if="NOVEL.echo.active_md !== 'a0'"
+        v-if="NOVEL.echo.active_md !== 'adult'"
     )
         skip
         navigate
@@ -26,7 +26,7 @@ div(
     //- adult check
     div(
         mark="bg"
-        v-if="NOVEL.echo.active_md === 'a0' && NOVEL.echo.stepIndex < 2"
+        v-if="NOVEL.echo.active_md === 'adult' && NOVEL.echo.stepIndex < 2"
         class="-z-10 w-full h-[1080px] bg-slate-800 relative pointer-events-none flex justify-center items-center"
     )
         p(

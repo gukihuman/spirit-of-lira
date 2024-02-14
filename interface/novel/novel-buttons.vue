@@ -4,7 +4,7 @@ div(
 )
     tn: div(
         mark="fullscreen button"
-        v-if="NOVEL.echo.active_md !== 'a0'"
+        v-if="NOVEL.echo.active_md !== 'adult'"
         class="absolute top-[7px] right-[7px] saturate-[0.4] opacity-[0.8] z-[999]"
     )
         gbutton(
@@ -13,7 +13,7 @@ div(
         )
     tn: div(
         mark="settings button"
-        v-if="NOVEL.echo.active_md !== 'a0'"
+        v-if="NOVEL.echo.active_md !== 'adult'"
         class="absolute top-[0px] left-[0px] saturate-[0.4] opacity-[0.8]"
     )
         gbutton(

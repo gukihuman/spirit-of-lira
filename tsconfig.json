@@ -1,10 +1,10 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "noUnusedParameters": false,
-    "noImplicitReturns": true,
-    "noImplicitAny": false
-  },
-  "include": ["./.nuxt/nuxt.d.ts", "./**/*.ts", "./types.d.ts"]
+    // https://nuxt.com/docs/guide/concepts/typescript
+    "extends": "./.nuxt/tsconfig.json",
+    "compilerOptions": {
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noImplicitAny": false
+    },
+    "include": ["./.nuxt/nuxt.d.ts", "./**/*.ts", "./types.d.ts"]
 }

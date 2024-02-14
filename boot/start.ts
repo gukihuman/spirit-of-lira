@@ -45,9 +45,9 @@ async function start() {
 
     TIME.after(500, () => clearInterval(loading_animation))
 
-    if (!PROGRESS.scenes.includes("a0")) {
+    if (!PROGRESS.scenes.includes("adult")) {
         EVENTS.emit("startScene", {
-            name: "a0",
+            name: "adult",
             instantChoices: true,
         })
     } else if (

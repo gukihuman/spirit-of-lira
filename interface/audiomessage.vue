@@ -11,6 +11,8 @@ div(
 </template>
 <script setup lang="ts">
 const condition = computed(() => {
-    return AUDIO.echo.state === "suspended" && NOVEL.echo.active_scene !== "a0"
+    return (
+        AUDIO.echo.state === "suspended" && NOVEL.echo.active_scene !== "adult"
+    )
 })
 </script>

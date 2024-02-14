@@ -36,7 +36,7 @@ class Events {
         this.onSingle("closeApp", () => {
             TIME.next(() => {
                 // keep adult check
-                _.remove(PROGRESS.scenes, (s) => s === "a0")
+                _.remove(PROGRESS.scenes, (s) => s === "adult")
                 SAVE.update()
             })
             setTimeout(() => close(), 100)

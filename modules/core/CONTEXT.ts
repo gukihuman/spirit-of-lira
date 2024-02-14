@@ -54,7 +54,7 @@ class Context {
             }
         })
         EVENTS.onSingle("toggle settings", () => {
-            if (NOVEL.echo.active_md === "a0") return
+            if (NOVEL.echo.active_md === "adult") return
             if (CONTEXT.echo.confirm) return
             if (!this.echo.interface) {
                 this.echo.settings = SETTINGS.last_opened
