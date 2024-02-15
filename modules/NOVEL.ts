@@ -1,3 +1,4 @@
+// > Sure {event_name} (n1-next-scene)
 declare global {
     type Condition = {
         getText: () => string
@@ -77,6 +78,7 @@ class Novel {
         layerOne: {},
         layerTwo: {},
         activeLayer: "layerOne",
+        active_layer_images: "layerOne", // separate images transition logic
         showChoiceBox: false,
         showText: true,
         lastContinueMS: -Infinity, // 0 not allow to continue on adult check :)
@@ -103,26 +105,17 @@ class Novel {
             } else {
                 lineArray = value.split("\n") // for vercel environment
             }
-            let images: string[] = []
             const step: Step = {
                 images: [],
                 text: "",
                 choices: [],
             }
             lineArray.forEach((line, index) => {
-                // handle images
-                if (line.startsWith("# ")) {
-                    let cleanLine = line.substring(2)
-                    images = cleanLine.split(", ")
-                    return
-                }
-                // choice lines doesnt immideately create a step, this is where we push step with all collected choices and previous text
+                // choice lines doesnt immideately create a step
                 let createChoiceStep = () => {
-                    if (step.choices.length > 0) {
-                        _.reverse(step.choices)
-                        this.mds_steps[md_file_name].push(_.cloneDeep(step))
-                        step.choices = []
-                    }
+                    _.reverse(step.choices)
+                    this.mds_steps[md_file_name].push(_.cloneDeep(step))
+                    step.choices = []
                 }
                 // handle choices
                 if (line.startsWith(">")) {
@@ -174,16 +167,21 @@ class Novel {
                     }
                     step.choices.push(choiceObject)
 
-                    if (lineArray.length != index + 1) return
+                    if (lineArray.length !== index + 1) return
                     else {
                         createChoiceStep()
                         return
                     }
                 }
-                // here create two steps at the same time (after choices)
-                createChoiceStep()
+                if (step.choices.length > 0) createChoiceStep()
+
+                // handle images
+                if (line.startsWith("# ")) {
+                    let cleanLine = line.substring(2)
+                    step.images = cleanLine.split(", ")
+                    return
+                }
                 step.text = line
-                step.images = images
                 this.mds_steps[md_file_name].push(_.cloneDeep(step))
             })
         })
@@ -293,12 +291,20 @@ class Novel {
                 return
             if (nextStep) {
                 if (nextStep.text !== step.text) this.echo.showText = false
-                let delay = 50
-                if (!_.isEqual(step.images, nextStep.images)) {
-                    delay = CONFIG.novel.transitionSpeed * 0.5
+                const delay = CONFIG.novel.transitionSpeed * 0.5
+                if (
+                    this.echo.layerOne.x !== this.echo.layerTwo.x ||
+                    this.echo.layerOne.y !== this.echo.layerTwo.y
+                ) {
                     this.echo.activeLayer = "layerTwo"
                     setTimeout(() => {
                         this.echo.activeLayer = "layerOne"
+                    }, delay)
+                }
+                if (!_.isEqual(step.images, nextStep.images)) {
+                    this.echo.active_layer_images = "layerTwo"
+                    setTimeout(() => {
+                        this.echo.active_layer_images = "layerOne"
                     }, delay)
                 }
                 setTimeout(() => {
@@ -381,8 +387,8 @@ class Novel {
     }
     updateData() {
         let layer, nextlayer
-        layer = NOVEL.echo.layerOne
-        nextlayer = NOVEL.echo.layerTwo
+        layer = this.echo.layerOne
+        nextlayer = this.echo.layerTwo
         const steps = this.getSteps()
         if (!steps) return
         const { step, nextStep } = steps

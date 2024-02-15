@@ -26,6 +26,11 @@ class DevMode {
                     console.log(WORLD.hover)
                 }
             }
+            if (CONTEXT.echo.novel) {
+                // console.log("-------- ", LOOP.iterations, " --------")
+                // console.log("layer_one.text: ", NOVEL.echo.layerOne.text)
+                // console.log("layer_two.text: ", NOVEL.echo.layerTwo.text)
+            }
         }
     }
 }

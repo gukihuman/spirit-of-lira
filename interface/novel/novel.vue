@@ -6,16 +6,23 @@ div(
 )
     //- layer one always on - content switched when layer two fully appears
     //- then layer two immidealtly turns off again and preloads next step
-    div( mark="layer-one" )
+    div( mark="layer-one-images" )
         images( layer="layerOne" )
-        dialogue( layer="layerOne" )
     tn: div(
         mark="layer-two"
         v-if="NOVEL.echo.activeLayer === 'layerTwo'"
     )
-        images( layer="layerTwo" )
         dialogue( layer="layerTwo" )
+    tn: div(
+        mark="layer-two-images"
+        v-if="NOVEL.echo.active_layer_images === 'layerTwo'"
+    )
+        images( layer="layerTwo" )
+    div( mark="layer-one" )
+        dialogue( layer="layerOne" )
+
     div(
+        mark="buttons"
         :style="style_object"
         class="absolute left-[35px] top-[1005px] flex gap-10"
         v-if="NOVEL.echo.active_md !== 'adult'"
@@ -54,12 +61,14 @@ const style_object = computed(() => {
     transition: v-bind(transitionSpeed);
 }
 .default-leave-active {
-    transition: opacity 0ms ease;
+    transition: none;
 }
-.default-enter-from {
+.default-enter-from,
+.default-leave-to {
     opacity: 0;
 }
-.default-leave-to {
+.default-enter-to,
+.default-leave-from {
     opacity: 1;
 }
 </style>
