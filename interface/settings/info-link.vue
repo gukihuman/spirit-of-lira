@@ -19,7 +19,6 @@ div( class="relative w-fit h-fit flex p-[10px] pr-[5px]" )
         )
     div: p(
             mark="link text hover light"
-            @click="window.open('https://x.com/gukihuman', '_blank')"
             class="left-[65px] z-[-10] ml-[10px] text-sky-blue font-semibold mt-[10px] text-[26px] leading-[28px] hover:scale-[1.05] transition duration-[100ms] ease-in-out blur-[5px] opacity-0"
             :class="{ 'opacity-[0.15]': is_hover }"
         ) {{ props.platform.toUpperCase() }}

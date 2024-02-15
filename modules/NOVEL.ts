@@ -51,12 +51,15 @@ class Novel {
     mds_plain_texts: PlainTextsObject = {}
     mds_steps: Steps = {}
     style_adjustments_by_webp: StyleAdjustmentsByWebp = {
-        adult: { x: 610, y: 750, brightness: 1.1 }, // 📜 remove blank dependence
+        // 📜 remove blank dependence
+        adult: { x: 610, y: 750, brightness: 1.1 },
         "n1-lira-no-light": { hue: -30 },
         "n1-lira-arms-down": { hue: -30 },
         "n1-lira-arms-raised": { hue: -30 },
         "n1-nighty": { x: 370, y: 700 },
         "n1-nighty-close": { x: 950 },
+        "h1-table-clothes": { x: 1020 },
+        "h1-table": { x: 1020 },
     }
     sceneConditions: sceneConditions = {
         b1: {
@@ -325,6 +328,8 @@ class Novel {
             this.echo.active_girl = "nighty"
         } else if (_.startsWith(this.echo.active_scene, "b")) {
             this.echo.active_girl = "bunny"
+        } else if (_.startsWith(this.echo.active_scene, "h")) {
+            this.echo.active_girl = "hermione"
         } else {
             this.echo.active_girl = ""
         }

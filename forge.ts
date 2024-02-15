@@ -12,16 +12,16 @@ const secondPadding = 24
 function pngOrWebp(path) {
     return /\.(png|webp)$/.test(path)
 }
-const entitiesInput = path.resolve("whales/entities/forge")
-const entitiesOutput = path.resolve("assets/entities")
-fs.readdir(entitiesInput, (err, files) => {
+const entities_input = path.resolve("whales/entities/forge")
+const entities_output = path.resolve("assets/entities")
+fs.readdir(entities_input, (err, files) => {
     files.forEach((file) => {
         if (pngOrWebp(file)) {
             const file_name = path.parse(file).name
-            sharp(path.join(entitiesInput, file))
+            sharp(path.join(entities_input, file))
                 .webp()
                 .toFile(
-                    path.join(entitiesOutput, `${file_name}.webp`),
+                    path.join(entities_output, `${file_name}.webp`),
                     (err, info) => {
                         if (err) {
                             console.error(err)
@@ -33,10 +33,10 @@ fs.readdir(entitiesInput, (err, files) => {
                 )
         } else {
             // file is folder e.g. "lira"
-            const outputWebp = path.join(entitiesOutput, file + ".webp")
-            const outputJson = path.join(entitiesOutput, file + ".json")
-            const command = `TexturePacker --format pixijs --sheet ${outputWebp} --data ${outputJson} ${path.join(
-                entitiesInput,
+            const output_webp = path.join(entities_output, file + ".webp")
+            const output_json = path.join(entities_output, file + ".json")
+            const command = `TexturePacker --format pixijs --sheet ${output_webp} --data ${output_json} ${path.join(
+                entities_input,
                 file
             )}`
             try {
@@ -51,18 +51,18 @@ fs.readdir(entitiesInput, (err, files) => {
     })
 })
 // 📜 make it possible for more maps
-const mapInput = path.resolve("whales/map/green-forest.jpg")
-const mapOutput = path.resolve("assets/map")
+const map_input = path.resolve("whales/map/green-forest.jpg")
+const map_output = path.resolve("assets/map")
 const tile_size = 1000
 const tiles_per_side = 5
-sharp(mapInput)
+sharp(map_input)
     .metadata()
     .then(() => {
         for (let x = 0; x < tiles_per_side; x++) {
             for (let y = 0; y < tiles_per_side; y++) {
                 const file_name = `0${y + 5}0${x + 5}.webp`
-                const forgedMap = path.join(mapOutput, file_name)
-                sharp(mapInput)
+                const chunk_path = path.join(map_output, file_name)
+                sharp(map_input)
                     .extract({
                         left: x * tile_size,
                         top: y * tile_size,
@@ -70,7 +70,7 @@ sharp(mapInput)
                         height: tile_size,
                     })
                     .webp()
-                    .toFile(forgedMap)
+                    .toFile(chunk_path)
                     .then(() => {
                         const before = `map: green-forest`.padEnd(padding)
                         console.log(`${before} ->     ${file_name}`)
@@ -92,7 +92,7 @@ fs.readdir(scene_input_path, (err, files) => {
                     if (err) {
                         console.error(err)
                     } else {
-                        const before = `interface: ${file}`.padEnd(padding)
+                        const before = `scene: ${file}`.padEnd(padding)
                         console.log(`${before} ->     ${file_name}.webp`)
                     }
                 }

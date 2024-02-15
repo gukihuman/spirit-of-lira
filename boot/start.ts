@@ -57,6 +57,8 @@ async function start() {
         EVENTS.emit("startScene", { name: "n1-start" })
     }
 
+    // EVENTS.emit("startScene", { name: "h1-table" })
+
     // delay to make transition work and no world shortly shown
     TIME.after_iterations(10, () => (CONTEXT.echo.loading = false))
 }
