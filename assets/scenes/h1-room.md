@@ -8,7 +8,7 @@ Almost there, hold a bit tighter!
 Well, hi.
 > ...
 Spirit?
-> Gulp. Yes, yes. Um... hi.
+> Yes, yes. Um... hi.
 Are you ok? Not get used to this reality yet?
 > No, the opposite. You look very familiar, you know.
 # h1-room, h1-hermione-surprised
@@ -86,10 +86,9 @@ I'm gonna use my hands. If it's ok with you.
 > Just hands?
 # h1-room-hands-back, h1-hermione-surprised
 What are you hinting at? I just need an essence.
-I'm not that kind of a girl who would jump an a random ... um.. sausage.
+I'm not that kind of a girl who would jump on each ... um.. sausage.
 > Sausage?
-You know what I mean!
-Besides, you are innormasly huge, so... Even if I would...
+You know what I mean! Besides, you are innormasly huge, so... Even if I want to...
 # h1-room-hands-back, h1-hermione-closed-eyes-speaking
 It would be just physically impossible.
 # h1-room-hands-back, h1-hermione-surprised
