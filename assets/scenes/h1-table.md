@@ -1,154 +1,152 @@
 # h1-table-clothes
 
-Hi again. Um...
-Hello... hi.
-I mean... Welcome to Hogwarts. I'm professor Granger.
-> What are you saying? We already meet.
+Hi again. Um... Hello...
+I mean... Welcome to the best school of magic.
+> Again? We've already met.
 Yes, I know, I'm just...
-We actually gonna do it, right?
+We are really going to do this, right?
 > I think so, yeah.
 # h1-table-clothes, h1-eyes-closed
-Alright, alright. I need to calm dawn. I was the best in my class!
+Alright, alright. I need to calm dawn. I was the top of my class!
 # h1-table-clothes, h1-eyes-serious, h1-mouth-speaking
-For the ancestors' honor! I'll do it.
+For the honor of our ancestors! I'll do it.
 # h1-table-clothes, h1-eyes-serious
 Um...
 But... How should I start?
 > I thought you've read all the books about serving a spirit.
 # h1-table-clothes, h1-eyes-closed, h1-mouth-speaking
-I did! First, it is not serving. It called an extraction of the spirit's essence.
+I did! First, it is not merely serving. It's called an extraction of the spirit's essence.
 # h1-table-clothes, h1-mouth-speaking
-Second, it is not many of the books on that topic, to be fair.
+Second, there aren't many books on that topic, to be fair.
 # h1-table-clothes
-I dont know like... I'm not like this usually.
+I don't know like... I'm not myself usually like this.
 > Want a hint?
 Please.
-> You should be more comfortable without a top.
+> You might feel more comfortable without your top.
 # h1-table-clothes, h1-mouth-wide
 
 # h1-table-clothes
 Are you sure? I don't know...
-I'm not a person who would show breasts just because someone asks...
-I'm not like that, you know.
-> Well, you need the essence, and seeing your brests would defenetly help me to get in the mood.
-Well, you kind of have a point.
-And it's not like someone just randomly asking.
-Getting this potion is incredibly important for me!
-Ok, ok. For the ancestors's honor, for the Gryffindor!
+I'm not the type to bare my breasts just because someone asks...
+I'm not like those girls, you know.
+> Well, you need the essence, and seeing your brests would definitely help me to get in the mood.
+Well, you do have a point.
+And it's not like someone just randomly asking. Extracting this potion is incredibly important to me!
+Okay, okay. For our ancestors' honor, and for the guardian of bravery!
 # h1-table-clothes, h1-eyes-closed
 
 # h1-table-hands-down, h1-eyes-closed
 
-> Wow! They are amazing! You nipples are so cute!
+> Wow! They're beautiful! You nipples are so cute!
 # h1-table-hands-down, h1-eyes-closed-serious
 Thanks.
 # h1-table-hands-down, h1-eyes-serious
 
-> Are you ok, professor?
+> Are you okay, professor?
 # h1-table-hands-down, h1-eyes-serious
 I'm fine. I just...
 
-I cant hold anymore...
+I can't hold it anymore...
 # h1-table-hands-down, h1-eyes-serious, h1-mouth-laughing
 Aha-ha-ha-ha!!!
-Have you really thought I'm that shy? Aha-ha-ha!
+
+Did you really think I was that shy? Aha-ha-ha!
 I've read all the books, remember?
 # h1-table-hands-down, h1-eyes-closed-serious, h1-mouth-laughing
-It says that you need to be shy at first. So that was all on purpose.
-So the first step of being a shy witch is completed.
+The books recommend the performer to be shy at first. So that was all on purpose.
+The first step of being a shy witch is completed.
 # h1-table-hands-down, h1-mouth-laughing
-Did you like how unconfinent I was?
+Did you find my pretense of unease arousing?
 > Damn, witch. You're crazy. But actually, you know, yes. It was kind of hot.
 # h1-table-hands-down, h1-mouth-smiling
 So it worked as intended.
-Now, the second step, spirit. Bring your etherial penis closer.
+Now, the second step, spirit. Bring your ethereal penis closer.
 > No need to ask twice!
 
 # h1-table-hands-down, h1-eyes-together, h1-mouth-speaking, h1-penis-no-hand
 
-Oh, my..
-It's huge.
+Oh, my...
+It's enormous.
 > Wanna touch it?
 # h1-table-hands-down, h1-penis-no-hand
 Um... Yes.
-> Well, go ahead.
+> Go ahead.
 # h1-table-hands-down, h1-eyes-together, h1-penis-no-hand
 
 # h1-table, h1-penis-soft, h1-eyes-together
 
-Ow... it...
-Feels soft.
-I should rub it right? Let me see.
+Oh... it feels so...
+Soft.
+I should stroke it, right? Let me see.
 # h1-table, h1-penis-soft
-Slowly like that. Is it ok?
-> Oh yeah its working...
-What do you mean?
+Slowly like this. Is it ok?
+> Oh yeah, its working...
+What? What do you mean?
 # h1-table, h1-penis, h1-mouth-wide, h1-table-eyes-together
 
 Oh my god...
 ...
-> Are you ok, witch?
+> Are you okay, professor?
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-together
 Yeah, I'm fine.
-I'm sorry I just...
+I'm sorry, I just...
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-together
-It is really huge, you know.
-> Don't stop moving your hand.
+It's really huge, you know.
+> Don't stop stroking.
 # h1-table, h1-penis, h1-mouth-smiling
-Sorry. I'll continue gently stroking it.
+Sorry. I'll continue stroking it gently.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-together
-It's kind of nice. 
-I wouldn't think I'm gonna enjoy it, but I think I am.
-> Glad to hear that.
+It's quite pleasurable. 
+I didn't think that I would enjoy it, but I think I am.
+> Glad to hear.
 # h1-table, h1-penis, h1-mouth-smiling
-So according to the books, I need to say specific things.
+So according to the books, there are specific phrases I need to say.
 > You can stop mentioning the books. Just do it naturally.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-serious
-Right. So.
+Alright. So...
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-serious
 I'm a slut.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-serious
 How was that?
-> Very nice, girl. Very nice.
-Thats not it, here's more.
+> Very exciting, girl. Very exciting.
+That's not all, there's more.
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-serious
-I love jerking penises...
-Khm-khm, I mean... cocks.
-Yeah, I love jerking cocks.
+I love stroking penises...
+Ehm, I mean... cocks.
+Yes, I love stroking cocks.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-serious
 How was that?
-> Not bad. Want a hint?
+> Not bad. Want an advice?
 # h1-table, h1-penis, h1-mouth-smiling
-You are teaching me!
-It reminds of a professor Dumbledor. He was tutoring me for a while.
+Please, guide me!
+Reminds me of the head of the school. He once gave me some... private lessons.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-serious
-Sure, give me a hint.
-> Don't be so generic. Incorporate your real personality.
+> Personalize what you say. Bring your unique personality into it.
 # h1-table, h1-penis, h1-mouth-smiling
-My real personality? Ok, ok, let me think...
+My unique personality? Okay, let me think...
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-closed-serious
-I'm doing it for the Hogwarts. I can not let my students down.
-And most importantly, all the ancestors who worked here.
+I'm doing it for the school. I can't let my students down.
+And most importantly, I can't disappoint all the preceding professors who've worked here.
 And for that...
 # h1-table, h1-penis, h1-mouth-wide, h1-eyes-serious
-I'm ready to be the best wankmaiden in Hogwarts!
-> Who?
+I'm ready to be the best wankmaiden ever in this school!
+> The best what?
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-serious
-A wankmaiden. A girl who give handjobs.
-There is a lot of them in the school nowadays.
+Wankmaiden. A woman who gives handjobs.
+It seems there's a growing number of them around here these days.
 # h1-table, h1-penis, h1-mouth-wide, h1-eyes-closed-serious
-Nobody can compite with me though.
-I'll do anything for the Gryffindor.
-And if it require jerking off spirit's cock, I'll do it.
+But none of them can compete with me.
+I'll do anything for the guardian of bravery!
+Even if that means I have to jerk off a spirit's cock.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-together
-Not that I dislike it anyway...
+That's not to say I'm not enjoying it...
 # h1-table, h1-penis, h1-mouth-smiling
-So here is the true.
-> Nice. Now be a good wankmaiden and increase the speed of your serving.
+So here's the truth.
+> Nice. Now, how about you be a good wankmaiden and speed up your serving?
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-closed
-It's not a serving, it's an essence extrac...
+It's not a serving, it's the essence extra...
 # h1-table, h1-penis, h1-mouth-smiling
-Sorry. Wankmaiden is going to serve the spirit.
+Sorry. Your wankmaiden is ready to serve, spirit.
 # h1-table, h1-penis-jerk, h1-mouth-smiling, h1-eyes-together
 
 > Uff... yes. That's it, witch.
@@ -156,24 +154,23 @@ Sorry. Wankmaiden is going to serve the spirit.
 Do you need something else?
 > Tell me who you are.
 # h1-table, h1-penis-jerk, h1-mouth-speaking
-I'm professor Granger.
+I'm a professor...
 # h1-table, h1-penis-jerk, h1-mouth-smiling, h1-eyes-serious
 Oh, wait, I get it.
 # h1-table, h1-penis-jerk, h1-mouth-laughing, h1-eyes-serious
-I'm a wankmaiden who servers the spirit.
-And also I'm a slut, and ...
+I'm a serving wankmaiden and a slut, also...
 ...a whore.
-> Ooo... now we talking. Good girl.
+> Oooh... now we're talking. Good girl.
 I know I am.
 > I mean it, you are doing great.
 # h1-table, h1-penis-jerk, h1-mouth-laughing
 Really? Thanks.
-> Allright, enough for now, slow down. I got and idea.
+> Enough for now, slow down. I got an idea.
 # h1-table, h1-penis, h1-mouth-smiling
 
 > Open your mouth wide.
 # h1-table, h1-penis, h1-mouth-smiling, h1-eyes-serious
-I told you its not gonna fit.
+I told you it's not gonna fit.
 > I know. Just do it.
 # h1-table, h1-penis, h1-mouth-wide, h1-eyes-serious
 A-a-a...
@@ -182,7 +179,7 @@ A-a-a...
 # h1-table, h1-penis, h1-mouth-speaking
 I don't ...
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-closed
-Ok.
+Okay.
 # h1-table, h1-penis, h1-mouth-wide, h1-eyes-closed
 
 # h1-table, h1-penis, h1-mouth-tongue
@@ -192,29 +189,32 @@ I fee 'awkwa
 > What? I don't get it.
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-serious
 I said I feel ackward.
-> Ok ok, stick it out.
+> Okay, okay, stick it out.
 # h1-table, h1-penis, h1-mouth-tongue, h1-eyes-serious
 
 > It's so hot.
 # h1-table, h1-penis, h1-mouth-tongue
 rea'y?
-> Yes, really.
+>Yes, really. Now, continue stroking.
+# h1-table, h1-penis-jerk, h1-mouth-tongue
 'kay
 
 ...
 
 'ow 'ong shou' I kee' i' ou'?
-> Didn't get a word.
-# h1-table, h1-penis, h1-mouth-tongue, h1-eyes-serious
+> Sorry, didn't catch that.
+# h1-table, h1-penis-jerk, h1-mouth-tongue, h1-eyes-serious
 'ow 'ong?
 > How long?
 'eah
-> Well, I'm waiting for something special.
-# h1-table, h1-penis, h1-mouth-tongue
+> Wait, something uniquely special is on its way.
+# h1-table, h1-penis-jerk, h1-mouth-tongue
 'onna 'um al'eady?
-> Not yet, silly.
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Not yet. We're waiting on something from you this time.
 'kay
-> Just keep it out for a bit.
+> Just keep your tongue out and slow your hand down a bit.
+# h1-table, h1-penis, h1-mouth-tongue
 ah'igh
 
 ...
@@ -222,18 +222,18 @@ ah'igh
 
 # h1-table, h1-penis, h1-mouth-tongue
 I 'an 'ot hol' ma sa'iva...
-> That's what I was waiting for. Don't hold back.
+> There it is, the special moment I've been anticipating. Let it flow.
 
 # h1-table, h1-penis, h1-mouth-saliva
 
 ...
 # h1-table, h1-penis, h1-mouth-saliva, h1-eyes-serious
 I fee 'tupid
-> You are the smartest witch I have ever seen.
+> You're the smartest witch I've ever met.
 # h1-table, h1-penis, h1-mouth-saliva, h1-eyes-closed
 ye' I a'
-> Yes, you are. Now, serve me as a good wankmaiden.
-# h1-table, h1-penis, h1-mouth-saliva, h1-eyes-together
+> Yes, you are. Now, serve me properly, wankmaiden.
+# h1-table, h1-penis-jerk, h1-mouth-saliva, h1-eyes-together
 
 # h1-table, h1-mouth-saliva, h1-penis-jerk, h1-eyes-together
 
@@ -241,58 +241,112 @@ ye' I a'
 'o you like 't?
 > Don't ask silly questions, of course I like it.
 righ'
-by 'e way, I' a 'e bes' w'nkmaiden in Hogwar's.
-> Shit. I think I'm close. Do I need to cum in the cauldron?
-# h1-table, h1-mouth-saliva, h1-penis-jerk, h1-eyes-closed
-no you c'n cum in m'...
-# h1-table, h1-mouth-saliva, h1-penis-jerk
-in m' mou'
-> What!?
-# h1-table, h1-mouth-speaking, h1-penis-jerk
-I said you can cum in my mouth.
-If it's ok.
-> OF COURSE IT'S OK!! OPEN IT I'M GONNA CUM!!
-# h1-table, h1-mouth-tongue, h1-penis-jerk
+by 'e way, I' a 'e bes' w'nkmaiden 'roun 'ere.
+I'll 'ilk 'every 'rop 'f 'um 'rom your balls...
+>> Oh... Yes, I'm about to cum! (h1-end)
+> That's right. Keep stroking, but slower.
+# h1-table, h1-penis, h1-mouth-saliva, h1-eyes-closed
 
-> OH FUUUUCK....
-# h1-table, h1-mouth-saliva, h1-penis-mouth-jerk, h1-eyes-together
+> Oh... so close... 
+'hen 'o I 'top?
+> Not until I give the order, wankmaiden. 
+'an't wai'...
 
-# h1-table-balls, h1-mouth-saliva, h1-penis-cum-1, h1-eyes-surprised
+> You're making it hard to hold back...
+# h1-table, h1-penis, h1-mouth-saliva
+'hat's m' job...
+> You know exactly what you're doing, don't you?
+# h1-table, h1-penis, h1-mouth-saliva, h1-eyes-serious
 
-Mmmph...
-> There is more!
+# h1-table, h1-penis-jerk, h1-mouth-saliva, h1-eyes-serious
+righ'... kee'... m'... 'ongue... ou'
+# h1-table, h1-penis-jerk, h1-mouth-saliva
 
-# h1-table-balls, h1-mouth-saliva, h1-penis-cum-2, h1-eyes-ahegao
+yo 'ock 's so 'ard 'n thick...
+'can 'ardly fi' my han' aroun' i'.
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Your teasing is so effective, professor. Don't stop.
+'m 'our 'lut, not a 'rofessor...
+'wanna 'aste 'our 'ssen... I 'ean yo 'um
+> Fuck
+'ove 'erving your 'cock, 'ike a 'utiful 'lut.
+# h1-table, h1-penis-jerk, h1-mouth-saliva, h1-eyes-closed-serious
+'alk wi' ongue ou' i 'ard...
+'kay
+# h1-table, h1-penis-jerk, h1-mouth-saliva
 
-Ummmph...
-# h1-table-hands-down, h1-mouth-saliva, h1-penis-cum-2-no-jerk, h1-eyes-ahegao
-
-# h1-table-hands-down, h1-mouth-tongue, h1-penis-post-cum-1, h1-eyes-ahegao
-
-> Ooohhh that was great...
-...
-> Hermione? Are you ok?
-# h1-table-hands-down, h1-penis-post-cum-2, h1-eyes-ahegao
-
-# h1-table-hands-down, h1-penis-post-cum-3, h1-eyes-ahegao
-
-# h1-table-hands-down, h1-penis-post-cum-4, h1-eyes-ahegao
-A-a-a...
-> Wow.. what a wankmaiden.
-# h1-table-hands-down, h1-penis-post-cum-5, h1-eyes-ahegao
-Ehee...
-> Did you carried away and forgot about the potion?
-# h1-table-hands-down, h1-penis-post-cum-5, h1-eyes-closed
-Heehee...
-# h1-table-hands-down, h1-penis-post-cum-5, h1-eyes-blue
-
-Do you really think I could screw up with that?
-I've already drink the potion before summoning you.
-Essence is supposed to be fresh - right from the source, so effect has to be finalized internally.
-So thank you.
-> No, thank you, professor.
-# h1-table-hands-down, h1-penis-post-cum-5-transparent, h1-eyes-blue
-Oh I think you going back. It was nice to meet you.
-> Yep, bye, little one.
-
-Bye, Mr. Spirit.
+yo balls 're so 'ull
+nee' to let i’ ou'...
+yo jus' want to burs' don' you?
+> Yeah. I can tell you take your duties very seriously.
+ye' I a'
+'ave yo ever 'een jerked like this 'fore?
+> Oh... No, I dont't think so...
+'magine my 'mouth 'here my 'han' is...
+yo're 'o close, I 'feel it
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Fuck It's really hard to understand you, you know.
+'m 'orry
+> Alright, use your tongue to talk normally but stick it out sometimes too.
+# h1-table, h1-penis-jerk, h1-mouth-speaking, h1-eyes-serious
+Okay.
+> I hope this exchange gonna worth it.
+Let your slut try her best! But...
+How much dirty do you want me to talk?
+> YES!
+Okay, okay.
+Daddy.
+# h1-table, h1-penis-jerk, h1-mouth-saliva, h1-eyes-serious
+Your cock is throbbing in my hand. It feels so damn hard...
+> You're a dirty little talker, aren't you?
+Of course I am. I'm your personal cumdumpster...
+> That's not what I... Damn it!
+Like the sound of that, huh?
+> Shut up and keep stroking.
+# h1-table, h1-penis-jerk, h1-mouth-saliva, h1-eyes-closed-serious
+Okay, okay... I promise I'll milk every last drop outta these swollen balls of yours.
+# h1-table, h1-penis-jerk, h1-mouth-saliva
+Should I speed up or keep it slow?
+> Slow. Savour it.
+# h1-table, h1-penis, h1-mouth-saliva
+Alright, slow and steady... Can't wait to taste your cum... 
+Oh honey, your cock is so hard... Do you enjoy my hand stroking it like this?"
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Just keep going, don't stop, but slow for now.
+And you're sure about that, huh?
+# h1-table, h1-penis, h1-mouth-saliva
+Careful now... let me serve you, daddy.
+# h1-table, h1-penis, h1-mouth-saliva, h1-eyes-serious
+Are you gonna cum? I'm ready...
+> Yes... soon.
+I'm not a whore, but for you, I'd be your anyting... your cumslut, your whorebag...
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Shit. Keep talking like that and it's going to be over soon...
+# h1-table, h1-penis-jerk, h1-mouth-saliva
+I'm so desperate for your cum... give it to me.
+Get ready, I'm gonna make you explode... Like a fucking volcano...
+I'm just a whore for your pleasure.
+I bet you just want to ram that hard cock into my tight little fuckhole, don't you?
+> Fuck of course.
+# h1-table, h1-penis-jerk, h1-mouth-saliva, 
+Is it wrong that I enjoy being your little sexslave? I can't help it...
+I'm a good little cumslut, I promise...
+> Oh... God...
+There is no God, only me, your wankmaid, cockslave, fucktoy... 
+You enjoy my little hands all over your hard piece, don't you?
+My only worth is in making your cock feel good...How pitiful, right?"
+>> Oh... Yes, I'm about to cum! (h1-end)
+> Uh... I want it a bit longer...
+Sure. Your cock is throbbing in my hand, trying to escape... Control yourself, daddy.
+Your balls are so tight... You're holding back, aren't you?
+> ... you ...
+Oh... can't even talk anymore.
+> You... slut...
+Is this all I am to you? A cheap little slut stroking your cock?
+Just thrust into my hand, daddy. Make your little cumslut earn her creamy reward.
+Fucking hell, I'm such a slut."
+Look at me, just a useless cumslut, begging for your load...
+Your cockslave is doing her best. You get off on this, don't you? Seeing me so depraved.
+Oh, I think you are...
+Yes, that's it... Go on, degrade your filthy handwhore with your release!
+>> Oh... Yes, I'm about to cum! (h1-end)
