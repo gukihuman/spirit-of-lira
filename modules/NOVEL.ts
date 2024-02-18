@@ -1,4 +1,9 @@
 // > Sure {event_name} (n1-next-scene)
+type StartSceneOptions = {
+    name: string
+    step_index?: number
+    instantChoices?: boolean
+}
 declare global {
     type Condition = {
         getText: () => string
@@ -61,6 +66,8 @@ class Novel {
         "n1-nighty-close": { x: 950 },
         "h1-table-clothes": { x: 1020 },
         "h1-table": { x: 1020 },
+        "h1-table-balls": { x: 1020 },
+        "h1-table-hands-down": { x: 1020 },
     }
     sceneConditions: sceneConditions = {
         b1: {
@@ -193,7 +200,7 @@ class Novel {
             CONTEXT.echo.novel = true
             this.echo.active_md = options.name
             this.echo.nextSceneName = options.name // used each continue
-            this.echo.stepIndex = 0
+            this.echo.stepIndex = options.step_index || 0
             if (options.instantChoices) {
                 TIME.next(() => EVENTS.emitSingle("continue"))
             }
@@ -310,6 +317,7 @@ class Novel {
                 setTimeout(() => {
                     this.echo.showText = true
                     this.echo.stepIndex++
+                    console.log(this.echo.stepIndex)
                 }, delay)
             }
             if (

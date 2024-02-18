@@ -11,31 +11,33 @@ You must be a spirit! No one else can be summoned by this spell.
 > A spell? What are you talking about, hand?
 I'm summoning you, of course, spirit.
 > All I see is a hand sticking out from a tree.
-Hmm... Interesting...
+Interesting...
 I've heard that realities could merge in some humorous ways, but a hand sticking out of a tree? That's something new.
 Anyway, please hold my hand.
 >> Sure, here. (h1-room)
 > No, you suspicious tree! Never!
 Oh... No, please, Mr. Spirit! I promise you won't be disappointed!
-> Would you trust some random hand sticking out from a tree?
-Hmm... I don't know. I guess not.
-Okay, let me check the recommendations in the book. Here on this page... Khm-khm...
+> Would you trust a hand that suddenly appears from a tree?
+I don't know. I guess not.
+Okay, let me check the recommendations in the book. Here on this page... Ahem...
 I'm gonna be a good girl for my daddy.
 How was that?
-> Um... Given that it's coming from a hand sticking out of a tree, it was weird.
-Please, Mr. Spirit! Give me your hand!
+> Um... Given that it's coming from a strange hand, it was weird.
+Please, Mr. Spirit! Just put your hand on mine!
 >> Sure, here. (h1-room)
-> Heh.. I have an idea.
+> I have an idea.
+
 # h1-forest, h1-forest-penis
 
-I can feel, wait...
-Yes, definitely some energy is flowing. But something is off...
+I can feel something... wait...
+Uh... yes, definitely some energy is flowing. But something is off...
 The summoning isn't working. Did you put your hand on mine?
 > Not exactly.
 Please, please, please! I... Okay, give me a second...
 Let me see this page...
-Okay, found it! Wow, this is quite bold... Khm-khm...
-I'm a slut. I live for craving your... your balls.
+Okay, found it! Wow, this is quite bold... Ehem...
+I'm a... a slut.
+I live for craving your balls.
 ...
 Spirit?
 > Damn, convincing. Alright, I'm in.
