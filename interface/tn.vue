@@ -11,21 +11,21 @@ transition(
 </template>
 <script setup lang="ts">
 const props = defineProps({
-  type: { type: String, default: "default" },
-  mode: { type: String, default: "in-out" },
+    type: { type: String, default: "default" },
+    mode: { type: String, default: "in-out" },
 })
 
 // Setting default `enterActiveClass` value
 const enterActiveClass = computed(() => {
-  return props.type + "-enter-active"
+    return props.type + "-enter-active"
 })
 const leaveActiveClass = computed(() => {
-  return props.type + "-leave-active"
+    return props.type + "-leave-active"
 })
 const enterFromClass = computed(() => {
-  return props.type + "-enter-from"
+    return props.type + "-enter-from"
 })
 const leaveToClass = computed(() => {
-  return props.type + "-leave-to"
+    return props.type + "-leave-to"
 })
 </script>

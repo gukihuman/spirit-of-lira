@@ -17,6 +17,14 @@ fullscreen
     preload
 </template>
 <style>
+.medium-enter-active,
+.medium-leave-active {
+    transition: opacity 500ms ease;
+}
+.medium-enter-from,
+.medium-leave-to {
+    opacity: 0;
+}
 .long-enter-active,
 .long-leave-active {
     transition: opacity 1000ms ease;

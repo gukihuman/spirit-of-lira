@@ -4,9 +4,9 @@ div(
     v-show="CONTEXT.echo.world"
     :class="{ 'blur': CONTEXT.echo.confirm }"
 )
-    div( v-show="!CONTEXT.echo.interface" )
+    tn: div( v-show="!CONTEXT.echo.interface" )
         float-damage( v-if="INTERFACE.floatDamage" )
-        tn: exclamation-mark
+        tn: exclamation-marks
         //- tn: talk( v-show="INTERFACE.talk" )
         tn: reset( v-show="GLOBAL.reset" )
     div( :class="{ 'blur-[3px]': CONTEXT.echo.interface }" )

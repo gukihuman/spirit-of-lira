@@ -80,7 +80,7 @@ Um... Yes.
 
 # h1-table, h1-penis-soft, h1-eyes-together
 
-Oh... it feels so...
+Uh... it feels so...
 Soft.
 I should stroke it, right? Let me see.
 Slowly like this.
@@ -154,7 +154,7 @@ So here's the truth.
 # h1-table, h1-penis, h1-mouth-speaking, h1-eyes-closed
 It's not a serving, it's the essence extrac...
 # h1-table, h1-penis, h1-mouth-smiling
-Oh... Sorry. Your wankmaiden is ready to serve.
+Uh... Sorry. Your wankmaiden is ready to serve.
 # h1-table, h1-penis-jerk, h1-mouth-smiling, h1-eyes-together
 
 > Oh... yes. That's it, witch.
@@ -387,7 +387,7 @@ I'm so desperate for your cum... give it to me.
 I'm gonna make you explode... Like a fucking volcano...
 I'm just a whore for your pleasure.
 # h1-table, h1-penis-jerk, h1-mouth-wide
-I bet you just want to ram that hard cock into my tight little fuckhole, don't you?
+I bet you just want to ram that fat cock into my tight little fuckhole, don't you?
 # h1-table, h1-penis-jerk, h1-mouth-smiling
 >> Oh... Yes, I'm about to cum! (h1-end)
 > Fuck of course! Just give me your best... last... few... words...
@@ -396,7 +396,7 @@ You're close don't you? I promised it's gonna worth it...
 Is it wrong that I enjoy being your little sexslave? I can't help it...
 > Oh... God...
 # h1-table, h1-penis, h1-mouth-smiling
-There is no God, only me, your personal wankmaiden.
+There is no God here, only me, your personal wankmaiden.
 # h1-table, h1-penis, h1-mouth-speaking
 You enjoy my little hands all over your hard piece, don't you?
 My only worth is in making your cock feel good... How pitiful, right?"

@@ -7,7 +7,7 @@ class EntitiesStatic {
         },
         bunny: {
             POS: { x: 7880, y: 7408 },
-            // TALK: { x: -50, y: -220, scene: "adult" },
+            TALK: { x: -65, y: -300, scene: "b1-start" },
         },
         "low-tree": { POS: { x: 6450, y: 7620 } },
         "low-forest": { POS: { x: 7500, y: 9400 } },

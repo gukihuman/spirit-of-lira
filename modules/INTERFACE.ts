@@ -20,6 +20,7 @@ declare global {
 }
 interface Inter extends AnyObject {
     damageOverlays: DamageOverlay[]
+    talk_POSs: Position[]
 }
 let health_delay = 500
 let target_health_delayed_token = ""
@@ -37,7 +38,8 @@ const inter: Inter = {
     target_health_delayed: 0,
     targetMaxHealth: 0,
     talk: false,
-    talkPOS: { x: 0, y: 0 },
+    talk_POSs: [],
+    closest_talk_ent_i: 0,
     talkEntity: "",
     buttonHover: false,
     showKeys: true,
