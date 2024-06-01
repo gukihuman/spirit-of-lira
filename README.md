@@ -1,4 +1,5 @@
 ## Spirit of Lira
+v0.1.0
 
 [spirit-of-lira.vercel.app](https://spirit-of-lira.vercel.app/)
 
