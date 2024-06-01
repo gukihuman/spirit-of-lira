@@ -1,54 +1,59 @@
 <template lang="pug">
-
-wrap-fullscreen(class="relative h-screen w-full bg-slate-800 flex items-center justify-center select-none")
-
-  loading
-
-  //- centered game window
-  transition: wrap-game-window(v-show="!GLOBAL.loadingScreen")
-
-    //- pixi viewport, where the actual game is
-    wrap-viewport
-
-    div(class="absolute z-10 overflow-hidden w-full h-full")
-      bars
-      transition(name="fast"): target(v-show="INTERFACE.target && !INTERFACE.inventory")
-
-    div(class="absolute z-10 w-full h-full")
-      transition: input-area(v-show="INTERFACE.input")
-      transition: output-area(v-show="GLOBAL.output")
-
-    //- output-area
-
-    div(class="z-30"): transition
-        inventory(v-show="INTERFACE.inventory")
-
+fullscreen
+    loading
+    tn( type="long" ): game-window(
+        :class="{ 'cursor-none': GLOBAL.firstUserGesture }"
+    )
+        viewport
+        tn: inventory
+        tn: settings
+        tn( type="long" ): novel
+        tn( type="long" ): novel-buttons
+        tn: overlay
+        tn: overlay-top
+        tn: confirm
+        tn: audiomessage
+        tn: cursor( v-if="GLOBAL.firstUserGesture" )
+    preload
 </template>
-
-<script setup>
-onMounted(() => {})
-</script>
-
 <style>
+.medium-enter-active,
+.medium-leave-active {
+    transition: opacity 500ms ease;
+}
+.medium-enter-from,
+.medium-leave-to {
+    opacity: 0;
+}
+.long-enter-active,
+.long-leave-active {
+    transition: opacity 1000ms ease;
+}
+.long-enter-from,
+.long-leave-to {
+    opacity: 0;
+}
 .fast-enter-active,
 .fast-leave-active {
-  transition: opacity 0.05s ease;
+    transition: opacity 70ms ease;
 }
 .fast-enter-from,
 .fast-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.2s ease;
+.default-enter-active,
+.default-leave-active {
+    transition: opacity 200ms ease;
 }
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+.default-enter-from,
+.default-leave-to {
+    opacity: 0;
+}
+body {
+    background-color: #1e293b;
 }
 /* disable scrollbar */
 ::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 </style>

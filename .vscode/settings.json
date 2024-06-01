@@ -1,41 +1,56 @@
 {
-  "prisma.fileWatcher": false,
-  "files.exclude": {
-    ".nuxt": true,
-    ".vscode": true,
-    "node_modules": true,
-    "tests": true,
-    ".gitignore": true,
-    "package-lock.json": true,
-    "prisma": true,
-    "server": true,
-    "_old": true
-  },
-  "workspace.isHidden": true,
-  "folder-path-color.folders": [
-    {
-      "path": "systems",
-      "color": "blue"
+    "prisma.fileWatcher": false,
+    "files.exclude": {
+        ".nuxt": true,
+        ".vscode": true,
+        "node_modules": true,
+        "tests": true,
+        ".gitignore": true,
+        "package-lock.json": true,
+        "prisma": true,
+        "_old": true,
+        ".env": true,
+        "vitest.config.ts": true,
+        ".prettierignore": true,
+        "public": true,
+        "desktop.ini": true,
+        "satyr-remix-gukihuman.pem": true,
+        "satyr-remix-commands.txt": true,
+        "satyr-remix.ipynb": true,
+        "LICENSE": true,
+        ".output": true,
+        "electron\\.nuxt": true,
+        "electron": true
     },
-    {
-      "path": "components",
-      "color": "magenta"
-    },
-    {
-      "path": "data",
-      "color": "red"
-    },
-    {
-      "path": "logic",
-      "color": "cyan"
-    },
-    {
-      "path": "interface",
-      "color": "green"
-    },
-    {
-      "path": "entities",
-      "color": "yellow"
-    }
-  ]
+    "workspace.isHidden": false,
+    "folder-path-color.folders": [
+        {
+            "path": "systems",
+            "color": "blue"
+        },
+        {
+            "path": "assets",
+            "color": "magenta"
+        },
+        {
+            "path": "boot",
+            "color": "red"
+        },
+        {
+            "path": "modules",
+            "color": "cyan"
+        },
+        {
+            "path": "-",
+            "color": "green"
+        },
+        {
+            "path": "entities",
+            "color": "yellow"
+        },
+        {
+            "path": "interface",
+            "color": "yellow"
+        }
+    ]
 }

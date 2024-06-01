@@ -1,33 +1,47 @@
 export default defineNuxtConfig({
-  runtimeConfig: {
-    OPEN_AI_KEY: process.env.OPEN_AI_KEY,
-    HUGGINGFACE_TOKEN: process.env.HUGGINGFACE_TOKEN,
-  },
-  modules: [
-    "@nuxtjs/tailwindcss",
-    [
-      "@pinia/nuxt",
-      {
-        autoImports: ["defineStore"],
-      },
-    ],
-  ],
-  imports: {
-    dirs: ["core/**/*.{js,ts}", "data/**/*.{js,ts}", "logic/**/*.{js,ts}"],
-  },
-  components: {
-    dirs: ["@/interface"],
-  },
-  plugins: ["@/core/load.ts", "@/core/start.ts"],
-  css: ["@/tailwind.css"],
-
-  // important for correct work of importer
-  vite: {
-    build: {
-      minify: false,
+    app: {
+        head: {
+            link: [{ rel: "icon", type: "image/png", href: "/favicon.png" }],
+            title: "Spirit of Lira",
+        },
     },
-  },
+    modules: [
+        "@nuxtjs/tailwindcss",
+        [
+            "@pinia/nuxt",
+            {
+                autoImports: ["defineStore"],
+            },
+        ],
+        // [
+        //     "nuxt-electron",
+        //     {
+        //         build: [
+        //             {
+        //                 // Main-Process entry file of the Electron App.
+        //                 entry: "electron/main.mjs",
+        //                 win: {
+        //                     icon: "public/favicon.png",
+        //                 },
 
-  // local build not working with sourcemap
-  sourcemap: false,
+        //                 extraResources: [".output/server/**"],
+        //             },
+        //         ],
+        //     },
+        // ],
+    ],
+    ignore: ["whales/**", "sprout/**"],
+    imports: {
+        dirs: ["boot/**/*.{js,ts}", "modules/**/*.{js,ts}"],
+    },
+    components: [{ path: "@/interface", pathPrefix: false }],
+    plugins: ["@/boot/load.ts", "@/boot/start.ts"],
+    css: ["@/tailwind.css"],
+
+    // important for correct work of importer
+    vite: {
+        assetsInclude: ["**/*.md"],
+        build: { minify: false },
+    },
+    sourcemap: false, // save build not working with sourcemap
 })

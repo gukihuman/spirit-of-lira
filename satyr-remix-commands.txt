@@ -1,0 +1,13 @@
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui
+
+sudo apt install python3-pip
+
+sudo apt -y install nvidia-cuda-toolkit
+sudo apt -y install nvidia-utils-390
+sudo apt -y install ubuntu-drivers-common
+sudo ubuntu-drivers autoinstall
+sudo reboot
+
+cd stable-diffusion-webui/models/Stable-diffusion
+wget -O satyr-remix.safetensors https://civitai.com/api/download/mod
+els/126860
