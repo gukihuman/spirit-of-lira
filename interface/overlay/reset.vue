@@ -8,11 +8,7 @@ div(
     @mouseover="INTERFACE.buttonHover = true"
     @mouseleave="INTERFACE.buttonHover = false"
     )
-    img(
-      :src="ASSETS.webp_paths.talk"
-      draggable="false"
-      class="absolute object-none"
-    )
+    text-bg(class="z-[-10] ml-[0px] w-[calc(100%+20px)] scale-[1.1] contrast-[0.9]")
     p(class="absolute z-10 text-tan text-[25px] font-semibold mb-2 points-events-none") Reset
-  hotkey-icon(class="top-[30px] left-[87px]" inputEvent="reset")
+  hotkey-icon(class="top-[42px] left-[90px]" inputEvent="reset")
 </template>

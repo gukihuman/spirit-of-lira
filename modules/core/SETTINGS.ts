@@ -233,14 +233,14 @@ class Settings {
                 type: "trigger",
                 prop: "attackBack",
             },
-            "Patreon Access": {
-                type: "trigger",
-                prop: "patreon_access",
-            },
-            "Reset Progress": {
-                type: "button",
-                event: "reset progress",
-            },
+            // "Patreon Access": {
+            //     type: "trigger",
+            //     prop: "patreon_access",
+            // },
+            // "Reset Progress": {
+            //     type: "button",
+            //     event: "reset progress",
+            // },
         },
         right_column: {
             "Hotkeys Icons": {

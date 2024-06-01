@@ -6,7 +6,7 @@ div(
     div(
         mark="center column"
         v-show="CONTEXT.echo.settings === 'general'"
-        class="w-[860px] h-fit flex flex-col items-center z-[50] mt-[-15px]"
+        class="w-[860px] h-fit flex flex-col items-center z-[50] mt-[10px]"
     )
         div(
             mark="row"
@@ -44,7 +44,7 @@ div(
                         class="top-[47px] left-[725px]"
                     )
     div(
-        class="w-full h-full flex justify-center mt-[10px]"
+        class="w-full h-full flex justify-center mt-[20px]"
         :class="hotkeys_panel_margin"
     )
         div(

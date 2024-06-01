@@ -224,8 +224,9 @@ class Novel {
         })
         EVENTS.onSingle("resolveAdultCheckEndScene", () => {
             if (
-                !PROGRESS.scenes.includes("n1") &&
-                COORD.compare(HERO.ent.POS, ENTITIES.collection.lira.POS)
+                false
+                // !PROGRESS.scenes.includes("n1") &&
+                // COORD.compare(HERO.ent.POS, ENTITIES.collection.lira.POS)
             ) {
                 if (!PROGRESS.scenes.includes(this.echo.active_scene)) {
                     PROGRESS.scenes.push(this.echo.active_scene)
@@ -317,7 +318,6 @@ class Novel {
                 setTimeout(() => {
                     this.echo.showText = true
                     this.echo.stepIndex++
-                    console.log(this.echo.stepIndex)
                 }, delay)
             }
             if (

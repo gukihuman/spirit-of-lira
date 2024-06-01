@@ -1,8 +1,5 @@
 # h1-table, h1-mouth-tongue, h1-penis-jerk, h1-eyes-surprised
 
-> Wait for it... wait for it...
-# h1-table, h1-mouth-saliva, h1-penis-jerk, h1-eyes-surprised
-
 > Fuuuck... Should I release it in the cauldron?
 # h1-table, h1-mouth-saliva, h1-penis-jerk, h1-eyes-closed
 no, you c'n cum in m' mou'

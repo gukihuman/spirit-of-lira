@@ -8,11 +8,13 @@ div(
         p(
             mark="version"
             class="text-tan font-lilita text-[28px]"
-        ) {{ GLOBAL.version }}
+        ) {{ GLOBAL.version }} early demo
         p(
             mark="text"
             class="text-tan font-semibold mt-[10px] text-[26px] text-justify leading-[40px]"
-        ) Hey there! It's Guki, the dev behind the scenes. In this early version, I focused on making the basic game mechanics. Fingers crossed that there's a promising future ahead. I'm lining up items, bows, magic, skills, mobs, locations, and naturally, fresh story events. Keep an eye on my socials for updates.
+            v-for="line in text"
+            v-html="line"
+        )
     div( class="absolute px-[55px] top-[320px] w-full flex ml-[30px]" )
         info-link( platform="x" class="w-[125px]")
         info-link( platform="discord")
@@ -25,6 +27,11 @@ div(
     ) Special thanks to Psycho-Nerd, General-Tomato, and Karpai. <br> ♡ My first three patrons ever. ♡
 </template>
 <script setup lang="ts">
+const text = [
+    "Hi I'm Guki, the dev.",
+    "In this early demo there is only one story event (it's not a main plot).",
+    "Keep an eye on my socials for updates and support me on Patreon or Boosty, I would really appreciate it.",
+]
 const resolve_show_panel = computed(() => {
     if (!SETTINGS.echo.show_panel) return
     return CONTEXT.echo.settings === "info"
